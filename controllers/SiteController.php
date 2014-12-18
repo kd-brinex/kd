@@ -11,7 +11,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
-    public function behaviors()
+gi    public function behaviors()
     {
         return [
             'access' => [
@@ -36,6 +36,7 @@ class SiteController extends Controller
 
     public function actions()
     {
+        $this->layout = false;
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -49,7 +50,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index.twig',['name'=>'Marat']);
     }
 
     public function actionLogin()
