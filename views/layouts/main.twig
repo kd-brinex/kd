@@ -1,13 +1,21 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="ru"  >
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    {% block head %}
-        <link rel="stylesheet" href="style.css" />
-        <title>{% block title %}{% endblock %} - Мой сайт</title>
+    {% block meta %}
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% endblock %}
+    {% block style %}
+        <link rel="stylesheet" type="text/css" href="style.css">
+    {% endblock %}
+
+    <title>{% block title %}{% endblock %} - Мой сайт</title>
+
 </head>
 <body>
+<div id="header">{% block header %}{% endblock %}</div>
 <div id="content">{% block content %}{% endblock %}</div>
 <div id="footer">
     {% block footer %}

@@ -36,20 +36,21 @@ public function behaviors()
 
     public function actions()
     {
-        $this->layout = false;
+//        $this->layout = false;
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+//            'captcha' => [
+//                'class' => 'yii\captcha\CaptchaAction',
+//                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+//            ],
         ];
     }
 
     public function actionIndex()
     {
+//        $this->layout = false;
         return $this->render('index.twig',['name'=>'Marat']);
     }
 

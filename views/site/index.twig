@@ -1,4 +1,12 @@
 {% extends "@app/views/layouts/main.twig" %}
+
+    {% block header %}
+<div class="header">
+    Калеса Даром.
+</div>
+{% endblock %}
+
 {% block content %}
     Hi, {{ name }}!
+    {{app}}
 {% endblock %}

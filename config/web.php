@@ -8,6 +8,20 @@ $config = [
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'components' => [
+        'urlManager'=>[
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+//            'enableStrictParsing' => true,
+            'suffix' => '.html',
+            'rules' => [
+                '' => 'site/index',
+                'login' => 'user/security/login',
+                'register'=> 'user/registration/register',
+                'about' => 'site/about',
+                'contact' => 'site/contact',
+
+            ],
+           ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'JC6KdmGRa0LYiO6GyGxZTwqoq3kqMjzk',
@@ -36,7 +50,7 @@ $config = [
                 'password' => 'HuMa250773-brin',
                 'port' => '465',
                 'encryption' => 'ssl',
-                ],
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -57,6 +71,19 @@ $config = [
                     // Array of twig options:
                     'options' => [
                         'auto_reload' => true,
+                    ],
+                    'globals' => ['html' => '\yii\helpers\Html'],
+                    'uses' => [
+                        'yii\helpers\Html',
+                        'yii\bootstrap\Nav',
+                        'yii\bootstrap\NavBar',
+                        'yii\widgets\Breadcrumbs',
+                        'app\assets\AppAsset',
+
+                    ],
+                    'options' => [
+
+
                     ],
                     // ... see ViewRenderer for more options
                 ],
@@ -82,32 +109,32 @@ $config = [
         ],
     ],
     'params' => $params,
-    'modules' =>[
-        'user' =>[
+    'modules' => [
+        'user' => [
             'class' => 'dektrium\user\Module',
-            'components' =>[
+            'components' => [
 
-             /*   'manager' => [
-                    'userClass'    => 'dektrium\user\models\User',
-                    'tokenClass'   => 'dektrium\user\models\Token',
-                    'profileClass' => 'dektrium\user\models\Profile',
-                    'accountClass' => 'dektrium\user\models\Account',
-                    // Model that is used on user search on admin pages
-                    'userSearchClass' => 'dektrium\user\models\UserSearch',
-                    // Model that is used on registration
-                    'registrationFormClass' => 'dektrium\user\models\RegistrationForm',
-                    // Model that is used on resending confirmation messages
-                    'resendFormClass' => 'dektrium\user\models\ResendForm',
-                    // Model that is used on logging in
-                    'loginFormClass' => 'dektrium\user\models\LoginForm',
-                    // Model that is used on password recovery
-                    'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
-                    // Model that is used on requesting password recovery
-                    'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
-                ]*/
+                /*   'manager' => [
+                       'userClass'    => 'dektrium\user\models\User',
+                       'tokenClass'   => 'dektrium\user\models\Token',
+                       'profileClass' => 'dektrium\user\models\Profile',
+                       'accountClass' => 'dektrium\user\models\Account',
+                       // Model that is used on user search on admin pages
+                       'userSearchClass' => 'dektrium\user\models\UserSearch',
+                       // Model that is used on registration
+                       'registrationFormClass' => 'dektrium\user\models\RegistrationForm',
+                       // Model that is used on resending confirmation messages
+                       'resendFormClass' => 'dektrium\user\models\ResendForm',
+                       // Model that is used on logging in
+                       'loginFormClass' => 'dektrium\user\models\LoginForm',
+                       // Model that is used on password recovery
+                       'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
+                       // Model that is used on requesting password recovery
+                       'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
+                   ]*/
             ],
-            'enableUnconfirmedLogin'=>true,
-            'confirmWithin'=>21600,
+            'enableUnconfirmedLogin' => true,
+            'confirmWithin' => 21600,
             'admins' => ['admin'],
 
         ]
