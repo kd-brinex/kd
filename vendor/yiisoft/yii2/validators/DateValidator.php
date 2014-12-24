@@ -94,14 +94,14 @@ class DateValidator extends Validator
     /**
      * @inheritdoc
      */
-    public function validateAttribute($object, $attribute)
+    public function validateAttribute($model, $attribute)
     {
-        $value = $object->$attribute;
+        $value = $model->$attribute;
         $timestamp = $this->parseDateValue($value);
         if ($timestamp === false) {
-            $this->addError($object, $attribute, $this->message, []);
+            $this->addError($model, $attribute, $this->message, []);
         } elseif ($this->timestampAttribute !== null) {
-            $object->{$this->timestampAttribute} = $timestamp;
+            $model->{$this->timestampAttribute} = $timestamp;
         }
     }
 
@@ -113,6 +113,12 @@ class DateValidator extends Validator
         return $this->parseDateValue($value) === false ? [$this->message, []] : null;
     }
 
+    /**
+     * Parses date string into UNIX timestamp
+     *
+     * @param string $value string representing date
+     * @return boolean|integer UNIX timestamp or false on failure
+     */
     protected function parseDateValue($value)
     {
         if (is_array($value)) {
@@ -130,7 +136,10 @@ class DateValidator extends Validator
                 }
                 // enable strict parsing to avoid getting invalid date values
                 $formatter->setLenient(false);
-                return $formatter->parse($value);
+
+                // There should not be a warning thrown by parse() but this seems to be the case on windows so we suppress it here
+                // See https://github.com/yiisoft/yii2/issues/5962 and https://bugs.php.net/bug.php?id=68528
+                return @$formatter->parse($value);
             } else {
                 // fallback to PHP if intl is not installed
                 $format = FormatConverter::convertDateIcuToPhp($format, 'date');

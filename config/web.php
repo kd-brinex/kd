@@ -19,9 +19,9 @@ $config = [
                 'register'=> 'user/registration/register',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
-
             ],
            ],
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'JC6KdmGRa0LYiO6GyGxZTwqoq3kqMjzk',
@@ -32,6 +32,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

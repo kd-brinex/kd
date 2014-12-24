@@ -1,6 +1,12 @@
 Yii Framework 2 Codeception extension Change Log
 ================================================
 
+2.0.1 December 07, 2014
+-----------------------
+
+- no changes in this release.
+
+
 2.0.0 October 12, 2014
 ----------------------
 

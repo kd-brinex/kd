@@ -8,6 +8,17 @@ if you want to upgrade from version A to version C and there is
 version B between A and C, you need to following the instructions
 for both A and B.
 
+Upgrade from Yii 2.0.0
+----------------------
+
+* Upgraded Twitter Bootstrap to [version 3.3.x](http://blog.getbootstrap.com/2014/10/29/bootstrap-3-3-0-released/).
+  If you need to use an older version (i.e. stick with 3.2.x) you can specify that in your `composer.json` by
+  adding the following line in the `require` section:
+  
+  ```json
+  "bower-asset/bootstrap": "3.2.*",
+  ```
+
 Upgrade from Yii 2.0 RC
 -----------------------
 
@@ -44,7 +55,7 @@ Upgrade from Yii 2.0 Beta
   the composer-asset-plugin, *before* you update your project:
 
   ```
-  php composer.phar global require "fxp/composer-asset-plugin:1.0.0-beta2"
+  php composer.phar global require "fxp/composer-asset-plugin:1.0.0-beta4"
   ```
 
   You also need to add the following code to your project's `composer.json` file:
@@ -200,6 +211,7 @@ new ones save the following code as `convert.php` that should be placed in the s
 
 * Static helper `yii\helpers\Security` has been converted into an application component. You should change all usage of
   its methods to a new syntax, for example: instead of `yii\helpers\Security::hashData()` use `Yii::$app->getSecurity()->hashData()`.
+  The `generateRandomKey()` method now produces not an ASCII compatible output. Use `generateRandomString()` instead.
   Default encryption and hash parameters has been upgraded. If you need to decrypt/validate data that was encrypted/hashed
   before, use the following configuration of the 'security' component:
 

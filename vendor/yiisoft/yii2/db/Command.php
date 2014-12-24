@@ -784,8 +784,9 @@ class Command extends Component
      * for valid fetch modes. If this parameter is null, the value set in [[fetchMode]] will be used.
      * @return mixed the method execution result
      * @throws Exception if the query causes any problem
+     * @since 2.0.1 this method is protected (was private before).
      */
-    private function queryInternal($method, $fetchMode = null)
+    protected function queryInternal($method, $fetchMode = null)
     {
         $rawSql = $this->getRawSql();
 
@@ -799,6 +800,7 @@ class Command extends Component
                 $cacheKey = [
                     __CLASS__,
                     $method,
+                    $fetchMode,
                     $this->db->dsn,
                     $this->db->username,
                     $rawSql,

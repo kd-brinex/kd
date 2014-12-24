@@ -93,7 +93,7 @@ class BaseHtml
      */
     public static function encode($content, $doubleEncode = true)
     {
-        return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, Yii::$app->charset, $doubleEncode);
+        return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, Yii::$app ? Yii::$app->charset : 'UTF-8', $doubleEncode);
     }
 
     /**
@@ -197,8 +197,9 @@ class BaseHtml
      * @param array $options the tag options in terms of name-value pairs. The following option is specially handled:
      *
      * - condition: specifies the conditional comments for IE, e.g., `lt IE 9`. When this is specified,
-     *   the generated `script` tag will be enclosed within the conditional comments. This is mainly useful
+     *   the generated `link` tag will be enclosed within the conditional comments. This is mainly useful
      *   for supporting old versions of IE browsers.
+     * - noscript: if set to true, `link` tag will be wrapped into `<noscript>` tags.
      *
      * The rest of the options will be rendered as the attributes of the resulting link tag. The values will
      * be HTML-encoded using [[encode()]]. If a value is null, the corresponding attribute will not be rendered.
@@ -217,6 +218,9 @@ class BaseHtml
             $condition = $options['condition'];
             unset($options['condition']);
             return "<!--[if $condition]>\n" . static::tag('link', '', $options) . "\n<![endif]-->";
+        } elseif (isset($options['noscript']) && $options['noscript'] === true) {
+            unset($options['noscript']);
+            return "<noscript>" . static::tag('link', '', $options) . "</noscript>";
         } else {
             return static::tag('link', '', $options);
         }
@@ -539,7 +543,7 @@ class BaseHtml
      * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
-     * @return string the generated button tag
+     * @return string the generated text input tag
      */
     public static function textInput($name, $value = null, $options = [])
     {
@@ -554,7 +558,7 @@ class BaseHtml
      * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
-     * @return string the generated button tag
+     * @return string the generated hidden input tag
      */
     public static function hiddenInput($name, $value = null, $options = [])
     {
@@ -569,7 +573,7 @@ class BaseHtml
      * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
-     * @return string the generated button tag
+     * @return string the generated password input tag
      */
     public static function passwordInput($name, $value = null, $options = [])
     {
@@ -587,7 +591,7 @@ class BaseHtml
      * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
-     * @return string the generated button tag
+     * @return string the generated file input tag
      */
     public static function fileInput($name, $value = null, $options = [])
     {
@@ -632,7 +636,7 @@ class BaseHtml
      */
     public static function radio($name, $checked = false, $options = [])
     {
-        $options['checked'] = (boolean) $checked;
+        $options['checked'] = (bool) $checked;
         $value = array_key_exists('value', $options) ? $options['value'] : '1';
         if (isset($options['uncheck'])) {
             // add a hidden field so that if the radio button is not selected, it still submits a value
@@ -674,7 +678,7 @@ class BaseHtml
      */
     public static function checkbox($name, $checked = false, $options = [])
     {
-        $options['checked'] = (boolean) $checked;
+        $options['checked'] = (bool) $checked;
         $value = array_key_exists('value', $options) ? $options['value'] : '1';
         if (isset($options['uncheck'])) {
             // add a hidden field so that if the checkbox is not selected, it still submits a value
@@ -1242,7 +1246,7 @@ class BaseHtml
      * - uncheck: string, the value associated with the uncheck state of the radio button. If not set,
      *   it will take the default value '0'. This method will render a hidden input so that if the radio button
      *   is not checked and is submitted, the value of this attribute will still be submitted to the server
-     *   via the hidden input.
+     *   via the hidden input. If you do not want any hidden input, you should explicitly set this option as null.
      * - label: string, a label displayed next to the radio button.  It will NOT be HTML-encoded. Therefore you can pass
      *   in HTML code such as an image tag. If this is is coming from end users, you should [[encode()]] it to prevent XSS attacks.
      *   The radio button will be enclosed by the label tag. Note that if you do not specify this option, a default label
@@ -1292,7 +1296,7 @@ class BaseHtml
      * - uncheck: string, the value associated with the uncheck state of the radio button. If not set,
      *   it will take the default value '0'. This method will render a hidden input so that if the radio button
      *   is not checked and is submitted, the value of this attribute will still be submitted to the server
-     *   via the hidden input.
+     *   via the hidden input. If you do not want any hidden input, you should explicitly set this option as null.
      * - label: string, a label displayed next to the checkbox.  It will NOT be HTML-encoded. Therefore you can pass
      *   in HTML code such as an image tag. If this is is coming from end users, you should [[encode()]] it to prevent XSS attacks.
      *   The checkbox will be enclosed by the label tag. Note that if you do not specify this option, a default label

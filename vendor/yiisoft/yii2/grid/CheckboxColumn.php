@@ -50,7 +50,7 @@ class CheckboxColumn extends Column
      */
     public $checkboxOptions = [];
     /**
-     * @var bool whether it is possible to select multiple rows. Defaults to `true`.
+     * @var boolean whether it is possible to select multiple rows. Defaults to `true`.
      */
     public $multiple = true;
 
@@ -84,7 +84,7 @@ class CheckboxColumn extends Column
             'name' => $this->name,
             'multiple' => $this->multiple,
             'checkAll' => $name,
-        ]);
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $this->grid->getView()->registerJs("jQuery('#$id').yiiGridView('setSelectionColumn', $options);");
 
         if ($this->header !== null || !$this->multiple) {
@@ -104,7 +104,7 @@ class CheckboxColumn extends Column
         } else {
             $options = $this->checkboxOptions;
             if (!isset($options['value'])) {
-                $options['value'] = is_array($key) ? json_encode($key) : $key;
+                $options['value'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $key;
             }
         }
 
