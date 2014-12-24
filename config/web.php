@@ -7,6 +7,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
+    'name'=>'Колеса-даром',
     'components' => [
         'urlManager'=>[
             'enablePrettyUrl' => true,
@@ -19,6 +20,7 @@ $config = [
                 'register'=> 'user/registration/register',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
+                'profile'=>'user/settings/profile',
             ],
            ],
 

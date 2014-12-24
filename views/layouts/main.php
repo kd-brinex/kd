@@ -23,7 +23,9 @@ AppAsset::register($this);
 <body>
 
 <?php $this->beginBody() ?>
-    <div class="wrap">
+<div class="wrap">
+    <div class="navbar">
+        <div class="top-head"></div>
         <?php
             NavBar::begin([
                 'brandLabel' => 'Колеса даром',
@@ -35,19 +37,28 @@ AppAsset::register($this);
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
-                    ['label' => \Yii::t('app', 'Home'), 'url' => ['/site/index']],
-                    ['label' => \Yii::t('app', 'About'), 'url' => ['/site/about']],
-                    ['label' => \Yii::t('app','Contact'), 'url' => ['/site/contact']],
-                    Yii::$app->user->isGuest ?['label' => 'Регистрация', 'url' => ['/user/registration/register']]:['label' => 'Личный кабинет', 'url' => ['/user/settings/profile']],
-                    Yii::$app->user->isGuest ?['label' => \Yii::t('app','Login'), 'url' => ['/user/security/login']]:
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/user/security/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
+                    ['label'=>'Информация', 'items'=>[
+                        ['label' => 'Главная страница', 'url' => ['/site/index']],
+                        ['label' => 'О компании', 'url' => ['/site/about']],
+                        ['label' => 'Обратная связь', 'url' => ['/site/contact']],
+                    ]],
+                    Yii::$app->user->isGuest ?
+                        ['label' => 'Личный кабинет', 'items'=>[
+                        ['label' => 'Регистрация', 'url' => ['/user/registration/register']],
+                        ['label' => 'Вход', 'url' => ['/user/security/login']],
+                        ]]
+                        :['label' => 'Личный кабинет', 'items'=>[
+                        ['label'=> 'Профиль пользователя', 'url' => ['/user/settings/profile']],
+                        ['label'=> 'Учетные данные', 'url' => ['/user/settings/account']],
+                        ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
+                        ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
+                    ]],
+
                 ],
             ]);
             NavBar::end();
         ?>
-
+</div>
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

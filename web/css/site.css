@@ -89,3 +89,18 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+.top-head{
+    background-image:url("top-head-20140802.jpg");
+    display: table;
+    background-color: #0088e4;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center top;
+    background-clip: border-box;
+    background-origin: padding-box;
+    background-size: auto auto;
+    height:240px;
+    width :1280px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
