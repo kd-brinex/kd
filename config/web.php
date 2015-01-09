@@ -21,6 +21,14 @@ $config = [
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'profile'=>'user/settings/profile',
+//                'gii' => 'yii/gii',
+//                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+//                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+//                'module/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+//                'module/<module:\w+>/<controller:\w+>/<action:\w+>/<id:\w+>' => '<module>/<controller>/<action>/<id>',
+            'tovar/<id:\w+>'=>'tovar/tovar/view',
+            'tovars/<tip_id:\w+>'=>'tovar/tovar/category'
             ],
            ],
 
@@ -113,6 +121,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+        'tovar'=>[
+            'class'=>'app\modules\site\tovar\Tovar',
+        ],
         'user' => [
             'class' => 'dektrium\user\Module',
             'components' => [
