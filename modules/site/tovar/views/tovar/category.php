@@ -6,9 +6,9 @@ use yii\widgets\LinkPager;
  * Date: 09.01.15
  * Time: 11:25
  */
-\yii\widgets\Pjax::begin();
+//\yii\widgets\Pjax::begin();
 echo \yii\grid\GridView::widget([
     'dataProvider' => $dataProvider,
 //    'filterModel'  => $searchModel,
 ]);
-\yii\widgets\Pjax::end();
+//\yii\widgets\Pjax::end();

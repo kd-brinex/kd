@@ -1,7 +1,6 @@
 <?php
-
 $params = require(__DIR__ . '/params.php');
-
+$db_connect=require(__DIR__ . '/db.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -72,7 +71,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => require(__DIR__ . '/db.php'),
+        'db' => $db_connect[YII_ENV],
         'view' => [
             'renderers' => [
                 'twig' => [
