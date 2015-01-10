@@ -48,8 +48,12 @@ class TovarController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new TovarSearch();
+        $dataProvider = $searchModel->find_tovar(Yii::$app->request->queryParams);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
+            'searchModel'  => $searchModel,
         ]);
     }
 
@@ -118,6 +122,7 @@ class TovarController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
     public function actionCategory()
     {
         $searchModel = new TovarSearch();

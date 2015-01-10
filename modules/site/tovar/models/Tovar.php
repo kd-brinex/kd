@@ -58,11 +58,17 @@ class Tovar extends \yii\db\ActiveRecord
             'id' => 'ID',
             'tip_id' => 'Tip ID',
             'category_id' => 'Category ID',
-            'name' => 'Name',
+            'name' => 'Наименование',
             'price'=>'Цена',
             'count'=>'Кол.',
             'value_char'=>'value_char',
+            'image'=>'Изображение',
         ];
+    }
+    public function getImage()
+    {
+//        http://img2.kolesa-darom.ru/img/disk/big/CO19594SPL.jpg
+        return 'http://img2.kolesa-darom.ru/img/'.$this->tip_id.'/'.$this->id.'.jpg';
     }
 
 }

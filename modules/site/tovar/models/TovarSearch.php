@@ -11,14 +11,18 @@ use app\modules\site\tovar\models\Tovar;
  * TovarSearch represents the model behind the search form about `app\modules\site\tovar\models\Tovar`.
  */
 class TovarSearch extends Tovar
+
+
 {
     /**
      * @inheritdoc
      */
+    public $image;
+
     public function rules()
     {
         return [
-            [['id', 'tip_id', 'category_id', 'name'], 'safe'],
+            [['id', 'tip_id', 'category_id', 'name', 'image'], 'safe'],
         ];
     }
 
@@ -63,21 +67,18 @@ class TovarSearch extends Tovar
         $query = Tovar::find()
 //            select * from tovar  where id_store=999 and price > 0 and tip_id='shina' and value_char='shina' group by id
             ->where(['tip_id'=>$params['tip_id']
-                    ,'value_char'=>$params['tip_id']
-                    ,'id_store'=>999])
+                      ,'id_store'=>999])
             ->groupBy (['id']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-//        var_dump($params,$this->validate(),$this->load($params));die;
-//       if (!($this->load($params) && $this->validate())) {
-//            return $dataProvider;
-//        }
-//        var_dump($params);die;
-
-//        $query->andFilterWhere(['like', 'tip_id', $params['tip_id']])->all();
-
+        return $dataProvider;
+    }
+    public function find_tovar($params)
+    {
+        $query = Tovar::find()->where(['id'=>$params['id'],'id_store'=>999]);
+        $dataProvider = new ActiveDataProvider(['query' => $query]);
         return $dataProvider;
     }
 
