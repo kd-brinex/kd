@@ -5,9 +5,9 @@
  * Date: 08.01.15
  * Time: 17:28
  */
-//\yii\widgets\Pjax::begin();
+\yii\widgets\Pjax::begin();
 echo \yii\grid\GridView::widget([
     'dataProvider' => $dataProvider,
-//    'filterModel'  => $searchModel,
+    'filterModel'  => $searchModel,
 ]);
-//\yii\widgets\Pjax::end();
+\yii\widgets\Pjax::end();
