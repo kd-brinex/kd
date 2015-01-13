@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Url;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -15,6 +16,11 @@ echo yii\widgets\DetailView::widget([
             'attribute'=>'image',
             'value'=>$model->image,
             'format' => ['image',['width'=>'150','height'=>'150']],
+        ],
+        [
+            'attribute'=>'name',
+            'value'=>url::toRoute(['view','id'=>$model->id],true),
+            'format' => ['url'],
         ],
         'name',
 
