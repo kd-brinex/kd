@@ -22,7 +22,7 @@ $this->title = Yii::t('user', 'Account settings');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= $this->render('/_alert') ?>
+<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
 <div class="row">
     <div class="col-md-3">
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'labelOptions' => ['class' => 'col-lg-3 control-label'],
                     ],
                     'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false
+                    'enableClientValidation' => false,
                 ]); ?>
 
                 <?= $form->field($model, 'email') ?>

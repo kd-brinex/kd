@@ -1,5 +1,6 @@
 language: php
 php:
+  - 5.6
   - 5.5
   - 5.4
 install:
@@ -7,9 +8,7 @@ install:
   - composer global require "fxp/composer-asset-plugin:1.0.0-beta4"
   - composer install --prefer-dist --dev
   - composer require --dev "codeception/codeception:2.0.*@dev"
-  - gem install mailcatcher
 before_script:
-  - mailcatcher
   - mysql -e 'create database dektrium_test;'
   - cd tests
   - sed -i 's/\/..\/..\/..\/..\/..\//\/..\/..\//g' codeception/_bootstrap.php

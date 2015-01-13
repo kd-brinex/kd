@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## 0.9.1 [1 January 2014]
+
+- `fix` Fixed overriding of active record models (dmeroff)
+- `fix` Fixed pt-BR translation (thiagotalma)
+
+## 0.9.0 [30 December 2014]
+
+- `fix` Changed ip field type to VARCHAR(45) to handle IPv6 (dmeroff)
+- `enh` Improved mailer component (dmeroff)
+- `enh` Updated flash messages and added new module option to disable them (dmeroff)
+- `enh` Added ajax-validation (dmeroff)
+- `enh` Added secured email changing strategy (dmeroff)
+- `chg` Removed ability to delete or block your own account from admin pages (dmeroff)
+- `chg` Updated create and update admin pages (dmeroff)
+- `chg` Updated admin index page (dmeroff)
+- `chg` Removed auto-injecting module in application (belerophon)
+- `chg` Removed Mailcatcher dependency from test suite (dmeroff)
+- `chg` Refactored all models (dmeroff)
+- `enh` Refactored model overriding system (dmeroff)
+
 ## 0.8.2 [14 December 2014]
 
 - `fix` Fixed croatian translation (trbsi)
@@ -14,7 +34,7 @@
 
 ## 0.8.1 [13 October 2014] Yii 2.0.0 compatible
 
-- `fix` Fixed test suite
+- `fix` Fixed test suite (dmeroff)
 - `chg` Updated `composer.json` (dmeroff)
 - `chg` Added check for `enableConfirmation` for resending link (makroxyz)
 - `fix` Fixed compatibility with PostgreSQL (makroxyz)

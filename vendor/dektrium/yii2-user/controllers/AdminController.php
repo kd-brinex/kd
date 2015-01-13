@@ -11,11 +11,16 @@
 
 namespace dektrium\user\controllers;
 
+use dektrium\user\Finder;
+use dektrium\user\models\User;
 use dektrium\user\models\UserSearch;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * AdminController allows you to administrate users.
@@ -25,6 +30,21 @@ use yii\web\NotFoundHttpException;
  */
 class AdminController extends Controller
 {
+    /** @var Finder */
+    protected $finder;
+
+    /**
+     * @param string $id
+     * @param \yii\base\Module $module
+     * @param Finder $finder
+     * @param array $config
+     */
+    public function __construct($id, $module, Finder $finder, $config = [])
+    {
+        $this->finder = $finder;
+        parent::__construct($id, $module, $config);
+    }
+
     /** @inheritdoc */
     public function behaviors()
     {
@@ -45,7 +65,7 @@ class AdminController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            return in_array(\Yii::$app->user->identity->username, $this->module->admins);
+                            return \Yii::$app->user->identity->getIsAdmin();
                         }
                     ],
                 ]
@@ -59,7 +79,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel  = $this->module->manager->createUserSearch();
+        $searchModel  = \Yii::createObject(UserSearch::className());
         $dataProvider = $searchModel->search($_GET);
 
         return $this->render('index', [
@@ -75,15 +95,21 @@ class AdminController extends Controller
      */
     public function actionCreate()
     {
-        $model = $this->module->manager->createUser(['scenario' => 'create']);
+        /** @var User $user */
+        $user = \Yii::createObject([
+            'class'    => User::className(),
+            'scenario' => 'create',
+        ]);
 
-        if ($model->load(\Yii::$app->request->post()) && $model->create()) {
-            \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been created'));
+        $this->performAjaxValidation($user);
+
+        if ($user->load(\Yii::$app->request->post()) && $user->create()) {
+            \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been created'));
             return $this->redirect(['index']);
         }
 
         return $this->render('create', [
-            'model' => $model
+            'user' => $user
         ]);
     }
 
@@ -95,30 +121,37 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->scenario = 'update';
+        $user = $this->findModel($id);
+        $user->scenario = 'update';
+        $profile = $this->finder->findProfileById($id);
+        $r = \Yii::$app->request;
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been updated'));
+        $this->performAjaxValidation([$user, $profile]);
+
+        if ($user->load($r->post()) && $profile->load($r->post()) && $user->save() && $profile->save()) {
+            \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been updated'));
             return $this->refresh();
         }
 
         return $this->render('update', [
-            'model' => $model
+            'user'    => $user,
+            'profile' => $profile,
+            'module'  => $this->module,
         ]);
     }
 
     /**
      * Confirms the User.
-     * @param $id
+     * @param integer $id
+     * @param string  $back
      * @return \yii\web\Response
      */
-    public function actionConfirm($id)
+    public function actionConfirm($id, $back = 'index')
     {
         $this->findModel($id)->confirm();
-        \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been confirmed'));
-
-        return $this->redirect(['update', 'id' => $id]);
+        \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been confirmed'));
+        $url = $back == 'index' ? ['index'] : ['update', 'id' => $id];
+        return $this->redirect($url);
     }
 
     /**
@@ -129,47 +162,80 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been deleted'));
-
+        if ($id == \Yii::$app->user->getId()) {
+            \Yii::$app->getSession()->setFlash('danger', \Yii::t('user', 'You can not remove your own account'));
+        } else {
+            $this->findModel($id)->delete();
+            \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been deleted'));
+        }
         return $this->redirect(['index']);
     }
 
     /**
      * Blocks the user.
-     *
-     * @param $id
+     * @param  integer $id
+     * @param  string  $back
      * @return \yii\web\Response
      */
-    public function actionBlock($id)
+    public function actionBlock($id, $back = 'index')
     {
-        $user = $this->findModel($id);
-        if ($user->getIsBlocked()) {
-            $user->unblock();
-            \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been unblocked'));
+        if ($id == \Yii::$app->user->getId()) {
+            \Yii::$app->getSession()->setFlash('danger', \Yii::t('user', 'You can not block your own account'));
         } else {
-            $user->block();
-            \Yii::$app->getSession()->setFlash('user.success', \Yii::t('user', 'User has been blocked'));
+            $user = $this->findModel($id);
+            if ($user->getIsBlocked()) {
+                $user->unblock();
+                \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been unblocked'));
+            } else {
+                $user->block();
+                \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'User has been blocked'));
+            }
         }
-
-        return $this->redirect(['index']);
+        $url = $back == 'index' ? ['index'] : ['update', 'id' => $id];
+        return $this->redirect($url);
     }
 
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param  integer                    $id
-     * @return \dektrium\user\models\User the loaded model
-     * @throws NotFoundHttpException      if the model cannot be found
+     * @param  integer               $id
+     * @return User                  the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        $user = $this->module->manager->findUserById($id);
-
+        $user = $this->finder->findUserById($id);
         if ($user === null) {
             throw new NotFoundHttpException('The requested page does not exist');
         }
-
         return $user;
+    }
+
+    /**
+     * Performs AJAX validation.
+     * @param array|Model $models
+     * @throws \yii\base\ExitException
+     */
+    protected function performAjaxValidation($models)
+    {
+        if (\Yii::$app->request->isAjax) {
+            if (is_array($models)) {
+                $result = [];
+                foreach ($models as $model) {
+                    if ($model->load(\Yii::$app->request->post())) {
+                        \Yii::$app->response->format = Response::FORMAT_JSON;
+                        $result = array_merge($result, ActiveForm::validate($model));
+                    }
+                }
+                echo json_encode($result);
+                \Yii::$app->end();
+            } else {
+                if ($models->load(\Yii::$app->request->post())) {
+                    \Yii::$app->response->format = Response::FORMAT_JSON;
+                    echo json_encode(ActiveForm::validate($models));
+                    \Yii::$app->end();
+                }
+            }
+        }
     }
 }

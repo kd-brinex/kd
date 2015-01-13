@@ -11,7 +11,6 @@
 
 namespace dektrium\user\models;
 
-use dektrium\user\helpers\ModuleTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
@@ -30,18 +29,26 @@ use yii\helpers\Url;
  */
 class Token extends ActiveRecord
 {
-    use ModuleTrait;
-
     const TYPE_CONFIRMATION      = 0;
     const TYPE_RECOVERY          = 1;
     const TYPE_CONFIRM_NEW_EMAIL = 2;
+    const TYPE_CONFIRM_OLD_EMAIL = 3;
+
+    /** @var \dektrium\user\Module */
+    protected $module;
+
+    /** @inheritdoc */
+    public function init()
+    {
+        $this->module = \Yii::$app->getModule('user');
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne($this->module->manager->userClass, ['id' => 'user_id']);
+        return $this->hasOne($this->module->modelMap['User'], ['id' => 'user_id']);
     }
 
     /**
@@ -57,6 +64,7 @@ class Token extends ActiveRecord
                 $route = '/user/recovery/reset';
                 break;
             case self::TYPE_CONFIRM_NEW_EMAIL:
+            case self::TYPE_CONFIRM_OLD_EMAIL:
                 $route = '/user/settings/confirm';
                 break;
             default:
@@ -74,6 +82,7 @@ class Token extends ActiveRecord
         switch ($this->type) {
             case self::TYPE_CONFIRMATION:
             case self::TYPE_CONFIRM_NEW_EMAIL:
+            case self::TYPE_CONFIRM_OLD_EMAIL:
                 $expirationTime = $this->module->confirmWithin;
                 break;
             case self::TYPE_RECOVERY:
@@ -101,5 +110,11 @@ class Token extends ActiveRecord
     public static function tableName()
     {
         return '{{%token}}';
+    }
+
+    /** @inheritdoc */
+    public static function primaryKey()
+    {
+        return ['user_id', 'code', 'type'];
     }
 }

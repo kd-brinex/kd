@@ -15,7 +15,10 @@ return [
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',
-            'admins' => ['user']
+            'admins' => ['user'],
+            'mailer' => [
+                'class' => 'app\components\MailerMock',
+            ],
         ]
     ],
     'components' => [
@@ -31,11 +34,7 @@ return [
         'db' => require __DIR__ . '/db.php',
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host'  => '127.0.0.1',
-                'port'  => '1025',
-            ]
+            'useFileTransport' => true
         ],
     ],
 ];
