@@ -1,13 +1,13 @@
 <?php
 
 /*
-* This file is part of the Dektrium project.
-*
-* (c) Dektrium project <http://github.com/dektrium/>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Dektrium project.
+ *
+ * (c) Dektrium project <http://github.com/dektrium/>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 use yii\db\Schema;
 use dektrium\user\migrations\Migration;
@@ -32,7 +32,6 @@ class m140209_132017_init extends Migration
             'recovery_token'       => Schema::TYPE_STRING . '(32)',
             'recovery_sent_at'     => Schema::TYPE_INTEGER,
             'blocked_at'           => Schema::TYPE_INTEGER,
-            'role'                 => Schema::TYPE_STRING . '(255)',
             'registered_from'      => Schema::TYPE_INTEGER,
             'logged_in_from'       => Schema::TYPE_INTEGER,
             'logged_in_at'         => Schema::TYPE_INTEGER,
