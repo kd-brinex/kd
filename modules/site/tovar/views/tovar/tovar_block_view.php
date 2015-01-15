@@ -9,13 +9,14 @@ use yii\helpers\Url;
 echo yii\widgets\DetailView::widget([
     'model'=>$model,
 //    'template'=>'<tr><th>{label}</th><td>{value}</td></tr>',
-    'template'=>'<div style="text-align:center;">{value}</div>',
-    'class' => 'table table-striped table-bordered detail-view',
+    'template'=>'{class}<div>{value}</div>',
+    'class' => 'item item item item',
     'attributes' => [
         [
             'attribute'=>'image',
             'value'=>$model->image,
             'format' => ['image',['width'=>'150','height'=>'150']],
+            'class'=>'item',
         ],
         [
             'attribute'=>'name',

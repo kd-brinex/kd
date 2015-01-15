@@ -22,7 +22,7 @@ echo yii\widgets\ListView::widget([
 //
 //    ],
 
-    'itemOptions' => ['style' => 'float:left;width:280px;height:280px;margin:10px;padding:10px;border: 1px solid black; border-radius:10px '],
+    'itemOptions' => ['class' => 'tovar_block'],
 
     'itemView' => function ($model, $key, $index, $widget) {
         return $this->render('tovar_block_view', ['model' => $model]);
