@@ -70,16 +70,26 @@ class TovarSearch extends Tovar
                       ,'id_store'=>999])
             ->groupBy (['id']);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $dataProvider = new ActiveDataProvider(['query' => $query,]);
         return $dataProvider;
     }
-    public function find_tovar($params)
+    public function find_tovar_param($params)
     {
         $query = Tovar::find()->where(['id'=>$params['id'],'id_store'=>999]);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
+        $dataProvider->pagination=false;
         return $dataProvider;
+    }
+    public static function category_menu()
+    {
+        $rows = (new \yii\db\Query())
+            ->select('name as label')
+            ->from('tovar_category')
+            ->all();
+        for($i=0;$i<count($rows);++$i){
+            $rows[$i]['url']='/tovars/'.$rows[$i]['label'];
+        }
+        return $rows;
     }
 
 }
