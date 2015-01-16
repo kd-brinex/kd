@@ -11,9 +11,13 @@
 
 namespace dektrium\user;
 
+use yii\authclient\Collection;
 use yii\base\BootstrapInterface;
+use yii\base\InvalidConfigException;
+use yii\i18n\PhpMessageSource;
 use yii\web\GroupUrlRule;
 use yii\console\Application as ConsoleApplication;
+use yii\web\User;
 
 /**
  * Bootstrap class registers module and user application component. It also creates some url rules which will be applied
@@ -23,21 +27,34 @@ use yii\console\Application as ConsoleApplication;
  */
 class Bootstrap implements BootstrapInterface
 {
+    /** @var array Model's map */
+    private $_modelMap = [
+        'User'             => 'dektrium\user\models\User',
+        'Account'          => 'dektrium\user\models\Account',
+        'Profile'          => 'dektrium\user\models\Profile',
+        'Token'            => 'dektrium\user\models\Token',
+        'RegistrationForm' => 'dektrium\user\models\RegistrationForm',
+        'ResendForm'       => 'dektrium\user\models\ResendForm',
+        'LoginForm'        => 'dektrium\user\models\LoginForm',
+        'SettingsForm'     => 'dektrium\user\models\SettingsForm',
+        'RecoveryForm'     => 'dektrium\user\models\RecoveryForm',
+        'UserSearch'       => 'dektrium\user\models\UserSearch',
+    ];
+
     /** @inheritdoc */
     public function bootstrap($app)
     {
         /** @var $module Module */
-        if ($app->hasModule('user') && ($module = $app->getModule('user')) instanceof Module){
-            foreach ($module->modelMap as $name => $definition) {
+        if ($app->hasModule('user') && ($module = $app->getModule('user')) instanceof Module) {
+            $this->_modelMap = array_merge($this->_modelMap, $module->modelMap);
+            foreach ($this->_modelMap as $name => $definition) {
                 $class = "dektrium\\user\\models\\" . $name;
                 \Yii::$container->set($class, $definition);
-                if (is_array($definition)) {
-                    $module->modelMap[$name] = $class;
-                }
+                $modelName = is_array($definition) ? $definition['class'] : $definition;
+                $module->modelMap[$name] = $modelName;
                 if (in_array($name, ['User', 'Profile', 'Token', 'Account'])) {
-                    \Yii::$container->set($name . 'Query', function () use ($definition) {
-                        $class = is_array($definition) ? $definition['class'] : $definition;
-                        return $class::find();
+                    \Yii::$container->set($name . 'Query', function () use ($modelName) {
+                        return $modelName::find();
                     });
                 }
             }
@@ -47,15 +64,23 @@ class Bootstrap implements BootstrapInterface
                 'tokenQuery'   => \Yii::$container->get('TokenQuery'),
                 'accountQuery' => \Yii::$container->get('AccountQuery'),
             ]);
-            \Yii::$container->set('yii\web\User', [
-                'enableAutoLogin' => true,
-                'loginUrl'        => ['/user/security/login'],
-                'identityClass'   => $module->modelMap['User'],
-            ]);
 
             if ($app instanceof ConsoleApplication) {
                 $module->controllerNamespace = 'dektrium\user\commands';
             } else {
+                try {
+                    $app->user->enableAutoLogin = true;
+                    $app->user->loginUrl        = ['/user/security/login'];
+                    $app->user->identityClass   = $module->modelMap['User'];
+                } catch (InvalidConfigException $e) {
+                    $app->set('user', [
+                        'class'           => User::className(),
+                        'enableAutoLogin' => true,
+                        'loginUrl'        => ['/user/security/login'],
+                        'identityClass'   => $module->modelMap['User'],
+                    ]);
+                }
+
                 $configUrlRule = [
                     'prefix' => $module->urlPrefix,
                     'rules'  => $module->urlRules
@@ -69,13 +94,13 @@ class Bootstrap implements BootstrapInterface
 
                 if (!$app->has('authClientCollection')) {
                     $app->set('authClientCollection', [
-                        'class' => 'yii\authclient\Collection',
+                        'class' => Collection::className(),
                     ]);
                 }
             }
 
             $app->get('i18n')->translations['user*'] = [
-                'class'    => 'yii\i18n\PhpMessageSource',
+                'class'    => PhpMessageSource::className(),
                 'basePath' => __DIR__ . '/messages',
             ];
 

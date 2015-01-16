@@ -120,8 +120,9 @@ class Mailer extends Component
     {
         $mailer = \Yii::$app->mailer;
         $mailer->viewPath = $this->viewPath;
+        $mailer->getView()->theme = \Yii::$app->view->theme;
 
-        return $mailer->compose($view, $params)
+        return $mailer->compose(['html' => $view, 'text' => 'text/' . $view], $params)
             ->setTo($to)
             ->setFrom($this->sender)
             ->setSubject($subject)
