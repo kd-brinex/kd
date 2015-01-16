@@ -3,3 +3,44 @@
 width: 800px;
 background-color: #f8efc0;
 }
+.tovars_block{
+    float:left;
+    width:280px;
+    height:280px;
+    margin:10px;
+    padding:10px;
+    border: 1px solid black;
+    border-radius:10px;
+    background-color: white;
+}
+
+.tovar_block{
+    float:left;
+    width:95%;
+
+    margin:10px;
+    padding:10px;
+    border: 1px solid black;
+    border-radius:10px;
+    background-color: white;
+    position:relative;
+}
+
+.item{
+    text-align: center;
+    position: relative ;
+}
+.tovar-image{
+    border:1px #9d9d9d solid;
+    padding :2px;
+    margin : 2px;
+    width : 320px;
+    height: 320px;
+    padding: 10px;
+    float:left;
+}
+.tovar-price{
+    color:red;
+    font-family: "Tahoma", "sans-serif";
+    font-size: 16px;
+}

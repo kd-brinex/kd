@@ -3,7 +3,7 @@
 * http://github.com/RobinHerbots/jquery.inputmask
 * Copyright (c) 2010 - 2015 Robin Herbots
 * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-* Version: 3.1.55
+* Version: 3.1.56
 */
 !function(factory) {
     "function" == typeof define && define.amd ? define([ "jquery" ], factory) : factory(jQuery);
@@ -479,8 +479,8 @@
             strict = strict === !0;
             for (var buffer = getBuffer(), pndx = pos - 1; pndx > -1 && !getMaskSet().validPositions[pndx]; pndx--) ;
             for (pndx++; pos > pndx; pndx++) void 0 == getMaskSet().validPositions[pndx] && ((!isMask(pndx) || buffer[pndx] != getPlaceholder(pndx)) && getTests(pndx).length > 1 || buffer[pndx] == opts.radixPoint || "0" == buffer[pndx] && $.inArray(opts.radixPoint, buffer) < pndx) && _isValid(pndx, buffer[pndx], !0);
-            var maskPos = pos, result = !1;
-            if (fromSetValid && maskPos >= getMaskLength() && resetMaskSet(!0), maskPos < getMaskLength() && (result = _isValid(maskPos, c, strict, fromSetValid), 
+            var maskPos = pos, result = !1, positionsClone = $.extend(!0, {}, getMaskSet().validPositions);
+            if (maskPos < getMaskLength() && (result = _isValid(maskPos, c, strict, fromSetValid), 
             !strict && result === !1)) {
                 var currentPosValid = getMaskSet().validPositions[maskPos];
                 if (!currentPosValid || null != currentPosValid.match.fn || currentPosValid.match.def != c && c != opts.skipOptionalPartCharacter) {
@@ -493,10 +493,16 @@
                     caret: seekNext(maskPos)
                 };
             }
-            return result === !1 && opts.keepStatic && isComplete(buffer) && (result = alternate(pos, c, strict, fromSetValid)), 
+            if (result === !1 && opts.keepStatic && isComplete(buffer) && (result = alternate(pos, c, strict, fromSetValid)), 
             result === !0 && (result = {
                 pos: maskPos
-            }), result;
+            }), $.isFunction(opts.postValidation) && 0 != result && !strict) {
+                resetMaskSet(!0);
+                var postValidResult = opts.postValidation(getBuffer(), opts);
+                if (!postValidResult) return getMaskSet().validPositions = $.extend(!0, {}, positionsClone), 
+                !1;
+            }
+            return result;
         }
         function isMask(pos) {
             var test = getTest(pos);
@@ -528,10 +534,13 @@
         function writeBuffer(input, buffer, caretPos, event, triggerInputEvent) {
             if (event && $.isFunction(opts.onBeforeWrite)) {
                 var result = opts.onBeforeWrite.call(input, event, buffer, caretPos, opts);
-                if (result && result.refreshFromBuffer) {
-                    var refresh = result.refreshFromBuffer;
-                    refreshFromBuffer(refresh === !0 ? refresh : refresh.start, refresh.end, result.buffer), 
-                    resetMaskSet(!0), caretPos = result.caret || caretPos;
+                if (result) {
+                    if (result.refreshFromBuffer) {
+                        var refresh = result.refreshFromBuffer;
+                        refreshFromBuffer(refresh === !0 ? refresh : refresh.start, refresh.end, result.buffer), 
+                        resetMaskSet(!0), buffer = getBuffer();
+                    }
+                    caretPos = result.caret || caretPos;
                 }
             }
             input._valueSet(buffer.join("")), void 0 != caretPos && caret(input, caretPos), 
@@ -778,7 +787,7 @@
             var input = this, $input = $(input), k = e.keyCode, pos = caret(input);
             k == $.inputmask.keyCode.BACKSPACE || k == $.inputmask.keyCode.DELETE || iphone && 127 == k || e.ctrlKey && 88 == k && !isInputEventSupported("cut") ? (e.preventDefault(), 
             88 == k && (undoValue = getBuffer().join("")), handleRemove(input, k, pos), writeBuffer(input, getBuffer(), getMaskSet().p, e, undoValue != getBuffer().join("")), 
-            input._valueGet() == getBufferTemplate().join("") && $input.trigger("cleared"), 
+            input._valueGet() == getBufferTemplate().join("") ? $input.trigger("cleared") : isComplete(getBuffer()) === !0 && $input.trigger("complete"), 
             opts.showTooltip && $input.prop("title", getMaskSet().mask)) : k == $.inputmask.keyCode.END || k == $.inputmask.keyCode.PAGE_DOWN ? setTimeout(function() {
                 var caretPos = seekNext(getLastValidPosition());
                 opts.insertMode || caretPos != getMaskLength() || e.shiftKey || caretPos--, caret(input, e.shiftKey ? pos.begin : caretPos, caretPos);
@@ -1107,7 +1116,8 @@
                 },
                 ignorables: [ 8, 9, 13, 19, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 46, 93, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123 ],
                 isComplete: void 0,
-                canClearPosition: $.noop
+                canClearPosition: $.noop,
+                postValidation: void 0
             },
             keyCode: {
                 ALT: 18,

@@ -3,7 +3,9 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\widgets\ListView;
 use app\assets\AppAsset;
+
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -53,12 +55,14 @@ AppAsset::register($this);
                         ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
-
-                ],
-            ]);
+                    ['label' => 'Товары', 'items'=>app\modules\site\tovar\models\TovarSearch::category_menu() ],
+            ]]);
             NavBar::end();
         ?>
 </div>
+    <div class=""left">
+
+    </div>
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

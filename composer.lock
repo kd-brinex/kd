@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b802efe4f28dbcbe3c155e4199b04589",
+    "hash": "e8a5f71c230f1ac4d43e12d8f2d8fc0a",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -102,16 +102,16 @@
         },
         {
             "name": "bower-asset/jquery.inputmask",
-            "version": "3.1.55",
+            "version": "3.1.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/jquery.inputmask.git",
-                "reference": "d90a0d180495635e8dd97a770e7ab8b3c4ee6d53"
+                "reference": "4551607fef63fd4bcd675479a8c347b668b915eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/d90a0d180495635e8dd97a770e7ab8b3c4ee6d53",
-                "reference": "d90a0d180495635e8dd97a770e7ab8b3c4ee6d53",
+                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/4551607fef63fd4bcd675479a8c347b668b915eb",
+                "reference": "4551607fef63fd4bcd675479a8c347b668b915eb",
                 "shasum": ""
             },
             "require": {
@@ -272,16 +272,16 @@
         },
         {
             "name": "dektrium/yii2-user",
-            "version": "v0.9.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dektrium/yii2-user.git",
-                "reference": "2931705fcf5514c35122107e9d6761ea8620b519"
+                "reference": "2d6d2d9100b808df402d8d9acd707b8a77c3ede6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dektrium/yii2-user/zipball/2931705fcf5514c35122107e9d6761ea8620b519",
-                "reference": "2931705fcf5514c35122107e9d6761ea8620b519",
+                "url": "https://api.github.com/repos/dektrium/yii2-user/zipball/2d6d2d9100b808df402d8d9acd707b8a77c3ede6",
+                "reference": "2d6d2d9100b808df402d8d9acd707b8a77c3ede6",
                 "shasum": ""
             },
             "require": {
@@ -329,7 +329,7 @@
                 "yii2",
                 "yii2-user"
             ],
-            "time": "2015-01-01 12:00:31"
+            "time": "2015-01-14 17:53:42"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -430,16 +430,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.16.3",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af"
+                "reference": "2493970fa4d587eca73f77e6d8bd48a8bdd4c608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
-                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/2493970fa4d587eca73f77e6d8bd48a8bdd4c608",
+                "reference": "2493970fa4d587eca73f77e6d8bd48a8bdd4c608",
                 "shasum": ""
             },
             "require": {
@@ -448,7 +448,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -483,7 +483,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-12-25 19:58:19"
+            "time": "2015-01-14 10:15:49"
         },
         {
             "name": "yiisoft/yii2",
@@ -1114,7 +1114,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "dektrium/yii2-user": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

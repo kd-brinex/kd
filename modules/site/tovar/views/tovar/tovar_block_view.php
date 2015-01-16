@@ -1,30 +1,42 @@
 <?php
 use yii\helpers\Url;
+use yii\widgets\DetailView;
+
 /**
  * Created by PhpStorm.
  * User: marat
  * Date: 10.01.15
  * Time: 15:39
  */
-echo yii\widgets\DetailView::widget([
-    'model'=>$model,
+echo DetailView::widget([
+    'model' => $model,
 //    'template'=>'<tr><th>{label}</th><td>{value}</td></tr>',
-    'template'=>'<div style="text-align:center;">{value}</div>',
-    'class' => 'table table-striped table-bordered detail-view',
+//    'template'=>'<div>{value}</div>',
+//    'class' => 'div tovar-image',
+    'template' => function ($attribute, $index, $this) {
+        return $this->render('detail_view_template', ['attribute' => $attribute, 'index' => $index, 'widget' => $this]);
+    },
     'attributes' => [
-        [
-            'attribute'=>'image',
-            'value'=>$model->image,
-            'format' => ['image',['width'=>'150','height'=>'150']],
-        ],
-        [
-            'attribute'=>'name',
-            'value'=>url::toRoute(['view','id'=>$model->id],true),
-            'format' => ['url'],
-        ],
-        'name',
+        ['attribute' => 'name',
+            'template' => '<div><h1>{value}</h1></div>',
+            'value' =>  $model->name ,
+            'format' => ['raw'],],
 
-        'price'
+        [
+            'attribute' => 'image',
+            'template' => '<div {class}>{value}</div>',
+            'value' => $model->bigimage,
+            'format' => ['image', ['width' => '300', 'height' => '300']],
+            'class' => 'tovar-image',
+        ],
+    ['attribute'=>'price',
+        'template' => '<div {class}>{label}:{value}</div>',
+        'value' =>$model->price,
+        'class' => 'tovar-price',
+        'format' => ['currency',
+            'thousandSeparator' => ' ',
+            'decimalSeparator' => '.',]
+        ],
     ]]);
 
 
