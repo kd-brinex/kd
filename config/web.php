@@ -8,6 +8,10 @@ $config = [
     'bootstrap' => ['log'],
     'name'=>'Колеса-даром',
     'components' => [
+        'ipgeobase' => [
+            'class' => 'himiklab\ipgeobase\IpGeoBase',
+            'useLocalDB' => true,
+        ],
         'urlManager'=>[
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -20,6 +24,7 @@ $config = [
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'profile'=>'user/settings/profile',
+                'ugb'=>'site/ugb',
 //                'gii' => 'yii/gii',
 //                '<controller:\w+>/<id:\d+>' => '<controller>/view',
 //                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
@@ -71,7 +76,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db_connect[YII_ENV],
+        'db' => $db_connect,
         'view' => [
             'renderers' => [
                 'twig' => [

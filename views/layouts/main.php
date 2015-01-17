@@ -5,7 +5,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use yii\widgets\ListView;
 use app\assets\AppAsset;
-
+use yii\bootstrap\Modal;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -29,13 +29,26 @@ AppAsset::register($this);
     <div class="navbar">
         <div class="top-head"></div>
         <?php
-            NavBar::begin([
+
+        Modal::begin ( [
+            'header' => '<h2>'.'Выберите город'.'</h2>',
+            'toggleButton' => [
+                'tag' => 'button',
+                'class' => 'btn btn-lg btn-block btn-info',
+                'label' => Yii::$app->ipgeobase->getLocation('144.206.192.6')['city'],
+            ]
+        ] );
+        echo 'Надо взять на вооружение.';
+
+        Modal::end ();
+        NavBar::begin([
                 'brandLabel' => 'Колеса даром',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
+
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [

@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use himiklab\ipgeobase;
 
 class SiteController extends Controller
 {
@@ -44,14 +45,14 @@ public function behaviors()
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ]
         ];
     }
 
     public function actionIndex()
     {
 //        $this->layout = false;
-        return $this->render('index.twig',['name'=>'Marat']);
+        return $this->render('index',['name'=>'Marat','ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6')]);
     }
 
     public function actionLogin()
@@ -93,6 +94,11 @@ public function behaviors()
 
     public function actionAbout()
     {
+        return $this->render('about');
+    }
+    public function actionUgb()
+    {
+        Yii::$app->ipgeobase->updateDB();
         return $this->render('about');
     }
 }
