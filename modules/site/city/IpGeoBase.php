@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace himiklab\ipgeobase;
+namespace  app\modules\site\city;
 
 use Yii;
 use yii\base\Component;

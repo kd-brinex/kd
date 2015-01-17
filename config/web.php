@@ -9,7 +9,7 @@ $config = [
     'name'=>'Колеса-даром',
     'components' => [
         'ipgeobase' => [
-            'class' => 'himiklab\ipgeobase\IpGeoBase',
+            'class' => 'app\modules\site\city\IpGeoBase',
             'useLocalDB' => true,
         ],
         'urlManager'=>[
