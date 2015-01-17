@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\site\tovar\controllers;
+namespace app\modules\tovar\controllers;
 
 use Yii;
-use app\modules\site\tovar\models\Tovar;
-use app\modules\site\tovar\models\TovarSearch;
+use app\modules\tovar\models\Tovar;
+use app\modules\tovar\models\TovarSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

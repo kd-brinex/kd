@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace app\modules\site\city;
+namespace app\modules\city;
 
 use yii\base\Object;
 

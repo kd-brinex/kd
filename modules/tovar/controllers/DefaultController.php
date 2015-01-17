@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\site\tovar\controllers;
+namespace app\modules\tovar\controllers;
 
 use yii\web\Controller;
 

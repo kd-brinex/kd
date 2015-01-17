@@ -67,7 +67,7 @@ AppAsset::register($this);
                         ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
-                    ['label' => 'Товары', 'items'=>app\modules\site\tovar\models\TovarSearch::category_menu() ],
+                    ['label' => 'Товары', 'items'=>app\modules\tovar\models\TovarSearch::category_menu() ],
             ]]);
             NavBar::end();
         ?>

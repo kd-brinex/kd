@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace  app\modules\site\city;
+namespace  app\modules\city;
 
 use Yii;
 use yii\base\Component;
@@ -284,4 +284,5 @@ class IpGeoBase extends Component
             return file_get_contents($url);
         }
     }
+
 }

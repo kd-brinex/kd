@@ -9,7 +9,7 @@ $config = [
     'name'=>'Колеса-даром',
     'components' => [
         'ipgeobase' => [
-            'class' => 'app\modules\site\city\IpGeoBase',
+            'class' => 'app\modules\city\IpGeoBase',
             'useLocalDB' => true,
         ],
         'urlManager'=>[
@@ -46,6 +46,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+
 
         ],
         'errorHandler' => [
@@ -126,7 +127,7 @@ $config = [
     'params' => $params,
     'modules' => [
         'tovar'=>[
-            'class'=>'app\modules\site\tovar\Tovar',
+            'class'=>'app\modules\tovar\Tovar',
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
@@ -153,7 +154,7 @@ $config = [
             ],
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
-            'admins' => ['admin'],
+            'admins' => ['marat'],
 
         ]
     ]

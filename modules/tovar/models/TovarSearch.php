@@ -1,14 +1,14 @@
 <?php
 
-namespace app\modules\site\tovar\models;
+namespace app\modules\tovar\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\site\tovar\models\Tovar;
+use app\modules\tovar\models;
 
 /**
- * TovarSearch represents the model behind the search form about `app\modules\site\tovar\models\Tovar`.
+ * TovarSearch represents the model behind the search form about `app\modules\tovar\models\Tovar`.
  */
 class TovarSearch extends Tovar
 
