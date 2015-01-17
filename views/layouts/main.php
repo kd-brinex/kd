@@ -29,13 +29,12 @@ AppAsset::register($this);
     <div class="navbar">
         <div class="top-head"></div>
         <?php
-
         Modal::begin ( [
             'header' => '<h2>'.'Выберите город'.'</h2>',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
-                'label' => Yii::$app->ipgeobase->getLocation('144.206.192.6')['city'],
+                'label' => (isset(Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']))?Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']:'Выберите город',
             ]
         ] );
         echo 'Надо взять на вооружение.';
