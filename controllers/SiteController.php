@@ -8,7 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use himiklab\ipgeobase;
+use app\modules\city\ipgeobase;
+use app\modules\city\models\CitySearch;
 
 class SiteController extends Controller
 {
@@ -37,7 +38,14 @@ public function behaviors()
 
     public function actions()
     {
+//        var_dump(Yii::$app->ipgeobase->getLocation('178.207.171.10'));die;
 //        $this->layout = false;
+//        if (!isset(Yii::$app->request->cookies['city'])) {
+//            Yii::$app->response->cookies->add(new \yii\web\Cookie([
+//                'name' => 'city',
+//                'value' => Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['id'],
+//            ]));
+//        }
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -52,7 +60,14 @@ public function behaviors()
     public function actionIndex()
     {
 //        $this->layout = false;
-        return $this->render('index',['name'=>'Marat','ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6')]);
+        $searchCity = new CitySearch();
+        $dataProviderCity = $searchCity->search(Yii::$app->request->queryParams);
+        return $this->render('index',[
+            'name'=>'Marat',
+//            'ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6'),
+//            'searchCity'=>$searchCity,
+//            'dataProviderCity'=>$dataProviderCity,
+        ]);
     }
 
     public function actionLogin()

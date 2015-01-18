@@ -6,6 +6,8 @@ use yii\widgets\Breadcrumbs;
 use yii\widgets\ListView;
 use app\assets\AppAsset;
 use yii\bootstrap\Modal;
+use \yii\grid\GridView;
+//use app\modules\city\City;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -37,6 +39,9 @@ AppAsset::register($this);
                 'label' => (isset(Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']))?Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']:'Выберите город',
             ]
         ] );
+
+        echo Yii::$app->ipgeobase->getListCites();
+
         echo 'Надо взять на вооружение.';
 
         Modal::end ();

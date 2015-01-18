@@ -2,6 +2,7 @@
 
 namespace app\modules\city;
 
+
 class City extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\city\controllers';

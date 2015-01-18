@@ -10,6 +10,7 @@ namespace  app\modules\city;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use app\modules\city\models\CitySearch;
 
 /**
  * Компонент для работы с базой IP-адресов сайта IpGeoBase.ru,
@@ -136,7 +137,8 @@ class IpGeoBase extends Component
         $result = Yii::$app->db->createCommand(
             "SELECT tIp.country_code AS country, tCity.name AS city,
                     tRegion.name AS region, tCity.latitude AS lat,
-                    tCity.longitude AS lng
+                    tCity.longitude AS lng,
+                    tCity.id as id
             FROM (SELECT * FROM {$dbIpTableName} WHERE ip_begin <= INET_ATON(:ip) ORDER BY ip_begin DESC LIMIT 1) AS tIp
             LEFT JOIN {$dbCityTableName} AS tCity ON tCity.id = tIp.city_id
             LEFT JOIN {$dbRegionTableName} AS tRegion ON tRegion.id = tCity.region_id
@@ -149,7 +151,24 @@ class IpGeoBase extends Component
             return [];
         }
     }
+    public function getListCites(){
+        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
+//        var_dump($dataProvider);die;
+        foreach ($result as $row){
+            $city[$row['region']][$row['id']]= $row['city'];
+        }
+        $html='<div>';
+        foreach ($city as $key=> $cs){
+            $html.='<div class="region">'.$key.'<p>';
+            foreach($cs as $c){
+                $html.=$c.' ';
+            }
+            $html.='</p></div>';
+        }
+        $html.='</div>';
 
+        return $html;
+    }
     /**
      * Метод производит заполнение таблиц городов и регионов используя
      * данные из файла self::ARCHIVE_CITIES.

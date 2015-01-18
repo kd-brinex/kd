@@ -9,7 +9,7 @@ $config = [
     'name' => 'Колеса-даром',
     'components' => [
         'city'=>[
-          'class'=>'app\modules\city\City'
+          'class'=>'app\modules\city\City',
         ],
         'ipgeobase' => [
             'class' => 'app\modules\city\IpGeoBase',
@@ -28,7 +28,7 @@ $config = [
                 'contact' => 'site/contact',
                 'profile' => 'user/settings/profile',
                 'ugb' => 'site/ugb',
-                'city'=>'city/city/index',
+                'сities'=>'city/city/index',
 //                'gii' => 'yii/gii',
 //                '<controller:\w+>/<id:\d+>' => '<controller>/view',
 //                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
@@ -131,6 +131,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+        'city'=>[
+            'class'=>'app\modules\city\City'
+        ],
         'tovar' => [
             'class' => 'app\modules\tovar\Tovar',
         ],
