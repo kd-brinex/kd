@@ -56,7 +56,7 @@ public function behaviors()
 //        $searchCity = new CitySearch();
 //        $dataProviderCity = $searchCity->search(Yii::$app->request->queryParams);
         return $this->render('index',[
-            'name'=>'Marat',
+//            'name'=>'Marat',
 //            'ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6'),
 //            'searchCity'=>$searchCity,
 //            'dataProviderCity'=>$dataProviderCity,
