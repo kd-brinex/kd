@@ -36,7 +36,7 @@ AppAsset::register($this);
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
-                'label' => (isset(Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']))?Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']:'Выберите город',
+                'label' => Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP),
             ]
         ] );
 

@@ -53,15 +53,20 @@ public function behaviors()
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ]
+            ],
         ];
     }
 
     public function actionIndex()
     {
 //        $this->layout = false;
+<<<<<<< HEAD
         $searchCity = new CitySearch();
         $dataProviderCity = $searchCity->search(Yii::$app->request->queryParams);
+=======
+//        $searchCity = new CitySearch();
+//        $dataProviderCity = $searchCity->search(Yii::$app->request->queryParams);
+>>>>>>> city
         return $this->render('index',[
             'name'=>'Marat',
 //            'ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6'),
