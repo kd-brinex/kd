@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\site\tovar\models;
+namespace app\modules\tovar\models;
 
 use Yii;
 

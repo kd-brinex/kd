@@ -5,11 +5,13 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace  app\modules\site\city;
+namespace app\modules\city;
 
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use app\modules\city\models\CitySearch;
+use yii\helpers\Html;
 
 /**
  * Компонент для работы с базой IP-адресов сайта IpGeoBase.ru,
@@ -32,6 +34,8 @@ class IpGeoBase extends Component
     const DB_CITY_TABLE_NAME = '{{%geobase_city}}';
     const DB_REGION_TABLE_NAME = '{{%geobase_region}}';
 
+    const CITY_NAME = 'city';
+
     /** @var bool $useLocalDB Использовать ли локальную базу данных */
     public $useLocalDB = false;
 
@@ -48,11 +52,21 @@ class IpGeoBase extends Component
         } else {
             $ipDataArray = $this->fromSite($ip) + ['ip' => $ip];
         }
-
+        $this->setCookies($ipDataArray[self::CITY_NAME]);
         if ($asArray) {
             return $ipDataArray;
         } else {
             return new IpData($ipDataArray);
+        }
+    }
+
+    public function getCityName($ip)
+    {
+        if (!isset(Yii::$app->request->cookies[self::CITY_NAME])) {
+            $data = $this->getLocation($ip);
+            return $data[self::CITY_NAME];
+        } else {
+            return Yii::$app->request->cookies[self::CITY_NAME];
         }
     }
 
@@ -136,7 +150,8 @@ class IpGeoBase extends Component
         $result = Yii::$app->db->createCommand(
             "SELECT tIp.country_code AS country, tCity.name AS city,
                     tRegion.name AS region, tCity.latitude AS lat,
-                    tCity.longitude AS lng
+                    tCity.longitude AS lng,
+                    tCity.id as id
             FROM (SELECT * FROM {$dbIpTableName} WHERE ip_begin <= INET_ATON(:ip) ORDER BY ip_begin DESC LIMIT 1) AS tIp
             LEFT JOIN {$dbCityTableName} AS tCity ON tCity.id = tIp.city_id
             LEFT JOIN {$dbRegionTableName} AS tRegion ON tRegion.id = tCity.region_id
@@ -148,6 +163,37 @@ class IpGeoBase extends Component
         } else {
             return [];
         }
+    }
+
+    private function setCookies($name)
+    {
+        if (!isset(Yii::$app->request->cookies[$name])) {
+            Yii::$app->response->cookies->add(new \yii\web\Cookie([
+                'name' => 'city',
+                'value' => $name,
+            ]));
+        }
+    }
+
+    public function getListCites()
+    {
+        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
+//        var_dump($dataProvider);die;
+        foreach ($result as $row) {
+            $city[$row['region']][$row['id']] = $row['city'];
+        }
+        $html = '<div>';
+        foreach ($city as $key => $cs) {
+            $html .= '<div class="region">' . $key . '<p>';
+            foreach ($cs as $c) {
+//                Html::a(['options'=>['value'=>$c]]);
+                $html .= Html::button($c, ['class' => '', 'onclick' => "setCookies('city','" . $c . "')"]);
+            }
+            $html .= '</p></div>';
+        }
+        $html .= '</div>';
+
+        return $html;
     }
 
     /**
@@ -284,4 +330,5 @@ class IpGeoBase extends Component
             return file_get_contents($url);
         }
     }
+
 }

@@ -6,6 +6,8 @@ use yii\widgets\Breadcrumbs;
 use yii\widgets\ListView;
 use app\assets\AppAsset;
 use yii\bootstrap\Modal;
+use \yii\grid\GridView;
+//use app\modules\city\City;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -34,9 +36,12 @@ AppAsset::register($this);
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
-                'label' => (isset(Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']))?Yii::$app->ipgeobase->getLocation(Yii::$app->request->userIP)['city']:'Выберите город',
+                'label' => Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP),
             ]
         ] );
+
+        echo Yii::$app->ipgeobase->getListCites();
+
         echo 'Надо взять на вооружение.';
 
         Modal::end ();
@@ -67,7 +72,7 @@ AppAsset::register($this);
                         ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
-                    ['label' => 'Товары', 'items'=>app\modules\site\tovar\models\TovarSearch::category_menu() ],
+                    ['label' => 'Товары', 'items'=>app\modules\tovar\models\TovarSearch::category_menu() ],
             ]]);
             NavBar::end();
         ?>

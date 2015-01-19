@@ -1,18 +1,18 @@
 <?php
 
-namespace app\modules\site\tovar\controllers;
+namespace app\modules\city\controllers;
 
 use Yii;
-use app\modules\site\tovar\models\Tovar;
-use app\modules\site\tovar\models\TovarSearch;
+use app\modules\city\models\City;
+use app\modules\city\models\CitySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\Pagination;
+
 /**
- * TovarController implements the CRUD actions for Tovar model.
+ * CityController implements the CRUD actions for City model.
  */
-class TovarController extends Controller
+class CityController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class TovarController extends Controller
     }
 
     /**
-     * Lists all Tovar models.
+     * Lists all City models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TovarSearch();
+        $searchModel = new CitySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,31 +42,25 @@ class TovarController extends Controller
     }
 
     /**
-     * Displays a single Tovar model.
+     * Displays a single City model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->find_tovar_param(Yii::$app->request->queryParams);
-        $tovarProvider = clone $dataProvider;
-        $tovarProvider->setModels( [$dataProvider->models[0]]);
         return $this->render('view', [
-            'dataProvider' => $dataProvider,
-            'tovarProvider'=>$tovarProvider,
-//            'searchModel'  => $searchModel,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Tovar model.
+     * Creates a new City model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tovar();
+        $model = new City();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -78,7 +72,7 @@ class TovarController extends Controller
     }
 
     /**
-     * Updates an existing Tovar model.
+     * Updates an existing City model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -97,7 +91,7 @@ class TovarController extends Controller
     }
 
     /**
-     * Deletes an existing Tovar model.
+     * Deletes an existing City model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -110,29 +104,18 @@ class TovarController extends Controller
     }
 
     /**
-     * Finds the Tovar model based on its primary key value.
+     * Finds the City model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Tovar the loaded model
+     * @return City the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tovar::findOne($id)) !== null) {
+        if (($model = City::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionCategory()
-    {
-        $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->category_list(Yii::$app->request->queryParams);
-
-        return $this->render('category', [
-              'dataProvider' => $dataProvider,
-//            'searchModel'  => $searchModel,
-        ]);
     }
 }

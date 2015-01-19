@@ -22,5 +22,5 @@ $db = ['components'=>[
         'password' => 'G90BqaKJ',
         'charset' => 'utf8'],
 ]];
-
+//var_dump(YII_ENV);die;
 return $db['components'][YII_ENV];

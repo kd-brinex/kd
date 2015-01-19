@@ -33,9 +33,7 @@ echo DetailView::widget([
         'template' => '<div {class}>{label}:{value}</div>',
         'value' =>$model->price,
         'class' => 'tovar-price',
-        'format' => ['currency',
-            'thousandSeparator' => ' ',
-            'decimalSeparator' => '.',]
+        'format' => ['currency',],
         ],
     ]]);
 

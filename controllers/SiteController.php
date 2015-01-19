@@ -8,7 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use himiklab\ipgeobase;
+use app\modules\city\ipgeobase;
+use app\modules\city\models\CitySearch;
 
 class SiteController extends Controller
 {
@@ -45,14 +46,21 @@ public function behaviors()
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ]
+            ],
         ];
     }
 
     public function actionIndex()
     {
 //        $this->layout = false;
-        return $this->render('index',['name'=>'Marat','ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6')]);
+//        $searchCity = new CitySearch();
+//        $dataProviderCity = $searchCity->search(Yii::$app->request->queryParams);
+        return $this->render('index',[
+            'name'=>'Marat',
+//            'ipgeo'=> Yii::$app->ipgeobase->getLocation('144.206.192.6'),
+//            'searchCity'=>$searchCity,
+//            'dataProviderCity'=>$dataProviderCity,
+        ]);
     }
 
     public function actionLogin()
