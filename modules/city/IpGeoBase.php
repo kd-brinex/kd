@@ -5,20 +5,13 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-<<<<<<< HEAD:modules/city/IpGeoBase.php
-namespace  app\modules\city;
-=======
 namespace app\modules\city;
->>>>>>> city:modules/city/IpGeoBase.php
 
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use app\modules\city\models\CitySearch;
-<<<<<<< HEAD:modules/city/IpGeoBase.php
-=======
 use yii\helpers\Html;
->>>>>>> city:modules/city/IpGeoBase.php
 
 /**
  * Компонент для работы с базой IP-адресов сайта IpGeoBase.ru,
@@ -59,7 +52,7 @@ class IpGeoBase extends Component
         } else {
             $ipDataArray = $this->fromSite($ip) + ['ip' => $ip];
         }
-        $this->setCookies($ipDataArray[self::CITY_NAME]);
+        $this->setCookies(self::CITY_NAME,$ipDataArray[self::CITY_NAME]);
         if ($asArray) {
             return $ipDataArray;
         } else {
@@ -171,32 +164,17 @@ class IpGeoBase extends Component
             return [];
         }
     }
-    public function getListCites(){
-        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
-//        var_dump($dataProvider);die;
-        foreach ($result as $row){
-            $city[$row['region']][$row['id']]= $row['city'];
-        }
-        $html='<div>';
-        foreach ($city as $key=> $cs){
-            $html.='<div class="region">'.$key.'<p>';
-            foreach($cs as $c){
-                $html.=$c.' ';
-            }
-            $html.='</p></div>';
-        }
-        $html.='</div>';
 
-<<<<<<< HEAD:modules/city/IpGeoBase.php
-        return $html;
-    }
-=======
-    private function setCookies($name)
+    private function setCookies($name,$value)
     {
         if (!isset(Yii::$app->request->cookies[$name])) {
             Yii::$app->response->cookies->add(new \yii\web\Cookie([
-                'name' => 'city',
-                'value' => $name,
+                'name' => $name,
+                'value' => $value,
+                'path'=>'/',
+                'expire'=>time()+1814400,//21*24*60*60=21 день
+                'httpOnly'=>false,
+
             ]));
         }
     }
@@ -222,7 +200,6 @@ class IpGeoBase extends Component
         return $html;
     }
 
->>>>>>> city:modules/city/IpGeoBase.php
     /**
      * Метод производит заполнение таблиц городов и регионов используя
      * данные из файла self::ARCHIVE_CITIES.
