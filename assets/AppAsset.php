@@ -21,7 +21,7 @@ class AppAsset extends AssetBundle
         'css/site.css','css/style.css'
     ];
     public $js = [
-        'js/jquery.cookie.js','js/site.js',
+        'js/site.js',
     ];
 //    public $jsOptions=['position' => '\yii\web\index::POS_HEAD'];
     public $depends = [

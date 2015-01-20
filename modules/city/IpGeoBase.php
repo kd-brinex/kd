@@ -52,7 +52,7 @@ class IpGeoBase extends Component
         } else {
             $ipDataArray = $this->fromSite($ip) + ['ip' => $ip];
         }
-        $this->setCookies($ipDataArray[self::CITY_NAME]);
+        $this->setCookies(self::CITY_NAME,$ipDataArray[self::CITY_NAME]);
         if ($asArray) {
             return $ipDataArray;
         } else {
@@ -165,12 +165,16 @@ class IpGeoBase extends Component
         }
     }
 
-    private function setCookies($name)
+    private function setCookies($name,$value)
     {
         if (!isset(Yii::$app->request->cookies[$name])) {
             Yii::$app->response->cookies->add(new \yii\web\Cookie([
-                'name' => 'city',
-                'value' => $name,
+                'name' => $name,
+                'value' => $value,
+                'path'=>'/',
+                'expire'=>time()+1814400,//21*24*60*60=21 день
+                'httpOnly'=>false,
+
             ]));
         }
     }
