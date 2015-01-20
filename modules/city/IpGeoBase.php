@@ -181,7 +181,7 @@ class IpGeoBase extends Component
 
     public function getListCites()
     {
-        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
+        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id where c.enable=true')->query();
 //        var_dump($dataProvider);die;
         foreach ($result as $row) {
             $city[$row['region']][$row['id']] = $row['city'];

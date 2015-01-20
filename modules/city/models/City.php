@@ -29,11 +29,12 @@ class City extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'region_id', 'latitude', 'longitude'], 'required'],
+            [['id', 'name', 'region_id', 'latitude', 'longitude','enable'], 'required'],
             [['id', 'region_id'], 'integer'],
             [['latitude', 'longitude'], 'number'],
             [['name'], 'string', 'max' => 50],
-            [['id'], 'unique']
+            [['id'], 'unique'],
+            [['enable'],'boolean']
         ];
     }
 
@@ -44,10 +45,11 @@ class City extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'region_id' => 'Region ID',
-            'latitude' => 'Latitude',
-            'longitude' => 'Longitude',
+            'name' => 'Город',
+            'region_id' => 'Код региона',
+            'latitude' => 'Широта',
+            'longitude' => 'Долгота',
+            'enable'=>'Использовать',
         ];
     }
 }

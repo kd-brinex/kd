@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'region_id',
             'latitude',
             'longitude',
+            'enable',
         ],
     ]) ?>
 
