@@ -66,7 +66,7 @@ class IpGeoBase extends Component
             $data = $this->getLocation($ip);
             return $data[self::CITY_NAME];
         } else {
-            return Yii::$app->request->cookies[self::CITY_NAME];
+            return Yii::$app->request->cookies[self::CITY_NAME]->value;
         }
     }
 
@@ -179,24 +179,35 @@ class IpGeoBase extends Component
         }
     }
 
-    public function getListCites()
+    public function getListCites($params)
     {
-        $result = Yii::$app->db->createCommand('select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
+//select c.id as id, c.name as city, r.name as region from geobase_city as c left join geobase_region as r on r.id=c.region_id')->query();
+        $result = Yii::$app->db->createCommand(
+//            "set @g1=(select point from geobase_city where name='Казань');
+'select
+  c.id as id,
+  c.name as city,
+  r.name as region,
+  st_distance((select point from geobase_city where name=:city), c.point) dist
+from geobase_city as c
+  left join geobase_region as r on r.id=c.region_id
+order by dist asc'.((isset($params['limit']))?' limit :limit':'').';',$params)->query();
+
 //        var_dump($dataProvider);die;
         foreach ($result as $row) {
             $city[$row['region']][$row['id']] = $row['city'];
         }
         $html = '<div>';
         foreach ($city as $key => $cs) {
-            $html .= '<div class="region">' . $key . '<p>';
+            $html .= '<div class="region">' . $key .'<br>';
             foreach ($cs as $c) {
 //                Html::a(['options'=>['value'=>$c]]);
                 $html .= Html::button($c, ['class' => '', 'onclick' => "setCookies('city','" . $c . "')"]);
             }
-            $html .= '</p></div>';
+            $html .= '</div>';
         }
         $html .= '</div>';
-
+        $html.=(isset($params['limit']))?Html::a('Показать все','/'):'';
         return $html;
     }
 

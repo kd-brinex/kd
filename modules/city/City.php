@@ -13,10 +13,4 @@ class City extends \yii\base\Module
 
         // custom initialization code goes here
     }
-<<<<<<< HEAD
-=======
-    public function getCity(){
-
-    }
->>>>>>> city
 }

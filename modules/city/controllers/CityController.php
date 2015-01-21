@@ -118,4 +118,9 @@ class CityController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionCitylist(){
+        $searchModel = new CitySearch();
+        $citylist = $searchModel->citylist(Yii::$app->request->queryParams);
+        return $this->redirect(['citylist',['citylist'=>$citylist]]);
+    }
 }

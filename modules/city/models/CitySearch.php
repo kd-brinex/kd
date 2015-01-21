@@ -67,4 +67,18 @@ class CitySearch extends City
 
         return $dataProvider;
     }
+
+    public function citylist($params)
+    {
+        $query = City::findBySql('
+select
+  c.id as id,
+  c.name as city,
+  r.name as region,
+  st_distance((select point from geobase_city where name=:city), c.point) dist
+from geobase_city as c
+  left join geobase_region as r on r.id=c.region_id
+order by dist asc' . ((isset($params['limit'])) ? ' limit :limit' : '') . ';', $params)->query();
+        return $query;
+    }
 }

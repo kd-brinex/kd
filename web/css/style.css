@@ -45,10 +45,9 @@ background-color: #f8efc0;
     font-size: 16px;
 }
 .region {
-    width:49%;
-    float:left;
-    padding:10px;
+    padding-top:3px;
 }
-.region p{
+.region button{
     font-size: 10px;
+    margin-left: 1px;
 }

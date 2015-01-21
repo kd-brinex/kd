@@ -29,6 +29,7 @@ $config = [
                 'profile' => 'user/settings/profile',
                 'ugb' => 'site/ugb',
                 'сities'=>'city/city/index',
+                'сitylist'=>'city/city/сitylist',
 //                'gii' => 'yii/gii',
 //                '<controller:\w+>/<id:\d+>' => '<controller>/view',
 //                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',

@@ -31,20 +31,23 @@ AppAsset::register($this);
     <div class="navbar">
         <div class="top-head"></div>
         <?php
+        $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
+//var_dump($city_name);die;
+        \yii\widgets\Pjax::begin();
         Modal::begin ( [
             'header' => '<h2>'.'Выберите город'.'</h2>',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
-                'label' => Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP),
+                'label' => $city_name,
             ]
         ] );
 
-        echo Yii::$app->ipgeobase->getListCites();
+        echo Yii::$app->ipgeobase->getListCites(['city'=>$city_name,'limit'=>100]);
 
-        echo 'Надо взять на вооружение.';
-
+//        echo 'Надо взять на вооружение.';
         Modal::end ();
+        \yii\widgets\Pjax::end();
         NavBar::begin([
                 'brandLabel' => 'Колеса даром',
                 'brandUrl' => Yii::$app->homeUrl,
