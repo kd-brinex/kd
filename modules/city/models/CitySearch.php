@@ -21,6 +21,7 @@ class CitySearch extends City
             [['id', 'region_id'], 'integer'],
             [['name'], 'safe'],
             [['latitude', 'longitude'], 'number'],
+            [['enable'], 'boolean']
         ];
     }
 
@@ -61,6 +62,7 @@ class CitySearch extends City
             'region_id' => $this->region_id,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
+            'enable' => $this->enable,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
