@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\city\models\City;
+use yii\db\ActiveRecord;
 
 /**
  * CitySearch represents the model behind the search form about `app\modules\city\models\City`.
@@ -15,13 +16,23 @@ class CitySearch extends City
     /**
      * @inheritdoc
      */
+    public $regionName;
+
+
+
+//    public $start;
+
+
     public function rules()
     {
         return [
             [['id', 'region_id'], 'integer'],
             [['name'], 'safe'],
             [['latitude', 'longitude'], 'number'],
-            [['enable'], 'boolean']
+            [['enable'], 'boolean'],
+            [['point'],'safe'],
+            [['regionName'],'safe'],
+
         ];
     }
 
@@ -63,24 +74,36 @@ class CitySearch extends City
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'enable' => $this->enable,
+            'point'=>$this->point,
+            'regionName'=>$this->regionName,
+
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 
-        return $dataProvider;
-    }
-
-    public function citylist($params)
-    {
-        $query = City::findBySql('
-select
-  c.id as id,
-  c.name as city,
-  r.name as region,
-  st_distance((select point from geobase_city where name=:city), c.point) dist
-from geobase_city as c
-  left join geobase_region as r on r.id=c.region_id
-order by dist asc' . ((isset($params['limit'])) ? ' limit :limit' : '') . ';', $params)->query();
         return $query;
     }
+    public function find_list($param){
+    $city = City::findOne(['id'=>$param['id']]);
+        $param['lat']=$city->attributes['latitude'];
+        $param['long']=$city->attributes['longitude'];
+        $query=City::findBySql('select
+  c.id as id,
+  c.name as name,
+ (  6371 * acos(
+    cos(radians('.$param['lat'].')) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians('.$param['long'].'))
+    +
+    sin(radians('.$param['lat'].')) * sin(radians(c.latitude))
+  )
+) AS dist
+from geobase_city as c
+  left join geobase_region as r on r.id=c.region_id
+  where c.enable=true
+  order by dist ')->all();
+//        $dataProvider = new ActiveDataProvider(['query' => $query]);
+//        $dataProvider->pagination=false;
+        return $query;
+    }
+
+
 }

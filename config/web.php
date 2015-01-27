@@ -28,11 +28,12 @@ $config = [
                 'contact' => 'site/contact',
                 'profile' => 'user/settings/profile',
                 'ugb' => 'site/ugb',
-                'сities'=>'city/city/index',
-                'сitylist'=>'city/city/сitylist',
-//                'ugb' => 'site/ugb',//перегружает данные в таблицы городов
+//                'сities'=>'city/city/index',
+                  'ugb' => 'site/ugb',//перегружает данные в таблицы городов
                 'cities'=>'city/city',
                 'cities/<id:\w+>'=>'city/city/view',
+                'clist'=>'city/city/list',
+//
 //                'gii' => 'yii/gii',
 //                '<controller:\w+>/<id:\d+>' => '<controller>/view',
 //                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',

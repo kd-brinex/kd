@@ -42,10 +42,21 @@ AppAsset::register($this);
                 'label' => $city_name,
             ]
         ] );
+//        echo GridView::widget([
+//            'dataProvider' => Yii::$app->ipgeobase->getListCites([':id'=>Yii::$app->request->cookies['city']->value]),
+//          'filterModel' => new \app\modules\city\models\CitySearch(),
+//            'columns' => [
+////        ['class' => 'yii\grid\SerialColumn'],
+//                'id',
+//                'name',
+////                'regionName',
+//
+////        ['class' => 'yii\grid\ActionColumn'],
+//            ],
+//        ]);
 
-        echo Yii::$app->ipgeobase->getListCites(['city'=>$city_name,'limit'=>100]);
 
-//        echo 'Надо взять на вооружение.';
+        echo 'Надо взять на вооружение.';
         Modal::end ();
         \yii\widgets\Pjax::end();
         NavBar::begin([

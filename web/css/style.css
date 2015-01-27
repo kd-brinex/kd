@@ -44,10 +44,10 @@ background-color: #f8efc0;
     font-family: "Tahoma", "sans-serif";
     font-size: 16px;
 }
-.region {
+.city {
     padding-top:3px;
 }
-.region button{
+.city button{
     font-size: 10px;
     margin-left: 1px;
 }
