@@ -17,7 +17,7 @@ class CitySearch extends City
      * @inheritdoc
      */
     public $regionName;
-
+    public $dist;
 
 
 //    public $start;
@@ -28,10 +28,11 @@ class CitySearch extends City
         return [
             [['id', 'region_id'], 'integer'],
             [['name'], 'safe'],
-            [['latitude', 'longitude'], 'number'],
+            [['latitude', 'longitude','dist'], 'number'],
             [['enable'], 'boolean'],
             [['point'],'safe'],
             [['regionName'],'safe'],
+
 
         ];
     }
@@ -85,23 +86,22 @@ class CitySearch extends City
     }
     public function find_list($param){
     $city = City::findOne(['id'=>$param['id']]);
-        $param['lat']=$city->attributes['latitude'];
-        $param['long']=$city->attributes['longitude'];
-        $query=City::findBySql('select
+        $param[':lat']=$city->attributes['latitude'];
+        $param[':long']=$city->attributes['longitude'];
+        $query=Yii::$app->db->createCommand('select
   c.id as id,
   c.name as name,
  (  6371 * acos(
-    cos(radians('.$param['lat'].')) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians('.$param['long'].'))
+    cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:long))
     +
-    sin(radians('.$param['lat'].')) * sin(radians(c.latitude))
+    sin(radians(:lat)) * sin(radians(c.latitude))
   )
 ) AS dist
 from geobase_city as c
   left join geobase_region as r on r.id=c.region_id
   where c.enable=true
-  order by dist ')->all();
-//        $dataProvider = new ActiveDataProvider(['query' => $query]);
-//        $dataProvider->pagination=false;
+  order by dist ')->bindValues($param)->queryAll();
+
         return $query;
     }
 

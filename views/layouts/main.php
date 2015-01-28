@@ -3,11 +3,10 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use yii\widgets\ListView;
 use app\assets\AppAsset;
 use yii\bootstrap\Modal;
-use \yii\grid\GridView;
-//use app\modules\city\City;
+use yii\bootstrap\Button;
+
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -32,33 +31,31 @@ AppAsset::register($this);
         <div class="top-head"></div>
         <?php
         $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
-//var_dump($city_name);die;
-        \yii\widgets\Pjax::begin();
+
         Modal::begin ( [
-            'header' => '<h2>'.'Выберите город'.'</h2>',
+            'header' => '<h2>'.'Города'.'</h2>',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
                 'label' => $city_name,
+                'id'=>'button_city_list',
+
             ]
         ] );
-//        echo GridView::widget([
-//            'dataProvider' => Yii::$app->ipgeobase->getListCites([':id'=>Yii::$app->request->cookies['city']->value]),
-//          'filterModel' => new \app\modules\city\models\CitySearch(),
-//            'columns' => [
-////        ['class' => 'yii\grid\SerialColumn'],
-//                'id',
-//                'name',
-////                'regionName',
-//
-////        ['class' => 'yii\grid\ActionColumn'],
-//            ],
-//        ]);
-
-
-        echo 'Надо взять на вооружение.';
+//        \yii\widgets\Pjax::begin();
+        echo Button::widget ( [
+            'label' => 'Выбрать город',
+            'options' => [
+                'class' => 'btn-lg btn-default',
+                'style' => 'margin:5px',
+                'onclick' => 'load_city_list()',
+            ], // add a style to overide some default bootstrap css
+            'tagName' => 'div'
+        ] );
+        echo '<div id="city_list"></div>';
+//        \yii\widgets\Pjax::end();
         Modal::end ();
-        \yii\widgets\Pjax::end();
+
         NavBar::begin([
                 'brandLabel' => 'Колеса даром',
                 'brandUrl' => Yii::$app->homeUrl,

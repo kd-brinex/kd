@@ -128,19 +128,21 @@ class CityController extends Controller
 
     public function actionList()
     {
-
-//        $params=Yii::$app->request->queryParams;
+        $this->layout = false;
         $params['id']=(isset(Yii::$app->request->cookies['city']))?
             Yii::$app->request->cookies['city']:1331;
-//        var_dump($params);die;
         $searchModel = new CitySearch();
         $data = $searchModel->find_list($params);
         $chars=[];
         foreach ($data as $d){
-            $chars[mb_substr($d->attributes['name'],0,1,'utf-8')]='/';
+            $char=mb_substr($d['name'],0,1,'utf-8');
+            $chars[$char]=['char'=>$char,'onclick'=>'hideButton(\''.$char.'\',\'city_button\',\'city_butsel\')'];
+
         }
+        ksort($chars);
+        $options=[];
         return $this->render('city_list', [
-            'data' => $data,'chars'=>$chars,
+            'data' => $data,'chars'=>$chars,'options'=>$options,
         ]);
     }
     /**

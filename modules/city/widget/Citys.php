@@ -11,13 +11,7 @@ use app\modules\city\models\CitySearch;
 use yii\base\Widget;
 class Citys extends Widget
 {
-    public static function widget(){
-        $model  =new CitySearch();
-        $cites=$model->search([]);
-//        var_dump($cites);die;
-    foreach( $cites as $c){
-        var_dump($c);die;
-        echo '<p>'.$c['city'].'</p>';
-    }
+    public  function run(){
+
     }
 }

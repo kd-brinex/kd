@@ -47,7 +47,11 @@ background-color: #f8efc0;
 .city {
     padding-top:3px;
 }
-.city button{
+.city_button{
     font-size: 10px;
     margin-left: 1px;
+}
+.city_butsel{
+    font-size: 24px;
+    margin: 2px;
 }
