@@ -2,7 +2,7 @@
 $db = ['components'=>[
     'dev' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=127.0.0.1;dbname=brinex2;port=1111',
+        'dsn' => 'mysql:host=127.0.0.1;dbname=brinex1;port=1111',
         'username' => 'madmin',
         'password' => 'c91Jm0YL1KAa',
         'charset' => 'utf8'],

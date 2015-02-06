@@ -75,7 +75,10 @@ class TovarSearch extends Tovar
     }
     public function find_tovar_param($params)
     {
-        $query = Tovar::find()->where(['id'=>$params['id'],'id_store'=>999]);
+        $city_id=Yii::$app->request->cookies['city'];
+        $p['id_store']=999;
+        $p['id']=$params['id'];
+        $query = Tovar::find()->where('(id=:id) and (id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         $dataProvider->pagination=false;
         return $dataProvider;

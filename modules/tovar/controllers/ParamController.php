@@ -3,16 +3,16 @@
 namespace app\modules\tovar\controllers;
 
 use Yii;
-use app\modules\tovar\models\Tovar;
-use app\modules\tovar\models\TovarSearch;
+use app\modules\tovar\models\Param;
+use app\modules\tovar\models\ParamSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-//use yii\filters\AccessControl;
+
 /**
- * TovarController implements the CRUD actions for Tovar model.
+ * ParamController implements the CRUD actions for Param model.
  */
-class TovarController extends Controller
+class ParamController extends Controller
 {
     public function behaviors()
     {
@@ -23,34 +23,16 @@ class TovarController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'actions' => ['index', 'create', 'update'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                        'matchCallback' => function ($rule, $action) {
-//                            return \Yii::$app->user->identity->getIsAdmin();
-//                        }
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['list'],
-//                        'roles' => ['@','?']
-//                    ],
-//                ]
-//            ]
         ];
     }
 
     /**
-     * Lists all Tovar models.
+     * Lists all Param models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TovarSearch();
+        $searchModel = new ParamSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,31 +42,25 @@ class TovarController extends Controller
     }
 
     /**
-     * Displays a single Tovar model.
+     * Displays a single Param model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->find_tovar_param(Yii::$app->request->queryParams);
-        $tovarProvider = clone $dataProvider;
-        $tovarProvider->setModels( [$dataProvider->models[0]]);
         return $this->render('view', [
-            'dataProvider' => $dataProvider,
-            'tovarProvider'=>$tovarProvider,
-//            'searchModel'  => $searchModel,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Tovar model.
+     * Creates a new Param model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tovar();
+        $model = new Param();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -96,7 +72,7 @@ class TovarController extends Controller
     }
 
     /**
-     * Updates an existing Tovar model.
+     * Updates an existing Param model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -115,7 +91,7 @@ class TovarController extends Controller
     }
 
     /**
-     * Deletes an existing Tovar model.
+     * Deletes an existing Param model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -128,29 +104,18 @@ class TovarController extends Controller
     }
 
     /**
-     * Finds the Tovar model based on its primary key value.
+     * Finds the Param model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Tovar the loaded model
+     * @return Param the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tovar::findOne($id)) !== null) {
+        if (($model = Param::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionCategory()
-    {
-        $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->category_list(Yii::$app->request->queryParams);
-
-        return $this->render('category', [
-              'dataProvider' => $dataProvider,
-//            'searchModel'  => $searchModel,
-        ]);
     }
 }

@@ -48,7 +48,7 @@ echo Collapse::widget([
 //              'filterModel'=>$searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'param_id',
+                        'title',
                         'value_char',
 
 //        ['class' => 'yii\grid\ActionColumn'],
