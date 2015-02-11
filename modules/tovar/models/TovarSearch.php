@@ -18,7 +18,7 @@ class TovarSearch extends Tovar
      * @inheritdoc
      */
     public $image;
-
+    public $srok;
     public function rules()
     {
         return [

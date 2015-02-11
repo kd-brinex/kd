@@ -1,20 +1,23 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: marat
- * Date: 09.01.15
- * Time: 11:25
- */
 
+<div class="btn-group">
+        <a class="btn" href="?viewType=1">&nbsp;<i class="icon-th"></i>&nbsp;</a>
+        <a class="btn" href="?viewType=2">&nbsp;<i class="icon-th-list"></i>&nbsp;</a>
+        <a class="btn" href="?viewType=3">&nbsp;<i class="icon-align-justify"></i>&nbsp;</a>
+    </div>
+<?php
+//echo $view;
+//var_dump($view);die;
 echo yii\widgets\ListView::widget([
 
     'dataProvider' => $dataProvider,
 
-    'itemOptions' => ['class' => 'tovars_block'],
+    'options'=>$params['options'],
 
-    'itemView' => function ($model, $key, $index, $widget) {
-        return $this->render('tovars_block_view', ['model' => $model]);
+    'itemOptions' => $params['itemOptions'],
 
-    },
-
-]);
+    'itemView' => ($params['viewType']==1)?
+        function ($model){return $this->render('tovars_block_view_1', ['model' => $model]);}:
+        (($params['viewType']==2)?
+            function ($model){return $this->render('tovars_block_view_2', ['model' => $model]);}:
+            function ($model){return $this->render('tovars_block_view_3', ['model' => $model]);}),
+]);?>

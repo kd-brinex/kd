@@ -77,5 +77,8 @@ class Tovar extends \yii\db\ActiveRecord
 //        http://img2.kolesa-darom.ru/img/disk/big/CO19594SPL.jpg
         return 'http://img2.kolesa-darom.ru/img/'.$this->tip_id.'/big/'.$this->id.'.jpg';
     }
+    public function getSrok(){
+        return ($this->count>0)?'<span class="offer-v1-deliv-instock">✓В наличии</span>':'<span class="offer-v1-deliv-days">• Доставка 3-5 дней</span>';
+    }
 
 }

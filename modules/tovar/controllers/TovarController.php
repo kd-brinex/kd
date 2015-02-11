@@ -50,9 +50,9 @@ class TovarController extends Controller
      */
     public function actionIndex()
     {
+        $params=Yii::$app->request->queryParams;
         $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider = $searchModel->search($params);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -145,11 +145,28 @@ class TovarController extends Controller
 
     public function actionCategory()
     {
+        $params=Yii::$app->request->queryParams;
+        if (!isset($params['viewType'])){$params['viewType']=1;}
+        if ($params['viewType']==1)
+        {
+            $params['options']=['tag'=>'ul','class'=>'offer-v1-container'];
+            $params['itemOptions']=['tag'=>'li'];
+        }
+        if ($params['viewType']==2)
+        {
+            $params['options']=['tag'=>'ul','class'=>'offer-v2-container'];
+            $params['itemOptions']=['tag'=>'li'];
+        }
+        if ($params['viewType']==3)
+        {
+            $params['options']=['tag'=>'table','class'=>'offer-v3-table'];
+            $params['itemOptions']=['tag'=>'tr'];
+        }
         $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->category_list(Yii::$app->request->queryParams);
-
+        $dataProvider = $searchModel->category_list($params);
         return $this->render('category', [
-              'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
+            'params'=>$params,
 //            'searchModel'  => $searchModel,
         ]);
     }
