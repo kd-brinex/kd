@@ -42,6 +42,7 @@ AppAsset::register($this);
 
             ]
         ] );
+
 //        \yii\widgets\Pjax::begin();
         echo Button::widget ( [
             'label' => 'Выбрать город',
@@ -87,9 +88,9 @@ AppAsset::register($this);
             ]]);
             NavBar::end();
         ?>
-</div>
-    <div class=""left">
-
+    </div>
+    <div class="container-left">
+    <?= Nav::widget(['items'=>app\modules\tovar\models\TovarSearch::category_menu()])?>
     </div>
         <div class="container">
             <?= Breadcrumbs::widget([

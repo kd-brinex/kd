@@ -20,11 +20,17 @@ use yii\widgets\ListView;
 //    ]
 
 //]);
+//var_dump($tovarProvider->models[0]['name']);die;
+$this->title=$tovarProvider->models[0]['name'];
+$category=$tovarProvider->models[0]['tip_id'];
+$this->params['breadcrumbs'][] = ['label'=>$category,'url'=>['/tovar/tovar/category','tip_id'=>$category]];
+$this->params['breadcrumbs'][] = $this->title;
+Yii::$app->view->registerCssFile('/css/style-uni.css');
 echo ListView::widget([
 
     'dataProvider' => $tovarProvider,
     'layout' => "{items}",
-    'itemOptions' => ['class' => 'tovar_block'],
+    'options' => ['tag'=>'div','class'=>'offer-page'],
 
     'itemView' => function ($model, $key, $index, $widget) {
         return $this->render('tovar_block_view', ['model' => $model]);

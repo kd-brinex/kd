@@ -67,7 +67,8 @@ class TovarController extends Controller
     public function actionView($id)
     {
         $searchModel = new TovarSearch();
-        $dataProvider = $searchModel->find_tovar_param(Yii::$app->request->queryParams);
+        $params=Yii::$app->request->queryParams;
+        $dataProvider = $searchModel->find_tovar_param($params);
         $tovarProvider = clone $dataProvider;
         $tovarProvider->setModels( [$dataProvider->models[0]]);
         return $this->render('view', [

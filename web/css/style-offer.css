@@ -478,3 +478,21 @@
 .offer-v1-item:hover .offer-v1-price-new {
 	margin: 8px 0 12px;
 }
+.icon-shopping-cart {
+	background-position: -360px -120px;
+}
+.icon-th-large {
+	background-position: -216px 0;
+}
+.icon-th {
+	background-position: -240px 0;
+}
+.icon-th-list {
+	background-position: -264px 0;
+}
+.icon-align-justify {
+	background-position: -336px -48px;
+}
+.icon-list {
+	background-position: -360px -48px;
+}
