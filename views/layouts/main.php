@@ -89,14 +89,14 @@ AppAsset::register($this);
                         ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
-                    ['label' => 'Товары', 'items'=>$menu ],
+                    ['label'=>'Товар','items'=>Yii::$app->params['catalog']['items'] ],
             ]]);
             NavBar::end();
         ?>
     </div>
     <div class="container-left">
 
-<?= Nav::widget(Yii::$app->params['catalog'])?>
+<?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']])?>
     </div>
         <div class="container">
             <?= Breadcrumbs::widget([

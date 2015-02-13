@@ -19,6 +19,7 @@ class TovarSearch extends Tovar
      */
     public $image;
     public $srok;
+
     public function rules()
     {
         return [

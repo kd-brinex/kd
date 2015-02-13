@@ -1,6 +1,6 @@
 <?php
 
-return [
+return ['label'=>'Товары',
 //    'options'=>['class'=>'menu'],
 
 //    'itemoptions'=>['tag'=>'li'],

@@ -42,8 +42,8 @@ $config = [
 //                'module/<module:\w+>/<controller:\w+>/<action:\w+>/<id:\w+>' => '<module>/<controller>/<action>/<id>',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
-                'admin/<module:\w+>/<controller:\w+>'=>'<module>/<controller>',
-                'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+//                'admin/<module:\w+>/<controller:\w+>'=>'<module>/<controller>',
+//                'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 
 
             ],

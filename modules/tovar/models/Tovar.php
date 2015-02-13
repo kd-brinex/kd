@@ -41,11 +41,11 @@ class Tovar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'tip_id', 'category_id', 'name','price','count','value_char','param_id'], 'required'],
+            [['id', 'tip_id', 'category_id', 'name', 'price', 'count', 'value_char', 'param_id'], 'required'],
             [['id', 'category_id'], 'string', 'max' => 9],
-            [['tip_id','param_id'], 'string', 'max' => 25],
-            [['name','value_char'], 'string', 'max' => 200],
-            [['price','count'],'int']
+            [['tip_id', 'param_id'], 'string', 'max' => 25],
+            [['name', 'value_char'], 'string', 'max' => 200],
+            [['price', 'count'], 'int']
         ];
     }
 
@@ -59,26 +59,35 @@ class Tovar extends \yii\db\ActiveRecord
             'tip_id' => 'Tip ID',
             'category_id' => 'Category ID',
             'name' => 'Наименование',
-            'price'=>'Цена',
-            'count'=>'Кол.',
-            'value_char'=>'Значение',
-            'image'=>'Изображение',
-            'param_id'=>'Характеристика',
-            'bigimage'=>'Изображение',
+            'price' => 'Цена',
+            'count' => 'Кол.',
+            'value_char' => 'Значение',
+            'image' => 'Изображение',
+            'param_id' => 'Характеристика',
+            'bigimage' => 'Изображение',
         ];
     }
+
     public function getImage()
     {
-//        http://img2.kolesa-darom.ru/img/disk/big/CO19594SPL.jpg
-        return 'http://img2.kolesa-darom.ru/img/'.$this->tip_id.'/'.$this->id.'.jpg';
+//        var_dump($this);die;
+        $p = Yii::$app->params;
+        return (isset($p['image'][$this->tip_id])) ?
+            $p['host'] . $p['image'][$this->tip_id]['normal'] .   $this->category_id. '.jpg':
+            'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
+
     public function getBigimage()
     {
-//        http://img2.kolesa-darom.ru/img/disk/big/CO19594SPL.jpg
-        return 'http://img2.kolesa-darom.ru/img/'.$this->tip_id.'/big/'.$this->id.'.jpg';
+        $p = Yii::$app->params;
+        return (isset($p['image'][$this->tip_id])) ?
+            $p['host'] . $p['image'][$this->tip_id]['big'] .   $this->category_id . '.jpg':
+            'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
-    public function getSrok(){
-        return ($this->count>0)?'<span class="offer-v1-deliv-instock">✓В наличии</span>':'<span class="offer-v1-deliv-days">• Доставка 3-5 дней</span>';
+
+    public function getSrok()
+    {
+        return ($this->count > 0) ? '<span class="offer-v1-deliv-instock">✓В наличии</span>' : '<span class="offer-v1-deliv-days">• Доставка 3-5 дней</span>';
     }
 
 }
