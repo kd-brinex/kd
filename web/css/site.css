@@ -16,7 +16,8 @@ body {
 
 .wrap > .container {
     padding: 10px 15px 20px;
-    width:700px;
+    width:800px;
+    float:left;
 }
 
 .footer {
@@ -110,6 +111,12 @@ a.desc:after {
     margin-top: 50px;
 }
 .wrap > .container-left {
-    float:left;
+    position: relative;
     width:200px;
+    float : left;
+}
+.wrap > .container-right {
+    position: relative;
+    width:200px;
+    float : left;
 }

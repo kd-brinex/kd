@@ -17,7 +17,7 @@ class CitySearch extends City
      * @inheritdoc
      */
     public $regionName;
-    public $dist;
+//    public $dist;
 
 
 //    public $start;
@@ -28,9 +28,9 @@ class CitySearch extends City
         return [
             [['id', 'region_id'], 'integer'],
             [['name'], 'safe'],
-            [['latitude', 'longitude','dist'], 'number'],
+            [['latitude', 'longitude'], 'number'],
             [['enable'], 'boolean'],
-            [['point'],'safe'],
+//            [['point'],'safe'],
             [['regionName'],'safe'],
 
 
@@ -75,12 +75,12 @@ class CitySearch extends City
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'enable' => $this->enable,
-            'point'=>$this->point,
+//            'point'=>$this->point,
             'regionName'=>$this->regionName,
 
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+//        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $query;
     }

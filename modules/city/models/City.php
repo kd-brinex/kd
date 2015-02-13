@@ -31,13 +31,13 @@ class City extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'region_id', 'latitude', 'longitude','enable','dist'], 'required'],
+            [['id', 'name', 'region_id', 'latitude', 'longitude','enable'], 'required'],
             [['id', 'region_id'], 'integer'],
             [['latitude', 'longitude'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['id'], 'unique'],
             [['enable'],'boolean'],
-            [['dist'],'number']
+//            [['dist'],'number']
 
         ];
     }

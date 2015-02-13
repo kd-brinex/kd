@@ -30,7 +30,7 @@ $config = [
                 'ugb' => 'site/ugb',
 //                'сities'=>'city/city/index',
                   'ugb' => 'site/ugb',//перегружает данные в таблицы городов
-                'cities'=>'city/city',
+                'citys'=>'city/city',
                 'cities/<id:\w+>'=>'city/city/view',
                 'clist'=>'city/city/list',
 //

@@ -98,6 +98,10 @@ AppAsset::register($this);
             ]) ?>
             <?= $content ?>
         </div>
+    <div class="container-right">
+        <?= 'Правая панель'?>
+    </div>
+    <div class="clearfix"></div>
     </div>
 
     <footer class="footer">
