@@ -34,7 +34,7 @@ echo yii\widgets\DetailView::widget([
     <div class="offer-v2-item borders-lite">
         <div class="offer-v2-img">
             <a href="<?=url::toRoute(['view','id'=>$model->id],true)?>">
-                <div class="offer-v2-img-bg" style="background-image: url(<?=$model->Bigimage?>);"></div>
+                <div class="offer-v2-img-bg" style="background-image: url(<?=$model->Image?>);"></div>
             </a>
         </div>
 

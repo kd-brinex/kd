@@ -71,9 +71,12 @@ class Tovar extends \yii\db\ActiveRecord
     public function getImage()
     {
 //        var_dump($this);die;
+
         $p = Yii::$app->params;
+//        var_dump( $this[$p['image'][$this->tip_id]['name']]);die;
+
         return (isset($p['image'][$this->tip_id])) ?
-            $p['host'] . $p['image'][$this->tip_id]['normal'] .   $this->category_id. '.jpg':
+            $p['host'] . $p['image'][$this->tip_id]['normal'] .   $this[$p['image'][$this->tip_id]['name']]. '.jpg':
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
 
