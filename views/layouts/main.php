@@ -31,7 +31,7 @@ AppAsset::register($this);
         <div class="top-head"></div>
         <?php
         $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
-
+        $menu=app\modules\tovar\models\TovarSearch::category_menu();
         Modal::begin ( [
             'header' => '<h2>'.'Города'.'</h2>',
             'toggleButton' => [
@@ -65,6 +65,11 @@ AppAsset::register($this);
                 ],
             ]);
 
+//        foreach($menu as $m)
+//        {
+//            echo "['label'=>'".$m['label']."','url'=>'".$m['url']."',],";
+//        }
+//die;
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
@@ -84,13 +89,14 @@ AppAsset::register($this);
                         ['label'=> 'Соцсети', 'url' => ['/user/settings/networks']],
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
-                    ['label' => 'Товары', 'items'=>app\modules\tovar\models\TovarSearch::category_menu() ],
+                    ['label' => 'Товары', 'items'=>$menu ],
             ]]);
             NavBar::end();
         ?>
     </div>
     <div class="container-left">
-    <?= Nav::widget(['items'=>app\modules\tovar\models\TovarSearch::category_menu()])?>
+
+<?= Nav::widget(Yii::$app->params['catalog'])?>
     </div>
         <div class="container">
             <?= Breadcrumbs::widget([
