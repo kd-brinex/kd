@@ -30,8 +30,9 @@ echo yii\widgets\DetailView::widget([
 
 */
 //var_dump($model);die;?>
+
 <div class="offer-v1-item borders-lite">
-<div class="offer-v1-code">Код: <?=$model->category_id?></div>
+<div class="offer-v1-code">Код: <?=$model->category_id?>/<?=$model->id?></div>
 <div class="offer-v1-img">
 <a href="<?=url::toRoute(['view','id'=>$model->id],true)?>">
 <div class="offer-v1-img-bg" style="background-image: url(<?=$model->image?>);"></div>
@@ -42,7 +43,9 @@ echo yii\widgets\DetailView::widget([
 <div class="offer-v1-deliv">
 <?=$model->srok?>
 </div>
-<div class="offer-v1-bonus"><a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки."><img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +<?=$model->ball?></a></div>
+<div class="offer-v1-bonus">
+    <a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
+        <img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +<?=$model->ball?></a></div>
 <div class="offer-v1-price">
 <div class="offer-v1-price-new"><?=$model->price?></div>
 </div>

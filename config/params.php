@@ -43,14 +43,12 @@ return [
         'industrialshina' => [
             'normal' => 'gruz/',
             'big' => 'gruz/big/',
-            'name'=> 'id',
-            //id
+            'name'=> 'category_id',
         ],
         'velopokryshki' => [
             'normal' => 'gruz/',
             'big' => 'gruz/big/',
             'name'=> 'category_id',
-            //id
         ],
         'vstavka' => [
             'normal' => 'gruz/',

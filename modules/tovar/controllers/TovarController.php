@@ -5,6 +5,7 @@ namespace app\modules\tovar\controllers;
 use Yii;
 use app\modules\tovar\models\Tovar;
 use app\modules\tovar\models\TovarSearch;
+use app\modules\tovar\Iksora;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -169,6 +170,21 @@ class TovarController extends Controller
             'dataProvider' => $dataProvider,
             'params'=>$params,
 //            'searchModel'  => $searchModel,
+        ]);
+    }
+    public function actionFinddetails(){
+        $params=Yii::$app->request->queryParams;
+        $ixora= new Iksora();
+        if (isset($params['article'])){
+        $ixora->FindDetails($params['article']);
+        $details=$ixora->asArray();}
+        else
+        {$details=['DetailInfo'=>[]];}
+//        var_dump($details);die;
+        return $this->render('finddetails', [
+                 'details'=>$details,
+                 'mod'=>$ixora,
+            'params'  => $params,
         ]);
     }
 }

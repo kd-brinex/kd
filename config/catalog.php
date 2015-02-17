@@ -5,6 +5,10 @@ return ['label'=>'Товары',
 
 //    'itemoptions'=>['tag'=>'li'],
     'items' => [
+        ['label' => 'ЗАПЧАСТИ',
+            'url' => '/tovar/tovar/finddetails',
+//            'items'=>  [['label'=>'Диски','url'=>'/tovars/disk',]]
+        ],
         ['label' => 'ШИНЫ',
             'items' => [
                 ['label' => 'АВТОШИНЫ', 'url' => '/tovars/shina',],

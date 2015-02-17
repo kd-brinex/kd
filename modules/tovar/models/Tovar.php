@@ -73,17 +73,17 @@ class Tovar extends \yii\db\ActiveRecord
 //        var_dump($this);die;
 
         $p = Yii::$app->params;
-//        var_dump( $this[$p['image'][$this->tip_id]['name']]);die;
+//        var_dump( $p['image'][$this->tip_id]);die;
 
-        return (isset($p['image'][$this->tip_id])) ?
-            $p['host'] . $p['image'][$this->tip_id]['normal'] .   $this[$p['image'][$this->tip_id]['name']]. '.jpg':
+        return (isset($p['image'][$this->tip_id]['name'])) ?
+            $p['host'] . $p['image'][$this->tip_id]['normal'] . $this[$p['image'][$this->tip_id]['name']]. '.jpg':
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
 
     public function getBigimage()
     {
         $p = Yii::$app->params;
-        return (isset($p['image'][$this->tip_id])) ?
+        return (isset($p['image'][$this->tip_id]['name'])) ?
             $p['host'] . $p['image'][$this->tip_id]['big'] .   $this->category_id . '.jpg':
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
