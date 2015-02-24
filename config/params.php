@@ -1,6 +1,9 @@
 <?php
+
 $catalog = require(__DIR__ . '/catalog.php');
+
 return [
+    'securitykey'=>'k',
     'adminEmail' => 'husainov.m@brinex.ru',
     'catalog' => $catalog,
     'host' => 'http://img2.kolesa-darom.ru/img/',

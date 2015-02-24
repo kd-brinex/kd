@@ -1,5 +1,9 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\helpers\Html5;
+
+Yii::$app->view->registerCssFile('/css/style-offer.css');
 /**
  * Created by PhpStorm.
  * User: marat
@@ -32,12 +36,13 @@ echo yii\widgets\DetailView::widget([
 //var_dump($model);die;?>
 
     <td class="offer-v3-name">
-        <div class="offer-v3-code"><?=$model->id?></div>
-        <h3><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
+        <div class="offer-v3-code"><?=$model->tovar_id?></div>
+        <h3><a href="<?=url::toRoute(['view','id'=>$model->tovar_id],true)?>"><?=$model->tovarname?></a></h3>
     </td>
-    <td class="offer-v3-store">8</td>
-    <td class="offer-v3-stock">8</td>
-    <td class="offer-v3-price"><?=$model->price?></td>
+    <td class="offer-v3-store"><?=HTML::input('text','tovar_count',$model->tovar_count,['size'=>'3'])?></td>
+<td class="offer-v3-store"><?=HTML5::numb('text','tovar_count',$model->tovar_count,['size'=>'3'])?></td>
+<!--    <td class="offer-v3-stock">8</td>-->
+    <td class="offer-v3-price"><?=$model->tovar_price?></td>
     <td class="offer-v3-order">
         <a class="btn btn-warning" href="javascript:put('');"><i class="icon-shopping-cart icon-white"></i></a>
 <!--        <input type="hidden" id="47483" class="basket-cnt" size="4" value="0" onchange="basketInputControlActivate('47483',6444)">-->

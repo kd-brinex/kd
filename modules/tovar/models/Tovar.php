@@ -92,5 +92,14 @@ class Tovar extends \yii\db\ActiveRecord
     {
         return ($this->count > 0) ? '<span class="offer-v1-deliv-instock">✓В наличии</span>' : '<span class="offer-v1-deliv-days">• Доставка 3-5 дней</span>';
     }
+    public function getHash()
+    {
+        $hash='';
+        $hash= base64_encode(Yii::$app->security->encryptByPassword('{"tovar_id":"'.$this->id.'","tovar_price":'.$this->price.'}',Yii::$app->params['securitykey']));
+//        $hash=base64_encode('{tovar_id:'.$this->id.',tovar_price:'.$this->price.'}');
+//        $hash=base64_decode($hash);
+    return $hash;
+    }
+
 
 }

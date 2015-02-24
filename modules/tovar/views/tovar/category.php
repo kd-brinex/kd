@@ -1,6 +1,5 @@
 <?php
-use yii\widgets\ListView;
-use yii\widgets\Breadcrumbs;?>
+use yii\widgets\ListView;?>
 <div class="btn-group">
         <a class="btn" href="?viewType=1">&nbsp;<i class="icon-th"></i>&nbsp;</a>
         <a class="btn" href="?viewType=2">&nbsp;<i class="icon-th-list"></i>&nbsp;</a>
@@ -8,14 +7,13 @@ use yii\widgets\Breadcrumbs;?>
     </div>
 <?php
 Yii::$app->view->registerCssFile('/css/style-offer.css');
-//echo $view;
-//var_dump($params);die;
+
 $this->title=$params['tip_id'];
 $this->params['breadcrumbs'][]=$this->title;
 echo ListView::widget([
-
+    'summary'=>'',
     'dataProvider' => $dataProvider,
-
+//    'showHeader' => false,
     'options'=>$params['options'],
 
     'itemOptions' => $params['itemOptions'],

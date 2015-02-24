@@ -53,11 +53,14 @@ class IpGeoBase extends Component
     public function getLocation($ip, $asArray = true)
     {
 //        $ipDataArray=$this->fromCookies(self::CITY_NAME,$ipDataArray[self::CITY_NAME]);
+
         if ($this->useLocalDB) {
             $ipDataArray = $this->fromDB($ip) + ['ip' => $ip];
         } else {
             $ipDataArray = $this->fromSite($ip) + ['ip' => $ip];
         }
+        $ipDataArray['id']=isset($ipDataArray['id'])?$ipDataArray['id']:2097;
+        $ipDataArray['city']=isset($ipDataArray['city'])?$ipDataArray['city']:'Москва';
         $this->setCookies(self::CITY_NAME,$ipDataArray['id']);
 //        $this->fromCookies(self::CITY_NAME,$ipDataArray[self::CITY_NAME]);
 

@@ -51,6 +51,7 @@ class TovarController extends Controller
      */
     public function actionIndex()
     {
+
         $params=Yii::$app->request->queryParams;
         $searchModel = new TovarSearch();
         $dataProvider = $searchModel->search($params);

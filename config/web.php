@@ -8,6 +8,12 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
     'components' => [
+        'session' => [
+            'class' => 'yii\web\Session',
+            // 'db' => 'mydb',
+//             'sessionTable' => 'session',
+
+        ],
         'city'=>[
           'class'=>'app\modules\city\City',
         ],
@@ -141,6 +147,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+        'basket'=>[
+            'class'=>'app\modules\basket\Basket'
+        ],
         'city'=>[
             'class'=>'app\modules\city\City'
         ],

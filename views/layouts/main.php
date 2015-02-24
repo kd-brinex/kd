@@ -8,6 +8,7 @@ use yii\bootstrap\Modal;
 use yii\bootstrap\Button;
 
 
+
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -95,8 +96,7 @@ AppAsset::register($this);
         ?>
     </div>
     <div class="container-left">
-
-<?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']])?>
+<?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']]);?>
     </div>
         <div class="container">
             <?= Breadcrumbs::widget([

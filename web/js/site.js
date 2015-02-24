@@ -35,6 +35,16 @@ function load_city_list(){
     //$('#city_list').html('казань');
     //console.log('Казань');
 }
+function put(id){
+    $.ajax({
+        type: "POST",
+        url: "/basket/default/put",
+        data:{'id':id},
+        success: function(text){
+            console.log(text);
+        }
+    });
+}
 //window.onload = function () {
 //$('#city_list').click('load_city_list()');
 //    //load_city_list();
