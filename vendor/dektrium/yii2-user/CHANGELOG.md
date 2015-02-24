@@ -1,7 +1,21 @@
 # CHANGELOG
 
-## 0.9.3 [Work in progress]
+## 0.9.4 [Work in progress]
 
+- `enh` Improved admin views and controller (dmeroff)
+- `enh` Added datepicker in user grid view (dmeroff)
+
+## 0.9.3 [9 February 2015]
+
+- `fix` Fixed bug with inability to connect network account #275 (dmeroff)
+- `enh` Added turkish translation (veyselsahin)
+- `enh` Added lithuanian translation (vilkazz)
+- `fix` Fixed button css on profile settings page (sosojni)
+- `enh` Hidden recovery link when `enablePasswordRecovery` is false (marsuboss)
+- `fix` Fixed gravatar hash creation (nigelterry)
+- `fix` Fixed invalid redirection after changing account settings (WeeSee)
+- `fix` Updated messages to be more readable (jspaine)
+- `fix` Reverted initialization of `user` component (dmeroff)
 - `fix` Fixed bug on confirmation and recovery when invalid token was used (anders-akero)
 
 ## 0.9.2 [14 January 2015]

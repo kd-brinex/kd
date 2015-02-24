@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\helpers\Html5;
+//use yii\helpers\Html5;
 
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 /**
@@ -40,7 +40,7 @@ echo yii\widgets\DetailView::widget([
         <h3><a href="<?=url::toRoute(['view','id'=>$model->tovar_id],true)?>"><?=$model->tovarname?></a></h3>
     </td>
     <td class="offer-v3-store"><?=HTML::input('text','tovar_count',$model->tovar_count,['size'=>'3'])?></td>
-<td class="offer-v3-store"><?=HTML5::numb('text','tovar_count',$model->tovar_count,['size'=>'3'])?></td>
+
 <!--    <td class="offer-v3-stock">8</td>-->
     <td class="offer-v3-price"><?=$model->tovar_price?></td>
     <td class="offer-v3-order">
