@@ -56,4 +56,11 @@ background-color: #f8efc0;
     margin: 2px;
 }
 
-
+/************************************
+basket
+*************************************/
+.basket-itogo{
+    font-size: 24px;
+    text-align: right;
+    width:700px;
+}

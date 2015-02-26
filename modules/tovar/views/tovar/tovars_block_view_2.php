@@ -62,7 +62,7 @@ echo yii\widgets\DetailView::widget([
             <div class="offer-v2-bonus"><a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
                     <img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +10</a></div>
 
-            <a class="btn btn-warning" href="javascript:put('');">
+            <a class="btn btn-warning" href="javascript:put('<?=$model->id?>');">
                 <i class="icon-shopping-cart icon-white"></i> Заказать</a>
 <!--            <input type="hidden" id="47483" class="basket-cnt" size="4" value="0" onchange="basketInputControlActivate('47483',6594)">-->
 <!--            <span class="basket-price" id="47483Controls"></span>-->

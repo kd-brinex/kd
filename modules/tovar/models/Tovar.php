@@ -101,5 +101,14 @@ class Tovar extends \yii\db\ActiveRecord
     return $hash;
     }
 
-
+    public static function find(){
+        $city_id=Yii::$app->request->cookies['city'];
+        $p['id_store']=999;
+        $query =parent::find();
+//        var_dump($query);die;
+        $query->where('(id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
+//        $dataProvider = new ActiveDataProvider(['query' => $query]);
+//        $dataProvider->pagination=false;
+        return $query;
+    }
 }

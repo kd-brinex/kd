@@ -47,6 +47,7 @@ class TovarSearch extends Tovar
     public function search($params)
     {
         $query = Tovar::find();
+
 //$query=$this->find_tovar_param($params);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -68,8 +69,7 @@ class TovarSearch extends Tovar
     {
         $query = Tovar::find()
 //            select * from tovar  where id_store=999 and price > 0 and tip_id='shina' and value_char='shina' group by id
-            ->where(['tip_id'=>$params['tip_id']
-                      ,'id_store'=>999])
+            ->andWhere(['tip_id'=>$params['tip_id']])
             ->groupBy (['id']);
 
         $dataProvider = new ActiveDataProvider(['query' => $query,]);
@@ -77,21 +77,16 @@ class TovarSearch extends Tovar
     }
     public function find_tovar_param($params)
     {
+        $city_id=Yii::$app->request->cookies['city'];
         $p['id']=$params['id'];
+//        $p['id_store']=999;
 //        $query = $this->find()->andwhere('(id=:id) and (id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
         $query = $this->find()->andwhere('(id=:id)',$p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
 //        $dataProvider->pagination=false;
         return $dataProvider;
     }
-    public static function find(){
-        $city_id=Yii::$app->request->cookies['city'];
-        $p['id_store']=999;
-        $query =parent::find()->where('(id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
-//        $dataProvider = new ActiveDataProvider(['query' => $query]);
-//        $dataProvider->pagination=false;
-        return $query;
-    }
+
     public static function category_menu()
     {
         $rows = (new \yii\db\Query())

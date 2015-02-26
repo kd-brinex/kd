@@ -31,6 +31,7 @@ class Zakaz extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $phpsessid;
+    public $_basket;
 
     public static function tableName()
     {
@@ -76,26 +77,18 @@ class Zakaz extends \yii\db\ActiveRecord
             'zakaz_date' => 'Zakaz Date',
         ];
     }
-    public function put($params)
-    {
-//        var_dump($params);die;
-        $tovar=new TovarSearch();
-        $model=$tovar->findOne($params);
-//        var_dump($model);die;
-//        $hash=$model->hash;
-//        var_dump($hash);die;
-        $basket = Yii::$app->getDb();
-//        $hash=$params['hash'];
-//        $hash=Yii::$app->security->decryptByPassword( base64_decode($hash),Yii::$app->params['securitykey']);
-//        var_dump($hash);
-//        $params=json_decode($hash,true);
+//    public function put($params)
+//    {
+//
+//        $tovar=new TovarSearch();
+//        $model=$tovar->findOne($params);
+//        $basket = Yii::$app->getDb();
+//        $params= ['session_id' => $this->getPhpsessid(),'tovar_count'=>1,'tovar_min'=>1,'tovar_id'=>$model->id,'tovar_price'=>$model->price];
+//        $basket->createCommand('insert into basket (tovar_id,tovar_count,tovar_min,tovar,tovar_price,session_id)'
+//            . 'values(:tovar_id,:tovar_count,:tovar_min,null,:tovar_price,:session_id)')->bindValues($params)->execute();
+//
+//    }
 
-        $params= ['session_id' => $this->getPhpsessid(),'tovar_count'=>1,'tovar_min'=>1,'tovar_id'=>$model->id,'tovar_price'=>$model->price];
-//        var_dump($params);die;
-        $basket->createCommand('insert into basket (tovar_id,tovar_count,tovar_min,tovar,tovar_price,session_id)'
-            . 'values(:tovar_id,:tovar_count,:tovar_min,null,:tovar_price,:session_id)')->bindValues($params)->execute();
-
-    }
     private function getPhpsessid()
     {
 
@@ -106,9 +99,13 @@ class Zakaz extends \yii\db\ActiveRecord
     }
     public function getBasket()
     {
-       $query= new BasketSearch();
+        if(!isset($this->_basket)) {
+            $query = new BasketSearch();
 //        $query->find()->leftJoin('tovar',['tovar.id'=>'tovar_id'])->where(['session_id'=>$this->getPhpsessid()]);
-        return   $query->search([]);
+        $this->_basket= $query->search([]);
+        }
+        return $this->_basket;
     }
+
 
 }

@@ -17,6 +17,7 @@
   background-position: -360px -48px;
 }
 
+
 .product-favor,.product-favor-active{display:inline-block;margin-top:10px;font-family:arial,sans-serif}.product-favor a{color:#a0a0a0;text-decoration:none}.product-favor a:hover,.product-favor-active{color:#08c}.product-favor span,.product-favor-active span{vertical-align:top;font-size:11px}
 .product-favor:hover span{color:#08c;border-bottom:1px solid #08c}.favor-icon{display:inline-block;width:8px;height:16px;background-image:url(http://kolesa-darom.ru/img2/favor-icon.png);background-repeat:no-repeat}.product-favor .favor-icon{background-position:0 0}.product-favor:hover .favor-icon,.product-favor-active .favor-icon{background-position:-8px 0}
 
@@ -303,8 +304,6 @@ ebay
 	color: #fe7701;
 	text-decoration: underline;
 }
-
-
 
 
 

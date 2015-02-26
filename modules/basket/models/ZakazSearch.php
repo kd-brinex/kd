@@ -15,6 +15,8 @@ class ZakazSearch extends Zakaz
     /**
      * @inheritdoc
      */
+    public $basket;
+    public $summa;
     public function rules()
     {
         return [

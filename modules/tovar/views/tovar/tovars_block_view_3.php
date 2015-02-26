@@ -39,7 +39,7 @@ echo yii\widgets\DetailView::widget([
     <td class="offer-v3-stock">8</td>
     <td class="offer-v3-price"><?=$model->price?></td>
     <td class="offer-v3-order">
-        <a class="btn btn-warning" href="javascript:put('');"><i class="icon-shopping-cart icon-white"></i></a>
+        <a class="btn btn-warning" href="javascript:put('<?=$model->id?>');;"><i class="icon-shopping-cart icon-white"></i></a>
 <!--        <input type="hidden" id="47483" class="basket-cnt" size="4" value="0" onchange="basketInputControlActivate('47483',6444)">-->
 <!--        <span class="basket-price" id="47483Controls"></span>-->
 <!--        <div class="basket-price" id="47483Price">130</div>-->

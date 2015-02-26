@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Tabs;
 use yii\grid\GridView;
-use yii\widgets\ListView;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\basket\models\Zakaz */
@@ -23,15 +23,16 @@ use yii\widgets\ListView;
     [
     'label' => 'Заказ',
     'content' => '<h1>Ваш заказ.</h1>'
-.ListView::widget([
-    'summary'=>'',
-    'dataProvider' =>$model->basket,
-//    'showHeader' => false,
-    'options'=>['tag'=>'table','class'=>'offer-v3-table'],
-    'itemOptions' => ['tag'=>'tr'],
-
-    'itemView' => function ($model){return $this->render('tovars_block_view_3', ['model' => $model]);},
-])
+    .$this->render('zakaz_tab', ['model' => $model])
+//.ListView::widget([
+//    'summary'=>'',
+//    'dataProvider' =>$model->basket,
+////    'showHeader' => false,
+//    'options'=>['tag'=>'table','class'=>'offer-v3-table'],
+////    'itemOptions' => ['tag'=>'tr'],
+//
+//    'itemView' => function ($model){return $this->render('tovars_block_view_3', ['model' => $model]);},
+//])
 //. GridView::widget([
 //        'dataProvider' => $model->basket,
 ////            'showHeader'=>false,

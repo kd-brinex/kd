@@ -6,6 +6,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\bootstrap\Modal;
 use yii\bootstrap\Button;
+use yii\helpers\Url;
 
 
 
@@ -78,6 +79,7 @@ AppAsset::register($this);
                         ['label' => 'Главная страница', 'url' => ['/site/index']],
                         ['label' => 'О компании', 'url' => ['/site/about']],
                         ['label' => 'Обратная связь', 'url' => ['/site/contact']],
+
                     ]],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Личный кабинет', 'items'=>[
@@ -91,6 +93,7 @@ AppAsset::register($this);
                         ['label' => 'Выход' ,'url' => ['/user/security/logout'],'linkOptions' => ['data-method' => 'post']]
                     ]],
                     ['label'=>'Товар','items'=>Yii::$app->params['catalog']['items'] ],
+                    ['label' => 'Корзина','url'=>['/basket/basket']],
             ]]);
             NavBar::end();
         ?>
@@ -105,7 +108,7 @@ AppAsset::register($this);
             <?= $content ?>
         </div>
     <div class="container-right">
-        <?= 'Правая панель'?>
+        <a href="<?= url::toRoute(['/basket/basket'], true) ?>">Корзина</a>
     </div>
     <div class="clearfix"></div>
     </div>

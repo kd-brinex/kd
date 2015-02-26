@@ -38,10 +38,41 @@ function load_city_list(){
 function put(id){
     $.ajax({
         type: "POST",
-        url: "/basket/default/put",
+        url: "/basket/basket/put",
         data:{'id':id},
-        success: function(text){
-            console.log(text);
+        success: function(result){
+            $("#basket").html(result);
+        }
+    });
+}
+function count(o){
+   var count = o.value;
+   var id = o.id;
+    //$("#"+id+"_summa").text( $("#"+id+"_price").text()*count);
+    //($("#"+id+"_price").value*count);
+    $.ajax({
+        type: "POST",
+        url: "/basket/basket/put",
+        data:{'id':id,
+              'tovar_count':count},
+        success: function(result){
+            console.log("succesful");
+            $("#basket").html(result);
+        }
+    });
+}
+function del(o){
+    var id = $('div',o).attr('tovar_id') ;
+    //console.log(id,
+    //$('#'+id+'_offer').attr('id'));
+    //$('#'+id+'_offer').css("display","none");
+    $.ajax({
+        type: "POST",
+        url: "/basket/basket/put",
+        data:{'id':id,
+                'tovar_count':0},
+        success: function(result){
+            $("#basket").html(result);
         }
     });
 }
