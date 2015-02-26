@@ -13,11 +13,15 @@ class BasketController extends Controller
     {
         $model = new BasketSearch();
         $dataProvider = $model->search([]);
+        if($dataProvider->totalCount){
         $itogo=$this->summa($dataProvider,['tovar_summa']);
             return $this->render('index', [
                 'model' => $dataProvider,
                 'itogo' => $itogo,
-            ]);
+            ]);}
+        else{
+            return $this->render('not_tovar');
+        }
 
     }
 
@@ -36,11 +40,15 @@ class BasketController extends Controller
         $model = new BasketSearch();
         $model->put($params);
         $dataProvider = $model->search([]);
+        if($dataProvider->totalCount){
         $itogo=$this->summa($dataProvider,['tovar_summa']);
         return $this->render('zakaz_tab', [
             'model' => $dataProvider,
             'itogo' => $itogo,
-        ]);
+        ]);}
+        else{
+            return $this->render('not_tovar');
+        }
 
      }
 
