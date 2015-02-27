@@ -6,6 +6,8 @@ namespace app\modules\basket\models;
 
 use Yii;
 use app\modules\tovar\models\Tovar;
+use yii\db\Query;
+
 //use app\modules\tovar\models\TovarSearch;
 /**
  * This is the model class for table "basket".
@@ -100,17 +102,27 @@ class Basket extends \yii\db\ActiveRecord
 //        var_dump($params);die;
         $params=array_merge($default,$params);
 //            var_dump($params);die;
-        if ($params['tovar_count']>0){
-        $basket->createCommand('insert into `basket` (`tovar_id`,`tovar_count`,`tovar_min`,`tovar_price`,`session_id`)'
-            . 'values(:tovar_id,:tovar_count,:tovar_min,:tovar_price,:session_id)'
-        .' ON DUPLICATE KEY UPDATE `tovar_count`=:tovar_count')->bindValues($params)->execute();}
-        else
+
+        if ($params['tovar_count']>0) {
+        return $basket->createCommand('insert into `basket` (`tovar_id`,`tovar_count`,`tovar_min`,`tovar_price`,`session_id`)'
+        . 'values(:tovar_id,:tovar_count,:tovar_min,:tovar_price,:session_id)'
+        .' ON DUPLICATE KEY UPDATE `tovar_count`=:tovar_count')->bindValues($params)->execute();
+        }
+    else
         {
 //            var_dump($params);die;
-            $p=['session_id'=>$params['session_id'],'tovar_id'=>$params['tovar_id']];
-            $basket->createCommand('delete from `basket` where `session_id`=:session_id and `tovar_id`=:tovar_id')->bindValues($p)->execute();
+            $p = ['session_id' => $params['session_id'], 'tovar_id' => $params['tovar_id']];
+           return $basket->createCommand('delete from `basket` where `session_id`=:session_id and `tovar_id`=:tovar_id')->bindValues($p)->execute();
         }
-
+    }
+    public static function find(){
+        $c=Yii::$app->session;
+        $c->open();
+        $params['session_id']=$c->id;
+        $query = parent::find();
+        $query->andWhere('session_id=:session_id');
+        $query->addParams($params);
+        return $query;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace app\modules\tovar\models;
 
+use app\modules\basket\models\BasketSearch;
 use Yii;
 
 /**
@@ -110,5 +111,11 @@ class Tovar extends \yii\db\ActiveRecord
 //        $dataProvider = new ActiveDataProvider(['query' => $query]);
 //        $dataProvider->pagination=false;
         return $query;
+    }
+    public function getBasket(){
+    return $this->hasOne(BasketSearch::className(),['tovar_id'=>'id']);
+}
+    public function getInbasket(){
+        return (isset($this->basket))?$this->basket->id:0;
     }
 }

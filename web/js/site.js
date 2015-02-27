@@ -35,13 +35,14 @@ function load_city_list(){
     //$('#city_list').html('казань');
     //console.log('Казань');
 }
-function put(id){
+function put(o){
+    var id = $(o).attr('tovar_id') ;
     $.ajax({
         type: "POST",
-        url: "/basket/basket/put",
+        url: "/basket/put",
         data:{'id':id},
         success: function(result){
-            $("#basket").html(result);
+            $(o).html(result);
         }
     });
 }
@@ -52,7 +53,7 @@ function count(o){
     //($("#"+id+"_price").value*count);
     $.ajax({
         type: "POST",
-        url: "/basket/basket/put",
+        url: "/basket/count",
         data:{'id':id,
               'tovar_count':count},
         success: function(result){
@@ -68,7 +69,7 @@ function del(o){
     //$('#'+id+'_offer').css("display","none");
     $.ajax({
         type: "POST",
-        url: "/basket/basket/put",
+        url: "/basket/del",
         data:{'id':id,
                 'tovar_count':0},
         success: function(result){

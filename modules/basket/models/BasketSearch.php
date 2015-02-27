@@ -31,12 +31,13 @@ class BasketSearch extends Basket{
     }
     public function search($params)
     {
-        $c=Yii::$app->session;
-        $c->open();
-        $params['session_id']=$c->id;
+//        $c=Yii::$app->session;
+//        $c->open();
+//        $params['session_id']=$c->id;
         $query = Basket::find();
-        $query->andWhere('session_id=:session_id');
-        $query->addParams($params);
+//        $query->andWhere('session_id=:session_id');
+//        $query->addParams($params);
+//        $query->andFilterWhere(['=', 'session_id', $c->id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

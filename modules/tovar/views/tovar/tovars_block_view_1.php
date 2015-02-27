@@ -51,9 +51,8 @@ echo yii\widgets\DetailView::widget([
 </div>
 <div class="clr"></div>
 <div class="offer-v1-order">
+    <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>1]);?>
 
-<a class="btn btn-warning" href="javascript:put('<?=$model->id?>');">
-    <i class="icon-shopping-cart icon-white"></i> Заказать</a>
 <!--    <input type="hidden" id="48437" class="basket-cnt" size="4" value="0" onchange="basketInputControlActivate('48437',105)">-->
 <!--    <span class="basket-price" id="48437Controls"></span>-->
 <!--    <div class="basket-price" id="48437Price">659</div>-->

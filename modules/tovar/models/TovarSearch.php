@@ -20,7 +20,7 @@ class TovarSearch extends Tovar
     public $image;
     public $srok;
     public $hash;
-
+    public $inbasket;
     public function rules()
     {
         return [
@@ -77,11 +77,11 @@ class TovarSearch extends Tovar
     }
     public function find_tovar_param($params)
     {
-        $city_id=Yii::$app->request->cookies['city'];
+//        $city_id=Yii::$app->request->cookies['city'];
         $p['id']=$params['id'];
 //        $p['id_store']=999;
 //        $query = $this->find()->andwhere('(id=:id) and (id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
-        $query = $this->find()->andwhere('(id=:id)',$p);
+        $query = Tovar::find()->andwhere('(id=:id)',$p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
 //        $dataProvider->pagination=false;
         return $dataProvider;

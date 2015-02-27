@@ -39,6 +39,8 @@ $config = [
                 'citys'=>'city/city',
                 'cities/<id:\w+>'=>'city/city/view',
                 'clist'=>'city/city/list',
+                'basket'=>'basket/basket',
+                'basket/<mode:\w+>'=>'basket/basket/put',
 //
 //                'gii' => 'yii/gii',
 //                '<controller:\w+>/<id:\d+>' => '<controller>/view',
@@ -82,9 +84,9 @@ $config = [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.yandex.ru',
-                'username' => 'husainov.m@brinex.ru',
-                'password' => 'HuMa250773-brin',
+                'host' => 'smtp.gmail.com',
+                'username' => 'maratjobmail@gmail.com',
+                'password' => 'HuMa250773-gmail',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],

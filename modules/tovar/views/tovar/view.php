@@ -2,7 +2,7 @@
 use yii\bootstrap\Collapse;
 use \yii\grid\GridView;
 use yii\widgets\ListView;
-
+Yii::$app->view->registerCssFile('/css/style-offer.css');
 /**
  * Created by PhpStorm.
  * User: marat

@@ -14,12 +14,7 @@
     <div class="offer-page-desc">
         <div class="offer-page-price">
             <div class="offer-page-price-cta">
-                <a class="btn btn-warning" href="javascript:basketControlActivate1(48437,1);">
-                    <i class="icon-shopping-cart icon-white"></i> Заказать</a>
-                <input type="hidden" id="48437" class="basket-cnt" size="4" value="0" onchange="basketInputControlActivate('48437',108)">
-<!--                <span class="basket-price" id="48437Controls"></span>-->
-<!--                <div class="basket-price" id="48437Price">659</div>-->
-<!--                <div class="basket-price" id="48437Sel">23</div>-->
+                <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>2]);?>
             </div>
             <div class="offer-page-price-name">Цена</div>
             <div class="offer-page-price-new"><?=$model->price?> р.</div>
@@ -36,8 +31,8 @@
         <table class="table offer-page-table-deliv">
             <tbody><tr>
                 <td><div class="offer-page-table-deliv-1">&nbsp;</div></td>
-                <td><div class="offer-page-table-deliv-2">В магазине<br><span>2</span></div></td>
-                <td><div class="offer-page-table-deliv-2">На складе<br><span>8</span></div></td>
+                <td><div class="offer-page-table-deliv-2">В магазине<br><span><?=$model->count?></span></div></td>
+                <td><div class="offer-page-table-deliv-2">На складе<br><span><?=$model->count?></span></div></td>
             </tr>
             </tbody></table>
 
