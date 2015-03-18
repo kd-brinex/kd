@@ -160,9 +160,15 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
-            'components' => [
+            'modelMap' => [
+                'User' => 'app\modules\user\models\User',
+            ],
 
-                /*   'manager' => [
+
+//            'class' => 'app\modules\user\Module',
+  /*          'components' => [
+
+                   'manager' => [
                        'userClass'    => 'dektrium\user\models\User',
                        'tokenClass'   => 'dektrium\user\models\Token',
                        'profileClass' => 'dektrium\user\models\Profile',
@@ -179,8 +185,8 @@ $config = [
                        'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
                        // Model that is used on requesting password recovery
                        'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
-                   ]*/
-            ],
+                   ],
+            ],*/
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'admins' => ['marat'],

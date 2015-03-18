@@ -12,17 +12,19 @@ echo Tabs::widget([
         [
             'label' => 'Заказ',
             'content' => '<h1>Ваш заказ.</h1>'
-                .'<div id="basket">'
-                . $this->render('zakaz_tab', ['model' => $model,'itogo'=>$itogo])
-                .'</div>',
+                . '<div id="basket">'
+                . $this->render('zakaz_tab', ['model' => $model, 'itogo' => $itogo])
+                . '</div>',
             'active' => true,
             'headerOptions' => [
                 'id' => 'zakaz'
             ],],
         [
             'label' => 'Клиент',
-            'content' => '<h2>Укажите контактные данные.</h2>',
-
+            'content' => '<h2>Укажите контактные данные.</h2>'
+                . '<div id="user">'
+                . $this->render('klient_tab', ['model' => $user])
+                . '</div>',
 
             'headerOptions' => [
                 'id' => 'user'

@@ -5,7 +5,11 @@ $db = ['components'=>[
         'dsn' => 'mysql:host=127.0.0.1;dbname=brinex1;port=1111',
         'username' => 'madmin',
         'password' => 'c91Jm0YL1KAa',
-        'charset' => 'utf8'],
+        'charset' => 'utf8',
+        'enableSchemaCache' => true,
+        'schemaCacheDuration' => 3600,
+        'schemaCache' => 'cache',],
+
 
     'prod' => [
     'class' => 'yii\db\Connection',

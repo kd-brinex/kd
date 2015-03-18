@@ -2,6 +2,8 @@
 
 namespace app\modules\basket\controllers;
 
+use dektrium\user\models\User;
+use dektrium\user\models\UserSearch;
 use Yii;
 use yii\web\Controller;
 use app\modules\basket\models\BasketSearch;
@@ -14,10 +16,17 @@ class BasketController extends Controller
     {
         $model = new BasketSearch();
         $dataProvider = $model->search([]);
+
+        $user = new User();
+        $muser=$user->findOne(['id'=>\Yii::$app->user->identity->getId()]);
+//                $user = $u->finder->findProfileById(\Yii::$app->user->identity->getId());
+
+//        var_dump($user);die;
         if ($dataProvider->totalCount) {
             $itogo = $this->summa($dataProvider, ['tovar_summa']);
             return $this->render('index', [
                 'model' => $dataProvider,
+                'user'=>$muser,
                 'itogo' => $itogo,
             ]);
         } else {
