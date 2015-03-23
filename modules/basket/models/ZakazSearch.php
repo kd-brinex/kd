@@ -66,7 +66,7 @@ class ZakazSearch extends Zakaz
             'zakaz_date' => $this->zakaz_date,
         ]);
 
-        $query->andFilterWhere(['like', 'session_id', $this->session])
+        $query->andFilterWhere(['like', 'session_id', $this->phpsessid])
             ->andFilterWhere(['like', 'user_id', $this->user_id])
             ->andFilterWhere(['like', 'user_name', $this->user_name])
             ->andFilterWhere(['like', 'user_telephon', $this->user_telephon])

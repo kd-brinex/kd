@@ -93,7 +93,6 @@ class Zakaz extends \yii\db\ActiveRecord
     {
 
         $c=Yii::$app->session;
-        $c->open();
                 return $c->id;
 
     }

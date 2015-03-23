@@ -8,8 +8,15 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
     'components' => [
+
         'session' => [
             'class' => 'yii\web\Session',
+//            'timeout'=>28800,
+//            'cookieParams' => array (
+//                'lifetime' =>86400,
+//                'path' => '/',
+//                'httponly' => 'on',
+//            ),
             // 'db' => 'mydb',
 //             'sessionTable' => 'session',
 
@@ -127,6 +134,12 @@ $config = [
                     // ... see ViewRenderer for more options
                 ],
             ],
+
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views/settings' => '@app/modules/user/views/settings'
+                ],
+            ],
         ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
@@ -162,11 +175,15 @@ $config = [
             'class' => 'dektrium\user\Module',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
+                'Profile'=>'app\modules\user\models\Profile',
+            ],
+            'controllerMap' => [
+                'settings' => 'app\modules\user\controllers\SettingsController'
             ],
 
 
 //            'class' => 'app\modules\user\Module',
-  /*          'components' => [
+ /*       'components' => [
 
                    'manager' => [
                        'userClass'    => 'dektrium\user\models\User',

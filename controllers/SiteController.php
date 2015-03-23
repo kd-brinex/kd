@@ -74,7 +74,7 @@ public function behaviors()
 
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        Yii::$app->user->logout(false);
 
         return $this->goHome();
     }

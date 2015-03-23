@@ -8,24 +8,24 @@ use Yii;
 use yii\web\Controller;
 use app\modules\basket\models\BasketSearch;
 use yii\helpers\Url;
-
+use app\modules\basket\models\ZakazSearch;
 
 class BasketController extends Controller
 {
     public function actionIndex()
     {
-        $model = new BasketSearch();
-        $dataProvider = $model->search([]);
-
+        $bmodel = new BasketSearch();
+        $bdataProvider = $bmodel->search([]);
         $user = new User();
-        $muser=$user->findOne(['id'=>\Yii::$app->user->identity->getId()]);
+        $muser=$user->findOne(['id'=>(\Yii::$app->user->isGuest)?\Yii::$app->params['nouser_id']:\Yii::$app->user->identity->getId()]);
 //                $user = $u->finder->findProfileById(\Yii::$app->user->identity->getId());
 
 //        var_dump($user);die;
-        if ($dataProvider->totalCount) {
-            $itogo = $this->summa($dataProvider, ['tovar_summa']);
+        if ($bdataProvider->totalCount) {
+            $itogo = $this->summa($bdataProvider, ['tovar_summa']);
             return $this->render('index', [
-                'model' => $dataProvider,
+                'bmodel' => $bdataProvider,
+//                'zmodel'=> $zdataProvider,
                 'user'=>$muser,
                 'itogo' => $itogo,
             ]);

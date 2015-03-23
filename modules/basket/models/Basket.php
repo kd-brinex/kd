@@ -85,7 +85,6 @@ class Basket extends \yii\db\ActiveRecord
     {
 
         $c=Yii::$app->session;
-        $c->open();
         return $c->id;
 
     }
@@ -117,7 +116,6 @@ class Basket extends \yii\db\ActiveRecord
     }
     public static function find(){
         $c=Yii::$app->session;
-        $c->open();
         $params['session_id']=$c->id;
         $query = parent::find();
         $query->andWhere('session_id=:session_id');

@@ -30,7 +30,9 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <div class="wrap">
     <div class="navbar">
+        <div class="col-md-12">
         <div class="top-head"></div>
+            </div>
         <?php
         $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
         $menu=app\modules\tovar\models\TovarSearch::category_menu();
@@ -46,6 +48,7 @@ AppAsset::register($this);
         ] );
 
 //        \yii\widgets\Pjax::begin();
+
         echo Button::widget ( [
             'label' => 'Выбрать город',
             'options' => [
@@ -98,7 +101,7 @@ AppAsset::register($this);
             NavBar::end();
         ?>
     </div>
-    <div class="container-left">
+    <div class="col-md-2">
 <?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']]);?>
     </div>
         <div class="container">
@@ -107,7 +110,7 @@ AppAsset::register($this);
             ]) ?>
             <?= $content ?>
         </div>
-    <div class="container-right">
+    <div class="col-md-1">
         <a href="<?= url::toRoute(['/basket/basket'], true) ?>">Корзина</a>
     </div>
     <div class="clearfix"></div>

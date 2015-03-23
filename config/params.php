@@ -4,6 +4,7 @@ $catalog = require(__DIR__ . '/catalog.php');
 
 return [
     'securitykey'=>'k',
+    'nouser_id'=>5,
     'adminEmail' => 'husainov.m@brinex.ru',
     'catalog' => $catalog,
     'host' => 'http://img2.kolesa-darom.ru/img/',
