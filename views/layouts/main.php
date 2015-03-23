@@ -30,9 +30,9 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 <div class="wrap">
     <div class="navbar">
-        <div class="col-md-12">
-        <div class="top-head"></div>
-            </div>
+
+<!--        <div class="top-head"></div>-->
+
         <?php
         $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
         $menu=app\modules\tovar\models\TovarSearch::category_menu();
@@ -49,15 +49,7 @@ AppAsset::register($this);
 
 //        \yii\widgets\Pjax::begin();
 
-        echo Button::widget ( [
-            'label' => 'Выбрать город',
-            'options' => [
-                'class' => 'btn-lg btn-default',
-                'style' => 'margin:5px',
-                'onclick' => 'load_city_list()',
-            ], // add a style to overide some default bootstrap css
-            'tagName' => 'div'
-        ] );
+
         echo '<div id="city_list"></div>';
 //        \yii\widgets\Pjax::end();
         Modal::end ();
@@ -102,17 +94,26 @@ AppAsset::register($this);
         ?>
     </div>
     <div class="col-md-2">
+    <?=Button::widget ( [
+        'label' => 'Выбрать город',
+        'options' => [
+        'class' => 'btn-lg btn-default',
+        'style' => 'margin:5px',
+        'onclick' => 'load_city_list()',
+        ], // add a style to overide some default bootstrap css
+        'tagName' => 'div'
+        ] );?>
 <?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']]);?>
     </div>
-        <div class="container">
+        <div class="col-md-10">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?= $content ?>
         </div>
-    <div class="col-md-1">
-        <a href="<?= url::toRoute(['/basket/basket'], true) ?>">Корзина</a>
-    </div>
+<!--    <div class="col-md-1">-->
+<!--        <a href="--><?//= url::toRoute(['/basket/basket'], true) ?><!--">Корзина</a>-->
+<!--    </div>-->
     <div class="clearfix"></div>
     </div>
 
