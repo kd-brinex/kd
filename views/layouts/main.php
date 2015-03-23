@@ -14,6 +14,8 @@ use yii\helpers\Url;
 /* @var $content string */
 
 AppAsset::register($this);
+$city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
+$menu=app\modules\tovar\models\TovarSearch::category_menu();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -34,26 +36,6 @@ AppAsset::register($this);
 <!--        <div class="top-head"></div>-->
 
         <?php
-        $city_name=Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
-        $menu=app\modules\tovar\models\TovarSearch::category_menu();
-        Modal::begin ( [
-            'header' => '<h2>'.'Города'.'</h2>',
-            'toggleButton' => [
-                'tag' => 'button',
-                'class' => 'btn btn-lg btn-block btn-info',
-                'label' => $city_name,
-                'id'=>'button_city_list',
-
-            ]
-        ] );
-
-//        \yii\widgets\Pjax::begin();
-
-
-        echo '<div id="city_list"></div>';
-//        \yii\widgets\Pjax::end();
-        Modal::end ();
-
         NavBar::begin([
                 'brandLabel' => 'Колеса даром',
                 'brandUrl' => Yii::$app->homeUrl,
@@ -93,24 +75,18 @@ AppAsset::register($this);
             NavBar::end();
         ?>
     </div>
+    <div class="col-md-10">
+
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
+        <?= $content ?>
+    </div>
     <div class="col-md-2">
-    <?=Button::widget ( [
-        'label' => 'Выбрать город',
-        'options' => [
-        'class' => 'btn-lg btn-default',
-        'style' => 'margin:5px',
-        'onclick' => 'load_city_list()',
-        ], // add a style to overide some default bootstrap css
-        'tagName' => 'div'
-        ] );?>
+
 <?= Nav::widget(['items'=>Yii::$app->params['catalog']['items']]);?>
     </div>
-        <div class="col-md-10">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <?= $content ?>
-        </div>
+
 <!--    <div class="col-md-1">-->
 <!--        <a href="--><?//= url::toRoute(['/basket/basket'], true) ?><!--">Корзина</a>-->
 <!--    </div>-->
@@ -123,6 +99,35 @@ AppAsset::register($this);
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
+<?php
+Modal::begin ( [
+'header' => '<h2>'.'Города'.'</h2>',
+'toggleButton' => [
+'tag' => 'button',
+'class' => 'btn btn-lg btn-block btn-info',
+'label' => $city_name,
+'id'=>'button_city_list',
+
+]
+] );
+
+//        \yii\widgets\Pjax::begin();
+
+
+echo Button::widget ( [
+    'label' => 'Выбрать город',
+    'options' => [
+        'class' => 'btn-lg btn-default',
+        'style' => 'margin:5px',
+        'onclick' => 'load_city_list()',
+    ], // add a style to overide some default bootstrap css
+    'tagName' => 'div'
+] );
+//        \yii\widgets\Pjax::end();
+echo '<div id="city_list"></div>';
+Modal::end ();?>
+
+
 
 <?php $this->endBody() ?>
 </body>
