@@ -300,7 +300,7 @@
 .offer-v1-container {
 	margin: 0;
 	padding: 0;
-	width: 700px;
+	width: 100%;
 	list-style: none outside none;
 }
 .offer-v1-container > li {
