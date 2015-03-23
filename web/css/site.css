@@ -1,7 +1,7 @@
 html,
 body {
     height: 100%;
-    background: url(http://kolesa-darom.ru/img2/bgbody-hotline.gif) repeat-y top;
+    /*background: url(http://kolesa-darom.ru/img2/bgbody-hotline.gif) repeat-y top;*/
     padding: 0;
     margin: 0;
 }
@@ -11,7 +11,7 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
-    width:1280px;
+    width:100%;
 }
 
 .wrap > .container {
