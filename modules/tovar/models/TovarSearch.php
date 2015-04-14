@@ -68,7 +68,6 @@ class TovarSearch extends Tovar
     public function category_list($params)
     {
         $query = Tovar::find()
-//            select * from tovar  where id_store=999 and price > 0 and tip_id='shina' and value_char='shina' group by id
             ->andWhere(['tip_id'=>$params['tip_id']])
             ->groupBy (['id']);
 

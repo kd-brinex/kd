@@ -1,9 +1,8 @@
 <?php
 
 return ['label'=>'Товары',
-//    'options'=>['class'=>'menu'],
-
-//    'itemoptions'=>['tag'=>'li'],
+    'options'=>['tag'=>'ul', 'class'=>'nav nav-sidebar'],
+    'itemoptions'=>['tag'=>'li'],
     'items' => [
         ['label' => 'ЗАПЧАСТИ',
             'url' => '/tovar/tovar/finddetails',

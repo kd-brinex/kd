@@ -42,10 +42,11 @@ class Tovar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'tip_id', 'category_id', 'name', 'price', 'count', 'value_char', 'param_id'], 'required'],
+            [['id', 'tip_id', 'category_id', 'name', 'price', 'count', 'value_char', 'param_id','description'], 'required'],
             [['id', 'category_id'], 'string', 'max' => 9],
             [['tip_id', 'param_id'], 'string', 'max' => 25],
-            [['name', 'value_char'], 'string', 'max' => 200],
+            [['name', 'value_char','description'], 'string', 'max' => 200],
+            [['description'], 'string', 'max' => 500],
             [['price', 'count'], 'int']
         ];
     }
@@ -66,6 +67,7 @@ class Tovar extends \yii\db\ActiveRecord
             'image' => 'Изображение',
             'param_id' => 'Характеристика',
             'bigimage' => 'Изображение',
+            'description' => 'Описание',
         ];
     }
 
@@ -106,10 +108,7 @@ class Tovar extends \yii\db\ActiveRecord
         $city_id=Yii::$app->request->cookies['city'];
         $p['id_store']=999;
         $query =parent::find();
-//        var_dump($query);die;
         $query->where('(id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
-//        $dataProvider = new ActiveDataProvider(['query' => $query]);
-//        $dataProvider->pagination=false;
         return $query;
     }
     public function getBasket(){
@@ -118,4 +117,8 @@ class Tovar extends \yii\db\ActiveRecord
     public function getInbasket(){
         return (isset($this->basket))?$this->basket->id:0;
     }
+    public function asCurrency($value){
+     $rub=str_replace(',00','',Yii::$app->formatter->asCurrency($value,'RUB'));
+        return $rub;
+}
 }

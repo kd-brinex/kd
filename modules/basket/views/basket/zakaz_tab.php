@@ -8,7 +8,7 @@
 use yii\widgets\ListView;
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 ?>
-
+<div class="col-xs-12 col-lg-9 col-md-12 col-sm-12">
 <?=ListView::widget([
     'summary'=>'Количество позиций: {count}',
     'dataProvider' =>$model,
@@ -17,6 +17,8 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
 //    'itemOptions' => ['tag'=>'tr'],
 
     'itemView' => function ($model){return $this->render('tovars_block_view', ['model' => $model]);},
-]);
-echo '<div class="basket-itogo">Сумма к оплате: '.$itogo['tovar_summa'].'</div>';
-?>
+]);?>
+</div>
+<div class="visible-lg col-lg-3 bg-info">Рекламный блок</div>
+<?= '<div class="col-xs-12 basket-itogo">Сумма к оплате: '.Yii::$app->formatter->asCurrency($itogo['tovar_summa']).'</div>';?>
+

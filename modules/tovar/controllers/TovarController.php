@@ -153,17 +153,17 @@ class TovarController extends Controller
         if (!isset($params['viewType'])){$params['viewType']=1;}
         if ($params['viewType']==1)
         {
-            $params['options']=['tag'=>'ul','class'=>'offer-v1-container'];
-            $params['itemOptions']=['tag'=>'li'];
+            $params['options']=['tag'=>'div','class'=>'col-sm-12'];
+            $params['itemOptions']=['tag'=>'div'];
         }
         if ($params['viewType']==2)
         {
-            $params['options']=['tag'=>'ul','class'=>'offer-v2-container'];
-            $params['itemOptions']=['tag'=>'li'];
+            $params['options']=['tag'=>'div','class'=>'col-sm-12 '];
+            $params['itemOptions']=['tag'=>'div'];
         }
         if ($params['viewType']==3)
         {
-            $params['options']=['tag'=>'table','class'=>'offer-v3-table'];
+            $params['options']=['tag'=>'table','class'=>'col-xs-12'];
             $params['itemOptions']=['tag'=>'tr'];
         }
         $searchModel = new TovarSearch();

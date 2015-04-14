@@ -21,13 +21,23 @@ $config = [
 //             'sessionTable' => 'session',
 
         ],
-        'city'=>[
-          'class'=>'app\modules\city\City',
+        'city' => [
+            'class' => 'app\modules\city\City',
         ],
         'ipgeobase' => [
             'class' => 'app\modules\city\IpGeoBase',
             'useLocalDB' => true,
         ],
+        'a2d' => [
+            'class' => 'app\modules\auto\A2d',
+
+        ],
+        'adcpi' => [
+            'class' => 'app\modules\auto\Adcapi',
+//            'login'=>'kd',
+//            'pass'=>'JVBDhGpejncE',
+        ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -41,24 +51,21 @@ $config = [
                 'contact' => 'site/contact',
                 'profile' => 'user/settings/profile',
                 'ugb' => 'site/ugb',
-//                'сities'=>'city/city/index',
-                  'ugb' => 'site/ugb',//перегружает данные в таблицы городов
-                'citys'=>'city/city',
-                'cities/<id:\w+>'=>'city/city/view',
-                'clist'=>'city/city/list',
-                'basket'=>'basket/basket',
-                'basket/<mode:\w+>'=>'basket/basket/put',
-//
-//                'gii' => 'yii/gii',
-//                '<controller:\w+>/<id:\d+>' => '<controller>/view',
-//                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-//                'module/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-//                'module/<module:\w+>/<controller:\w+>/<action:\w+>/<id:\w+>' => '<module>/<controller>/<action>/<id>',
-                'tovar/<id:\w+>' => 'tovar/tovar/view',
+                'ugb' => 'site/ugb',//перегружает данные в таблицы городов
+                'citys' => 'city/city',
+                'cities/<id:\w+>' => 'city/city/view',
+                'clist' => 'city/city/list',
+                'basket' => 'basket/basket',
+                'basket/<mode:\w+>' => 'basket/basket/put',
+
+                'auto' => 'auto/auto',
+                'auto/marks/<typeid:\w+>' => 'auto/auto/marks',
+                'auto/models/<typeid:\w+>_<markid:\w+>' => 'auto/auto/models',
+                'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
+//                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
+                'finddetails'=>'tovar/tovar/finddetails',
+                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
-//                'admin/<module:\w+>/<controller:\w+>'=>'<module>/<controller>',
-//                'admin/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 
 
             ],
@@ -110,29 +117,29 @@ $config = [
         'db' => $db_connect,
         'view' => [
             'renderers' => [
-                'twig' => [
-                    'class' => 'yii\twig\ViewRenderer',
-                    // set cachePath to false in order to disable template caching
-                    'cachePath' => '@runtime/Twig/cache',
-                    // Array of twig options:
-                    'options' => [
-                        'auto_reload' => true,
-                    ],
-                    'globals' => ['html' => '\yii\helpers\Html'],
-                    'uses' => [
-                        'yii\helpers\Html',
-                        'yii\bootstrap\Nav',
-                        'yii\bootstrap\NavBar',
-                        'yii\widgets\Breadcrumbs',
-                        'app\assets\AppAsset',
-
-                    ],
-                    'options' => [
-
-
-                    ],
-                    // ... see ViewRenderer for more options
-                ],
+//                'twig' => [
+//                    'class' => 'yii\twig\ViewRenderer',
+//                    // set cachePath to false in order to disable template caching
+//                    'cachePath' => '@runtime/Twig/cache',
+//                    // Array of twig options:
+//                    'options' => [
+//                        'auto_reload' => true,
+//                    ],
+//                    'globals' => ['html' => '\yii\helpers\Html'],
+//                    'uses' => [
+//                        'yii\helpers\Html',
+//                        'yii\bootstrap\Nav',
+//                        'yii\bootstrap\NavBar',
+//                        'yii\widgets\Breadcrumbs',
+//                        'app\assets\AppAsset',
+//
+//                    ],
+//                    'options' => [
+//
+//
+//                    ],
+//                    // ... see ViewRenderer for more options
+//                ],
             ],
 
             'theme' => [
@@ -162,11 +169,15 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-        'basket'=>[
-            'class'=>'app\modules\basket\Basket'
+        'auto' => [
+            'class' => 'app\modules\auto\Auto',
+            'catalog' => 'auto2d'
         ],
-        'city'=>[
-            'class'=>'app\modules\city\City'
+        'basket' => [
+            'class' => 'app\modules\basket\Basket'
+        ],
+        'city' => [
+            'class' => 'app\modules\city\City'
         ],
         'tovar' => [
             'class' => 'app\modules\tovar\Tovar',
@@ -175,7 +186,7 @@ $config = [
             'class' => 'dektrium\user\Module',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
-                'Profile'=>'app\modules\user\models\Profile',
+                'Profile' => 'app\modules\user\models\Profile',
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController'
@@ -183,27 +194,27 @@ $config = [
 
 
 //            'class' => 'app\modules\user\Module',
- /*       'components' => [
+            /*       'components' => [
 
-                   'manager' => [
-                       'userClass'    => 'dektrium\user\models\User',
-                       'tokenClass'   => 'dektrium\user\models\Token',
-                       'profileClass' => 'dektrium\user\models\Profile',
-                       'accountClass' => 'dektrium\user\models\Account',
-                       // Model that is used on user search on admin pages
-                       'userSearchClass' => 'dektrium\user\models\UserSearch',
-                       // Model that is used on registration
-                       'registrationFormClass' => 'dektrium\user\models\RegistrationForm',
-                       // Model that is used on resending confirmation messages
-                       'resendFormClass' => 'dektrium\user\models\ResendForm',
-                       // Model that is used on logging in
-                       'loginFormClass' => 'dektrium\user\models\LoginForm',
-                       // Model that is used on password recovery
-                       'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
-                       // Model that is used on requesting password recovery
-                       'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
-                   ],
-            ],*/
+                              'manager' => [
+                                  'userClass'    => 'dektrium\user\models\User',
+                                  'tokenClass'   => 'dektrium\user\models\Token',
+                                  'profileClass' => 'dektrium\user\models\Profile',
+                                  'accountClass' => 'dektrium\user\models\Account',
+                                  // Model that is used on user search on admin pages
+                                  'userSearchClass' => 'dektrium\user\models\UserSearch',
+                                  // Model that is used on registration
+                                  'registrationFormClass' => 'dektrium\user\models\RegistrationForm',
+                                  // Model that is used on resending confirmation messages
+                                  'resendFormClass' => 'dektrium\user\models\ResendForm',
+                                  // Model that is used on logging in
+                                  'loginFormClass' => 'dektrium\user\models\LoginForm',
+                                  // Model that is used on password recovery
+                                  'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
+                                  // Model that is used on requesting password recovery
+                                  'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
+                              ],
+                       ],*/
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'admins' => ['marat'],

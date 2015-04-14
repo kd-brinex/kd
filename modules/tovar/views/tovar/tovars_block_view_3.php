@@ -37,7 +37,7 @@ echo yii\widgets\DetailView::widget([
     </td>
     <td class="offer-v3-store"><?=$model->count?></td>
     <td class="offer-v3-stock"><?=$model->count?></td>
-    <td class="offer-v3-price"><?=$model->price?></td>
+    <td class="offer-v3-price"><?=$model->asCurrency($model->price)?></td>
     <td class="offer-v3-order">
         <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>3]);?>
     </td>

@@ -2,7 +2,7 @@
 use yii\widgets\ListView;?>
 <div class="btn-group">
         <a class="btn" href="?viewType=1">&nbsp;<i class="icon-th"></i>&nbsp;</a>
-        <a class="btn" href="?viewType=2">&nbsp;<i class="icon-th-list"></i>&nbsp;</a>
+        <a class="btn hidden-xs" href="?viewType=2">&nbsp;<i class="icon-th-list"></i>&nbsp;</a>
         <a class="btn" href="?viewType=3">&nbsp;<i class="icon-align-justify"></i>&nbsp;</a>
     </div>
 <?php

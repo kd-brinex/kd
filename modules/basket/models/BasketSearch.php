@@ -12,6 +12,10 @@ use yii\data\ActiveDataProvider;
 class BasketSearch extends Basket{
     public $tovarname;
     public $tovar_summa;
+
+    /**
+     * @return mixed
+     */
     public $phpsessid;
     public function rules()
     {

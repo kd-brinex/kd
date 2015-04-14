@@ -31,42 +31,43 @@ echo yii\widgets\DetailView::widget([
 */
 //var_dump($model->inbasket);die;?>
 
-    <div class="offer-v2-item borders-lite">
-        <div class="offer-v2-img">
+<!--    <div class="col-xs-12">-->
+        <div class="col-xs-6">
             <a href="<?=url::toRoute(['view','id'=>$model->id],true)?>">
-                <div class="offer-v2-img-bg" style="background-image: url(<?=$model->Image?>);"></div>
+                 <img src="<?=$model->Image?>">
             </a>
         </div>
-
-        <div class="offer-v2-info">
-            <h3><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
-            <div class="offer-v2-code">Код: <?=$model->id?></div>
-            <div class="offer-v2-spec">&nbsp;&nbsp; Стеклоомывающая жидкость, которая эффективно очищает боковое&nbsp;,лобовое, задние стекла, а также фары автомобиля. ...</div>
-
-            <div class="offer-v2-deliv">
-                <table class="table page-table-deliv">
-                    <tbody><tr>
-                        <td class="page-table-deliv-1"><?=$model->srok?></td>
-
-                        <td class="page-table-deliv-2">В магазине<br><span><?=$model->count?></span></td>
-                        <td class="page-table-deliv-2">На складе<br><span><?=$model->count?></span></td>
-                    </tr>
-                    </tbody></table>
-            </div>
-
-        </div>
-
-        <div class="offer-v2-order">
-            <div class="offer-v2-price-name">Цена</div>
-            <div class="offer-v2-price-new"><?=$model->price?> р.</div>
-            <div class="offer-v2-bonus"><a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
+        <div class="col-xs-6">
+            <div class="col-xs-6 offer-v2-code">Код: <?= $model->id ?></div>
+            <div class="col-xs-6 offer-v2-bonus"><a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
                     <img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +10</a></div>
+<!--            <div class="offer-v2-price-name">Цена</div>-->
+            <div class="offer-v2-price-new"><?=$model->asCurrency($model->price)?></div>
+
             <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>2]);?>
 
 
         </div>
-        <div class="clr"></div>
-    </div>
+        <div class="col-xs-12">
+            <h3><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
 
+            <div><?=$model->description?></div>
+
+<!--            <div class="col-xs-12 ">-->
+                <div>
+
+                        <div class="col-xs-4"><?=$model->srok?></div>
+
+                        <div class="col-xs-4">В магазине<br><span><?=$model->count?></span></div>
+                        <div class="col-xs-4">На складе<br><span><?=$model->count?></span></div>
+                </div>
+<!--            </div>-->
+
+        </div>
+
+
+
+<!--    </div>-->
+<hr align="center" width="100%" color="#337ab7" >
 
 

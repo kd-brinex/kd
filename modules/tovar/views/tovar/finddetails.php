@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 Yii::$app->view->registerCssFile('/css/parts.css');
 ?>
 
@@ -15,7 +16,8 @@ Yii::$app->view->registerCssFile('/css/parts.css');
 <div class="sel-parts-2">
 <h2>Номер детали<br>можно узнать в каталогах</h2>
 <br>
-<a class="btn" href="http://www.kolesa-darom.ru/auto-parts/autocatalog/">Открыть каталог автомобилей </a>
+    <?=Html::a('Открыть каталог автомобилей','/auto',['class'=>'btn']);?>
+<!--<a class="btn" href="http://kd.auto2d.com//">Открыть каталог автомобилей </a>-->
 </div>
 <div class="clearfix"></div>
 </div>

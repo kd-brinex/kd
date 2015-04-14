@@ -71,7 +71,7 @@ echo Tabs::widget([
         ],]]);?>
 
 <div class="form-group">
-    <div class="col-lg-offset-9 col-lg-3">
+    <div class="col-xs-offset-3 col-xs-6">
         <?= \yii\helpers\Html::submitButton(Yii::t('user', 'Оформить заказ'), ['class' => 'btn btn-block btn-success']) ?><br>
 </div>
 </div>

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -18,12 +19,25 @@ public function behaviors()
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'only' => ['logout'],
                 'rules' => [
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['view', 'search'],
+                        'allow' => true,
+                        'roles' => ['?', '*', 'admin'],
                     ],
                 ],
             ],
@@ -53,6 +67,7 @@ public function behaviors()
     public function actionIndex()
     {
 //        $this->layout = false;
+
         return $this->render('index',[]);
     }
 

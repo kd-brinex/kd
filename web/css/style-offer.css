@@ -258,22 +258,27 @@
 	text-align: center;
 }
 .offer-v3-store {
-	width: 58px;
+	/*width: 58px;*/
+	width: 10%;
 	vertical-align: middle !important;
 }
 .offer-v3-stock {
-	width: 58px;
+	/*width: 58px;*/
+	width : 10%;
 	vertical-align: middle !important;
 }
 .offer-v3-price {
-	width: 64px;
+	/*width: 64px;*/
+	width: 15%;
 	vertical-align: middle !important;
 }
 .offer-v3-order {
-	width: 50px;
+	/*width: 50px;*/
+	width: 15%;
 	vertical-align: middle !important;
 }
 .offer-v3-name {
+	width: 30%;
 	text-align: left !important;
 }
 .offer-v3-code {
@@ -307,25 +312,19 @@
 	display: block;
 	float: left;
 	position: relative;
-	margin-right: 12px;
-	margin-bottom: 12px;
-	width: 166px;
-	height: 248px;
+	margin-right: 3px;
+	margin-bottom: 3px;
+	min-width: 150px;
+	/*min-width:166px;*/
+	width:24%;
+	/*height: 250px;*/
 	background: #fff;
+
 }
 .offer-v1-container > li:nth-child(4n) {
 	margin-right: 0;
 }
-.offer-v1-item {
-	background: #fff;
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 12px !important;
-	width: 140px;
-	height: 222px;
-	overflow: hidden;
-}
+
 /* Inner */
 .offer-v1-img {
 	position: relative;
@@ -354,7 +353,7 @@
 	vertical-align: top;
 }
 .offer-v1-item h3 {
-	margin-bottom: 5px;
+	margin-bottom: 3px;
 	font-size: 12px;
 	height: 30px;
 	overflow: hidden;
@@ -394,7 +393,7 @@
 	color: #da0402;
 }
 .offer-v1-price-new {
-	margin: 6px 0 8px;
+	margin: 6px 0 6px;
 	font-size: 19px;
 	text-align: right;
 }
@@ -402,7 +401,7 @@
 	color: #da0402;
 }
 .offer-v1-order,
-.offer-v1-code,
+/*.offer-v1-code,*/
 .offer-v1-spec,
 .offer-v1-bonus {
 	display: none;
@@ -436,48 +435,46 @@
 	text-align: center;
 }
 /* Hover */
-.offer-v1-item:hover .offer-v1-order,
-.offer-v1-item:hover .offer-v1-code,
-.offer-v1-item:hover .offer-v1-spec,
-.offer-v1-item:hover .offer-v1-bonus {
-	display: block;
-}
-.offer-v1-item:hover {
-	padding: 18px !important;
-	width: 200px;
-	min-height: 300px;
-	height: auto;
-	top: -30px;
-	left: -36px;
+/*.offer-v1-item:hover .offer-v1-order,*/
+/*.offer-v1-item:hover .offer-v1-code,*/
+/*.offer-v1-item:hover .offer-v1-spec,*/
+/*.offer-v1-item:hover .offer-v1-bonus {*/
+	/*display: block;*/
+/*}*/
+.offer-v1-item {
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 3px !important;
+	height: 250px;
+	overflow: hidden;
+	background: #fff;
+	width:100%;
+	height: 300px;
 	border: 1px solid #aaaaab;
 	box-shadow: 1px 1px 2px hsla(0,0%,0%,.2);
-	z-index: 1;
-}
-.offer-v1-item:hover .offer-v1-discount {
-	left: -18px;
-	width: 70px;
-	height: 20px;
 	font-size: 15px;
 }
-.offer-v1-item:hover .offer-v1-img,
-.offer-v1-item:hover .offer-v1-deliv,
-.offer-v1-item:hover h3 {
-	margin-bottom: 8px;
-}
-.offer-v1-item:hover .offer-v1-deliv {
-	float: left;
-	width: 110px;
-}
-.offer-v1-item:hover .offer-v1-img-bg {
-	width: 150px;
-	height: 150px;
-}
-.offer-v1-item:hover h3 {
-	height: auto;
-}
-.offer-v1-item:hover .offer-v1-price-new {
-	margin: 8px 0 12px;
-}
+/*.offer-v1-item:hover .offer-v1-img,*/
+/*.offer-v1-item:hover .offer-v1-deliv,*/
+/*.offer-v1-item:hover h3 {*/
+	/*margin-bottom: 8px;*/
+/*}*/
+/*.offer-v1-item:hover .offer-v1-deliv {*/
+	/*float: left;*/
+	/*width: 110px;*/
+/*}*/
+/*.offer-v1-item:hover .offer-v1-img-bg {*/
+	/*width: 150px;*/
+	/*height: 150px;*/
+/*}*/
+/*.offer-v1-item:hover h3 {*/
+	/*height: auto;*/
+/*}*/
+/*.offer-v1-item:hover .offer-v1-price-new {*/
+	/*margin: 8px 0 12px;*/
+/*}*/
 .icon-shopping-cart {
 	background-position: -360px -120px;
 }

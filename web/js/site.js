@@ -35,6 +35,29 @@ function load_city_list(){
     //$('#city_list').html('казань');
     //console.log('Казань');
 }
+function detail_info(model,tree){
+    $.ajax({
+        type: "GET",
+        url: "/auto/auto/detailinfo",
+        data:{'model':model,
+                'tree':tree},
+        success: function(text){
+            var _top  = (window.innerHeight)/2;
+            var _left = (window.innerWidth/2)-400;
+            var inf=$("#"+tree);
+            inf.append(text);
+            inf.css('z-index',7);
+            //inf.css('top',_top);
+            //inf.css('left',_left);
+            inf.css('width',600);
+            inf.css('height',300);
+            inf.css('position','absolute');
+        }
+    });
+    //$('#city_list').html('казань');
+    //console.log('Казань');
+}
+
 function put(o){
     var id = $(o).attr('tovar_id') ;
     $.ajax({
