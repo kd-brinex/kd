@@ -59,7 +59,7 @@ class A2D {
     public static function lang($param){
         $lng = static::$_lng; /// Используемый язык
         $action = static::$_fln;
-        $fln = require_once('catalogs/auto2d/_lng.php'); /// В каком файле вызвали функцию
+        $fln = require_once('_lng.php'); /// В каком файле вызвали функцию
         return $fln[$lng][$action][$param];
     }
     /// Отправляем запрос на сервер

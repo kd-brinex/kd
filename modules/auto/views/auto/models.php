@@ -9,11 +9,14 @@
 $this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
 $this->params['breadcrumbs'][] = ['label'=>$models->typeName,'url'=>['/auto/marks/'.$params['typeid']]];
 $this->params['breadcrumbs'][] = $models->markName;
-$wroot = '../modules/auto/catalogs/auto2d/';
-$cssView = file_get_contents($wroot . 'media/css/fw.css');
-$cssView .= file_get_contents($wroot . 'media/css/style.css');
-$cssView .= file_get_contents($wroot . 'media/css/adc.css');
-$this->registerCss($cssView);
+Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
+//$wroot = '../modules/auto/catalogs/auto2d/';
+//$cssView = file_get_contents($wroot . 'media/css/fw.css');
+//$cssView .= file_get_contents($wroot . 'media/css/style.css');
+//$cssView .= file_get_contents($wroot . 'media/css/adc.css');
+//$this->registerCss($cssView);
 //var_dump($models);?>
 <div id="AutoDealer">
     <h1>Список моделей <?= $models->markName ?> </h1>

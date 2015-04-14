@@ -1,5 +1,5 @@
 <?php
-$wroot='../modules/auto/catalogs/'.$catalog.'/';
+//$wroot='../modules/auto/catalogs/'.$catalog.'/';
 //include $wroot."_lib.php";    /// После подключения доступен класс A2D
 //include $wroot."adc/api.php"; /// После подключения доступен класс ADCAPI
 ///// Устанавливаем объект $oA2D - объект для работы с каталогом Компании АвтоДилер
@@ -22,10 +22,13 @@ $oAdcpi->aBreads = $oA2D->toObj([
 ]);
 
 
-$cssView = file_get_contents($wroot.'media/css/fw.css');
-$cssView .= file_get_contents($wroot.'media/css/style.css');
-$cssView .= file_get_contents($wroot.'media/css/adc.css');
-$this->registerCss($cssView);
+//$cssView = file_get_contents($wroot.'media/css/fw.css');
+//$cssView .= file_get_contents($wroot.'media/css/style.css');
+//$cssView .= file_get_contents($wroot.'media/css/adc.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
+//$this->registerCss($cssView);
 ?>
 <div class="auto-default-index">
     <h1><?= $catalog?></h1>

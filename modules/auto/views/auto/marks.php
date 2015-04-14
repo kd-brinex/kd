@@ -34,11 +34,14 @@ $sTypeName = $oAdcpi->property($oMarkList,'typeName');
 //]);
 $this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
 $this->params['breadcrumbs'][] = $sTypeName;
-$wroot='../modules/auto/catalogs/auto2d/';
-$cssView = file_get_contents($wroot.'media/css/fw.css');
-$cssView .= file_get_contents($wroot.'media/css/style.css');
-$cssView .= file_get_contents($wroot.'media/css/adc.css');
-$this->registerCss($cssView);
+Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
+Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
+//$wroot='../modules/auto/catalogs/auto2d/';
+//$cssView = file_get_contents($wroot.'media/css/fw.css');
+//$cssView .= file_get_contents($wroot.'media/css/style.css');
+//$cssView .= file_get_contents($wroot.'media/css/adc.css');
+//$this->registerCss($cssView);
 ?>
 
 
