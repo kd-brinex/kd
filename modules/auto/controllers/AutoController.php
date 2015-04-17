@@ -9,6 +9,7 @@ class AutoController extends Controller
 {
     public function actionIndex()
     {
+        $this->layout = 'main';
         $catalog=$this->module->catalog;
         $oA2D = \Yii::$app->a2d;
         $oAdcpi = \Yii::$app->adcpi;
@@ -18,6 +19,7 @@ class AutoController extends Controller
     }
     public function actionMarks()
     {
+        $this->layout = 'main';
         $params=\Yii::$app->request->queryParams;
         $oA2D = \Yii::$app->a2d;
         $oAdcpi = \Yii::$app->adcpi;
@@ -45,6 +47,7 @@ class AutoController extends Controller
         ]);
     }
     public function actionModels(){
+        $this->layout = 'main';
         $params=\Yii::$app->request->queryParams;
         $oAdcpi = \Yii::$app->adcpi;
 //        var_dump($params['markid'],$params['typeid']);die;
@@ -59,27 +62,26 @@ class AutoController extends Controller
         $oAdcpi = \Yii::$app->adcpi;
     }
     public function actionTree(){
-
+        $this->layout = 'main';
         $params=\Yii::$app->request->queryParams;
-        $oAdcpi = \Yii::$app->adcpi;
+
         $oA2D = \Yii::$app->a2d;
-        $bMultiArray=false;
-        $tree=$oAdcpi->getTreeList($params['modelid'],$bMultiArray);
+
+        $sModelID=$params['modelid'];
+        $auto = new Auto($oA2D,$sModelID);
+        $auto->buildTree();
         return $this->render('tree',[
-            'oTreelList'=>$tree,
-            'oA2D'=>$oA2D,
-            'bMultiArray'=>$bMultiArray,
-            'sModelID'=>$params['modelid'],
-            'tree'=>$tree,
-            'oAdcpi'=>$oAdcpi,
+
+            'auto'=>$auto,
         ]);
 
     }
     public function actionMap(){
-
+        $this->layout = 'main';
         $params=\Yii::$app->request->queryParams;
         $oAdcpi = \Yii::$app->adcpi;
         $oA2D = \Yii::$app->a2d;
+
 //        $bMultiArray=false;
 //        $tree=$oAdcpi->getTreeList($params['modelid'],$bMultiArray);
         return $this->render('map',[
@@ -90,6 +92,7 @@ class AutoController extends Controller
 
     }
     public function actionDetailinfo(){
+        $this->layout = 'main';
         $this->layout = false;
         $params=\Yii::$app->request->queryParams;
         $oAdcpi = \Yii::$app->adcpi;

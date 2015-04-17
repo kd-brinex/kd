@@ -1,0 +1,448 @@
+BODY{
+    font-family: 'Roboto',sans-serif,Helvetica,Arial,serif;
+    font-size: 16px;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/**********************************************************************************************************************/
+H1 {font-size: 14pt; color: SteelBlue; font-weight: bold; text-align: center;}
+H2 {font-size: 10pt; color: SteelBlue; font-weight: bold; text-align: center;}
+a{
+    color: SteelBlue;
+    text-decoration: none;
+}a:hover{color:red}
+.layout{width:970px;margin:auto;position:relative}
+.defBorder {
+    border: 4px solid #808080;
+    border-radius: 4px;
+}
+.bttnGB{
+    display: inline-block;
+    padding: 8px 18px;
+    text-align: center;
+    background-color: #e1e1e1;
+    color: #000000;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.bttnGB:hover{
+    background-color: #1b6cad;
+    color: white;
+    text-decoration: none;
+}
+.cBlue {
+    color: #007ac9;
+}
+#catalogBreads{
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.warning { position: absolute; color: red; text-align: center; width: 100%; top: 270px; font-size: 20px; font-weight: bold; }
+/* titleTooltip */
+.jtt{
+    display:none;
+    position:absolute;
+    background-color: hsl(0,0%,90%);
+    border:1px solid hsl(0,0%,40%);
+    border-radius:5px;
+    padding:10px;
+    color:hsl(0,0%,20%);
+    font-size:12px;
+    z-index: 777;
+}
+/**********************************************************************************************************************/
+
+
+/***********************************************************************************************************************/
+#AutoDealer,.AutoDealer{
+    position: relative;
+    margin-left: 20px;
+}
+#AutoDealer img,.AutoDealer img{
+    border: 0;
+}
+#AutoDealer h1,.AutoDealer h1{margin-bottom: 20px !important;}
+#detailsG1 a{
+    width: 21%;
+    height: 160px;
+    margin: 1px;
+    padding: 10px;
+    border-width: 2px;
+    font-size: 14px;
+    text-align: center;
+}
+/***********************************************************************************************************************/
+
+
+/**********************************************************************************************************************/
+/* Search */
+.searchForm{ width: 800px; border-top:1px solid #e1e1e1; border-right:1px solid #e1e1e1; border-left:1px solid #e1e1e1; position:relative; margin:0 auto 30px; }
+
+.tab{ color:#707070; }
+.tab,
+.tab_active{ width:50%; position:relative; float:left; text-align:center; z-index:10; cursor:pointer; padding:10px 0; }
+.tab_active{ color:#1b6cad; text-decoration:underline; background:#e1e1e1; }
+
+.tabkont       { display:none }
+.tabkont_active{ width:740px; background:#e1e1e1; bottom:0; left:0; z-index:20; padding:30px 30px 20px; }
+
+.span_active{cursor: pointer;}
+.span_noactive{cursor: pointer;}
+
+.searchLabels{ font-size:14px }
+.searchLabels label{ font-weight:normal; }
+.searchLabels label.checked{ font-weight:bold; }
+
+.spare_parts{width: 406px;padding-left: 67px;}
+
+.search2failds{width: 200px;padding-left: 5px;}
+.spare_parts,.search2failds{height: 48px;font-size: 24px;border:3px solid #ffb500; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);}
+
+.searchBttn{ width:136px; height:48px; border:none; background:#707070; color:#ffffff; font-size:24px; margin-left:30px; }
+.searchBttn:hover{ background:#1b6cad; color:#ffffff; }
+
+.whereSearch{
+    background: hsl(0,0%,88%);
+    padding: 20px 0 0;
+}
+.whereSearch .item{
+    line-height: 20px;
+    vertical-align: top;
+}
+.a2dCheckBox{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid hsl(0,0%,40%);
+    background: hsl(0,0%,80%);
+    cursor: pointer;
+}
+.a2dCheckBox:hover{
+    background: hsl(0,0%,90%);
+}
+.a2dCheckBox.active{
+    background: #ffb500;
+}
+/**********************************************************************************************************************/
+
+
+/**********************************************************************************************************************/
+/**  Catalog Markets  **/
+.catalogMarkets{
+    text-align: center;
+}
+.catalogMarkets ul{
+    display: inline-block;
+}
+.catalogMarkets li{
+    width: 120px;
+    text-align: center;
+}
+.catalogMarkets a{
+    color: grey;
+}
+.catalogMarkets a:hover, .catalogMarkets a.active{
+    color: #428bca;
+}
+/**********************************************************************************************************************/
+
+
+/**********************************************************************************************************************/
+/***  One Level Tree with Img   ***/
+.treeBranch{
+    margin-bottom: 20px;
+}
+.plusBranch,.itemsBranchL{
+    background: #e1e1e1;
+}
+.plusBranch,.headBranch{
+    /*cursor: pointer;*/
+}
+.headBranch,.headBranchLVL1,.headBranchLVL2{
+    border-radius: 4px;
+}
+.plusBranch:hover,.headBranch:hover,.headBranchLVL1:hover,.headBranchLVL2:hover{
+    cursor: pointer;
+    background: #CCCCCC;
+}
+.plusBranch{
+    position: relative;
+    width: 50px;
+    height: 45px;
+    float: left;
+    border-radius: 50%;
+    color: #000000;
+    text-align: center;
+    font-size: 22px;
+    line-height: 2.0;
+}
+.itemsBranchL{
+    margin-left: 55px;
+    border-radius: 4px;
+}
+.headBranch,.headBranchLVL1{
+    line-height: 1.7;
+    padding: 9px 0 10px 20px;
+
+    text-align: left;
+}
+.headBranchLVL2{
+    line-height: 1.7;
+    padding: 9px 0 10px 40px;
+
+    text-align: left;
+}
+.itemsBranch{
+    padding: 20px 10px 0 10px;
+}
+.itemBranch{
+    width: 25%;
+    height: 190px;
+    float: left;
+    text-align: center;
+}
+.itemBranch img{
+    border-radius: 4px;
+    opacity: 0.7;
+}
+.itemBranch a:hover *{
+    opacity: 1;
+    color: #007ac9;
+    border: 1px solid #dddddd;
+}
+.itemBranch a:hover img{
+    opacity: 1;
+    color: #007ac9;
+    border: 1px solid #dddddd;
+}
+.itemBranch .itemDesc{
+    display: inline-block;
+    margin-top: 5px;
+    width: 100%;
+}
+/**********************************************************************************************************************/
+
+
+/**********************************************************************************************************************/
+/**  detailsMap  **/
+#detailsMap{}
+#detailsMap .mapLabel, #detailsMap .true{
+    position: absolute;
+    border: solid 2px #aaaaaa;
+    background-color: rgba(0,0,0,0);
+
+    line-height: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+#detailsMap .mapLabel:hover{
+    border: solid 2px #0000ff;
+    background-color: rgba(221, 255, 255, 0.3);
+    cursor: pointer;
+}
+#detailsMap .mapLabel.active:hover{
+    background-color: rgba(231, 231, 250, 0.3);
+}
+#detailsMap .mapLabel.active{
+    background-color: rgba(240, 129, 129, 0.3);
+}
+.isLimit{
+    position: absolute;
+    background: white;
+    left: 200px;
+    top: 200px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 2px solid;
+    font-size: 30px;
+    color: #ff0000;
+    z-index: 20;
+}
+#detailsMap tr.active{
+    background-color: rgb(223, 189, 189);
+}
+#detailsMap .imgArea{
+    position:relative;
+    width: 100%;
+    height: 500px;
+    background: #dfdfdf;
+    overflow: hidden;
+}
+#detailsMap #detailsList tr.none:hover{
+    background-color: #dddddd;
+}
+#detailsMap #detailsList tr.active:hover{
+    background-color: #999999;
+}
+#detailsMap table.dataTable tr.none:hover td{
+    color:#333333;
+}
+#detailsMap #detailsList tr:hover a{
+    text-decoration: underline;
+}
+#detailsMap #tabs{
+    margin-left: 10px;
+    text-align: left;
+}
+#detailsMap #tabs a{
+    display: inline-block;
+    text-align: center;
+    background: #dddddd;
+    /*padding: 0 80px;*/
+    border: 2px solid #777777;
+    border-radius: 10px 10px 2px 2px;
+}
+#detailsMap #tabs a.activeTab,#detailsMap #tabs a:hover{
+    background: #f0f0f0;
+}
+#detailsMap #nav{
+    margin-bottom: 20px;
+    font-size: 40px;
+    line-height: 20px;
+    text-align: center;
+}
+#detailsMap #nav a, #detailsMap #nav span{
+    font-weight: bold;
+    font-size: 20px;
+}
+#detailsMap #nav a{
+    color: #777777;
+}
+#detailsMap #nav span{
+    color: #dddddd;
+    cursor: pointer;
+}
+#detailsMap #nav a:hover{
+    text-decoration: none;
+    color: #1b6cad;
+}
+#detailsMap .c2cValue, #detailsMap .c2cValuePNC{
+    position: relative;
+}
+#detailsMap .zoomControl{z-index:11}
+#detailsMap .ctrlItems{padding:12px}
+#detailsMap .ctrlItems:nth-child(2),#detailsMap .ctrlItems:nth-child(3),#detailsMap .ctrlItems:nth-child(4){
+    border-left: 1px solid hsl(0,0%,60%);
+}
+#detailsMap .labelsCtrl{line-height:30px}
+#detailsMap .zoomCtrl span.bttn{background-color:hsl(0,0%,40%);color:white;padding:8px 10px;border-radius:4px}
+/**********************************************************************************************************************/
+
+/**********************************************************************************************************************/
+/***   All Tables   ***/
+.information{
+    width: 20px;
+    height: 20px;
+    background: #dddddd;
+    color: #333333;
+    display: block;
+    border-radius: 50%;
+    border: 2px solid #777777;
+    font-weight: bold;
+    font-size: 11px;
+    text-align: center;
+    line-height: 22px;
+}
+.information:hover{
+    background: #777777 !important;
+    color: #ffffff !important;
+}
+table.simpleTable,table.defTable{
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #777777;
+    border-radius: 4px;
+    border-spacing: 0;
+}
+table.simpleTable th,table.defTable th{
+    color: #ffffff;
+    background: #707070;
+    text-align: center;
+    font-weight: bold;
+}
+table.simpleTable td{
+    /*border: 1px solid #777777;*/
+}
+table.innerTable th, table.innerTable td,table.defTable td{
+    border: 1px solid #777777;
+}
+table.innerTable{
+    width: 100%;
+    border-spacing: 0;
+}
+table.simpleTable th, table.innerTable th, table.innerTable td,table.defTable th,table.defTable td{
+    padding: 8px 10px;
+}
+table.simpleTable.innerTable th{border:0}
+table.dataTable{
+    border: 2px solid #777777;
+    border-radius: 4px;
+}
+table.dataTable tr:hover,table.defTable tr:hover{
+    color:#007ac9;
+    cursor:pointer;
+}
+table.dataTable th{
+    color: #ffffff;
+    background: #707070;
+    text-align: center;
+}
+table.dataTable td{
+    border: 1px solid #777777;
+}
+table td.dataTables_empty,table td.dataTables_empty:hover{
+    color: red !important;
+    cursor: default !important;
+}
+table.defTable tr{
+    position: relative;
+}
+table.defTable tr:hover{
+    background: #dfdfdf;
+}
+
+/***   Data Table Tabs   ***/
+div.alphabet {
+    position: relative;
+    display: table;
+    width: 100%;
+    margin-bottom: 1em;
+}
+div.alphabet span {
+    display: table-cell;
+    color: #3174c7;
+    cursor: pointer;
+    text-align: center;
+    width: 3.5%
+}
+div.alphabet span:hover {
+    text-decoration: underline;
+}
+div.alphabet span.active {
+    color: black;
+}
+div.alphabet span.empty {
+    color: red;
+}
+div.alphabetInfo {
+    display: block;
+    position: absolute;
+    background-color: #111;
+    border-radius: 3px;
+    color: white;
+    top: 2em;
+    height: 1.8em;
+    padding-top: 0.4em;
+    text-align: center;
+    z-index: 1;
+}
+
+
+/**********************************************************************************************************************/

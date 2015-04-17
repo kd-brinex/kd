@@ -34,9 +34,9 @@ $sTypeName = $oAdcpi->property($oMarkList,'typeName');
 //]);
 $this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
 $this->params['breadcrumbs'][] = $sTypeName;
-Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+//Yii::$app->view->registerCssFile('/assetsname/auto/css/adc.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
 //$wroot='../modules/auto/catalogs/auto2d/';
 //$cssView = file_get_contents($wroot.'media/css/fw.css');
 //$cssView .= file_get_contents($wroot.'media/css/style.css');
@@ -54,7 +54,7 @@ Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
     <div id="marks">
         <h1>Марки в группе <?=$sTypeName?></h1>
         <?php foreach( $aMarkList AS $oMark ){?>
-        <div class="col-xs-6 col-md-3 col-lg-2">
+        <div class="col-xs-4 col-md-3 col-lg-2">
         <a class="markItem" href="<?=$oAdcpi->getMarkUrl($oMark);?>">
 
                 <span class="markLogo"><img src="<?=$oMark->mark_img_url?>"  alt="<?=$oMark->mark_name?>"></span>

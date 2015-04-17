@@ -1,0 +1,172 @@
+/***********************************************************************************************************************/
+/***   |||   ***/
+/***********************************************************************************************************************/
+#AutoDealer #types{
+
+}
+#AutoDealer .typeItem{
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+#AutoDealer .typeLogo{float: left;}
+#AutoDealer .typeLogo img{}
+#AutoDealer .typeName{
+    float: left;
+    width: 100px;
+    margin-top: 9px;
+    margin-left: 8px;
+}
+/***********************************************************************************************************************/
+#AutoDealer #marks{}
+#AutoDealer .markItem{
+    display: inline-block;
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    overflow: hidden;
+    border:1px solid black;
+    border-radius: 5px;
+}
+#AutoDealer .markLogo{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+}
+#AutoDealer .markLogo img{}
+#AutoDealer .markName{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+/***********************************************************************************************************************/
+#AutoDealer #models{}
+#AutoDealer .modelItem{
+    display: inline-block;
+    width: 100%;
+    height :200px;
+    margin-bottom: 10px;
+    border:1px solid black;
+    border-radius: 5px;
+    /*margin-left:2px;*/
+    overflow:hidden;
+}
+#AutoDealer .modelLogo{
+    display: inline-block;
+    width: 13%;
+    float: left;
+}
+#AutoDealer .modelLogo img{
+
+}
+
+
+#AutoDealer .modelInfo{
+    float: left;
+    width: 87%;
+}
+#AutoDealer .modelName{
+    display: inline-block;
+    width: 100%;
+}
+#AutoDealer .modelModif{
+    display: inline-block;
+    width: 100%;
+}
+#AutoDealer .modelActual{
+    display: inline-block;
+    width: 100%;
+}
+/***********************************************************************************************************************/
+/*   tree   */
+UL.my_tree LI {list-style-image: url(../images/minus.gif);}
+UL.my_tree LI.tree-close
+{
+    list-style-image: url(../images/plus.gif);
+}
+UL.my_tree LI.leaf {list-style-type: none; list-style-image: none; cursor: auto;}
+UL.my_tree UL {display: block; background: url(../images/line.gif);}
+UL.my_tree UL.tree-close {display: none;}
+UL.my_tree_close LI {list-style-image: url(../images/plus.gif);}
+UL.my_tree_close UL {display: none;}
+UL.my_tree, UL.my_tree UL {
+    margin-left: -12px;
+    padding-left: 32px;
+    /*height: 50px;*/
+    /*border-radius: 5px;*/
+    /*background-color: #e1e1e1;*/
+    /*margin-top: 5px;*/
+    /*padding-top: 5px;*/
+    /*position: relative;*/
+}
+UL.my_tree A, UL.my_tree A:hover, UL.my_tree A:visited, UL.my_tree A:active {color: DarkBlue; text-decoration: none;}
+UL.my_tree LI.leaf {list-style-image: url(../images/arrow.gif)}
+UL.my_tree LI.leaf A, UL.my_tree LI.leaf A:visited {color: SteelBlue; text-decoration: none;}
+UL.my_tree LI.leaf A:hover, UL.my_tree LI.leaf A:active {color: Red; text-decoration: underline;}
+UL.my_tree A{
+    font-weight:bold;
+}
+/***********************************************************************************************************************/
+#AutoDealer #iframe{
+    border: 1px solid rgb(131,131,131);
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: lightsteelblue;
+}
+#AutoDealer #imageFrame{
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+    z-index: 1;
+}
+#AutoDealer #zoomer{
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px 0 5px;
+
+}
+#AutoDealer #zoomer .zoomBttn{
+    padding: 5px 10px;
+    background: lightgrey;
+    border-radius: 3px;
+    cursor: pointer;
+}#AutoDealer #zoomer .zoomBttn:hover{background:lightyellow}
+#AutoDealer .detailInfo{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    cursor: pointer;
+}
+#AutoDealer .detailInfo:hover{
+    background: lightgray;
+}
+#nav{text-align:center;margin:10px 0;}
+#nav span{font-size:10pt;font-weight:bold;}
+/***********************************************************************************************************************/
+
+
+/***********************************************************************************************************************/
+/*   map.php   */
+/***********************************************************************************************************************/
+#canvas{ z-index:9; }
+#ImageArea{ z-index:10; position:absolute; top:0; left:0; }
+#ImageArea{ height:100%; width:100%; position:absolute; left:0; top:0; }
+#ImageArea div.false{ z-index:-1; }
+#ImageArea div.label,
+#ImageArea div.true{ border:1px solid #000; color:#000; background:#FFF; font-weight:600; width:181px; height:24px; font-size:18px; line-height:24px; z-index:10; padding:0; border-radius:.25em; }
+#ImageArea div.active{ text-align:center; cursor:default; position:absolute; border:2px solid #ff0000; border-radius:.25em; color:#000; background-color:#ff0000; font-weight:bold; overflow:hidden; display:block; font-size:18px; z-index:11; }
+#ImageArea div.over{ text-align:center; cursor:pointer; position:absolute; border:2px solid #0000ff; border-radius:.25em; color:#0000ff; background-color:#FFFFFF; font-weight:bold; overflow:hidden; display:block; font-size:18px; z-index:11; }
+#iframe{ width:740px; overflow:hidden; }
+.tabledetal tr.active{ text-align:center; cursor:default; color:#000; background-color:lightsteelblue; font-size:14px; z-index: 2; }
+#imageFrame{cursor:pointer}
+/***********************************************************************************************************************/

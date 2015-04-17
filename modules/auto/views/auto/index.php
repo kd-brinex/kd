@@ -11,27 +11,27 @@
 //$oA2D->e($aTypeList);
 
 /// Если есть ошибки, то выводим их через функцию, доступную нашему объекту
-if( ($aErrors=$oA2D->property($aTypes,'errors')) ) $oAdcpi->error($aErrors,404);
+//if( ($aErrors=$oA2D->property($aTypes,'errors')) ) $oAdcpi->error($aErrors,404);
 
 /// Подготавливаем данные для конструктора "хлебных крошек" (helpers/breads.php)
-$oAdcpi->aBreads = $oA2D->toObj([
-    'types' => [
-        "name" => 'Каталог',
-        "breads" => []
-    ]
-]);
+//$oAdcpi->aBreads = $oA2D->toObj([
+//    'types' => [
+//        "name" => 'Каталог',
+//        "breads" => []
+//    ]
+//]);
 
 
 //$cssView = file_get_contents($wroot.'media/css/fw.css');
 //$cssView .= file_get_contents($wroot.'media/css/style.css');
 //$cssView .= file_get_contents($wroot.'media/css/adc.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/fw.css');
 //$this->registerCss($cssView);
 ?>
 <div class="auto-default-index">
-    <h1><?= $catalog?></h1>
+
     <div id="AutoDealer">
 
 <!--        --><?php //include $wroot."helpers/breads.php"; /// Продключаем "хлебные крошки"?>

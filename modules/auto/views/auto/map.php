@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = ['label'=>$sMarkName,'url'=>['/auto/models/'.$s
 $this->params['breadcrumbs'][] = ['label'=>$sModelName,'url'=>['/auto/tree/'.$sModelID]];
 $this->params['breadcrumbs'][] = ['label'=>$sMapName];
 
-Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
-Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/style.css');
+//Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
 ?>
 
 <?php /// Описано в примере №5 в adc/README.MD \\\ ?>
@@ -66,7 +66,7 @@ Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
         return false;
     }
 </script>-->
-
+<div id="detailsMap">
 <div id="AutoDealer">
     <div id="map">
         <h1 id="pic">Карта размещения деталей &laquo;<?=$sMapName?>&raquo;</h1>
@@ -110,7 +110,7 @@ Yii::$app->view->registerCssFile('/assets/auto/css/adc.css');
     <div class="clear"></div>
 
     <!--List-->
-    <table border="0" align="center" width="100%" cellpadding="2" cellspacing="1" class="brd">
+    <table border="0" align="center" width="100%" cellpadding="2" cellspacing="1" class="defTable">
         <tr bgcolor=LightSteelBlue>
             <td align="center" width="5%"><B>N</B></td>
             <td align="center" width="45%"><B>Наименование</B></td>
