@@ -23,7 +23,11 @@ $asset = app\modules\auto\autoAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="container">
-    <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
+    <?= Breadcrumbs::widget([
+        'homeLink'=>[
+            'label'=>'Каталог',
+            'url'=>'http://www.kolesa-darom.ru/auto-parts/autocatalog/'],
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
     <?= $content ?>
 </div>
 
