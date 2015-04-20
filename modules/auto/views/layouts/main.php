@@ -31,13 +31,6 @@ $asset = app\modules\auto\autoAsset::register($this);
     <?= $content ?>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">A Product of <a href="http://www.yiisoft.com/">Yii Software LLC</a></p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>
