@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 $sTypeName = $oAdcpi->property($oMarkList, 'typeName');
 
-$this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['/auto']];
+//$this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['/auto']];
 $this->params['breadcrumbs'][] = $sTypeName;
 
 echo Html::tag("h1", "Марки в группе " . $sTypeName);

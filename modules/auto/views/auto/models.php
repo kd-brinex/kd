@@ -6,8 +6,8 @@
  * Time: 10:26
  */
 
-$this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
-$this->params['breadcrumbs'][] = ['label'=>$models->typeName,'url'=>['/auto/marks/'.$params['typeid']]];
+//$this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
+//$this->params['breadcrumbs'][] = ['label'=>$models->typeName,'url'=>['/auto/marks/'.$params['typeid']]];
 $this->params['breadcrumbs'][] = $models->markName;
 
 //$this->registerCss($cssView);

@@ -42,8 +42,8 @@ $_next      = $oA2D->property($aNav,'next');         /// следующая
 
 $bMultiArray = 0; /// Нужно для крошек, чтобы при переходе не получить другой массив. Хотя отсутсвие и означает FALSE/0 - для понимания
 
-$this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
-$this->params['breadcrumbs'][] = ['label'=>$sTypeName,'url'=>['/auto/marks/'.$sTypeID]];
+//$this->params['breadcrumbs'][] = ['label'=>'Каталог','url'=>['/auto']];
+//$this->params['breadcrumbs'][] = ['label'=>$sTypeName,'url'=>['/auto/marks/'.$sTypeID]];
 $this->params['breadcrumbs'][] = ['label'=>$sMarkName,'url'=>['/auto/models/'.$sTypeID.'_'.$sMarkID]];
 $this->params['breadcrumbs'][] = ['label'=>$sModelName,'url'=>['/auto/tree/'.$sModelID]];
 $this->params['breadcrumbs'][] = ['label'=>$sMapName];
