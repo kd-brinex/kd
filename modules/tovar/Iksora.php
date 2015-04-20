@@ -1,46 +1,6 @@
 <?php
 namespace app\modules\tovar;
 
-//ini_set("soap.wsdl_cache_enabled", "0");
-
-
-// Create the SoapClient instance
-//use yii\base\Model;
-
-//$params=array(
-//'host' => 'http://ws.auto-iksora.ru/',
-//'uri' => 'http://tempuri.org/',
-//'login' => 'brnosn', //'BRINEXNCH', 	//пользователь по договору
-//'password' => 'ditx6bny',	//'e4du7aps',  	//пароль
-//'contractid' => "91001", 	//номер контракта
-//'marga'=>'1.15',			//надбавка к цене
-//);
-//
-//$nodes = array(
-//    array('field'=>'maker', 'title'=>'Производитель','enable'=>true,'column'=>1,
-//		'items'=>array(
-//            		array('field'=>'id', 'title'=>'код','enable'=>false,),
-//            		array('field'=>'name', 'title'=>'название','enable'=>true,)
-//		),
-//
-//    	),
-//    array('field'=>'detailnumber', 'title'=>'Номер детали','enable'=>true, ),
-//    array('field'=>'detailname', 'title'=>'Наименование','enable'=>true,'option'=>'class="part-name"',),
-//    array('field'=>'quantity', 'title'=>'Наличие (шт.)','enable'=>true,),
-//    array('field'=>'lotquantity', 'title'=>'Заказ от (шт.)','enable'=>true,'option'=>'title="Минимальная партия заказа по которой действует цена на товар"'),
-//    array('field'=>'dayswarranty', 'title'=>'Срок доставки','enable'=>true,'column'=>2,),
-//    array('field'=>'estimation', 'enable'=>true,),
-//    array('field'=>'price', 'title'=>'Цена','enable'=>true,'style'=>'',),
-//    array('field'=>'ball', 'title'=>'Баллы','enable'=>true,'option'=>'class="part-bonus" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки."',),
-//    array('field'=>'pricedestination', 'title'=>'Источник цен','enable'=>false,),
-//    array('field'=>'days', 'title'=>'Срок доставки','enable'=>false,),
-//    array('field'=>'regionname', 'title'=>'Регион','enable'=>false,),
-//    array('field'=>'orderrefernce','title'=> 'orderrefernce','enable'=>false,),
-//    array('field'=>'pricedate','title'=> 'Дата цены','enable'=>false,),
-//    array('field'=>'groupid','title'=> 'Группа','enable'=>false,),
-//);
-
-
 class Iksora
 {
     public $contractid = "91001";

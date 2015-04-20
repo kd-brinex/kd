@@ -5,7 +5,7 @@
 
 }
 #AutoDealer .typeItem{
-    display: inline-block;
+    display: block;
     width: 100%;
     height: 50px;
     margin-bottom: 10px;
@@ -22,30 +22,31 @@
 /***********************************************************************************************************************/
 #AutoDealer #marks{}
 #AutoDealer .markItem{
-    display: inline-block;
+    display: block;
     width: 100%;
     height: 100px;
     padding: 10px;
     overflow: hidden;
     border:1px solid black;
     border-radius: 5px;
+    margin: 5px;
 }
 #AutoDealer .markLogo{
-    display: inline-block;
+    display: block;
     width: 100%;
     text-align: center;
     margin-bottom: 5px;
 }
 #AutoDealer .markLogo img{}
 #AutoDealer .markName{
-    display: inline-block;
+    display: block;
     width: 100%;
     text-align: center;
 }
 /***********************************************************************************************************************/
 #AutoDealer #models{}
 #AutoDealer .modelItem{
-    display: inline-block;
+    display: block;
     width: 100%;
     height :200px;
     margin-bottom: 10px;
@@ -55,7 +56,7 @@
     overflow:hidden;
 }
 #AutoDealer .modelLogo{
-    display: inline-block;
+    display: block;
     width: 13%;
     float: left;
 }
@@ -69,15 +70,15 @@
     width: 87%;
 }
 #AutoDealer .modelName{
-    display: inline-block;
+    display: block;
     width: 100%;
 }
 #AutoDealer .modelModif{
-    display: inline-block;
+    display: block;
     width: 100%;
 }
 #AutoDealer .modelActual{
-    display: inline-block;
+    display: block;
     width: 100%;
 }
 /***********************************************************************************************************************/
@@ -139,7 +140,7 @@ UL.my_tree A{
     cursor: pointer;
 }#AutoDealer #zoomer .zoomBttn:hover{background:lightyellow}
 #AutoDealer .detailInfo{
-    display: inline-block;
+    display: block;
     width: 20px;
     height: 20px;
     line-height: 20px;

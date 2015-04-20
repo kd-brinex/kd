@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = ['label'=>$sMapName];
                 </a>
             </td>
             <td align="center">
-                <a target="_blank" href="/finddetails?article=<?=$sDetail->detail_num?>">Узнать цену</a>
+                <a target="_blank" href="http://www.kolesa-darom.ru/naberezhnye/auto-parts/finddetails/?article=<?=$sDetail->detail_num?>">Узнать цену</a>
             </td>
         </tr>
         <?php }?>
