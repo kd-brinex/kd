@@ -184,7 +184,7 @@ public function setData($params){
     {
         $code = '';
         while (strlen($code) < $maxlen) {
-            $code .= mt_rand(0, 9);git
+            $code .= mt_rand(0, 9);
         }
         return $code;
     }
