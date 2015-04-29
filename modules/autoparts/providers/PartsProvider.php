@@ -101,7 +101,7 @@ public function setData($params){
                 $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
                 $this->find= false;
             }
-
+//            var_dump($this->_soap_client,$this->find);die;
         return $this->find;
     }
 
