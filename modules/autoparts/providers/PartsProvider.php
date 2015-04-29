@@ -48,6 +48,11 @@ class PartsProvider
     public function __construct($params)
     {
         $this->setData($params);
+        //Инициализация
+        if (!$this->init()) {
+            $this->errors[] = 'Ошибка соединения с сервером ' . $this->name . ': Не может быть инициализирован класс SoapClient';
+            return false;
+        }
     }
 public function setData($params){
 
@@ -137,16 +142,12 @@ public function setData($params){
 
     public function query($method)
     {
-        //Инициализация
-        if (!$this->init()) {
-            $this->errors[] = 'Ошибка соединения с сервером ' . $this->name . ': Не может быть инициализирован класс SoapClient';
-            return false;
-        }
+
         //Выполнение запроса
 //        var_dump($this->_soap_client->__getFunctions(),$method,$requestData);die;
         $result = $this->soap($method);
         //Закрытие соединение
-        $this->close();
+//        $this->close();
         return $result;
     }
 
@@ -170,6 +171,7 @@ public function setData($params){
     public function findDetails(&$errors)
     {
         if (!$this->find){return [];}
+        if (!$this->_inited){return [];}
         $xml = $this->query($this->methods['FindDetails'], $errors);
 
         $data = $this->parseSearchResponseXML($xml);
@@ -182,7 +184,7 @@ public function setData($params){
     {
         $code = '';
         while (strlen($code) < $maxlen) {
-            $code .= mt_rand(0, 9);
+            $code .= mt_rand(0, 9);git
         }
         return $code;
     }
