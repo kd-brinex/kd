@@ -1,0 +1,51 @@
+<div class="result-block block">
+		<h2>Результаты добавления в корзину</h2>
+		<table class="result-table">
+			<tr>
+				<th>
+               Id позиции
+				</th>
+            
+            <th>
+               Id размещенной позиции
+            </th>
+				
+				<th>
+               Результат
+				</th>
+			</tr>
+		<?foreach($basket_result as $row):?>
+			<tr>
+				<td>
+               <?=$row['Reference']?>
+            </td>
+            
+            <td>
+               <?=$row['OrderID']?>
+            </td>
+            
+				<td>
+               <?
+               switch($row['Status']) {
+                  case 'Complete':
+                     echo '<b style="color: green">Успешно</b>';
+                  break;
+                  
+                  case 'NotFound':
+                     echo '<b style="color: red">Ошибка</b> - Предложение не найдено';
+                  break;
+                  
+                  case 'InvalidConstraint':
+                     echo '<b style="color: red">Ошибка</b> - Не выполнены условия размещения';
+                  break;
+                  
+                  case 'InvalidQuantity':
+                     echo '<b style="color: red">Ошибка</b> - Позиция не соответствует условиям кратности';
+                  break;
+               }
+               ?>
+            </td>
+			</tr>
+		<?endforeach?>	
+		</table>
+</div>

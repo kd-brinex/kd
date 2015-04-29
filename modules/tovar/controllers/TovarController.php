@@ -5,11 +5,12 @@ namespace app\modules\tovar\controllers;
 use Yii;
 use app\modules\tovar\models\Tovar;
 use app\modules\tovar\models\TovarSearch;
-use app\modules\tovar\Iksora;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-//use yii\filters\AccessControl;
+use yii\data\ArrayDataProvider;
+
+
 /**
  * TovarController implements the CRUD actions for Tovar model.
  */
@@ -52,7 +53,7 @@ class TovarController extends Controller
     public function actionIndex()
     {
 
-        $params=Yii::$app->request->queryParams;
+        $params = Yii::$app->request->queryParams;
         $searchModel = new TovarSearch();
         $dataProvider = $searchModel->search($params);
         return $this->render('index', [
@@ -70,13 +71,13 @@ class TovarController extends Controller
     public function actionView($id)
     {
         $searchModel = new TovarSearch();
-        $params=Yii::$app->request->queryParams;
+        $params = Yii::$app->request->queryParams;
         $dataProvider = $searchModel->find_tovar_param($params);
         $tovarProvider = clone $dataProvider;
-        $tovarProvider->setModels( [$dataProvider->models[0]]);
+        $tovarProvider->setModels([$dataProvider->models[0]]);
         return $this->render('view', [
             'dataProvider' => $dataProvider,
-            'tovarProvider'=>$tovarProvider,
+            'tovarProvider' => $tovarProvider,
 //            'searchModel'  => $searchModel,
         ]);
     }
@@ -149,44 +150,50 @@ class TovarController extends Controller
 
     public function actionCategory()
     {
-        $params=Yii::$app->request->queryParams;
-        if (!isset($params['viewType'])){$params['viewType']=1;}
-        if ($params['viewType']==1)
-        {
-            $params['options']=['tag'=>'div','class'=>'col-sm-12'];
-            $params['itemOptions']=['tag'=>'div'];
+        $params = Yii::$app->request->queryParams;
+        if (!isset($params['viewType'])) {
+            $params['viewType'] = 1;
         }
-        if ($params['viewType']==2)
-        {
-            $params['options']=['tag'=>'div','class'=>'col-sm-12 '];
-            $params['itemOptions']=['tag'=>'div'];
+        if ($params['viewType'] == 1) {
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12'];
+            $params['itemOptions'] = ['tag' => 'div'];
         }
-        if ($params['viewType']==3)
-        {
-            $params['options']=['tag'=>'table','class'=>'col-xs-12'];
-            $params['itemOptions']=['tag'=>'tr'];
+        if ($params['viewType'] == 2) {
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12 '];
+            $params['itemOptions'] = ['tag' => 'div'];
+        }
+        if ($params['viewType'] == 3) {
+            $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12'];
+            $params['itemOptions'] = ['tag' => 'tr'];
         }
         $searchModel = new TovarSearch();
         $dataProvider = $searchModel->category_list($params);
         return $this->render('category', [
             'dataProvider' => $dataProvider,
-            'params'=>$params,
+            'params' => $params,
 //            'searchModel'  => $searchModel,
         ]);
     }
-    public function actionFinddetails(){
-        $params=Yii::$app->request->queryParams;
-        $ixora= new Iksora();
-        if (isset($params['article'])){
-        $ixora->FindDetails($params['article']);
-        $details=$ixora->asArray();}
-        else
-        {$details=['DetailInfo'=>[]];}
-//        var_dump($details);die;
-        return $this->render('finddetails', [
-                 'details'=>$details,
-                 'mod'=>$ixora,
-            'params'  => $params,
+
+    public function actionFinddetails()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $parts = Yii::$app->params['Parts'];
+        $details= Tovar::findDetails($params);
+
+
+        $provider = new ArrayDataProvider([
+            'allModels' => $details,
+            'sort' => $parts['sort'],
+            'pagination' => $parts['pagination'],
         ]);
+
+        return $this->render('finddetails', [
+            'provider' => $provider,
+            'columns' =>$parts['columns'],
+
+        ]);
+
     }
+
 }

@@ -37,7 +37,6 @@ $config = [
 //            'login'=>'kd',
 //            'pass'=>'JVBDhGpejncE',
         ],
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -63,8 +62,8 @@ $config = [
                 'auto/models/<typeid:\w+>_<markid:\w+>' => 'auto/auto/models',
                 'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
 //                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
-                'finddetails'=>'tovar/tovar/finddetails',
-                 'tovar/<id:\w+>' => 'tovar/tovar/view',
+                'finddetails' => 'tovar/tovar/finddetails',
+                'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
 
 
@@ -169,6 +168,12 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+        'api'=>[
+            'class'=>'app\modules\api\Module',
+        ],
+        'autoparts'=>[
+            'class' => 'app\modules\autoparts\Provideruser',
+        ],
         'auto' => [
             'class' => 'app\modules\auto\Auto',
             'catalog' => 'auto2d'

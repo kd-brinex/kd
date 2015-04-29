@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $models->markName;
 
 
 
-    <?php foreach ($models->models AS $modelCode => $model) { ?>
+    <?php foreach ($models->models AS $modelCode => $model) {
+        if($model->model_url!=''){?>
 
         <div class="col-xs-12 col-lg-6">
             <a href="/auto/tree/<?= $model->model_id ?>">
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'][] = $models->markName;
             </a>
         </div>
 
-    <?php } ?>
+    <?php } }?>
 
 
 </div>

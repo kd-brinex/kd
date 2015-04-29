@@ -112,7 +112,6 @@ NavBar::end();
         </footer>
     </div>
 </div>
-</div>
 <?php $this->endBody() ?>
 </body>
 </html>

@@ -121,4 +121,23 @@ class Tovar extends \yii\db\ActiveRecord
      $rub=str_replace(',00','',Yii::$app->formatter->asCurrency($value,'RUB'));
         return $rub;
 }
+    public static function findDetails($params){
+        $parts = Yii::$app->params['Parts'];
+        $avtoproviders=$parts['PartsProvider'];
+        $details = [];
+        if(isset($params['article'])&&$params['article']!='') {
+            if (!isset($params['store_id'])) {
+                $params['store_id'] = 109;
+            }
+            foreach ($avtoproviders as $provider) {
+                $provider = array_merge($provider, $params);
+                $fparts = new $provider['class']($provider);
+                $e = [];
+                $det = $fparts->findDetails($e);
+                $details = array_merge($details, $det);
+                $fparts->close();
+            }
+        }
+        return $details;
+    }
 }

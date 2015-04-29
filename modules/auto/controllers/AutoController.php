@@ -19,7 +19,7 @@ class AutoController extends Controller
     }
     public function actionMarks()
     {
-        $this->layout = 'main';
+
         $params=\Yii::$app->request->queryParams;
         $oA2D = \Yii::$app->a2d;
         $oAdcpi = \Yii::$app->adcpi;
@@ -38,6 +38,8 @@ class AutoController extends Controller
                 "breads" => []
             ],
         ]);
+
+        $this->layout = 'main';
         return $this->render('marks',[
             'oA2D'=>$oA2D,
             'oAdcpi'=>$oAdcpi,
@@ -47,11 +49,13 @@ class AutoController extends Controller
         ]);
     }
     public function actionModels(){
-        $this->layout = 'main';
+
         $params=\Yii::$app->request->queryParams;
         $oAdcpi = \Yii::$app->adcpi;
 //        var_dump($params['markid'],$params['typeid']);die;
         $models=$oAdcpi ->getModelList($params['markid'],$params['typeid']);
+
+            $this->layout = 'main';
         return $this->render('models',[
             'models'=>$models,
             'params'=>$params,
@@ -107,4 +111,5 @@ class AutoController extends Controller
         ]);
 
     }
+
 }
