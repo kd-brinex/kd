@@ -95,8 +95,8 @@ public function setData($params){
     {
 
             try {
-                if ($this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options))
-                    $this->find = true;
+                $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
+                $this->find = true;
             } catch (Exception $e) {
                 $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
                 $this->find= false;
