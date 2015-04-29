@@ -51,7 +51,7 @@ class PartsProvider
         //Инициализация
         if (!$this->init()) {
             $this->errors[] = 'Ошибка соединения с сервером ' . $this->name . ': Не может быть инициализирован класс SoapClient';
-            return false;
+//            return false;
         }
     }
 public function setData($params){
@@ -98,9 +98,10 @@ public function setData($params){
             try {
                 if ($this->_soap_client = @new SoapClient($this->_wsdl_uri, $this->options))
                     $this->_inited = true;
+//                var_dump('*****');die;
             } catch (Exception $e) {
                 $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
-                return false;
+                $this->_inited= false;
             }
         }
         return $this->_inited;
