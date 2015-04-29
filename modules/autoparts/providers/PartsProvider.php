@@ -17,7 +17,6 @@ class PartsProvider
 {
     public $_wsdl_uri;   //Ссылка на WSDL-документ сервиса
     public $_soap_client = false;                                                    //Объект SOAP-клиента
-    public $_inited = false;
     public $_errors;
     public $methods;
     public $options = ['soap_version' => SOAP_1_1];
@@ -94,17 +93,16 @@ public function setData($params){
 
     public function init()
     {
-        if (!$this->_inited) {
+
             try {
-                if ($this->_soap_client = @new SoapClient($this->_wsdl_uri, $this->options))
-                    $this->_inited = true;
-//                var_dump('*****');die;
+                if ($this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options))
+                    $this->find = true;
             } catch (Exception $e) {
                 $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
-                $this->_inited= false;
+                $this->find= false;
             }
-        }
-        return $this->_inited;
+
+        return $this->find;
     }
 
     /**
@@ -119,6 +117,7 @@ public function setData($params){
      */
     public function soap($method)
     {
+        if(!$this->find){return false;}
         $method_xml = 'xml' . $method;
         /** $metod_xml имя функции которая возвращает данные для метода $method*/
         $requestData = $this->$method_xml();
@@ -162,8 +161,8 @@ public function setData($params){
      */
     public function close()
     {
-        if ($this->_inited) {
-            $this->_inited = false;
+        if ($this->find) {
+            $this->find = false;
             $this->_soap_client = false;
         }
     }
@@ -172,7 +171,6 @@ public function setData($params){
     public function findDetails(&$errors)
     {
         if (!$this->find){return [];}
-        if (!$this->_inited){return [];}
         $xml = $this->query($this->methods['FindDetails'], $errors);
 
         $data = $this->parseSearchResponseXML($xml);

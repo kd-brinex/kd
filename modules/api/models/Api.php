@@ -10,6 +10,7 @@ class Api extends Model
 {
     public static function finddetails($params){
 
+
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDetailInfo>';
