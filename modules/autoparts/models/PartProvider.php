@@ -40,8 +40,9 @@ class PartProvider extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
+            'id' => 'Внутренний код',
+            'name' => 'Название',
+            'enable' => 'Включить'
         ];
     }
 

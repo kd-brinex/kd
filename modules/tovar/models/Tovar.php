@@ -4,7 +4,7 @@ namespace app\modules\tovar\models;
 
 use app\modules\basket\models\BasketSearch;
 use Yii;
-
+use app\modules\autoparts\models\PartProvider;
 /**
  * This is the model class for table "t_tovar".
  *
@@ -125,12 +125,14 @@ class Tovar extends \yii\db\ActiveRecord
         $parts = Yii::$app->params['Parts'];
         $avtoproviders=$parts['PartsProvider'];
         $details = [];
+        $providers= PartProvider::find()->where('enable=1')->asArray()->all();
+//        var_dump($providers);die;
         if(isset($params['article'])&&$params['article']!='') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
-            foreach ($avtoproviders as $provider) {
-                $provider = array_merge($provider, $params);
+            foreach ($providers as $provider) {
+                $provider = array_merge($avtoproviders[$provider['name']], $params);
                 $fparts = new $provider['class']($provider);
                 $e = [];
                 $det = $fparts->findDetails($e);
