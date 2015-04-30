@@ -64,7 +64,7 @@ public function setData($params){
     $puser = new PartProviderUserSearch();
 
     $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//    var_dump($p);die;
+//    var_dump($p,$p[0]->attributes['store_id']);die;
     if (count($p)>0) {
         $this->login= $p[0]->attributes['login'];
         $this->store_id= $p[0]->attributes['store_id'];
@@ -257,7 +257,10 @@ public function setData($params){
     {
         return $this->store_id;
     }
-
+    public function update_FlagPostav()
+    {
+        return $this->name;
+    }
     public function update_srokmin($value)
     {
         return $value['srokmin'] + 1;
