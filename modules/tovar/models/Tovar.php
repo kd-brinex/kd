@@ -126,7 +126,7 @@ class Tovar extends \yii\db\ActiveRecord
         $avtoproviders=$parts['PartsProvider'];
         $details = [];
         $providers= PartProvider::find()->where('enable=1')->asArray()->all();
-//        var_dump($providers);die;
+        var_dump($params, $providers);die;
         if(isset($params['article'])&&$params['article']!='') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
@@ -140,6 +140,7 @@ class Tovar extends \yii\db\ActiveRecord
                 $fparts->close();
             }
         }
-        return $details;
+
+           return $details;
     }
 }
