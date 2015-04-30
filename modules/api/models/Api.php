@@ -28,12 +28,11 @@ class Api extends Model
 <pricedestination>'.$d['pricedestination'].'</pricedestination>
 <days>'.$d['srokmin'].'</days>
 <dayswarranty>'.$d['srokmax'].'</dayswarranty>
-<regionname>'.$d['sklad'].'</regionname>
+<regionname>'.$d['provider'].$d['sklad'].'</regionname>
 <estimation>'.$d['estimation'].'</estimation>
 <orderrefernce>'.$d['reference'].'</orderrefernce>
 <pricedate>'.$d['pricedate'].'</pricedate>
 <groupid>'.$d['groupid'].'</groupid>
-<provider>'.$d['provider'].'</provider>
 </DetailInfo>';
 }
         $xml.='
