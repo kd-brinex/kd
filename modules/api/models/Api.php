@@ -33,7 +33,8 @@ class Api extends Model
 <orderrefernce>'.$d['reference'].'</orderrefernce>
 <pricedate>'.$d['pricedate'].'</pricedate>
 <groupid>'.$d['groupid'].'</groupid>
-<groupid>'.$d['provider'].'</groupid>
+<provider>'.$d['provider'].'</provider>
+<storeid>'.$d['storeid'].'</storeid>
 </DetailInfo>';
 }
         $xml.='
