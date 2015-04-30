@@ -28,6 +28,7 @@ class PartsProvider
     public $errors = [];
     public $article = 'ostatki';
     public $name = '';
+    public $flagpostav = '';
     public $id=1;//id провайдера в таблице part_provider
     public $fields = [
         "code" => "",//Номер
@@ -64,12 +65,13 @@ public function setData($params){
     $puser = new PartProviderUserSearch();
 
     $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//    var_dump($p,$p[0]->attributes['store_id']);die;
+//    var_dump($p);die;
     if (count($p)>0) {
         $this->login= $p[0]->attributes['login'];
         $this->store_id= $p[0]->attributes['store_id'];
         $this->password = $p[0]->attributes['password'];
         $this->marga=$p[0]->attributes['marga']/100+1;
+
         $this->find=true;
 
     }
@@ -257,9 +259,9 @@ public function setData($params){
     {
         return $this->store_id;
     }
-    public function update_FlagPostav()
+    public function update_flagpostav($value)
     {
-        return $this->name;
+        return $this->flagpostav;
     }
     public function update_srokmin($value)
     {

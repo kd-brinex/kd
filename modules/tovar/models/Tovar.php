@@ -133,8 +133,10 @@ class Tovar extends \yii\db\ActiveRecord
                 $params['store_id'] = 109;
             }
             foreach ($providers as $p) {
+//                var_dump($p);die;
                 $provider = array_merge($avtoproviders[$p['name']], $params);
                 $fparts = new $provider['class']($provider);
+                $fparts->flagprovider=$p['flagpostav'];
                 $e = [];
                 $det = $fparts->findDetails($e);
                 $details = array_merge($details, $det);
