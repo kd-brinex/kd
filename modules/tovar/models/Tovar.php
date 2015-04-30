@@ -132,8 +132,8 @@ class Tovar extends \yii\db\ActiveRecord
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
-            foreach ($providers as $provider) {
-                $provider = array_merge($avtoproviders[$provider['name']], $params);
+            foreach ($providers as $p) {
+                $provider = array_merge($avtoproviders[$p['name']], $params);
                 $fparts = new $provider['class']($provider);
                 $e = [];
                 $det = $fparts->findDetails($e);

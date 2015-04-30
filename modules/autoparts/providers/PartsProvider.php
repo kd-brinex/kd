@@ -48,9 +48,11 @@ class PartsProvider
     {
         $this->setData($params);
         //Инициализация
-        if (!$this->init()) {
-            $this->errors[] = 'Ошибка соединения с сервером ' . $this->name . ': Не может быть инициализирован класс SoapClient';
+        if ($this->find) {
+            if (!$this->init()) {
+                $this->errors[] = 'Ошибка соединения с сервером ' . $this->name . ': Не может быть инициализирован класс SoapClient';
 //            return false;
+            }
         }
     }
 public function setData($params){
@@ -62,13 +64,14 @@ public function setData($params){
     $puser = new PartProviderUserSearch();
 
     $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-    if (isset($p[0]->attributes['login'])) {
+//    var_dump($p);die;
+    if (count($p)>0) {
         $this->login= $p[0]->attributes['login'];
         $this->store_id= $p[0]->attributes['store_id'];
         $this->password = $p[0]->attributes['password'];
         $this->marga=$p[0]->attributes['marga']/100+1;
         $this->find=true;
-//    var_dump($p[0]);die;
+
     }
     else
     {
