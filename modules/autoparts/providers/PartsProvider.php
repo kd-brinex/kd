@@ -251,7 +251,11 @@ public function setData($params){
 
     public function update_provider($value)
     {
-        return $this->name.'('.$this->store_id.')';
+        return $this->name;
+    }
+    public function update_storeid($value)
+    {
+        return $this->store_id;
     }
 
     public function update_srokmin($value)

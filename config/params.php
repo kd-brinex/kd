@@ -75,6 +75,7 @@ return [
                     "skladid"=>"skladid",
                     "sklad"=>"sklad",
                     "groupid"=>"groupid",//Оригинал, не оригинал
+                    "storeid"=>"storeid",//код магазина
 //0 - Original - Искомая деталь;
 //1 - ReplacementOriginal - Оригинальная замена на искомую деталь (замена того же производителя);
 //2 - ReplacementNonOriginal - Не оригинальная замена (аналог) на искомую деталь (замена от другого производителя);
@@ -109,7 +110,7 @@ return [
                     "skladid"=>"skladid",
                     "sklad"=>"regionname",
                     "groupid"=>"groupid",
-
+                    "storeid"=>"storeid",//код магазина
                 ],
                 'marga' => 1.15,
                 'id' => 1,
@@ -140,7 +141,7 @@ return [
                     "skladid"=>"providerId",
                     "sklad"=>"providerDescription",
                     "groupid"=>"detailGroup",
-
+                    "storeid"=>"storeid",//код магазина
                 ],
                 'marga' => 1.15,
                 'id' => 2,
