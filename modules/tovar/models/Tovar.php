@@ -136,7 +136,7 @@ class Tovar extends \yii\db\ActiveRecord
 //                var_dump($p);die;
                 $provider = array_merge($avtoproviders[$p['name']], $params);
                 $fparts = new $provider['class']($provider);
-                $fparts->flagprovider=$p['flagpostav'];
+                $fparts->flagpostav=$p['flagpostav'];
                 $e = [];
                 $det = $fparts->findDetails($e);
                 $details = array_merge($details, $det);
