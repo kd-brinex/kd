@@ -12,6 +12,7 @@ return [
             [
                 'attribute' => 'name',
                 'label' => 'Название',
+                'format'=>'html',
                 'value' => function ($model, $index, $widget) {
                     return $model['code'] . ' ' . $model['name'] . ' ' . $model['manufacture'];
                 },

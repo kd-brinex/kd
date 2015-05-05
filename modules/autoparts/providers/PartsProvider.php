@@ -287,7 +287,9 @@ public function setData($params){
     {
         return $value['srokmax'] + 1;
     }
-
+    public function update_name($value){
+        return htmlspecialchars($value['name']);
+    }
     public function update_quantity($value)
     {
 
