@@ -31,17 +31,25 @@ class PartsProvider
     public $flagpostav = '';
     public $id=1;//id провайдера в таблице part_provider
     public $fields = [
-        "code" => "",//Номер
-        "name" => "", //Информация
-        "manufacture" => "", //Производитель
-        "price" => "", //Цена
-        "quantity" => "", //Количество
-        "srok" => "", //Доставка
-        "srokmin" => "", //Доставка
-        "srokmax" => "", //Доставка
-        "provider" => "", //Поставщик
-        "pricedate"=>"",//Обновление цены
-        "estimation"=>"",//статистика поставок
+        "code" => "code",//Номер
+        "name" => "name", //Информация
+        "manufacture" => "manufacturee", //Производитель
+        "price" => "price", //Цена
+        "quantity" => "quantity", //Количество
+        "srokmin" => "srokmin", //Доставка в днях минимальная
+        "srokmax" => "srokmax", //Доставка в днях максимальная
+        "provider" => "provider", //поставщик
+        "reference" => "reference",//идентификатор предложения
+        "srok" => "srok",//Доставка средняя
+        "estimation" => "estimation",//Надежность поставщика
+        "lotquantity" => "lotquantity",//минимальный заказ
+        "pricedate" =>"pricedate",//Дата обновление цены
+        "pricedestination"=>"pricedestination",// Стоимость доставки
+        "skladid"=>"skladid",
+        "sklad"=>"sklad",
+        "groupid"=>"groupid",//Оригинал, не оригинал
+        "flagpostav"=>"flagpostav",
+        "storeid"=>"storeid",//код магазина
     ];
 
 
@@ -59,7 +67,14 @@ class PartsProvider
 public function setData($params){
 
     foreach ($params as $property => $value) {
-        if(property_exists($this,$property)){$this->$property = $value;}
+        if(property_exists($this,$property)){
+            if (is_array($this->$property)){
+                $this->$property=array_merge($this->$property,$value);
+            }
+            else {
+                $this->$property = $value;
+            }
+        }
     }
 
     $puser = new PartProviderUserSearch();

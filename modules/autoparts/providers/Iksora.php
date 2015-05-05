@@ -81,7 +81,7 @@ class Iksora extends PartsProvider
         foreach($xml->row as $row) {
             $_row = array();
             foreach($row as $key => $field) {
-                $_row[(string)$key] = (string)$field;
+                $_row[(string)$key] = '"'.(string)$field.'"';
             }
             $data[] = $_row;
         }
