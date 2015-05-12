@@ -106,7 +106,7 @@ class Tovar extends \yii\db\ActiveRecord
 
     public static function find(){
         $city_id=Yii::$app->request->cookies['city'];
-//        $p['id_store']=999;
+        $p['id_store']=109;
         $query =parent::find();
         $query->where('(id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
         return $query;
@@ -126,10 +126,7 @@ class Tovar extends \yii\db\ActiveRecord
         $avtoproviders=$parts['PartsProvider'];
         $details = [];
 
-//        $providers= PartProvider::find()->where('enable=2')->asArray()->all();
         $providers= PartProvider::find()->where('enable=1')->asArray()->all();
-//        $providers= PartProvider::find()->asArray()->all();
-//        var_dump($_POST,$params, $providers);die;
         if(isset($params['article'])&&$params['article']!='') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;

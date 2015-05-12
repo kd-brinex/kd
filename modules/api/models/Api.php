@@ -14,9 +14,8 @@ class Api extends Model
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDetailInfo>';
-        $dxml="";
         foreach($details as $d){
-            $dxml.='<DetailInfo>
+            $xml.='<DetailInfo>
 <detailnumber>'.$d['code'].'</detailnumber>
 <detailname>'.$d['name'].'</detailname>
 <maker>
@@ -39,32 +38,7 @@ class Api extends Model
 <FlagPostav>'.$d['flagpostav'].'</FlagPostav>
 </DetailInfo>';
 }
-        if ($dxml==""){
-//            var_dump($params);die;
-            $dxml='<DetailInfo>
-<detailnumber>'.$params["article"].'</detailnumber>
-<detailname></detailname>
-<maker>
-<id>0</id>
-<name>0</name>
-</maker>
-<quantity>0</quantity>
-<lotquantity>0</lotquantity>
-<price>0</price>
-<pricedestination>0</pricedestination>
-<days>999</days>
-<dayswarranty>999</dayswarranty>
-<regionname></regionname>
-<estimation></estimation>
-<orderrefernce></orderrefernce>
-<pricedate></pricedate>
-<groupid></groupid>
-<provider></provider>
-<storeid>'.$params["store_id"].'</storeid>
-<FlagPostav></FlagPostav>
-</DetailInfo>';
-        }
-        $xml.=$dxml.'
+        $xml.='
 </ArrayOfDetailInfo>';
 return $xml;
     }
