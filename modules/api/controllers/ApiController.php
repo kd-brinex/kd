@@ -8,7 +8,7 @@ class ApiController extends Controller
     public function actionFinddetails()
     {
         $this->layout=false;
-    $params = $_POST;
+    $params = \Yii::$app->request->queryParams;
     $details=Api::findDetails($params);
 //    var_dump($details);die;
     return $details;

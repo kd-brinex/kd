@@ -48,7 +48,6 @@ return [
                             'class' => 'btn btn-primary btn-xs',
                         ]);
                     },
-//                 'title'=>'Заказать'],
                 ],
             ],
         ],
@@ -66,24 +65,12 @@ return [
                     "quantity" => "Quantity", //Количество
                     "srokmin" => "PeriodMin", //Доставка в днях минимальная
                     "srokmax" => "PeriodMax", //Доставка в днях максимальная
-//                    "provider" => "provider", //поставщик
-//                    "reference" => "reference",//идентификатор предложения
-//                    "srok" => "srok",//Доставка средняя
-//                    "estimation" => "estimation",//Надежность поставщика
-//                    "lotquantity" => "lotquantity",//минимальный заказ
-//                    "pricedate" =>"pricedate",//Дата обновление цены
-//                    "pricedestination"=>"pricedestination",// Стоимость доставки
-//                    "skladid"=>"skladid",
-//                    "sklad"=>"sklad",
-//                    "groupid"=>"groupid",//Оригинал, не оригинал
-//                    "flagpostav"=>"flagpostav",
-//                    "storeid"=>"storeid",//код магазина
+
 //0 - Original - Искомая деталь;
 //1 - ReplacementOriginal - Оригинальная замена на искомую деталь (замена того же производителя);
 //2 - ReplacementNonOriginal - Не оригинальная замена (аналог) на искомую деталь (замена от другого производителя);
 //3 - ReCross - Кросс к замене или аналогу искомой детали. 0 - оригинальная деталь; 1 - оригинальная замена; 2 - неоригинальная замена
 
-//                    "lotquantity"=>
                 ],
                 'marga' => 1.15,
                 'id' => 3,
@@ -98,22 +85,9 @@ return [
                     "code" => "detailnumber",//Номер
                     "name" => "detailname", //Информация
                     "manufacture" => "maker_name", //Производитель
-//                    "price" => "price", //Цена
-//                    "quantity" => "quantity", //Количество
                     "srokmin" => "days", //Доставка
                     "srokmax" => "dayswarranty", //Доставка
-//                    "provider" => "provider", //Поставщик
-//                    "reference" => "reference",
-//                    "srok" => "srok",
-//                    "estimation" => "estimation",
-//                    "lotquantity" => "lotquantity",
-//                    "pricedate" =>"pricedate",
-//                    "pricedestination"=>"pricedestination",
-//                    "skladid"=>"skladid",
                     "sklad"=>"regionname",
-//                    "groupid"=>"groupid",
-//                    "flagpostav"=>"flagpostav",
-//                    "storeid"=>"storeid",//код магазина
                 ],
                 'marga' => 1.15,
                 'id' => 1,
@@ -127,14 +101,8 @@ return [
                     "code" => "number",//Номер
                     "name" => "description", //Информация
                     "manufacture" => "maker", //Производитель
-//                    "price" => "price", //Цена
-//                    "quantity" => "quantity", //Количество
                     "srokmin" => "minDeliveryDays", //Доставка
                     "srokmax" => "maxDeliveryDays", //Доставка
-//                    "provider" => "provider", //Поставщик
-//                    "reference" => "reference",
-//                    "srok" => "srok",
-//                    "estimation" => "estimation",
                     "lotquantity" => "minQuantity",
                     "pricedate" =>"lastUpdateDate",
                     "pricedestination"=>"PriceDestination",
@@ -144,8 +112,6 @@ return [
                     "skladid"=>"providerId",
                     "sklad"=>"providerDescription",
                     "groupid"=>"detailGroup",
-//                    "flagpostav"=>"flagpostav",
-//                    "storeid"=>"storeid",//код магазина
                 ],
                 'marga' => 1.15,
                 'id' => 2,
