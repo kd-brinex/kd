@@ -34,10 +34,10 @@ return [
 //                    return $model['srokmin'] . (($model['srokmin'] < $model['srokmax']) ? '-' . $model['srokmax'] : '');
 //                },
             ],
-//             [
-//                 'attribute'=>'provider',
-//                 'label'=>'Поставщик',
-//             ],
+             [
+                 'attribute'=>'provider',
+                 'label'=>'Поставщик',
+             ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{basket}',
@@ -94,6 +94,27 @@ return [
                 'name' => 'Иксора',
                 'methods' => ['FindDetails' => 'FindDetailsXML'],
             ],
+            'Emex' => [
+                'class' => 'app\modules\autoparts\providers\Emex',
+                '_wsdl_uri' => 'http://ws.emex.ru/EmExService.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
+                'fields' => [
+                    "code" => "DetailNum",//Номер
+                    "name" => "DetailNameRus", //Информация
+                    "manufacture" => "MakeName", //Производитель
+                    "srokmin" => "ADDays", //Доставка
+                    "srokmax" => "DeliverTimeGuaranteed", //Доставка
+                    "price" => "ResultPrice",
+                    "lotquantity" => "LotQuantity",
+                    "quantity" => "Quantity",
+                    "skladid"=>"PriceLogo",
+                    "sklad"=>"PriceCountry",
+                    "groupid"=>"PriceGroup",
+                ],
+                'marga' => 1.15,
+                'id' => 4,
+                'name' => 'Emex',
+                'methods' => ['FindDetails' => 'FindDetailAdv3'],
+                ],
             'Partkom' => [
                 'class' => 'app\modules\autoparts\providers\Partkom',
                 '_wsdl_uri' => 'http://www.part-kom.ru/webservice/search.php?wsdl',   //Ссылка на WSDL-документ сервиса

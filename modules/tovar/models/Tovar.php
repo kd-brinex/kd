@@ -120,13 +120,16 @@ class Tovar extends \yii\db\ActiveRecord
     public function asCurrency($value){
      $rub=str_replace(',00','',Yii::$app->formatter->asCurrency($value,'RUB'));
         return $rub;
-}
+}/**
+ * findDetails - описание функции
+ */
     public static function findDetails($params){
         $parts = Yii::$app->params['Parts'];
         $avtoproviders=$parts['PartsProvider'];
         $details = [];
 
         $providers= PartProvider::find()->where('enable=1')->asArray()->all();
+//        $providers= PartProvider::find()->asArray()->all();
         if(isset($params['article'])&&$params['article']!='') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
