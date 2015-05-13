@@ -99,6 +99,6 @@ class Emex extends PartsProvider
     }
 
     public function update_estimation($value){
-        return round( $value['DDPercent']);
+        return round( $value['estimation']);
     }
 }
