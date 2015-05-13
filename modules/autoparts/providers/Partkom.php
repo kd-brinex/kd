@@ -80,7 +80,7 @@ class Partkom extends PartsProvider
         return $result;
     }
     public function update_estimation($value){
-        return '3 3 3';
+        return 50;
     }
     public function update_sklad($value){
 //        var_dump($value);die;

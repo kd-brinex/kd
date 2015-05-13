@@ -87,7 +87,20 @@ class Iksora extends PartsProvider
         }
         return $data;
     }
+    public function update_estimation($value){
+        $summa=0;
+        $count=0;
+        $nval=trim($value['estimation']);
+        $n=strlen($nval);
+        for($с=0;$с<$n;$с++){
+            $b=is_numeric($nval[$с]);
+            $summa+=($b)?$nval[$с]:0;
+            $count+=($b)?1:0;
+        }
 
+        $estimation=round(($count>0)?($summa/$count)*20:0,0);
+        return $estimation;
+    }
     /*
     public function setProperties($aProperties){
         foreach ($aProperties as $name => $value){

@@ -39,6 +39,10 @@ return [
                  'label'=>'Поставщик',
              ],
             [
+                'attribute'=>'estimation',
+                'label'=>'Надежность',
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{basket}',
                 'buttons' => [
@@ -109,6 +113,7 @@ return [
                     "skladid"=>"PriceLogo",
                     "sklad"=>"PriceCountry",
                     "groupid"=>"PriceGroup",
+                    "estimation"=>"DDPercent",
                 ],
                 'marga' => 1.15,
                 'id' => 4,
