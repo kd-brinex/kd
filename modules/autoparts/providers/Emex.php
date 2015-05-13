@@ -98,5 +98,7 @@ class Emex extends PartsProvider
         return $value['sklad'] . '-' . $value['skladid'];
     }
 
-
+    public function update_estimation($value){
+        return '3 3 3';
+    }
 }
