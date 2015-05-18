@@ -32,10 +32,10 @@ class GroupRule extends Rule
                 return $role === $item->name;
             } elseif ($item->name === 'admin') {
                 return $role === $item->name || $role === 'superadmin';
-            } elseif ($item->name === 'moderator ') {
+            } elseif ($item->name === 'manager') {
                 return $role === $item->name || $role === 'superadmin' || $role === 'admin';
             } elseif ($item->name === 'user') {
-                return $role === $item->name || $role === 'superadmin' || $role === 'admin' || $role === 'moderator';
+                return $role === $item->name || $role === 'superadmin' || $role === 'admin' || $role === 'manager';
             }
         }
         return false;

@@ -32,7 +32,7 @@ class RbacController extends Controller
         $user->ruleName = $groupRule->name;
         $auth->add($user);
 
-        $moderator = $auth->createRole(' moderator ');
+        $moderator = $auth->createRole('manager');
         $moderator ->description = 'Moderator ';
         $moderator ->ruleName = $groupRule->name;
         $auth->add($moderator);
