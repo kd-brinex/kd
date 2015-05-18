@@ -8,7 +8,9 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
     'components' => [
-
+        'groupRule'=>[
+            'class'=>'app\components\rbac\GropeRule',
+        ],
         'session' => [
             'class' => 'yii\web\Session',
 //            'timeout'=>28800,
@@ -37,8 +39,14 @@ $config = [
 //            'login'=>'kd',
 //            'pass'=>'JVBDhGpejncE',
         ],
-        'authManager' =>[
+        'authManager' => [
             'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => [
+                'user',
+                'manager',
+                'admin',
+                'superadmin'
+            ],
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -135,32 +143,6 @@ $config = [
         ],
         'db' => $db_connect,
         'view' => [
-            'renderers' => [
-//                'twig' => [
-//                    'class' => 'yii\twig\ViewRenderer',
-//                    // set cachePath to false in order to disable template caching
-//                    'cachePath' => '@runtime/Twig/cache',
-//                    // Array of twig options:
-//                    'options' => [
-//                        'auto_reload' => true,
-//                    ],
-//                    'globals' => ['html' => '\yii\helpers\Html'],
-//                    'uses' => [
-//                        'yii\helpers\Html',
-//                        'yii\bootstrap\Nav',
-//                        'yii\bootstrap\NavBar',
-//                        'yii\widgets\Breadcrumbs',
-//                        'app\assets\AppAsset',
-//
-//                    ],
-//                    'options' => [
-//
-//
-//                    ],
-//                    // ... see ViewRenderer for more options
-//                ],
-            ],
-
             'theme' => [
                 'pathMap' => [
                     '@dektrium/user/views/settings' => '@app/modules/user/views/settings'
@@ -189,10 +171,10 @@ $config = [
     'params' => $params,
     'modules' => [
 
-        'api'=>[
-            'class'=>'app\modules\api\Module',
+        'api' => [
+            'class' => 'app\modules\api\Module',
         ],
-        'autoparts'=>[
+        'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
         ],
         'auto' => [
@@ -218,29 +200,6 @@ $config = [
                 'settings' => 'app\modules\user\controllers\SettingsController'
             ],
 
-
-//            'class' => 'app\modules\user\Module',
-            /*       'components' => [
-
-                              'manager' => [
-                                  'userClass'    => 'dektrium\user\models\User',
-                                  'tokenClass'   => 'dektrium\user\models\Token',
-                                  'profileClass' => 'dektrium\user\models\Profile',
-                                  'accountClass' => 'dektrium\user\models\Account',
-                                  // Model that is used on user search on admin pages
-                                  'userSearchClass' => 'dektrium\user\models\UserSearch',
-                                  // Model that is used on registration
-                                  'registrationFormClass' => 'dektrium\user\models\RegistrationForm',
-                                  // Model that is used on resending confirmation messages
-                                  'resendFormClass' => 'dektrium\user\models\ResendForm',
-                                  // Model that is used on logging in
-                                  'loginFormClass' => 'dektrium\user\models\LoginForm',
-                                  // Model that is used on password recovery
-                                  'passwordRecoveryFormClass' => 'dektrium\user\models\RecoveryForm',
-                                  // Model that is used on requesting password recovery
-                                  'passwordRecoveryRequestFormClass' => 'dektrium\user\models\RecoveryRequestForm',
-                              ],
-                       ],*/
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'admins' => ['marat'],

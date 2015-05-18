@@ -18,4 +18,5 @@ class User extends BaseUser
         // do your magic
     }
 
+
 }

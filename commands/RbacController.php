@@ -9,38 +9,50 @@ namespace app\commands;
 
 use Yii;
 use yii\console\Controller;
+use app\components\rbac\GroupRule;
+use yii\rbac\DbManager;
 
 class RbacController extends Controller
 {
-    public function actionInit()
+    public function actionInit($id = null)
     {
-        $auth = Yii::$app->authManager;
+        $auth =new DbManager;
+//        var_dump($auth);die;
+        $auth->init();
 
-        // add "createPost" permission
-        $createPost = $auth->createPermission('createPost');
-        $createPost->description = 'Create a post';
-        $auth->add($createPost);
+        $auth->removeAll(); //удаляем старые данные
+        // Rules
+        $groupRule = new GroupRule();
 
-        // add "updatePost" permission
-        $updatePost = $auth->createPermission('updatePost');
-        $updatePost->description = 'Update post';
-        $auth->add($updatePost);
+        $auth->add($groupRule);
 
-        // add "author" role and give this role the "createPost" permission
-        $manager = $auth->createRole('manager');
-        $auth->add($manager);
-        $auth->addChild($manager, $createPost);
+        // Roles
+        $user = $auth->createRole('user');
+        $user->description = 'User';
+        $user->ruleName = $groupRule->name;
+        $auth->add($user);
 
-        // add "admin" role and give this role the "updatePost" permission
-        // as well as the permissions of the "author" role
+        $moderator = $auth->createRole(' moderator ');
+        $moderator ->description = 'Moderator ';
+        $moderator ->ruleName = $groupRule->name;
+        $auth->add($moderator);
+        $auth->addChild($moderator, $user);
+
         $admin = $auth->createRole('admin');
+        $admin->description = 'Admin';
+        $admin->ruleName = $groupRule->name;
         $auth->add($admin);
-        $auth->addChild($admin, $updatePost);
-        $auth->addChild($admin, $manager);
+        $auth->addChild($admin, $moderator);
 
-        // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()
-        // usually implemented in your User model.
-        $auth->assign($manager, 2);
-        $auth->assign($admin, 1);
+        $superadmin = $auth->createRole('superadmin');
+        $superadmin->description = 'Superadmin';
+        $superadmin->ruleName = $groupRule->name;
+        $auth->add($superadmin);
+        $auth->addChild($superadmin, $admin);
+
+        // Superadmin assignments
+        if ($id !== null) {
+            $auth->assign($superadmin, $id);
+        }
     }
 }
