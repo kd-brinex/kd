@@ -24,8 +24,13 @@ $navbar = [
 //        ['label' => 'Выход', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']],
 
         ['label' => 'Запчасти', 'items' => [
-            ['label' => 'Поставщики', 'url' => ['autoparts/provideruser']],
-            ['label' => 'Учетные записи'],
+            ['label' => 'Поставщики', 'url' => ['/admin/partsprovider']],
+            ['label' => 'Учетные записи', 'url' => ['/admin/partsuser']],
+
+        ]],
+        [    'label' => 'Пользователи', 'items' => [
+            ['label' => 'Список', 'url' => ['/user/admin/index']],
+
 
         ]],
 //                ['label' => 'Товар', 'items' => Yii::$app->params['catalog']['items']],
@@ -74,29 +79,6 @@ NavBar::end();
         </div>
 
 
-        <?php
-//        Modal::begin([
-//            'header' => '<h2>' . 'Города' . '</h2>',
-//            'toggleButton' => [
-//                'tag' => 'button',
-//                'class' => 'btn btn-lg btn-block btn-info',
-//                'label' => $city_name,
-//                'id' => 'button_city_list',
-//
-//            ]
-//        ]);
-//        echo Button::widget([
-//            'label' => 'Выбрать город',
-//            'options' => [
-//                'class' => 'btn-lg btn-default',
-//                'style' => 'margin:5px',
-//                'onclick' => 'load_city_list()',
-//            ],
-//            'tagName' => 'div'
-//        ]);
-
-//        echo '<div id="city_list"></div>';
-//        Modal::end(); ?>
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">&copy; My Company <?= date('Y') ?></p>

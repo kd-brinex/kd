@@ -67,7 +67,7 @@ namespace  app\modules\autoparts\providers;
 
       }
       public function update_estimation($value){
-          return '3 3 3';
+          return 50;
       }
   }
 ?>

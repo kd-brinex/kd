@@ -52,6 +52,23 @@ class VKontakte extends OAuth2
      * @inheritdoc
      */
     public $apiBaseUrl = 'https://api.vk.com/method';
+    /**
+     * @var array list of attribute names, which should be requested from API to initialize user attributes.
+     * @since 2.0.4
+     */
+    public $attributeNames = [
+        'uid',
+        'first_name',
+        'last_name',
+        'nickname',
+        'screen_name',
+        'sex',
+        'bdate',
+        'city',
+        'country',
+        'timezone',
+        'photo'
+    ];
 
 
     /**
@@ -59,22 +76,20 @@ class VKontakte extends OAuth2
      */
     protected function initUserAttributes()
     {
-        $attributes = $this->api('users.get.json', 'GET', [
-            'fields' => implode(',', [
-                'uid',
-                'first_name',
-                'last_name',
-                'nickname',
-                'screen_name',
-                'sex',
-                'bdate',
-                'city',
-                'country',
-                'timezone',
-                'photo'
-            ]),
+        $response = $this->api('users.get.json', 'GET', [
+            'fields' => implode(',', $this->attributeNames),
         ]);
-        return array_shift($attributes['response']);
+        $attributes = array_shift($response['response']);
+
+        $accessToken = $this->getAccessToken();
+        if (is_object($accessToken)) {
+            $accessTokenParams = $accessToken->getParams();
+            unset($accessTokenParams['access_token']);
+            unset($accessTokenParams['expires_in']);
+            $attributes = array_merge($accessTokenParams, $attributes);
+        }
+
+        return $attributes;
     }
 
     /**

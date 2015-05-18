@@ -8,6 +8,8 @@ use app\modules\autoparts\models\PartProviderUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\filters\AccessRule;
 
 /**
  * ProviderUserController implements the CRUD actions for PartProviderUser model.
@@ -16,11 +18,27 @@ class ProvideruserController extends Controller
 {
     public function behaviors()
     {
+        $this->layout = "/admin.php";
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['create','view','update', 'create', 'delete',],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+
                 ],
             ],
         ];
@@ -32,6 +50,7 @@ class ProvideruserController extends Controller
      */
     public function actionIndex()
     {
+//        $this->layout = "../views/layouts/admin.php";
         $searchModel = new PartProviderUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

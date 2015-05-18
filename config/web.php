@@ -37,6 +37,9 @@ $config = [
 //            'login'=>'kd',
 //            'pass'=>'JVBDhGpejncE',
         ],
+        'authManager' =>[
+            'class' => 'yii\rbac\DbManager',
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -65,6 +68,23 @@ $config = [
                 'finddetails' => 'tovar/tovar/finddetails',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
+
+                //Админка
+                'admin/partsprovider' => 'autoparts/provider',
+                'admin/partsprovider/view' => 'autoparts/provider/view',
+                'admin/partsprovider/create' => 'autoparts/provider/create',
+                'admin/partsprovider/update' => 'autoparts/provider/update',
+                'admin/partsprovider/delete' => 'autoparts/provider/delete',
+                'admin/partsprovider/index' => 'autoparts/provider/index',
+                'admin/partsuser' => 'autoparts/provideruser',
+                'admin/partsuser/index' => 'autoparts/provideruser/index',
+                'admin/partsuser/view' => 'autoparts/provideruser/view',
+                'admin/partsuser/create' => 'autoparts/provideruser/create',
+                'admin/partsuser/update' => 'autoparts/provideruser/update',
+                'admin/partsuser/delete' => 'autoparts/provideruser/delete',
+                //Пользователи
+                'admin/user' => '/user/admin/index',
+                'admin/permission' => '/permit/access/permission',
 
 
             ],
@@ -168,6 +188,7 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+
         'api'=>[
             'class'=>'app\modules\api\Module',
         ],

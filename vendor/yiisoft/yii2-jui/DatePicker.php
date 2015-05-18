@@ -38,8 +38,19 @@ use yii\helpers\Json;
  * ]);
  * ```
  *
- * Note that empty values like empty strings and 0 will result in a date displayed as `1970-01-01`.
- * So to make sure empty values result in an empty text field in the datepicker you need to add a
+ * You can also use this widget in an [[yii\widgets\ActiveForm|ActiveForm]] using the [[yii\widgets\ActiveField::widget()|widget()]]
+ * method, for example like this:
+ *
+ * ```php
+ * <?= $form->field($model, 'from_date')->widget(\yii\jui\DatePicker::classname(), [
+ *     //'language' => 'ru',
+ *     //'dateFormat' => 'yyyy-MM-dd',
+ * ]) ?>
+ * ```
+ *
+ * Note that and empty string (`''`) and `null` will result in an empty text field while `0` will be
+ * interpreted as a UNIX timestamp and result in a date displayed as `1970-01-01`.
+ * It is recommended to add a
  * validation filter in your model that sets the value to `null` in case when no date has been entered:
  *
  * ```php
@@ -128,24 +139,17 @@ class DatePicker extends InputWidget
         $language = $this->language ? $this->language : Yii::$app->language;
 
         if (strncmp($this->dateFormat, 'php:', 4) === 0) {
-            $this->clientOptions['dateFormat'] = FormatConverter::convertDatePhpToJui(substr($this->dateFormat, 4), 'date', $language);
+            $this->clientOptions['dateFormat'] = FormatConverter::convertDatePhpToJui(substr($this->dateFormat, 4));
         } else {
             $this->clientOptions['dateFormat'] = FormatConverter::convertDateIcuToJui($this->dateFormat, 'date', $language);
         }
 
-        if ($language != 'en-US') {
+        if ($language !== 'en-US') {
             $view = $this->getView();
-            $bundle = DatePickerLanguageAsset::register($view);
-            if ($bundle->autoGenerate) {
-                $fallbackLanguage = substr($language, 0, 2);
-                if ($fallbackLanguage !== $language && !file_exists(Yii::getAlias($bundle->sourcePath . "/ui/i18n/datepicker-$language.js"))) {
-                    $language = $fallbackLanguage;
-                }
-                $view->registerJsFile($bundle->baseUrl . "/ui/i18n/datepicker-$language.js", [
-                    'depends' => [JuiAsset::className()],
-                ]);
-            }
-            $options = Json::encode($this->clientOptions);
+            $assetBundle = DatePickerLanguageAsset::register($view);
+            $assetBundle->language = $language;
+            $options = Json::htmlEncode($this->clientOptions);
+            $language = Html::encode($language);
             $view->registerJs("$('#{$containerID}').datepicker($.extend({}, $.datepicker.regional['{$language}'], $options));");
         } else {
             $this->registerClientOptions('datepicker', $containerID);

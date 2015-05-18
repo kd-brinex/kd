@@ -1,6 +1,19 @@
 Yii Framework 2 jui extension Change Log
 ========================================
 
+2.0.4 under development
+-----------------------
+
+- Bug #6: When using `DatePicker` translations, asset was registered without timestamp when asset manager `$appendTimestamp` was enabled (samdark) 
+- Bug (CVE-2015-3397): Using `Json::htmlEncode()` for safer JSON data encoding in HTML code (samdark, Tomasz Tokarski)
+
+
+2.0.3 March 01, 2015
+--------------------
+
+- Enh #7127: `name` or `model` and `attribute` are no longer required properties of `yii\jui\InputWidget` (nirvana-msu, cebe)
+
+
 2.0.2 January 11, 2015
 ----------------------
 

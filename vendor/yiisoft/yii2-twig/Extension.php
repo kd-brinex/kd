@@ -78,12 +78,25 @@ class Extension extends \Twig_Extension
             'needs_context' => true,
         ]);
         $functions[] = new \Twig_SimpleFunction('register_*', [$this, 'registerAsset'], $options);
+        $functions[] = new \Twig_SimpleFunction('register_asset_bundle', [$this, 'registerAssetBundle'], $options);
         foreach (['begin_page', 'end_page', 'begin_body', 'end_body', 'head'] as $helper) {
             $functions[] = new \Twig_SimpleFunction($helper, [$this, 'viewHelper'], $options);
         }
         return $functions;
     }
 
+    /**
+     * Function for registering an asset
+     *
+     * ```
+     * {{ use('yii/web/JqueryAsset') }}
+     * {{ register_jquery_asset() }}
+     * ```
+     *
+     * @param array $context context information
+     * @param string $asset asset name
+     * @return mixed
+     */
     public function registerAsset($context, $asset)
     {
         return $this->resolveAndCall($asset, 'register', [
@@ -91,6 +104,33 @@ class Extension extends \Twig_Extension
         ]);
     }
 
+    /**
+     * Function for additional syntax of registering asset bundles
+     *
+     * ```
+     * {{ register_asset_bundle('yii/web/JqueryAsset') }}
+     * ```
+     *
+     * @param array $context context information
+     * @param string $bundle asset bundle class fully qualified name
+     *
+     * @since 2.0.4
+     */
+    public function registerAssetBundle($context, $bundle)
+    {
+        $bundle = str_replace('/', '\\', $bundle);
+        $this->call($bundle, 'register', [
+            isset($context['this']) ? $context['this'] : null,
+        ]);
+    }
+
+    /**
+     * Function for *_begin syntax support
+     *
+     * @param string $widget widget name
+     * @param array $config widget config
+     * @return mixed
+     */
     public function beginWidget($widget, $config = [])
     {
         $widget = $this->resolveClassName($widget);
@@ -100,6 +140,11 @@ class Extension extends \Twig_Extension
         ]);
     }
 
+    /**
+     * Function for *_end syntax support
+     *
+     * @param string $widget widget name
+     */
     public function endWidget($widget = null)
     {
         if ($widget === null) {
@@ -113,6 +158,13 @@ class Extension extends \Twig_Extension
         }
     }
 
+    /**
+     * Function for *_widget syntax support
+     *
+     * @param string $widget widget name
+     * @param array $config widget config
+     * @return mixed
+     */
     public function widget($widget, $config = [])
     {
         return $this->resolveAndCall($widget, 'widget', [
@@ -127,11 +179,27 @@ class Extension extends \Twig_Extension
         }
     }
 
+    /**
+     * Resolves a method from widget and asset syntax and calls it
+     *
+     * @param string $className class name
+     * @param string $method method name
+     * @param array $arguments
+     * @return mixed
+     */
     public function resolveAndCall($className, $method, $arguments = null)
     {
         return $this->call($this->resolveClassName($className), $method, $arguments);
     }
 
+    /**
+     * Calls a method
+     *
+     * @param string $className class name
+     * @param string $method method name
+     * @param array $arguments
+     * @return mixed
+     */
     public function call($className, $method, $arguments = null)
     {
         $callable = [$className, $method];
@@ -142,6 +210,12 @@ class Extension extends \Twig_Extension
         }
     }
 
+    /**
+     * Resolves class name from widget and asset syntax
+     *
+     * @param string $className class name
+     * @return string
+     */
     public function resolveClassName($className)
     {
         $className = Inflector::id2camel($className, '_');
@@ -157,6 +231,11 @@ class Extension extends \Twig_Extension
         return $className;
     }
 
+    /**
+     * Adds namespaces and aliases from constructor
+     *
+     * @param array $args namespaces and classes to use in the template
+     */
     public function addUses($args)
     {
         foreach ((array) $args as $key => $value) {
@@ -207,6 +286,13 @@ class Extension extends \Twig_Extension
         return Url::to($path, true);
     }
 
+    /**
+     * Sets object property
+     *
+     * @param \stdClass $object
+     * @param string $property
+     * @param mixes $value
+     */
     public function setProperty($object, $property, $value)
     {
         $object->$property = $value;

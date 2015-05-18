@@ -18,7 +18,7 @@ class Auto extends Model
     public $sMarkID;    /// Идентификатор марки
     public $sMarkName;  /// Имя марки
     public $sModelName; /// Имя модели
-    public $aTreelList;   /// список деталей
+    public $aTreelList; /// список деталей
     public $sModelID;
     public $tree;
 
