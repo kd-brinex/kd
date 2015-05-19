@@ -56,28 +56,8 @@ return [
             ],
         ],
         'PartsProvider' => [
-            'Emex' => [
-                'class' => 'app\modules\autoparts\providers\Emex',
-                '_wsdl_uri' => 'http://ws.emex.ru/EmExService.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
-                'fields' => [
-                    "code" => "DetailNum",//Номер
-                    "name" => "DetailNameRus", //Информация
-                    "manufacture" => "MakeName", //Производитель
-                    "srokmin" => "ADDays", //Доставка
-                    "srokmax" => "DeliverTimeGuaranteed", //Доставка
-                    "price" => "ResultPrice",
-                    "lotquantity" => "LotQuantity",
-                    "quantity" => "Quantity",
-                    "skladid"=>"PriceLogo",
-                    "sklad"=>"PriceCountry",
-                    "groupid"=>"PriceGroup",
-                    "estimation"=>"DDPercent",
-                ],
-                'marga' => 1.15,
-                'id' => 4,
-                'name' => 'Emex',
-                'methods' => ['FindDetails' => 'FindDetailAdv3'],
-            ],
+
+
             'Avtostels' => [
                 'class' => 'app\modules\autoparts\providers\Avtostels',
                 '_wsdl_uri' => 'https://allautoparts.ru/WEBService/SearchService.svc/wsdl?wsdl',   //Ссылка на WSDL-документ сервиса
@@ -118,6 +98,28 @@ return [
                 'name' => 'Иксора',
                 'methods' => ['FindDetails' => 'FindDetailsXML'],
             ],
+            'Emex' => [
+                'class' => 'app\modules\autoparts\providers\Emex',
+                '_wsdl_uri' => 'http://ws.emex.ru/EmExService.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
+                'fields' => [
+                    "code" => "DetailNum",//Номер
+                    "name" => "DetailNameRus", //Информация
+                    "manufacture" => "MakeName", //Производитель
+                    "srokmin" => "ADDays", //Доставка
+                    "srokmax" => "DeliverTimeGuaranteed", //Доставка
+                    "price" => "ResultPrice",
+                    "lotquantity" => "LotQuantity",
+                    "quantity" => "Quantity",
+                    "skladid"=>"PriceLogo",
+                    "sklad"=>"PriceCountry",
+                    "groupid"=>"PriceGroup",
+                    "estimation"=>"DDPercent",
+                ],
+                'marga' => 1.15,
+                'id' => 4,
+                'name' => 'Emex',
+                'methods' => ['FindDetails' => 'FindDetailAdv3'],
+                ],
             'Partkom' => [
                 'class' => 'app\modules\autoparts\providers\Partkom',
                 '_wsdl_uri' => 'http://www.part-kom.ru/webservice/search.php?wsdl',   //Ссылка на WSDL-документ сервиса
