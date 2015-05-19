@@ -20,4 +20,5 @@ return array(
     'dektrium\\user\\' => array($vendorDir . '/dektrium/yii2-user'),
     'dektrium\\rbac\\' => array($vendorDir . '/dektrium/yii2-rbac'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
+    'Fxp\\Composer\\AssetPlugin\\' => array($vendorDir . '/fxp/composer-asset-plugin'),
 );
