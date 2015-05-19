@@ -7,37 +7,30 @@ use yii\filters\AccessControl;
 use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\modules\autoparts\models\PartProviderSearch;
-use app\modules\autoparts\models\PartProviderUserSearch;
-use app\models\ContactForm;
 
 
 class AdminController extends Controller
 {
 public function behaviors()
     {
+        $this->layout = "/admin.php";
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'ruleConfig' => [
                     'class' => AccessRule::className(),
                 ],
-                'only' => ['logout'],
+//                'only' => ['logout'],
                 'rules' => [
+//                    [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
                     [
-                        'actions' => ['create'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                    [
-                        'actions' => ['logout'],
+//                        'actions' => ['view', 'search', ''],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['view', 'search', ''],
-                        'allow' => true,
-                        'roles' => ['admin'],
                     ],
                 ],
             ],

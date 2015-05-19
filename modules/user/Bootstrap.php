@@ -12,6 +12,7 @@
 namespace app\modules\user;
 
 use dektrium\user\Bootstrap as BaseModule;
+use yii\i18n\PhpMessageSource;
 
 class Bootstrap extends  BaseModule
 {
@@ -38,9 +39,9 @@ class Bootstrap extends  BaseModule
     }
     public function bootstrap($app)
     {
-var_dump($app);die;
+//var_dump($app);die;
         parent::bootstrap($app);
-        $app->get('i18n')->translations['user*'] = [
+        $app->get('i18n')->translations['user'] = [
                 'class'    => PhpMessageSource::className(),
                 'basePath' => __DIR__ . '/messages',
             ];

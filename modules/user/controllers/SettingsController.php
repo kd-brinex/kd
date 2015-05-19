@@ -15,6 +15,7 @@ class SettingsController extends BaseSettingsController
 {
     public function behaviors()
     {
+    $this->layout='/main.php';
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),

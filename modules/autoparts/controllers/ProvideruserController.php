@@ -28,15 +28,11 @@ class ProvideruserController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'ruleConfig' => [
-                    'class' => AccessRule::className(),
-                ],
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['create','view','update', 'create', 'delete',],
+//                        'actions' => ['create','view','update', 'create', 'delete',],
                         'allow' => true,
-                        'roles' => ['admin'],
+                        'roles' => ['m'],
                     ],
 
                 ],

@@ -16,7 +16,11 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
-return [
+$ret=require($_SERVER['DOCUMENT_ROOT'].'/../vendor/dektrium/yii2-user/messages/ru/user.php');
+$ret=array_merge($ret,
+    [
     'Cars'=>'Машины',
     'Orders'=>'Заказы',
-];
+    'Roles'=>'Роли',
+]);
+return $ret;

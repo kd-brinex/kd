@@ -8,9 +8,7 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
     'components' => [
-        'groupRule'=>[
-            'class'=>'app\components\rbac\GropeRule',
-        ],
+
         'session' => [
             'class' => 'yii\web\Session',
 //            'timeout'=>28800,
@@ -40,12 +38,12 @@ $config = [
 //            'pass'=>'JVBDhGpejncE',
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'dektrium\rbac\components\DbManager',
             'defaultRoles' => [
                 'user',
-                'manager',
+                'moderator',
                 'admin',
-                'superadmin'
+                'superadmin',
             ],
         ],
         'urlManager' => [
@@ -92,7 +90,8 @@ $config = [
                 'admin/partsuser/delete' => 'autoparts/provideruser/delete',
                 //Пользователи
                 'admin/user' => '/user/admin/index',
-                'admin/permission' => '/permit/access/permission',
+                'admin/roles' => '/rbac/role/index',
+                'admin/permissions' => '/rbac/permissions/index',
 
 
             ],
@@ -145,7 +144,8 @@ $config = [
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@dektrium/user/views/settings' => '@app/modules/user/views/settings'
+                    '@dektrium/user/views/settings' => '@app/modules/user/views/settings',
+
                 ],
             ],
         ],
@@ -170,7 +170,10 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+            'layout'=> '/admin.php',
+        ],
         'api' => [
             'class' => 'app\modules\api\Module',
         ],
@@ -192,12 +195,14 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
+            'layout' => '/admin.php',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'Profile' => 'app\modules\user\models\Profile',
             ],
             'controllerMap' => [
-                'settings' => 'app\modules\user\controllers\SettingsController'
+                'settings' => 'app\modules\user\controllers\SettingsController',
+//                'admin' => 'app\modules\user\controllers\AdminController'
             ],
 
             'enableUnconfirmedLogin' => true,
