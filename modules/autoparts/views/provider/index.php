@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'enable',
+            'weight',
             'flagpostav',
 
             ['class' => 'yii\grid\ActionColumn'],

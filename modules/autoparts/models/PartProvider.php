@@ -30,7 +30,8 @@ class PartProvider extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 15],
-            [['name'], 'unique']
+            [['name'], 'unique'],
+            [['weight'],'integer']
         ];
     }
 
@@ -42,7 +43,8 @@ class PartProvider extends \yii\db\ActiveRecord
         return [
             'id' => 'Внутренний код',
             'name' => 'Название',
-            'enable' => 'Включить'
+            'enable' => 'Включить',
+            'weight' => 'Вес',
         ];
     }
 

@@ -128,7 +128,7 @@ class Tovar extends \yii\db\ActiveRecord
         $avtoproviders=$parts['PartsProvider'];
         $details = [];
 
-        $providers= PartProvider::find()->where('enable=1')->asArray()->all();
+        $providers= PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
         if(isset($params['article'])&&$params['article']!='') {

@@ -18,7 +18,7 @@ class PartProviderSearch extends PartProvider
     public function rules()
     {
         return [
-            [['id', 'enable'], 'integer'],
+            [['id', 'enable','weight'], 'integer'],
             [['name', 'flagpostav'], 'safe'],
         ];
     }
@@ -58,10 +58,12 @@ class PartProviderSearch extends PartProvider
         $query->andFilterWhere([
             'id' => $this->id,
             'enable' => $this->enable,
+            'weigth' => $this->weight,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'flagpostav', $this->flagpostav]);
+            ->andFilterWhere(['like', 'flagpostav', $this->flagpostav])
+            ->andFilterWhere(['like', 'wheight', $this->weight]);
 
         return $dataProvider;
     }
