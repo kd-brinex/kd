@@ -101,4 +101,13 @@ class Emex extends PartsProvider
     public function update_estimation($value){
         return round( $value['estimation']);
     }
+    public function update_srokmin($value)
+    {
+        return $value['srokmin'] + 4;
+    }
+
+    public function update_srokmax($value)
+    {
+        return $value['srokmax'] + 8;
+    }
 }

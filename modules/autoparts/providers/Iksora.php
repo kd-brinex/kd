@@ -101,6 +101,15 @@ class Iksora extends PartsProvider
         $estimation=round(($count>0)?($summa/$count)*20:0,0);
         return $estimation;
     }
+    public function update_srokmin($value)
+    {
+        return $value['srokmin'] + 2;
+    }
+
+    public function update_srokmax($value)
+    {
+        return $value['srokmax'] + 2;
+    }
     /*
     public function setProperties($aProperties){
         foreach ($aProperties as $name => $value){
