@@ -143,7 +143,7 @@ class Tovar extends \yii\db\ActiveRecord
                     $fparts->flagpostav = $p['flagpostav'];
                     $e = [];
                     $det = $fparts->findDetails($e);
-                    var_dump($det);die;
+//                    var_dump($det);die;
                     $details = array_merge($details, $det);
                     $fparts->close();
                 }
