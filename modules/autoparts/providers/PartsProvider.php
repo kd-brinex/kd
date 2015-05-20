@@ -50,6 +50,7 @@ class PartsProvider
         "groupid"=>"groupid",//Оригинал, не оригинал
         "flagpostav"=>"flagpostav",
         "storeid"=>"storeid",//код магазина
+        "pid"=>"pid",//код магазина
     ];
 
 
@@ -313,6 +314,8 @@ public function setData($params){
 
         return $value['srokmin'] . (($value['srokmin'] < $value['srokmax']) ? '-' . $value['srokmax'] : '');
     }
-
+public function update_pid($value){
+    return $this->id;
+}
 
 }

@@ -34,6 +34,7 @@ class Api extends Model
 <pricedate>'.$d['pricedate'].'</pricedate>
 <groupid>'.$d['groupid'].'</groupid>
 <provider>'.$d['provider'].'</provider>
+<pid>'.$d['pid'].'</pid>
 <storeid>'.$d['storeid'].'</storeid>
 <FlagPostav>'.$d['flagpostav'].'</FlagPostav>
 </DetailInfo>';

@@ -46,15 +46,6 @@ class Emex extends PartsProvider
     public function xmlFindDetailAdv3()
     {
         $data = $this->getData();
-//        var_dump($data);die;
-//        $xml = ['detailNum' => $data['number'],
-//            'makerid' => $data['makerid'],
-//            'findSubstitutes' => $data['findSubstitutes'],
-//            'store' => $data['store'],
-//            'reCross' => $data['reCross'],
-//            'login' => $data['login'],
-//            'password' => $data['password']];
-//       return array('FindDetails' =>$xml);
         return $data;
     }
 
