@@ -54,7 +54,7 @@ class AutoController extends Controller
         $oAdcpi = \Yii::$app->adcpi;
 //        var_dump($params['markid'],$params['typeid']);die;
         $models=$oAdcpi ->getModelList($params['markid'],$params['typeid']);
-
+//var_dump($models);die;
             $this->layout = 'main';
         return $this->render('models',[
             'models'=>$models,
@@ -74,6 +74,7 @@ class AutoController extends Controller
         $sModelID=$params['modelid'];
         $auto = new Auto($oA2D,$sModelID);
         $auto->buildTree();
+//        var_dump($auto);die;
         return $this->render('tree',[
 
             'auto'=>$auto,
