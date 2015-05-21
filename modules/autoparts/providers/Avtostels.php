@@ -26,7 +26,7 @@ namespace  app\modules\autoparts\providers;
       public function getData(){
           $data =parent::getData();
           $defaults = array(
-              'session_id' => '10646',
+              'session_id' => '10708',
               'session_guid' => '',
               'session_login' => $this->login,
               'session_password' => $this->password,

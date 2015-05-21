@@ -23,13 +23,13 @@ class PartsProvider
     public $login;
     public $store_id;
     public $password;
-    public $find=false;
+    public $find = false;
     public $marga = 1;
     public $errors = [];
     public $article = 'ostatki';
     public $name = '';
     public $flagpostav = '';
-    public $id=1;//id провайдера в таблице part_provider
+    public $id = 1;//id провайдера в таблице part_provider
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -43,14 +43,14 @@ class PartsProvider
         "srok" => "srok",//Доставка средняя
         "estimation" => "estimation",//Надежность поставщика
         "lotquantity" => "lotquantity",//минимальный заказ
-        "pricedate" =>"pricedate",//Дата обновление цены
-        "pricedestination"=>"pricedestination",// Стоимость доставки
-        "skladid"=>"skladid",
-        "sklad"=>"sklad",
-        "groupid"=>"groupid",//Оригинал, не оригинал
-        "flagpostav"=>"flagpostav",
-        "storeid"=>"storeid",//код магазина
-        "pid"=>"pid",//код магазина
+        "pricedate" => "pricedate",//Дата обновление цены
+        "pricedestination" => "pricedestination",// Стоимость доставки
+        "skladid" => "skladid",
+        "sklad" => "sklad",
+        "groupid" => "groupid",//Оригинал, не оригинал
+        "flagpostav" => "flagpostav",
+        "storeid" => "storeid",//код магазина
+        "pid" => "pid",//код магазина
     ];
 
 
@@ -65,43 +65,43 @@ class PartsProvider
             }
         }
     }
-public function setData($params){
 
-    foreach ($params as $property => $value) {
-        if(property_exists($this,$property)){
-            if (is_array($this->$property)){
-                $this->$property=array_merge($this->$property,$value);
+    public function setData($params)
+    {
+
+        foreach ($params as $property => $value) {
+            if (property_exists($this, $property)) {
+                if (is_array($this->$property)) {
+                    $this->$property = array_merge($this->$property, $value);
+                } else {
+                    $this->$property = $value;
+                }
             }
-            else {
-                $this->$property = $value;
-            }
+        }
+
+        $puser = new PartProviderUserSearch();
+
+        $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
+//    var_dump($p);die;
+        if (count($p) > 0) {
+            $this->login = $p[0]->attributes['login'];
+            $this->store_id = $p[0]->attributes['store_id'];
+            $this->password = $p[0]->attributes['password'];
+            $this->marga = $p[0]->attributes['marga'] / 100 + 1;
+
+            $this->find = true;
+
+        } else {
+            $this->find = false;
         }
     }
 
-    $puser = new PartProviderUserSearch();
-
-    $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//    var_dump($p);die;
-    if (count($p)>0) {
-        $this->login= $p[0]->attributes['login'];
-        $this->store_id= $p[0]->attributes['store_id'];
-        $this->password = $p[0]->attributes['password'];
-        $this->marga=$p[0]->attributes['marga']/100+1;
-
-        $this->find=true;
-
-    }
-    else
-    {
-        $this->find=false;
-    }
-}
     public function getData()
     {
         $data = \Yii::$app->request->queryParams;
         $data['login'] = $this->login;
         $data['password'] = $this->password;
-     return $data;
+        return $data;
 
     }
 
@@ -115,13 +115,13 @@ public function setData($params){
     public function init()
     {
 
-            try {
-                $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
-                $this->find = true;
-            } catch (Exception $e) {
-                $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
-                $this->find= false;
-            }
+        try {
+            $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
+            $this->find = true;
+        } catch (Exception $e) {
+            $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
+            $this->find = false;
+        }
 //            var_dump($this->_soap_client,$this->find);die;
         return $this->find;
     }
@@ -138,7 +138,9 @@ public function setData($params){
      */
     public function soap($method)
     {
-        if(!$this->find){return false;}
+        if (!$this->find) {
+            return false;
+        }
         $method_xml = 'xml' . $method;
         /** $metod_xml имя функции которая возвращает данные для метода $method*/
         $requestData = $this->$method_xml();
@@ -191,7 +193,9 @@ public function setData($params){
     /**Поиск запчастей*/
     public function findDetails(&$errors)
     {
-        if (!$this->find){return [];}
+        if (!$this->find) {
+            return [];
+        }
         $xml = $this->query($this->methods['FindDetails'], $errors);
 
         $data = $this->parseSearchResponseXML($xml);
@@ -216,7 +220,9 @@ public function setData($params){
     public function parseSearchResponseXML($xml)
     {
         $data = array();
-        if (!$xml){return $data;}
+        if (!$xml) {
+            return $data;
+        }
         foreach ($xml->rows->row as $row) {
             $_row = array();
             foreach ($row as $key => $field) {
@@ -233,15 +239,17 @@ public function setData($params){
         $fields = $this->fields;
 //        var_dump($data);die;
         foreach ($data as $key => $row) {
-            foreach ($fields as $field => $value) {
-                if (isset($row[$value])) {
-                    $ret[$key][$field] = $row[$value];
-                } else {
-                    $ret[$key][$field] = "";
-                }
-                $method = "update_" . $field;
-                $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
+            if ($this->validate($row)) {
+                foreach ($fields as $field => $value) {
+                    if (isset($row[$value])) {
+                        $ret[$key][$field] = $row[$value];
+                    } else {
+                        $ret[$key][$field] = "";
+                    }
+                    $method = "update_" . $field;
+                    $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
+                }
             }
         }
         return $ret;
@@ -255,7 +263,7 @@ public function setData($params){
 
     public function update_price($value)
     {
-        $price=$value['price'];
+        $price = $value['price'];
         $nval = $price * $this->marga;
         $rval = round($nval);
         $nval = ($rval > $nval) ? $rval : $rval + 1;
@@ -271,14 +279,17 @@ public function setData($params){
     {
         return $this->name;
     }
+
     public function update_storeid($value)
     {
         return $this->store_id;
     }
+
     public function update_flagpostav($value)
     {
         return $this->flagpostav;
     }
+
     public function update_srokmin($value)
     {
         return $value['srokmin'] + 1;
@@ -288,9 +299,12 @@ public function setData($params){
     {
         return $value['srokmax'] + 1;
     }
-    public function update_name($value){
+
+    public function update_name($value)
+    {
         return htmlspecialchars($value['name']);
     }
+
     public function update_quantity($value)
     {
 
@@ -310,12 +324,37 @@ public function setData($params){
         return $q;
 
     }
-    public function update_srok($value){
+
+    public function update_srok($value)
+    {
 
         return $value['srokmin'] . (($value['srokmin'] < $value['srokmax']) ? '-' . $value['srokmax'] : '');
     }
-public function update_pid($value){
-    return $this->id;
-}
+
+    public function update_pid($value)
+    {
+        return $this->id;
+    }
+
+    public function validate($value)
+    {
+        /**
+         * function validate - проверка полей на валидность
+         * true - корректная запись
+         * false - некорректная запись
+         */
+
+        //проверка по количеству
+        if ($value[$this->fields['quantity']] < 1) {
+            return false;
+        }
+
+        //проверка по цене
+        if ($value[$this->fields['price']] <= 0) {
+            return false;
+        }
+
+        return true;
+    }
 
 }
