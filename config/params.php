@@ -56,7 +56,24 @@ return [
             ],
         ],
         'PartsProvider' => [
+            'KD' => [
+                'class' => 'app\modules\autoparts\providers\KD',
+//                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
+                'fields' => [
+                    'code'=>'value_char',
+                    "name" => "name", //Информация
+                    "manufacture" => "maker_name", //Производитель
+                    "srokmin" => "days", //Доставка
+                    "srokmax" => "dayswarranty", //Доставка
+                    "sklad"=>"regionname",
 
+                ],
+                'marga' => 1,
+                'id' => 5,
+                'name' => 'Колеса даром',
+                'methods' => ['FindDetails' => 'FindDetails'],
+
+            ],
 
             'Avtostels' => [
                 'class' => 'app\modules\autoparts\providers\Avtostels',
@@ -154,6 +171,11 @@ return [
         'disk' => [
             'normal' => 'disk/',
             'big' => 'disk/big/',
+            'name' => 'category_id',
+        ],
+        'zapchasti_VAZ' => [
+            'normal' => 'zapchastivaz/',
+            'big' => 'zapchastivaz/big/',
             'name' => 'category_id',
         ],
         'shina' => [

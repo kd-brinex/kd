@@ -13,7 +13,7 @@ class AdminController extends Controller
 {
 public function behaviors()
     {
-        $this->layout = "/admin.php";
+//        $this->layout = "/admin.php";
         return [
             'access' => [
                 'class' => AccessControl::className(),

@@ -28,7 +28,7 @@ class Emex extends PartsProvider
 //фильтр по заменам
 //OriginalOnly - без замен и аналогов;
 //All - с заменами и аналогами.
-            'substLevel' => 'OriginalOnly',
+            'substLevel' => 'All',
 //Фильтр по типу деталей
 //None - не фильтровать;
 //FilterOriginalAndReplacements - только искомый номер, новый номер и замены искомого номера;

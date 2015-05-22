@@ -54,6 +54,7 @@ class TovarController extends Controller
     {
 
         $params = Yii::$app->request->queryParams;
+//        var_dump($params);die;
         $searchModel = new TovarSearch();
         $dataProvider = $searchModel->search($params);
         return $this->render('index', [
@@ -166,6 +167,7 @@ class TovarController extends Controller
             $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12'];
             $params['itemOptions'] = ['tag' => 'tr'];
         }
+//        var_dump($params);die;
         $searchModel = new TovarSearch();
         $dataProvider = $searchModel->category_list($params);
         return $this->render('category', [

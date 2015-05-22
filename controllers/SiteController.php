@@ -16,6 +16,7 @@ class SiteController extends Controller
 {
 public function behaviors()
     {
+//        $this->layout = "/main.twig";
         return [
             'access' => [
                 'class' => AccessControl::className(),
