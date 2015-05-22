@@ -97,5 +97,13 @@ class TovarSearch extends Tovar
         }
         return $rows;
     }
+    public function search_details($params)
+    {
+        $p['store_id']=(isset($params['store_id'])?$params['store_id']:109);
+        $p['detailnumber']=(isset($params['article'])?$params['article']:'');
+        $query=new Yii\db\Query();
 
+        return $query->from('finddetails')->where($p)->all();
+
+    }
 }

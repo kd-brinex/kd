@@ -8,11 +8,23 @@
 
 namespace app\modules\autoparts\providers;
 
-use app\modules\tovar\models\Tovar;
+use yii\db\Query;
 
 class Kd extends PartsProvider
 {
+    public function init()
+    {
 
+        try {
+//            $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
+            $this->find = true;
+        } catch (Exception $e) {
+            $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
+            $this->find = false;
+        }
+//            var_dump($this->_soap_client,$this->find);die;
+        return $this->find;
+    }
     public static function nameProvider()
     {
         return 'KD';
@@ -20,16 +32,13 @@ class Kd extends PartsProvider
 
     public function getData()
     {
-
-        $data = [
-            'value_char' => $this->article,
-            'param_id'=>'ЦО00026'
-        ];
-
-        return $data;
+        $data = parent::getData();
+        $p['store_id']=(isset($data['store_id'])?$data['store_id']:109);
+        $p['detailnumber']=(isset($data['article'])?$data['article']:$this->article);
+        return $p;
     }
 
-    public function xmlFindDetail()
+    public function xmlFindDetails()
     {
         $data = $this->getData();
         return $data;
@@ -60,13 +69,16 @@ class Kd extends PartsProvider
         $method_xml = 'xml' . $method;
 //        /**        Для получения входящего xml нужно описать функцию, которая возвращает результат для запроса.*/
         $requestData = $this->$method_xml();
-////        var_dump($requestData);die;
+//        var_dump($requestData);die;
 //        $result = $this->_soap_client->$method(
 //            $requestData
 //
 //        );
-        $result = Tovar::find()->where($requestData)->asArray()->all();
 
+        $query=new Query();
+
+        $result= $query->from('finddetails')->where($requestData)->all();
+//var_dump($result);die;
         return $result;
     }
 

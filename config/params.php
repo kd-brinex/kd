@@ -57,15 +57,16 @@ return [
         ],
         'PartsProvider' => [
             'KD' => [
-                'class' => 'app\modules\autoparts\providers\KD',
+                'class' => 'app\modules\autoparts\providers\Kd',
 //                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
                 'fields' => [
-                    'code'=>'value_char',
-                    "name" => "name", //Информация
+                    'code'=>'detailnumber',
+                    "name" => "detailname", //Информация
                     "manufacture" => "maker_name", //Производитель
-                    "srokmin" => "days", //Доставка
-                    "srokmax" => "dayswarranty", //Доставка
-                    "sklad"=>"regionname",
+                    "srokmin" => "srokmax", //Доставка
+                    "srokmax" => "srokmax", //Доставка
+                    "sklad"=>"storeid",
+
 
                 ],
                 'marga' => 1,
