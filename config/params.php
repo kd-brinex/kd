@@ -56,7 +56,7 @@ return [
             ],
         ],
         'PartsProvider' => [
-            'KD' => [
+            'Kd' => [
                 'class' => 'app\modules\autoparts\providers\Kd',
 //                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
                 'fields' => [

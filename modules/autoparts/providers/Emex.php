@@ -59,8 +59,13 @@ class Emex extends PartsProvider
     {
         $data = [];
 //        var_dump($xml);die;
-        foreach ($xml->FindDetailAdv3Result->Details->SoapDetailItem as $row) {
+        if (!isset($xml->FindDetailAdv3Result->Details->SoapDetailItem)){return $data;}
+        $di=$xml->FindDetailAdv3Result->Details->SoapDetailItem;
+        if (!is_array($di)){$rows=[$di];}else{$rows=$di;}
+//        var_dump($di, $rows );die;
+        foreach ($rows as $row) {
             $_row = [];
+//            var_dump($row);die;
             foreach ($row as $key => $field) {
                 $_row[(string)$key] = (string)$field;
             }

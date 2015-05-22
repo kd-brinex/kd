@@ -33,7 +33,7 @@ class Kd extends PartsProvider
     public function getData()
     {
         $data = parent::getData();
-        $p['store_id']=(isset($data['store_id'])?$data['store_id']:109);
+        $p['storeid']=(isset($data['store_id'])?$data['store_id']:109);
         $p['detailnumber']=(isset($data['article'])?$data['article']:$this->article);
         return $p;
     }
@@ -61,6 +61,7 @@ class Kd extends PartsProvider
             }
             $data[] = $_row;
         }
+//        var_dump($data);die;
         return $data;
     }
 
@@ -78,7 +79,7 @@ class Kd extends PartsProvider
         $query=new Query();
 
         $result= $query->from('finddetails')->where($requestData)->all();
-//var_dump($result);die;
+//var_dump($result,1);die;
         return $result;
     }
 
