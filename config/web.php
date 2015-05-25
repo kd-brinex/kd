@@ -41,9 +41,10 @@ $config = [
             'class' => 'dektrium\rbac\components\DbManager',
             'defaultRoles' => [
                 'user',
-                'moderator',
-                'admin',
-                'superadmin',
+                'manager',
+                'Admin',
+                'SA',
+
             ],
         ],
         'urlManager' => [

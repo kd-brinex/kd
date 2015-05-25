@@ -30,9 +30,9 @@ class ProvideruserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-//                        'actions' => ['create','view','update', 'create', 'delete',],
+                        'actions' => ['create','view','update', 'create', 'delete',],
                         'allow' => true,
-                        'roles' => ['m'],
+                        'roles' => ['Parts','Admin','SA'],
                     ],
 
                 ],
