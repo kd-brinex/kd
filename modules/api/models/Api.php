@@ -55,6 +55,6 @@ return $xml;
     public static function findtovars($params)
     {
 //        var_dump($params);die;
-        return  Tovar::find()->agit ndWhere($params)->asArray()->all();
+        return  Tovar::find()->andWhere($params)->asArray()->all();
     }
 }
