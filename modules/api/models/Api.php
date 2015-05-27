@@ -9,8 +9,6 @@ use app\modules\tovar\models\Tovar;
 class Api extends Model
 {
     public static function finddetails($params){
-
-
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDetailInfo>';
@@ -42,5 +40,21 @@ class Api extends Model
         $xml.='
 </ArrayOfDetailInfo>';
 return $xml;
+    }
+
+    /**
+     * findtovar - Поиск товара
+     * @param $params -
+     * id - код товара в 1с (ЦО)
+     * tip_id - тип товара
+     * category_id - категория товара
+     * store_id - номер магазина
+     *
+     *
+     */
+    public static function findtovars($params)
+    {
+//        var_dump($params);die;
+        return  Tovar::find()->agit ndWhere($params)->asArray()->all();
     }
 }

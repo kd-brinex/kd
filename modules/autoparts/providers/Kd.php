@@ -94,11 +94,11 @@ class Kd extends PartsProvider
     }
     public function update_srokmin($value)
     {
-        return $value['srokmin'] + 4;
+        return $value['srokmin'] + 2;
     }
 
     public function update_srokmax($value)
     {
-        return $value['srokmax'] + 8;
+        return $value['srokmax'] + 2;
     }
 }

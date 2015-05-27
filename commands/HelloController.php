@@ -27,4 +27,14 @@ class HelloController extends Controller
     {
         echo $message . "\n";
     }
+    public function actionDat($name)
+    {
+//        var_dump($name);die;
+        $db = odbc_connect("DRIVER={DBISAM 4 ODBC Driver};ConnectionType=Local;CatalogName=smb://192.168.1.199/shared/PARTS/FNA_Data/;","admin","");
+        $res = odbc_exec($db,"SELECT * FROM ".$name);
+        echo odbc_num_rows($res)." rows found";
+        while($row = odbc_fetch_array($res)) {
+            print_r($row);
+        }
+    }
 }

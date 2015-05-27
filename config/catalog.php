@@ -1,6 +1,8 @@
 <?php
 
-return ['label'=>'Товары',
+return [
+
+    'label'=>'Товары',
     'options'=>['tag'=>'ul', 'class'=>'nav nav-sidebar'],
     'itemoptions'=>['tag'=>'li'],
     'items' => [

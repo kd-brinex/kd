@@ -15,4 +15,14 @@ class ApiController extends Controller
 //    var_dump($details);die;
     return $details;
     }
+    public function actionFindtovars()
+    {
+        $this->layout=false;
+        $params = \Yii::$app->request->queryParams;
+        $params=array_merge($params,$_POST);
+        $tovars=Api::findtovars($params);
+        var_dump($tovars);die;
+        return $tovars;
+
+    }
 }

@@ -63,7 +63,7 @@ return [
                     'code'=>'detailnumber',
                     "name" => "detailname", //Информация
                     "manufacture" => "maker_name", //Производитель
-                    "srokmin" => "srokmax", //Доставка
+                    "srokmin" => "srokmin", //Доставка
                     "srokmax" => "srokmax", //Доставка
                     "sklad"=>"storeid",
 
