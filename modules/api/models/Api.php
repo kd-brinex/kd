@@ -79,7 +79,8 @@ return $xml;
         if (!isset($params['id'])){return json_encode(['error'=>$params]);}
         $tovar=new TovarSearch();
         $dp=$tovar->find_tovar_param($params);
-
+        $ret=[];
+        if ($dp->count>0){
         foreach($dp->models as $model){
         $ret['params'][$model['param_id']]=[
             'param_id'=>$model['param_id'],
@@ -93,7 +94,9 @@ return $xml;
         $ret['tovar']['category_id']=$model['category_id'];
         $ret['tovar']['name']=$model['name'];
         $ret['tovar']['description']=$model['description'];
-        $ret['tovar']['store_id']=$model['store_id'];
+        $ret['tovar']['price']=$model['price'];
+        $ret['tovar']['store_id']=$model['store_id'];}
+
 
         return json_encode($ret);
     }
