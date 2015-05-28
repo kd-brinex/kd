@@ -4,6 +4,12 @@ use yii\helpers\Html;
 $catalog = require(__DIR__ . '/catalog.php');
 
 return [
+    'Api'=>[
+        'tovar_tip'=>['tip_id',"category_id","name","store_id","price","count","ball","description",'image']
+    ],
+    /**
+     * Настройки для модуля autoparts
+     */
     'Parts' => [
         'sort' => ['attributes' => ['name', 'price'],],
         'pagination' => ['pageSize' => 25,],

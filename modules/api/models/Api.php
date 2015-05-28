@@ -2,6 +2,7 @@
 
 namespace app\modules\api\models;
 
+use app\modules\tovar\models\TovarSearch;
 use Yii;
 use yii\base\Model;
 use app\modules\tovar\models\Tovar;
@@ -52,9 +53,25 @@ return $xml;
      *
      *
      */
-    public static function findtovars($params)
+    public static function tovar_tip($params)
     {
-//        var_dump($params);die;
-        return  Tovar::find()->andWhere($params)->asArray()->all();
+//
+        if (!isset($params['tip_id'])){return json_encode(['error'=>$params]);}
+    $tovars=new TovarSearch();
+    $fields=\Yii::$app->params['Api']['tovar_tip'];
+//  var_dump($fields);die;
+    $dp= $tovars->category_list($params);
+//        var_dump($dp->pagination->offset,$dp->pagination->limit);die;
+        if (isset($params['page'])){$dp->pagination->setPage($params['page']);}
+        if (isset($params['pagesize'])){$dp->pagination->setPageSize($params['pagesize']);}
+        foreach($dp->models as $model){
+            foreach($fields as $f){
+                $ret['response'][$model->id][$f]=$model->$f;
+            }
+        }
+//        $db->
+        $ret['header']=['totatCount'=>$dp->totalCount];
+//        var_dump(json_encode($ret)));die;
+        return json_encode($ret);
     }
 }

@@ -21,6 +21,7 @@ class TovarSearch extends Tovar
     public $srok;
     public $hash;
     public $inbasket;
+
     public function rules()
     {
         return [
@@ -68,21 +69,19 @@ class TovarSearch extends Tovar
     public function category_list($params)
     {
         $query = Tovar::find()
-            ->andWhere(['tip_id'=>$params['tip_id']])
-            ->groupBy (['id']);
+            ->andWhere(['tip_id' => $params['tip_id']])
+            ->groupBy(['id']);
 
-        $dataProvider = new ActiveDataProvider(['query' => $query,]);
+        $dataProvider = new ActiveDataProvider(['query' => $query]);
+
         return $dataProvider;
     }
+
     public function find_tovar_param($params)
     {
-//        $city_id=Yii::$app->request->cookies['city'];
-        $p['id']=$params['id'];
-//        $p['id_store']=999;
-//        $query = $this->find()->andwhere('(id=:id) and (id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
-        $query = Tovar::find()->andwhere('(id=:id)',$p);
+        $p['id'] = $params['id'];
+        $query = Tovar::find()->andwhere('(id=:id)', $p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
-//        $dataProvider->pagination=false;
         return $dataProvider;
     }
 
@@ -92,18 +91,21 @@ class TovarSearch extends Tovar
             ->select('name as label')
             ->from('tovar_category')
             ->all();
-        for($i=0;$i<count($rows);++$i){
-            $rows[$i]['url']='/tovars/'.$rows[$i]['label'];
+        for ($i = 0; $i < count($rows); ++$i) {
+            $rows[$i]['url'] = '/tovars/' . $rows[$i]['label'];
         }
         return $rows;
     }
+
     public function search_details($params)
     {
-        $p['store_id']=(isset($params['store_id'])?$params['store_id']:109);
-        $p['detailnumber']=(isset($params['article'])?$params['article']:'');
-        $query=new Yii\db\Query();
+        $p['store_id'] = (isset($params['store_id']) ? $params['store_id'] : 109);
+        $p['detailnumber'] = (isset($params['article']) ? $params['article'] : '');
+        $query = new Yii\db\Query();
 
         return $query->from('finddetails')->where($p)->all();
 
     }
+
+
 }

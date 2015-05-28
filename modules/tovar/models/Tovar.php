@@ -106,9 +106,9 @@ class Tovar extends \yii\db\ActiveRecord
 
     public static function find(){
         $city_id=Yii::$app->request->cookies['city'];
-        $p['id_store']=109;
+        $p['store_id']=109;
         $query =parent::find();
-        $query->where('(id_store=:id_store) and not(title is null) and (value_char != \'\')',$p);
+        $query->where('(store_id=:store_id) and not(title is null) and (value_char != \'\')',$p);
         return $query;
     }
     public function getBasket(){
