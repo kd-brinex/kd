@@ -76,8 +76,25 @@ return $xml;
     }
 
     public static function tovar($params){
+        if (!isset($params['id'])){return json_encode(['error'=>$params]);}
         $tovar=new TovarSearch();
-        $ret=$tovar->find_tovar_param($params);
-        var_dump($ret->models);die;
+        $dp=$tovar->find_tovar_param($params);
+
+        foreach($dp->models as $model){
+        $ret['params'][$model['param_id']]=[
+            'param_id'=>$model['param_id'],
+            'value'=>$model['value_char'],
+            'title'=>$model['title'],
+            'name'=>$model['pname'],
+        ];
+        }
+        $ret['tovar']['id']=$model['id'];
+        $ret['tovar']['tip_id']=$model['tip_id'];
+        $ret['tovar']['category_id']=$model['category_id'];
+        $ret['tovar']['name']=$model['name'];
+        $ret['tovar']['description']=$model['description'];
+        $ret['tovar']['store_id']=$model['store_id'];
+
+        return json_encode($ret);
     }
 }
