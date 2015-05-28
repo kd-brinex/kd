@@ -5,6 +5,7 @@ namespace app\modules\tovar\models;
 use app\modules\basket\models\BasketSearch;
 use Yii;
 use app\modules\autoparts\models\PartProvider;
+
 /**
  * This is the model class for table "t_tovar".
  *
@@ -42,10 +43,10 @@ class Tovar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'tip_id', 'category_id', 'name', 'price', 'count', 'value_char', 'param_id','description'], 'required'],
+            [['id', 'tip_id', 'category_id', 'name', 'price', 'count', 'value_char', 'param_id', 'description'], 'required'],
             [['id', 'category_id'], 'string', 'max' => 9],
             [['tip_id', 'param_id'], 'string', 'max' => 25],
-            [['name', 'value_char','description'], 'string', 'max' => 200],
+            [['name', 'value_char', 'description'], 'string', 'max' => 200],
             [['description'], 'string', 'max' => 500],
             [['price', 'count'], 'int']
         ];
@@ -79,7 +80,7 @@ class Tovar extends \yii\db\ActiveRecord
 //        var_dump( $p['image'][$this->tip_id]);die;
 
         return (isset($p['image'][$this->tip_id]['name'])) ?
-            $p['host'] . $p['image'][$this->tip_id]['normal'] . $this[$p['image'][$this->tip_id]['name']]. '.jpg':
+            $p['host'] . $p['image'][$this->tip_id]['normal'] . $this[$p['image'][$this->tip_id]['name']] . '.jpg' :
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
 
@@ -87,7 +88,7 @@ class Tovar extends \yii\db\ActiveRecord
     {
         $p = Yii::$app->params;
         return (isset($p['image'][$this->tip_id]['name'])) ?
-            $p['host'] . $p['image'][$this->tip_id]['big'] .   $this->category_id . '.jpg':
+            $p['host'] . $p['image'][$this->tip_id]['big'] . $this->category_id . '.jpg' :
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
     }
 
@@ -95,45 +96,56 @@ class Tovar extends \yii\db\ActiveRecord
     {
         return ($this->count > 0) ? '<span class="offer-v1-deliv-instock">✓В наличии</span>' : '<span class="offer-v1-deliv-days">• Доставка 3-5 дней</span>';
     }
+
     public function getHash()
     {
-        $hash='';
-        $hash= base64_encode(Yii::$app->security->encryptByPassword('{"tovar_id":"'.$this->id.'","tovar_price":'.$this->price.'}',Yii::$app->params['securitykey']));
+        $hash = '';
+        $hash = base64_encode(Yii::$app->security->encryptByPassword('{"tovar_id":"' . $this->id . '","tovar_price":' . $this->price . '}', Yii::$app->params['securitykey']));
 //        $hash=base64_encode('{tovar_id:'.$this->id.',tovar_price:'.$this->price.'}');
 //        $hash=base64_decode($hash);
-    return $hash;
+        return $hash;
     }
 
-    public static function find(){
-        $city_id=Yii::$app->request->cookies['city'];
-        $p['store_id']=109;
-        $query =parent::find();
+    public static function find()
+    {
+        $city_id = Yii::$app->request->cookies['city'];
+        $p['store_id'] = 109;
+        $query = parent::find();
 //        $query->where('(store_id=:store_id) and not(title is null) and (value_char != \'\')',$p);
-        $query->where('(store_id=:store_id)',$p);
+        $query->where('(store_id=:store_id)', $p);
         return $query;
     }
-    public function getBasket(){
-    return $this->hasOne(BasketSearch::className(),['tovar_id'=>'id']);
-}
-    public function getInbasket(){
-        return (isset($this->basket))?$this->basket->id:0;
+
+    public function getBasket()
+    {
+        return $this->hasOne(BasketSearch::className(), ['tovar_id' => 'id']);
     }
-    public function asCurrency($value){
-     $rub=str_replace(',00','',Yii::$app->formatter->asCurrency($value,'RUB'));
+
+    public function getInbasket()
+    {
+        return (isset($this->basket)) ? $this->basket->id : 0;
+    }
+
+    public function asCurrency($value)
+    {
+        $rub = str_replace(',00', '', Yii::$app->formatter->asCurrency($value, 'RUB'));
         return $rub;
-}/**
- * findDetails - описание функции
- */
-    public static function findDetails($params){
+    }
+
+    /**
+     * findDetails - описание функции
+     */
+    public static function findDetails($params)
+    {
         $parts = Yii::$app->params['Parts'];
-        $avtoproviders=$parts['PartsProvider'];
+        $avtoproviders = $parts['PartsProvider'];
         $details = [];
 
 //        $providers= PartProvider::find()->where('id=5')->orderBy(['weight' => SORT_ASC])->asArray()->all();
-        $providers= PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
+        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
-        if(isset($params['article'])&&$params['article']!='') {
+        if (isset($params['article']) && $params['article'] != '') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
@@ -152,6 +164,16 @@ class Tovar extends \yii\db\ActiveRecord
             }
         }
 
-           return $details;
+        /**Сортировка массива поп полю srokmax
+         *
+         * */
+        usort($details, function ($a, $b) {
+            $inta = intval($a['srokmax']);
+            $intb = intval($b['srokmax']);
+            if ($inta != $intb) {
+                return ($inta > $intb) ? 1 : -1;
+            }
+        });
+        return $details;
     }
 }

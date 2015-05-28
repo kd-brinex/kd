@@ -74,4 +74,10 @@ return $xml;
 //        var_dump(json_encode($ret)));die;
         return json_encode($ret);
     }
+
+    public static function tovar($params){
+        $tovar=new TovarSearch();
+        $ret=$tovar->find_tovar_param($params);
+        var_dump($ret->models);die;
+    }
 }
