@@ -35,7 +35,7 @@ class Kd extends PartsProvider
         $data = parent::getData();
         $p['storeid']=(isset($data['store_id'])?$data['store_id']:109);
         $article=(isset($data['article'])?$data['article']:$this->article);
-        $article=strtolower($article);
+        $article=strtoupper($article);
         $p['detailnumber']=str_replace([' ','-'],[],$article);
 //        var_dump($p);die;
         return $p;
