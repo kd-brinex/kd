@@ -30,6 +30,7 @@ class PartsProvider
     public $name = '';
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
+    public $row_count = 10;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -121,6 +122,7 @@ class PartsProvider
         } catch (Exception $e) {
             $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
             $this->find = false;
+            return false;
         }
 //            var_dump($this->_soap_client,$this->find);die;
         return $this->find;
@@ -252,6 +254,7 @@ class PartsProvider
                 }
             }
         }
+//        var_dump($ret);die;
         return $ret;
     }
 

@@ -17,6 +17,7 @@ class Api extends Model
             $xml.='<DetailInfo>
 <detailnumber>'.$d['code'].'</detailnumber>
 <detailname>'.htmlspecialchars($d['name'],ENT_XML1).'</detailname>
+<dname>'.htmlspecialchars($d['name'],ENT_XML1).'</dname>
 <maker>
 <id>-</id>
 <name>'.htmlspecialchars($d['manufacture'],ENT_XML1).'</name>
