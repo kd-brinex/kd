@@ -30,7 +30,7 @@ class PartsProvider
     public $name = '';
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
-    public $row_count = 10;
+    public $row_count = 4;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -209,10 +209,11 @@ class PartsProvider
            if ($a['srokmax']==$b['srokmax']){return 0;}
            if ($a['srokmax']>$b['srokmax']){return 1;}{return -1;}
         });
+        $sret=array_slice($ret,0,$this->row_count);
 
+//var_dump($ret);die;
 
-
-        return $ret;
+        return $sret;
 
     }
 
