@@ -202,7 +202,17 @@ class PartsProvider
 
         $data = $this->parseSearchResponseXML($xml);
 
-        return $this->formatSearchResponse($data);
+        $ret = $this->formatSearchResponse($data);
+
+        usort($ret,function($a,$b)
+        {
+           if ($a['srokmax']==$b['srokmax']){return 0;}
+           if ($a['srokmax']>$b['srokmax']){return 1;}{return -1;}
+        });
+
+
+
+        return $ret;
 
     }
 
@@ -239,7 +249,7 @@ class PartsProvider
     {
         $ret = [];
         $fields = $this->fields;
-//        var_dump($data);die;
+//        var_dump($fields,$data);die;
         foreach ($data as $key => $row) {
             if ($this->validate($row)) {
                 foreach ($fields as $field => $value) {
@@ -295,12 +305,12 @@ class PartsProvider
 
     public function update_srokmin($value)
     {
-        return $value['srokmin'] + 1;
+        return $value['srokmin'] + 3;
     }
 
     public function update_srokmax($value)
     {
-        return $value['srokmax'] + 1;
+        return $value['srokmax'] + 3;
     }
 
     public function update_name($value)
