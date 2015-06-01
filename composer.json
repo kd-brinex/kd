@@ -21,7 +21,8 @@
         "dektrium/yii2-user": "0.9.*@dev",
         "yiisoft/yii2-twig": "*",
         "fxp/composer-asset-plugin": "~1.0",
-        "dektrium/yii2-rbac": "dev-master"
+        "dektrium/yii2-rbac": "dev-master",
+        "yiisoft/yii2-codeception": "~2.0.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

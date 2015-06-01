@@ -17,8 +17,11 @@ return array(
     'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap'),
     'yii\\authclient\\' => array($vendorDir . '/yiisoft/yii2-authclient'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
+    'kartik\\select2\\' => array($vendorDir . '/kartik-v/yii2-widget-select2'),
+    'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'dektrium\\user\\' => array($vendorDir . '/dektrium/yii2-user'),
     'dektrium\\rbac\\' => array($vendorDir . '/dektrium/yii2-rbac'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'Fxp\\Composer\\AssetPlugin\\' => array($vendorDir . '/fxp/composer-asset-plugin'),
+    'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
 );
