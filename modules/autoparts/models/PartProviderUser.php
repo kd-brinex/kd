@@ -73,6 +73,18 @@ class PartProviderUser extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TStore::className(), ['id' => 'store_id']);
     }
+
+    public function getCitySrok()
+    {
+//        var_dump($this->partProviderUsers);die;
+        return PartProviderSrok::find()->andWhere(['city_id' => $this->store->city_id,'provider_id'=>$this->provider->id]);
+    }
+
+    public function getSrok()
+    {
+//        var_dump($this->getCitySrok());
+        return $this->citySrok->days;
+    }
     public function getProviderDD(){
         $d=new PartProvider();
         $dd= $d->find()->asArray()->All();
@@ -83,4 +95,9 @@ class PartProviderUser extends \yii\db\ActiveRecord
         }
         return $res;
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+
 }

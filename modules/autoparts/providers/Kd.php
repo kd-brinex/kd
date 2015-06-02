@@ -95,13 +95,15 @@ class Kd extends PartsProvider
     public function update_estimation($value){
         return round( $value['estimation']);
     }
-    public function update_srokmin($value)
-    {
-        return $value['srokmin'] + 2;
-    }
-
-    public function update_srokmax($value)
-    {
-        return $value['srokmax'] + 2;
-    }
+//    public function update_srokmin($value)
+//    {
+////        return $value['srokmin'] ;
+//        return 0;
+//    }
+//
+//    public function update_srokmax($value)
+//    {
+////        return $value['srokmax'] ;
+//        return 0;
+//    }
 }

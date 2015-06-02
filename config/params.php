@@ -29,6 +29,10 @@ return [
                 'label' => 'Цена',
             ],
             [
+                'attribute' => 'srokdays',
+                'label' => 'srokdays',
+            ],
+            [
                 'attribute' => 'quantity',
                 'label' => 'Количество',
             ],

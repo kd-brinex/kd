@@ -3,6 +3,7 @@
 namespace app\modules\autoparts\models;
 
 use Yii;
+use app\modules\city\models\City;
 
 /**
  * This is the model class for table "t_store".
@@ -68,6 +69,10 @@ class TStore extends \yii\db\ActiveRecord
      */
     public function getCity()
     {
-        return $this->hasOne(GeobaseCity::className(), ['id' => 'city_id']);
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
+
+
+
+
 }
