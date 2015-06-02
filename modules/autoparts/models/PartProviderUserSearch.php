@@ -15,6 +15,7 @@ class PartProviderUserSearch extends PartProviderUser
     /**
      * @inheritdoc
      */
+    public $srok;
     public function rules()
     {
         return [
@@ -42,13 +43,20 @@ class PartProviderUserSearch extends PartProviderUser
      */
     public function search($params)
     {
-        $query = PartProviderUser::find();
+        $query = PartProviderUser::find()->andWhere($params);
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
+        $query->andFilterWhere([
+//            'id' => $this->id,
+            'store_id' => $this->store_id,
+            'provider_id' => $this->provider_id,
+//            'marga' => $this->marga,
+        ]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
@@ -56,12 +64,7 @@ class PartProviderUserSearch extends PartProviderUser
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'store_id' => $this->store_id,
-            'provider_id' => $this->provider_id,
-            'marga' => $this->marga,
-        ]);
+
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'login', $this->login])
@@ -71,9 +74,13 @@ class PartProviderUserSearch extends PartProviderUser
     }
     public function getUserProvider($params)
     {
-        $dataProvider = parent::find()
-            ->andWhere(['store_id'=>$params['store_id']])
-            ->andWhere(['provider_id'=>$params['provider_id']])->all();
+//        $dataProvider = $this->find()
+//            ->andWhere(['store_id'=>$params['store_id']])
+//            ->andWhere(['provider_id'=>$params['provider_id']])->all();
+        $query = PartProviderUser::find()->andWhere($params);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
         return $dataProvider;
     }
 }

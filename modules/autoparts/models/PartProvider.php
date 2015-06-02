@@ -55,4 +55,5 @@ class PartProvider extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PartProviderUser::className(), ['provider_id' => 'id']);
     }
+
 }

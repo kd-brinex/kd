@@ -12,6 +12,7 @@ use SoapClient;
 use Exception;
 use SimpleXMLElement;
 use app\modules\autoparts\models\PartProviderUserSearch;
+use app\modules\autoparts\models\PartProviderSrok;
 
 class PartsProvider
 {
@@ -31,6 +32,7 @@ class PartsProvider
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
     public $row_count = 4;
+    public $srokdays = 0;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -52,6 +54,7 @@ class PartsProvider
         "flagpostav" => "flagpostav",
         "storeid" => "storeid",//код магазина
         "pid" => "pid",//код магазина
+        "srokdays" => "srokdays",//Доставка от скалада до магазина
     ];
 
 
@@ -79,17 +82,20 @@ class PartsProvider
                 }
             }
         }
-
+//var_dump($params);die;
         $puser = new PartProviderUserSearch();
-
+//        $pus=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
+//        $p = $puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
         $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//    var_dump($p);die;
-        if (count($p) > 0) {
-            $this->login = $p[0]->attributes['login'];
-            $this->store_id = $p[0]->attributes['store_id'];
-            $this->password = $p[0]->attributes['password'];
-            $this->marga = $p[0]->attributes['marga'] / 100 + 1;
-
+//        $p=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
+//        $p=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
+//    var_dump($params['store_id'], $this->id,$p->models[0]->attributes);die;
+        if ($p->count > 0) {
+            $this->login = $p->models[0]->attributes['login'];
+            $this->store_id = $p->models[0]->attributes['store_id'];
+            $this->password = $p->models[0]->attributes['password'];
+            $this->marga = $p->models[0]->attributes['marga'] / 100 + 1;
+            $this->srokdays= $p->models[0]->srok;
             $this->find = true;
 
         } else {
@@ -152,7 +158,7 @@ class PartsProvider
         } else return false;
         try {
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
-            var_dump($result);die;
+//            var_dump($result);die;
         } catch (Exception $e) {
             $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML';
             return false;
@@ -176,7 +182,7 @@ class PartsProvider
         $result = $this->soap($method);
         //Закрытие соединение
         $this->close();
-        var_dump($result);die;
+//        var_dump($result);die;
         return $result;
     }
 
@@ -310,17 +316,23 @@ class PartsProvider
 
     public function update_srokmin($value)
     {
-        return $value['srokmin'] + 3;
+//        return $value['srokmin'] ;
+        return $value['srokmin'] + $this->srokdays;
     }
 
     public function update_srokmax($value)
     {
-        return $value['srokmax'] + 3;
+//        return $value['srokmax'] ;
+        return $value['srokmax'] + $this->srokdays;
     }
 
     public function update_name($value)
     {
         return htmlspecialchars($value['name']);
+    }
+
+    public function update_srokdays($value){
+        return $this->srokdays;
     }
 
     public function update_quantity($value)
