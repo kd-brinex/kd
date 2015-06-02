@@ -103,7 +103,7 @@ return [
                 'marga' => 1.15,
                 'id' => 3,
                 'name' => 'Автостелс',
-                'methods' => ['FindDetails' => 'SearchOffer'],
+                'methods' => ['FindDetails' => 'SearchOffer3'],
 
             ],
             'Iksora' => [

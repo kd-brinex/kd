@@ -32,18 +32,18 @@ namespace  app\modules\autoparts\providers;
               'session_password' => $this->password,
               'search_code' => (isset($data['article']))?$data['article']:$this->article,
               'instock' => '1',
-              'showcross' => '0',
+              'showcross' => '1',
               'periodmin' => -1,
-              'periodmax' => 10,
+              'periodmax' => -1,
           );
           $data = isset($data['session_id']) ? array_merge($defaults, $data) : $defaults;
           return $data;
       }
       public static function nameProvider()
       {
-          return 'Москва';
+          return 'Автостелс';
       }
-      public function xmlSearchOffer(){
+      public function xmlSearchOffer3(){
           $data=$this->getData();
           $session_info = $data['session_guid'] ?
               'SessionGUID="'.$data['session_guid'].'"' :

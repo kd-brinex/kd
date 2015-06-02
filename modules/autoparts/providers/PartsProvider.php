@@ -146,11 +146,13 @@ class PartsProvider
         $method_xml = 'xml' . $method;
         /** $metod_xml имя функции которая возвращает данные для метода $method*/
         $requestData = $this->$method_xml();
+//        var_dump($requestData);die;
         if ($requestData) {
             $result = $this->_soap_client->$method($requestData);
         } else return false;
         try {
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
+            var_dump($result);die;
         } catch (Exception $e) {
             $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML';
             return false;
@@ -162,6 +164,7 @@ class PartsProvider
                 $this->errors[] = 'Отладочная информация: ' . (string)$result->error->stacktrace;
             return false;
         }
+
         return $result;
     }
 
@@ -169,10 +172,11 @@ class PartsProvider
     {
 
         //Выполнение запроса
-//        var_dump($this->_soap_client->__getFunctions(),$method,$requestData);die;
+//        var_dump($this->_soap_client->__getFunctions(),$method);die;
         $result = $this->soap($method);
         //Закрытие соединение
-//        $this->close();
+        $this->close();
+        var_dump($result);die;
         return $result;
     }
 
