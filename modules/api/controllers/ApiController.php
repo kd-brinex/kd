@@ -11,6 +11,7 @@ class ApiController extends Controller
     $params = \Yii::$app->request->queryParams;
 //    $params = $_POST;
         $params=array_merge($params,$_POST);
+//        var_dump($params);die;
     $details=Api::findDetails($params);
 //    var_dump($details);die;
     return $details;
