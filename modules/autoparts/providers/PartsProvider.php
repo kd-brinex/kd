@@ -106,6 +106,8 @@ class PartsProvider
     public function getData()
     {
         $data = \Yii::$app->request->queryParams;
+//            var_dump(\Yii::$app->request->post());die;
+        $data = array_merge($data,\Yii::$app->request->post());
         $data['login'] = $this->login;
         $data['password'] = $this->password;
         return $data;

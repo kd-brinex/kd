@@ -53,7 +53,7 @@ $navbar = [
 
 <?php
 NavBar::begin([
-    'brandLabel' => 'Колеса даром 1',
+    'brandLabel' => 'Колеса даром',
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar navbar-fixed-top navbar-inverse',
