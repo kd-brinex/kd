@@ -31,7 +31,7 @@ class PartsProvider
     public $name = '';
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
-    public $row_count = 4;
+    public $row_count = 10;
     public $srokdays = 0;
     public $fields = [
         "code" => "code",//Номер
@@ -82,14 +82,11 @@ class PartsProvider
                 }
             }
         }
-//var_dump($params);die;
+
         $puser = new PartProviderUserSearch();
-//        $pus=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//        $p = $puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
+
         $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//        $p=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//        $p=$puser->search(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
-//    var_dump($params['store_id'], $this->id,$p->models[0]->attributes);die;
+
         if ($p->count > 0) {
             $this->login = $p->models[0]->attributes['login'];
             $this->store_id = $p->models[0]->attributes['store_id'];
@@ -105,9 +102,11 @@ class PartsProvider
 
     public function getData()
     {
-        $data = \Yii::$app->request->queryParams;
-//            var_dump(\Yii::$app->request->post());die;
-        $data = array_merge($data,\Yii::$app->request->post());
+//        $data = \Yii::$app->request->queryParams;
+//            var_dump($this->article);die;
+//        $data = array_merge($data,\Yii::$app->request->post());
+        $data['store_id']= $this->store_id;
+        $data['article']=$this->article;
         $data['login'] = $this->login;
         $data['password'] = $this->password;
         return $data;
@@ -216,16 +215,30 @@ class PartsProvider
 
         $ret = $this->formatSearchResponse($data);
 
-        usort($ret,function($a,$b)
-        {
-           if ($a['srokmax']==$b['srokmax']){return 0;}
-           if ($a['srokmax']>$b['srokmax']){return 1;}{return -1;}
-        });
-        $sret=array_slice($ret,0,$this->row_count);
+        /**Сортировка массива поп полю srokmax
+         *
+         * */
+//        function r_usort($a,$b,$key)
+//        {
+//            $inta = intval($a[$key]);
+//            $intb = intval($b[$key]);
+//
+//            if ($inta != $intb) {
+//                return ($inta > $intb) ? 1 : -1;
+//            }
+//            return 0;
+//        }
+//
+//        usort($ret, function ($a, $b) {
+//            $r=r_usort($a,$b,'srokmax') ;
+//            if($r==0){$r=r_usort($a,$b,'price');}
+//            return $r;
+//        });
+////        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
 
 //var_dump($ret);die;
 
-        return $sret;
+        return $ret;
 
     }
 

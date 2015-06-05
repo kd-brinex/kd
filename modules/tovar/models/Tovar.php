@@ -141,7 +141,7 @@ class Tovar extends \yii\db\ActiveRecord
         $avtoproviders = $parts['PartsProvider'];
         $details = [];
 
-//        $providers= PartProvider::find()->where('id=5')->orderBy(['weight' => SORT_ASC])->asArray()->all();
+//        $providers= PartProvider::find()->where('id=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
         $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
@@ -167,12 +167,21 @@ class Tovar extends \yii\db\ActiveRecord
         /**Сортировка массива поп полю srokmax
          *
          * */
-        usort($details, function ($a, $b) {
-            $inta = intval($a['srokmax']);
-            $intb = intval($b['srokmax']);
+        function r_usort($a,$b,$key)
+        {
+            $inta = intval($a[$key]);
+            $intb = intval($b[$key]);
+
             if ($inta != $intb) {
                 return ($inta > $intb) ? 1 : -1;
             }
+            return 0;
+        }
+
+        usort($details, function ($a, $b) {
+            $r=r_usort($a,$b,'price') ;
+            if($r==0){$r=r_usort($a,$b,'srokmax');}
+            return $r;
         });
         return $details;
     }
