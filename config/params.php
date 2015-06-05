@@ -14,7 +14,10 @@ return [
         'sort' => ['attributes' => ['name', 'price'],],
         'pagination' => ['pageSize' => 25,],
         'columns' => [
-
+            [
+                'attribute'=>'code',
+                'label'=>'Артикул',
+            ],
             [
                 'attribute' => 'name',
                 'label' => 'Название',
