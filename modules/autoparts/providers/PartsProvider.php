@@ -156,6 +156,7 @@ class PartsProvider
 //        var_dump($requestData);die;
         if ($requestData) {
             $result = $this->_soap_client->$method($requestData);
+//            var_dump($result);die;
         } else return false;
         try {
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
