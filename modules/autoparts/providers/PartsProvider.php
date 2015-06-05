@@ -162,7 +162,8 @@ class PartsProvider
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
 //            var_dump($result);die;
         } catch (Exception $e) {
-            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML';
+            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. '.$result;
+
             return false;
         }
         //Проверка ответа на ошибки
