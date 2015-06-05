@@ -111,6 +111,7 @@ return [
                 'id' => 3,
                 'name' => 'Автостелс',
                 'methods' => ['FindDetails' => 'SearchOffer3'],
+                'options' => ['soap_version' => SOAP_1_1,'trace'=>1],
 
             ],
             'Iksora' => [
