@@ -44,6 +44,7 @@ $config = [
                 'manager',
                 'Admin',
                 'SA',
+                'Parts',
 
             ],
         ],

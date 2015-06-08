@@ -30,7 +30,7 @@ class ProviderController extends Controller
                     [
 //                        'actions' => ['index', 'create', 'update', 'delete', 'view'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' =>['Parts'],
 
 //                        }
                     ],
