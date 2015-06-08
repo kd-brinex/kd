@@ -8,7 +8,8 @@
 
 namespace app\modules\autoparts\providers;
 
-
+use SimpleXMLElement;
+//use SoapClient;
 
 class Iksora extends PartsProvider
 {
@@ -62,7 +63,7 @@ class Iksora extends PartsProvider
         $data = $this->getData();
 //        var_dump($data);die;
         $xml = ['DetailNumber'=> $data['detailnumber'],
-                'MakerID>'=>$data['makerid'],
+                'MakerID'=>$data['makerid'],
                 'ContractID'=>$data['contractid'],
                 'Login'=>$data['login'],
                 'Password'=>$data['password']];
@@ -82,7 +83,9 @@ class Iksora extends PartsProvider
     }
     public function parseSearchResponseXML($xml) {
         $data = array();
+//        var_dump($xml->child);die;
         foreach($xml->row as $row) {
+//            var_dump($row);die;
             $_row = array();
             foreach($row as $key => $field) {
                 $_row[(string)$key] = (string)$field;
@@ -105,222 +108,16 @@ class Iksora extends PartsProvider
         $estimation=round(($count>0)?($summa/$count)*20:0,0);
         return $estimation;
     }
-//    public function update_srokmin($value)
-//    {
-//        return $value['srokmin'] + 2;
-//    }
-//
-//    public function update_srokmax($value)
-//    {
-//        return $value['srokmax'] + 2;
-//    }
-    /*
-    public function setProperties($aProperties){
-        foreach ($aProperties as $name => $value){
-            $this->$name=$value;
-        }
-    }
-    public function Balls()
-    {
-
-        $details = simplexml_import_dom($this->xml);
-        for ($i = 0; $i < count($details->DetailInfo); ++$i) {
-            $price = $details->DetailInfo[$i]->price;
-            $details->DetailInfo[$i]->addChild('ball', floor($price * 0.05));
-        }
-        $this->xml=$details;
+    public function soap($method){
+        $method_xml='xml'.$method;
+        /**        Для получения входящего xml нужно описать функцию, которая возвращает результат для запроса.*/
+        $requestData=$this->$method_xml();
+//        var_dump($requestData);die;
+        $result = $this->_soap_client->$method(
+            $requestData
+        );
+        $result = new SimpleXMLElement($this->getResultXML($result, $method));
+        return $result;
     }
 
-       public function PlusMarga()
-       {
-
-           $details = simplexml_import_dom($this->xml);
-           for ($i = 0; $i < count($details->DetailInfo); ++$i) {
-               $price = $details->DetailInfo[$i]->price * $this->marga;
-               $details->DetailInfo[$i]->price = $price;
-           }
-
-           $s->xml=$details;
-
-       }
-
-           public function GetFieldHttp($ap)
-           {
-               $response = '';
-               foreach ($ap as $key => $value) {
-                   $response .= $key . '=' . $value . '&';
-               }
-              eturn $response;
-           }
-
-
-           private function getPost($fname, $p)
-           {
-               $PostCurl = curl_init();
-               $goo = $this->host . "/searchdetails/searchdetails.asmx/" . $fname;
-
-               curl_setopt_array($PostCurl, array(
-                   CURLOPT_URL => $goo,
-                   CURLOPT_RETURNTRANSFER => true,
-                   CURLOPT_POST => true,
-                   CURLOPT_POSTFIELDS => $this->GetFieldHttp($p),
-                   CURLOPT_HEADER => false,
-                   CURLOPT_SSL_VERIFYPEER => false,
-               ));
-               $response = curl_exec($PostCurl);
-               return $response;
-           }
-
-           private function getGet($fname, $p)
-           {
-               $PostCurl = curl_init();
-               $goo = $this->host . "/searchdetails/searchdetails.asmx/" . $fname;
-               curl_setopt_array($PostCurl, array(
-                   CURLOPT_URL => $goo,
-                   CURLOPT_RETURNTRANSFER => true,
-                   CURLOPT_POST => false,
-                   CURLOPT_POSTFIELDS => http_build_query($p),
-               ));
-               $response = curl_exec($PostCurl);
-               curl_close($PostCurl);
-               return $response;
-           }
-
-           public function GetDetailInfo()
-           {
-               return $this->xml->getElementsByTagName('DetailInfo');
-           }
-
-           public function asArray()
-           {
-
-               return $this->xml_to_array($this->xml->saveXML());
-           }
-
-           private function xml_to_array($xml)
-           {
-               $XML = trim($xml);
-
-       //var_dump($XML);
-       // Expand empty tags
-               $emptyTag = '<(.*) \/>';
-               $fullTag = '<\1>0</\1>';
-               $XML = preg_replace("|$emptyTag|", $fullTag, $XML);
-               $XML = preg_replace("|<\?(.*)\?>|", "", $XML);
-               $XML = preg_replace("|<ArrayOfDetailInfo(.*)>|", "", $XML);
-               $matches = [];
-               $XML = trim($XML);
-               $returnVal = $XML;
-
-               $i = preg_match_all('|<(.*)>(.*)<\/\1>|Ums', $XML, $matches);
-
-               if ($i) {
-                   if (count($matches[1]) > 0) $returnVal = [];
-                   foreach ($matches[1] as $index => $outerXML) {
-                       $attribute = $outerXML;
-                       $value = $this->xml_to_array($matches[2][$index]);
-                       if (!isset($returnVal[$attribute])) $returnVal[$attribute] = [];
-                       $returnVal[$attribute][] = $value;
-                   }
-               }
-
-               if (is_array($returnVal)) foreach ($returnVal as $key => $value) {
-                   if (is_array($value) && count($value) == 1 && key($value) === 0) {
-                       $returnVal[$key] = $returnVal[$key][0];
-                   }
-               }
-               return $returnVal;
-           }
-
-           public function asXML()
-           {
-               return $this->xml;
-           }
-
-           public function val_node($nname, $detail)
-           {
-
-               $nval = (isset($detail[$nname])) ? $detail[$nname] : 0;
-       // Округление суммы
-               if ($nname == 'price') {
-                   $rval = round($nval);
-                   $nval = ($rval > $nval) ? $rval : $rval + 1;
-               }
-
-       // название+код
-               if ($nname == 'detailname') {
-                   $nval .= '(' . $detail['detailnumber'] . ')';
-               }
-               return $nval;
-           }
-
-           public function html_node($nname, $node)
-           {
-               $color = 'black';
-               $summa = 0;
-               $count = 0;
-       //        var_dump($node);die;
-               $nval = isset($node[$nname]) ? $node[$nname] : 0;
-       // Округление суммы
-               if ($nname == 'price') {
-                   $rval = round($nval);
-                   $nval = ($rval > $nval) ? $rval : $rval + 1;
-               }
-
-       //Надежность поставщика ввиде знака
-               if ($nname == 'estimation') {
-                   $nval = trim($nval);
-                   $n = strlen($nval);
-                   for ($i = 0; $i < $n; $i++) {
-                       $b = is_numeric($nval[$i]);
-                       $summa += ($b) ? $nval[$i] : 0;
-                       $count += ($b) ? 1 : 0;
-                   }
-
-                   $estimation = round(($count > 0) ? ($summa / $count) * 20 : 0, 0);
-                   $e = ($estimation <= 85) ? 'good' : 'fine';
-                   $e = ($estimation <= 25) ? 'bad' : $e;
-                   $nval = '<div class="square ' . $e . '" title="' . 'Надежность поставщика' . ' ' . $estimation . '%" ></div>';
-               }
-
-       //Выделение цветом для партии
-               if ($nname == 'lotquantity') {
-                   $color = ($nval > 1) ? 'red' : $color;
-
-               }
-
-               $nval = '<span style="color:' . $color . '">' . $nval . '</span>';
-               return $nval;
-           }
-
-           public function t($text)
-           {
-               return iconv("WINDOWS-1251", "UTF-8", $text);
-           }
-
-           public function tag_node($detail, $nodes, $tag)
-           {
-               $r = ['tag' => '', 'val' => ''];
-               foreach ($nodes as $node) {
-
-                   if (isset($node['items'])) {
-
-                       $t = $this->tag_node($detail[$node['field']], $node['items'], 'td');
-                       $r['tag'] .= $t['tag'];
-                       $r['val'] .= '"' . $node['field'] . '":[{' . substr($t['val'], 0, -1) . '}],';
-
-                   } else {
-                       $v = $this->val_node($node['field'], $detail);
-                       $h = $this->html_node($node['field'], $detail);
-                       if ($node['enable']) {
-                           $option = (isset($node['option'])) ? $node['option'] : '';
-                           $r['tag'] .= '<' . $tag . ' ' . $option . ' name="' . $node['field'] . '">' . $h . '</' . $tag . '>';
-                       }
-
-                       $r['val'] .= '"' . $node['field'] . '":"' . $v . '",';
-                   }
-
-               }
-               return $r;
-           }*/
 }
