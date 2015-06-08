@@ -31,5 +31,5 @@ class ApiController extends Controller
         $params=array_merge($params,$_POST);
         $tovars=Api::tovar($params);
         return $tovars;
-    }z
+    }
 }
