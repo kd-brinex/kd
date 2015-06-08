@@ -33,7 +33,8 @@
                Действия
             </th>
 			</tr>
-		<?foreach($result as $row):?>
+		<?php
+		foreach($result as $row){?>
 			<tr>
             <td><?=$row['Reference']?></td>
 				<td><?=$row['AnalogueManufacturerName']?></td>
@@ -87,6 +88,6 @@
                </form>
             </td>
 			</tr>
-		<?endforeach?>	
+		<?php } ?>
 		</table>
 </div>

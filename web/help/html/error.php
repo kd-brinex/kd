@@ -2,9 +2,10 @@
 	<form method="POST" action="">
 		<h2>Ошибки</h2>
 		<ul>
-		<?foreach($errors as $error):?>
-			<li><?=$error?></li>
-		<?endforeach?>
+		<?php
+		foreach($errors as $error) {
+			echo '<li>' . $error . '</li>';
+		}?>
 		</ul>
 	</form>
 </div>

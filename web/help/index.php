@@ -300,7 +300,7 @@
    if ($action == 'add_basket') {
       if (count($errors)) 
 			//Блок ошибок (при их наличии)
-			include('html/error.html');
+			include('html/error.php');
 		else		{			  
 			//Блок результатов добавления в корзину
 			include('html/result_basket.html');
