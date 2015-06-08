@@ -164,9 +164,10 @@ class PartsProvider
 //            var_dump($result);die;
         } catch (Exception $e) {
             $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. '.$result;
-
+//var_dump($this->errors);die;
             return false;
         }
+//        var_dump($result);die;
         //Проверка ответа на ошибки
         if (isset($result->error)) {
             $this->errors[] = 'Ошибка сервиса ' . $this->name . ': ' . (string)$result->error->message;
@@ -174,19 +175,18 @@ class PartsProvider
                 $this->errors[] = 'Отладочная информация: ' . (string)$result->error->stacktrace;
             return false;
         }
-
+//        var_dump($result);die;
         return $result;
     }
 
     public function query($method)
     {
-
         //Выполнение запроса
 //        var_dump($this->_soap_client->__getFunctions(),$method);die;
         $result = $this->soap($method);
+//        var_dump(1,$result);die;
         //Закрытие соединение
         $this->close();
-//        var_dump($result);die;
         return $result;
     }
 
@@ -265,12 +265,14 @@ class PartsProvider
             return $data;
         }
         foreach ($xml->rows->row as $row) {
+
             $_row = array();
             foreach ($row as $key => $field) {
                 $_row[(string)$key] = (string)$field;
             }
             $data[] = $_row;
         }
+
         return $data;
     }
 

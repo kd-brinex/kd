@@ -111,7 +111,7 @@ return [
                 'id' => 3,
                 'name' => 'Автостелс',
                 'methods' => ['FindDetails' => 'SearchOffer3'],
-                'options' => ['soap_version' => SOAP_1_1,'trace'=>1],
+                'options' => ['soap_version' => SOAP_1_1],
 
             ],
             'Iksora' => [
@@ -128,7 +128,9 @@ return [
                 'marga' => 1.15,
                 'id' => 1,
                 'name' => 'Иксора',
-                'methods' => ['FindDetails' => 'FindDetailsStockXML'],
+                'methods' => ['FindDetails' => 'FindDetailsXML'],
+//                'methods' => ['FindDetails' => 'FindDetailsStockXML'],
+                'options' => ['soap_version' => SOAP_1_1],
             ],
             'Emex' => [
                 'class' => 'app\modules\autoparts\providers\Emex',
@@ -151,6 +153,7 @@ return [
                 'id' => 4,
                 'name' => 'Emex',
                 'methods' => ['FindDetails' => 'FindDetailAdv3'],
+
                 ],
             'Partkom' => [
                 'class' => 'app\modules\autoparts\providers\Partkom',
