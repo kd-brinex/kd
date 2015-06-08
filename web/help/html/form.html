@@ -1,0 +1,41 @@
+<div id="form-block" class="block">
+	<form method="POST" action="">
+		<h2>Поиск ценовых предложений</h2>
+		
+		<input type="hidden" id="session_guid" name="session_guid" value="<?=$data['session_guid']?>">
+		
+		<label for="session_id">ID Входа</label><br>
+		<input type="text" id="session_id" name="session_id" value="<?=$data['session_id']?>"><br><br>
+		
+		<label for="session_login">Логин</label><br>
+		<input type="text" id="session_login" name="session_login" value="<?=$data['session_login']?>"><br><br>
+		
+		<label for="session_password">Пароль</label><br>
+		<input type="password" id="session_password" name="session_password" value="<?=$data['session_password']?>"><br><br>
+		
+		<label for="search_code">Номер детали</label><br>
+		<input type="text" id="search_code" name="search_code" value="<?=$data['search_code']?>"><br><br>
+		
+		<label for="instock">Есть на складе</label>
+		<input type="checkbox" id="instock" name="instock" <?=$data['instock'] ? 'checked' : ''?>><br><br>
+		
+		<label for="showcross">Кроссы</label>
+		<input type="checkbox" id="showcross" name="showcross" <?=$data['showcross'] ? 'checked' : ''?>><br><br>
+		
+		<label for="periodmin">Минимальный срок доставки</label><br>
+		<input type="" id="periodmin" name="periodmin" value="<?=$data['periodmin']?>"><br><br>
+		
+		<label for="periodmax">Максимальный срок доставки</label><br>
+		<input type="" id="periodmax" name="periodmax" value="<?=$data['periodmax']?>"><br><br>
+		
+		<button name="do" value="search" type="submit">
+			Поиск
+		</button>
+		
+		<button name="do" value="reset" type="submit">
+			Сбросить параметры
+		</button>
+		
+	</form>
+</div>
+	

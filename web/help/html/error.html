@@ -1,0 +1,10 @@
+<div id="error-block" class="block">
+	<form method="POST" action="">
+		<h2>Ошибки</h2>
+		<ul>
+		<?foreach($errors as $error):?>
+			<li><?=$error?></li>
+		<?endforeach?>
+		</ul>
+	</form>
+</div>

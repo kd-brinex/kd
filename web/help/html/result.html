@@ -1,0 +1,92 @@
+<div class="result-block block">
+		<h2>Результаты поиска</h2>
+		<table class="result-table">
+			<tr>
+            <th>Id
+				</th>
+            
+				<th>Производитель
+				</th>
+				
+				<th>Номер
+				</th>
+				
+				<th>Информация
+				</th>
+				
+				<th>Наличие и количество
+				</th>
+				
+				<th>Мин. партия
+				</th>
+				
+				<th>Цена
+				</th>
+				
+				<th>Сроки
+				</th>
+				
+				<th>Стоимость доставки
+				</th>
+            
+            <th>
+               Действия
+            </th>
+			</tr>
+		<?foreach($result as $row):?>
+			<tr>
+            <td><?=$row['Reference']?></td>
+				<td><?=$row['AnalogueManufacturerName']?></td>
+				<td><?=$row['AnalogueCodeAsIs']?></td>
+				<td><?=$row['ProductName']?></td>
+				<td>
+					<?=$row['IsAvailability'] ? 'Есть' : 'Нет'?> 
+					<?if($row['Quantity']):?>
+						(<?=$row['Quantity']?>)
+					<?endif?>
+					
+				</td>
+				
+				<td><?=$row['LotBase']?></td>
+				<td><?=$row['Price']?></td>
+				<td><?=$row['PeriodMin']?>/<?=$row['PeriodMax']?></td>
+				<td>
+				 <?if((int)$row['DeliveryVariantPriceAKiloForClientPrice']):?>
+					 <?=$row['DeliveryVariantPriceAKiloForClientPrice']?> <?=$row['DeliveryVariantPriceAKiloForClientDescription']?>
+				 <?endif?>
+				 
+				 <?if($row['DeliveryVariantPriceNote']):?>
+					 (<?=$row['DeliveryVariantPriceNote']?>)
+				 <?endif?>
+				 
+				</td>
+            <td>
+               <form method="POST" action="">
+                  <input type="hidden" id="session_guid" name="session_guid" value="<?=$data['session_guid']?>">
+                  <input type="hidden" id="session_id" name="session_id" value="<?=$data['session_id']?>">
+                  <input type="hidden" id="session_login" name="session_login" value="<?=$data['session_login']?>">
+                  <input type="hidden" id="session_password" name="session_password" value="<?=$data['session_password']?>">
+                  
+                  
+                  <input type="hidden" name="Reference" value="<?=$row['Reference']?>">
+                  <input type="hidden" name="AnalogueCodeAsIs" value="<?=$row['AnalogueCodeAsIs']?>">
+                  <input type="hidden" name="AnalogueManufacturerName" value="<?=$row['AnalogueManufacturerName']?>">
+                  <input type="hidden" name="OfferName" value="<?=$row['OfferName']?>">
+                  <input type="hidden" name="LotBase" value="<?=$row['LotBase']?>">
+                  
+                  <input type="hidden" name="LotType" value="<?=$row['LotType']?>">
+                  <input type="hidden" name="PriceListDiscountCode" value="<?=$row['PriceListDiscountCode']?>">
+                  <input type="hidden" name="Price" value="<?=$row['Price']?>">
+                  <input type="hidden" name="PeriodMin" value="<?=$row['PeriodMin']?>">
+                  
+                  Кол-во: <input name="Quantity" value="1" size="3">
+               
+                  <button name="do" value="add_basket" type="submit">
+                     Добавить в корзину
+                  </button>
+               </form>
+            </td>
+			</tr>
+		<?endforeach?>	
+		</table>
+</div>
