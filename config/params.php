@@ -128,7 +128,7 @@ return [
                 'marga' => 1.15,
                 'id' => 1,
                 'name' => 'Иксора',
-                'methods' => ['FindDetails' => 'FindDetailsXML'],
+                'methods' => ['FindDetails' => 'FindDetailsStockXML'],
             ],
             'Emex' => [
                 'class' => 'app\modules\autoparts\providers\Emex',

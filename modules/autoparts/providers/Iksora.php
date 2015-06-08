@@ -72,6 +72,10 @@ class Iksora extends PartsProvider
         return $xml;
     }
 
+    public function xmlFindDetailsStockXML(){
+      return  $this->xmlFindDetailsXML();
+    }
+
     public function getResultXML($result,$method){
         $result=parent::getResultXML($result,$method);
         return $result->any;

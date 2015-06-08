@@ -32,7 +32,7 @@ class ProvideruserController extends Controller
                     [
                         'actions' => ['create','view','update', 'create', 'delete',],
                         'allow' => true,
-                        'roles' => ['Parts','Admin','SA'],
+                        'roles' => ['Parts'],
                     ],
 
                 ],
