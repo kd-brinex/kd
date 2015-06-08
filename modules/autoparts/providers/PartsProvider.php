@@ -124,6 +124,7 @@ class PartsProvider
     {
 
         try {
+//            var_dump($this->options);die;
             $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
             $this->find = true;
         } catch (Exception $e) {
