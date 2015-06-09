@@ -154,10 +154,10 @@ class PartsProvider
         $method_xml = 'xml' . $method;
         /** $metod_xml имя функции которая возвращает данные для метода $method*/
         $requestData = $this->$method_xml();
-//        var_dump($requestData);die;
+
         if ($requestData) {
             $result = $this->_soap_client->$method($requestData);
-//            var_dump($result);die;
+
         } else return false;
         try {
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
@@ -215,9 +215,9 @@ class PartsProvider
         $xml = $this->query($this->methods['FindDetails'], $errors);
 
         $data = $this->parseSearchResponseXML($xml);
-
+//        var_dump($data);die;
         $ret = $this->formatSearchResponse($data);
-
+//var_dump($ret);die;
         /**Сортировка массива поп полю srokmax
          *
          * */
@@ -282,7 +282,7 @@ class PartsProvider
         $fields = $this->fields;
 //        var_dump($fields,$data);die;
         foreach ($data as $key => $row) {
-            if ($this->validate($row)) {
+//            if ($this->validate($row)) {
                 foreach ($fields as $field => $value) {
                     if (isset($row[$value])) {
                         $ret[$key][$field] = $row[$value];
@@ -293,7 +293,7 @@ class PartsProvider
                     $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
                 }
-            }
+//            }
         }
 //        var_dump($ret);die;
         return $ret;
@@ -395,7 +395,7 @@ class PartsProvider
          */
 
         //проверка по количеству
-        if ($value[$this->fields['quantity']] < 1) {
+        if ($value[$this->fields['quantity']] == 0) {
             return false;
         }
 
