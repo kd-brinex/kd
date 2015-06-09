@@ -61,37 +61,37 @@ class Iksora extends PartsProvider
     public function xmlFindDetailsXML()
     {
         $data = $this->getData();
-//        var_dump($data);die;
+
         $xml = ['DetailNumber'=> $data['detailnumber'],
                 'MakerID'=>$data['makerid'],
                 'ContractID'=>$data['contractid'],
                 'Login'=>$data['login'],
                 'Password'=>$data['password']];
-//    </FindDetails>';
 
-//       return array('FindDetails' =>$xml);
         return $xml;
     }
 
     public function xmlFindDetailsStockXML(){
-      return  $this->xmlFindDetailsXML();
+        $xml=$this->xmlFindDetailsXML();
+        return  $xml;
     }
 
     public function getResultXML($result,$method){
         $result=parent::getResultXML($result,$method);
+
         return $result->any;
     }
     public function parseSearchResponseXML($xml) {
         $data = array();
-//        var_dump($xml->child);die;
+
         foreach($xml->row as $row) {
-//            var_dump($row);die;
             $_row = array();
             foreach($row as $key => $field) {
                 $_row[(string)$key] = (string)$field;
             }
             $data[] = $_row;
         }
+//        var_dump($data);die;
         return $data;
     }
     public function update_estimation($value){
@@ -112,11 +112,10 @@ class Iksora extends PartsProvider
         $method_xml='xml'.$method;
         /**        Для получения входящего xml нужно описать функцию, которая возвращает результат для запроса.*/
         $requestData=$this->$method_xml();
-//        var_dump($requestData);die;
-        $result = $this->_soap_client->$method(
-            $requestData
-        );
+        $result = $this->_soap_client->$method($requestData);
+//        var_dump($result);die;
         $result = new SimpleXMLElement($this->getResultXML($result, $method));
+//        var_dump($result);die;
         return $result;
     }
 

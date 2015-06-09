@@ -116,7 +116,7 @@ return [
             ],
             'Iksora' => [
                 'class' => 'app\modules\autoparts\providers\Iksora',
-                '_wsdl_uri' => 'http://ws.auto-iksora.ru/searchdetails/searchdetails.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
+                '_wsdl_uri' => 'http://ws.auto-iksora.ru:83/searchdetails/searchdetails.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
                 'fields' => [
                     "code" => "detailnumber",//Номер
                     "name" => "detailname", //Информация
@@ -128,8 +128,8 @@ return [
                 'marga' => 1.15,
                 'id' => 1,
                 'name' => 'Иксора',
-                'methods' => ['FindDetails' => 'FindDetailsXML'],
-//                'methods' => ['FindDetails' => 'FindDetailsStockXML'],
+//                'methods' => ['FindDetails' => 'FindDetailsXML'],
+                'methods' => ['FindDetails' => 'FindDetailsStockXML'],
                 'options' => ['soap_version' => SOAP_1_1],
             ],
             'Emex' => [
