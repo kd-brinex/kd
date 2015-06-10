@@ -17,7 +17,8 @@ $navbar = [
         ['label' => 'Информация', 'items' => [
             ['label' => 'Главная страница', 'url' => ['/site/index']],
             ['label' => 'О компании', 'url' => ['/site/about']],
-            ['label' => 'Обратная связь', 'url' => ['/site/contact']],
+            ['label' => 'Обратная связь', 'url' => ['contact']],
+            ['label' => 'Партнеры', 'url' => ['partner']],
 
         ]],
         Yii::$app->user->isGuest ?

@@ -18,8 +18,9 @@ class PartProviderSearch extends PartProvider
     public function rules()
     {
         return [
-            [['id', 'enable','weight'], 'integer'],
+            [['id', 'weight'], 'integer'],
             [['name', 'flagpostav'], 'safe'],
+            [['enable'],'integer']
         ];
     }
 

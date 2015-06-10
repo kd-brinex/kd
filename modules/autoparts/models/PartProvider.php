@@ -31,7 +31,7 @@ class PartProvider extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['name'], 'string', 'max' => 15],
             [['name'], 'unique'],
-            [['weight'],'integer']
+            [['weight','enable'],'integer']
         ];
     }
 
@@ -45,6 +45,7 @@ class PartProvider extends \yii\db\ActiveRecord
             'name' => 'Название',
             'enable' => 'Включить',
             'weight' => 'Вес',
+            'flagpostav' => 'Флаг поставщика для 1C'
         ];
     }
 

@@ -28,12 +28,9 @@ class ProviderController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-//                        'actions' => ['index', 'create', 'update', 'delete', 'view'],
-                        'allow' => true,
-                        'roles' =>['Parts'],
-
-//                        }
-                    ],
+                        'allow' =>true,
+                        'roles' =>['Parts','Admin'],
+                    ]
                 ]
             ],
         ];
@@ -48,7 +45,7 @@ class ProviderController extends Controller
     {
         $searchModel = new PartProviderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+//        var_dump($this->user->identity);die;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -94,7 +91,7 @@ class ProviderController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+//var_dump(Yii::$app->request->post());die;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

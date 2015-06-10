@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\PartnerForm;
 use app\modules\city\ipgeobase;
 use app\modules\city\models\CitySearch;
 
@@ -104,6 +105,19 @@ public function behaviors()
             return $this->refresh();
         } else {
             return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
+    public function actionPartner()
+    {
+        $model = new PartnerForm();
+        if ($model->load(Yii::$app->request->post()) && $model->partner(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+
+            return $this->refresh();
+        } else {
+            return $this->render('partner', [
                 'model' => $model,
             ]);
         }
