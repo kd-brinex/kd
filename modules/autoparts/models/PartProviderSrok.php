@@ -31,7 +31,7 @@ class PartProviderSrok extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['provider_id', 'city_id', 'days'], 'integer'],
+            [['provider_id', 'city_id', 'days', 'id'], 'integer'],
             [['days'], 'required'],
             [['provider_id', 'city_id'], 'unique', 'targetAttribute' => ['provider_id', 'city_id'], 'message' => 'The combination of Provider ID and City ID has already been taken.']
         ];

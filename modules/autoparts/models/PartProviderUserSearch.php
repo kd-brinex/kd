@@ -43,7 +43,7 @@ class PartProviderUserSearch extends PartProviderUser
      */
     public function search($params)
     {
-        $query = PartProviderUser::find()->andWhere($params);
+        $query = PartProviderUser::find();
 
 
         $dataProvider = new ActiveDataProvider([

@@ -39,14 +39,14 @@ $config = [
         ],
         'authManager' => [
             'class' => 'dektrium\rbac\components\DbManager',
-            'defaultRoles' => [
-                'user',
-                'manager',
-                'Admin',
-                'SA',
-                'Parts',
-
-            ],
+//            'defaultRoles' => [
+//                'user',
+//                'manager',
+//                'Admin',
+//                'SA',
+//                'Parts',
+//
+//            ],
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -59,6 +59,7 @@ $config = [
                 'register' => 'user/registration/register',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
+                'partner' => 'site/partner',
                 'profile' => 'user/settings/profile',
                 'ugb' => 'site/ugb',
                 'ugb' => 'site/ugb',//перегружает данные в таблицы городов
@@ -90,6 +91,12 @@ $config = [
                 'admin/partsuser/create' => 'autoparts/provideruser/create',
                 'admin/partsuser/update' => 'autoparts/provideruser/update',
                 'admin/partsuser/delete' => 'autoparts/provideruser/delete',
+
+                'admin/partssrok' => 'autoparts/providersrok/index',
+                'admin/partssrok/view' => 'autoparts/providersrok/view',
+                'admin/partssrok/create' => 'autoparts/providersrok/create',
+                'admin/partssrok/update' => 'autoparts/providersrok/update',
+                'admin/partssrok/delete' => 'autoparts/providersrok/delete',
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
