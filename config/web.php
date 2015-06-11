@@ -7,7 +7,19 @@ $config = [
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
+//    'layout' => 'main.twig',
     'components' => [
+//        'view' => [
+//            'class' => 'yii\web\View',
+//            'renderers' => [
+//                'twig' => [
+//                    'class' => 'yii\twig\ViewRenderer',
+//                    'cachePath' => '@runtime/Twig/cache',
+//                    'options' => ['auto_reload' => true], /*  Array of twig options */
+//                    'globals' => ['html' => '\yii\helpers\Html'],
+//                ],
+//            ],
+//        ],
 
         'session' => [
             'class' => 'yii\web\Session',
@@ -136,8 +148,8 @@ $config = [
                 'host' => 'smtp.gmail.com',
                 'username' => 'maratjobmail@gmail.com',
                 'password' => 'HuMa250773-gmail',
-                'port' => '465',
-                'encryption' => 'ssl',
+                'port' => '587',
+                'encryption' => 'tls',
             ],
         ],
         'log' => [
