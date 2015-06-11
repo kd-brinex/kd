@@ -293,8 +293,12 @@ class PartsProvider
                     $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
                 }
+            if (!$this->validate($ret[$key])){unset($ret[$key]);}
 //            }
+
         }
+
+
 //        var_dump($ret);die;
         return $ret;
     }
@@ -394,15 +398,16 @@ class PartsProvider
          * false - некорректная запись
          */
 
-        //проверка по количеству
-        if ($value[$this->fields['quantity']] == 0) {
+
+    //проверка по количеству
+        if ($value['quantity'] == 0) {
             return false;
         }
 
-        //проверка по цене
-        if ($value[$this->fields['price']] <= 0) {
-            return false;
-        }
+    //проверка по цене
+    if ($value['price'] <= 0) {
+        return false;
+    }
 
         return true;
     }
