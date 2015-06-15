@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 15]) ?>
 
-    <?= $form->field($model, 'store_id')->textInput() ?>
+    <?= $form->field($model, 'store_id')->dropDownList($model->getStorelist(),[]) ?>
 
     <?= $form->field($model, 'provider_id')->dropDownList($model->getProviderDD(),[]) ?>
 

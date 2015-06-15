@@ -31,9 +31,8 @@ class PartProviderSrok extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['provider_id', 'city_id', 'days', 'id'], 'integer'],
-            [['days'], 'required'],
-            [['provider_id', 'city_id'], 'unique', 'targetAttribute' => ['provider_id', 'city_id'], 'message' => 'The combination of Provider ID and City ID has already been taken.']
+              [['provider_id', 'city_id', 'days'], 'integer'],
+
         ];
     }
 
@@ -43,9 +42,11 @@ class PartProviderSrok extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'provider_id' => 'Provider ID',
-            'city_id' => 'City ID',
-            'days' => 'Days',
+            'id' => 'ID',
+            'provider_id' => 'Поставщик запчастей',
+            'city_id' => 'Город',
+            'days' => 'Количество дней',
+            'name' => 'Город'
         ];
     }
 
@@ -65,4 +66,32 @@ class PartProviderSrok extends \yii\db\ActiveRecord
         return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
+    public function getProvidername()
+    {
+        return $this->provider->name;
+    }
+    public function getCityname()
+    {
+        return $this->city->name;
+    }
+    public function getCitylist()
+    {
+        $citys= new City();
+        $acitys=$citys->find()->asArray()->all();
+        $res=[];
+        foreach ($acitys as $a){
+            $res[$a['id']]=$a['name'];
+        }
+        return $res;
+    }
+    public function getProviderDD(){
+        $d=new PartProvider();
+        $dd= $d->find()->asArray()->All();
+//        var_dump($dd);die;
+        $res=[];
+        foreach ($dd as $a){
+            $res[$a['id']]=$a['name'];
+        }
+        return $res;
+    }
 }

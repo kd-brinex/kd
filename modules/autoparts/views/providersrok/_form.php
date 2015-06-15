@@ -11,11 +11,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'provider_id') ?>
-        <?= $form->field($model, 'city_id') ?>
+
+        <?= $form->field($model, 'provider_id')->dropDownList($model->getProviderDD(),[]) ?>
+        <?= $form->field($model, 'city_id')->dropDownList($model->getCitylist(),[]) ?>
         <?= $form->field($model, 'days') ?>
-        <?= $form->field($model, 'id') ?>
-    
+
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
         </div>

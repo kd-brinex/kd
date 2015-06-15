@@ -66,5 +66,7 @@ class City extends \yii\db\ActiveRecord
     public function getRegionName() {
         return $this->region->region_name;
     }
-
+    public static function find(){
+        return parent::find()->leftJoin('t_store','t_store.city_id=geobase_city.id')->andWhere('not t_store.addr is null');
+    }
 }

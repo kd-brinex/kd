@@ -104,7 +104,7 @@ $config = [
                 'admin/partsuser/update' => 'autoparts/provideruser/update',
                 'admin/partsuser/delete' => 'autoparts/provideruser/delete',
 
-                'admin/partssrok' => 'autoparts/providersrok/index',
+                'admin/partssrok' => 'autoparts/providersrok',
                 'admin/partssrok/view' => 'autoparts/providersrok/view',
                 'admin/partssrok/create' => 'autoparts/providersrok/create',
                 'admin/partssrok/update' => 'autoparts/providersrok/update',

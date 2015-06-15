@@ -3,6 +3,7 @@ namespace modules\autoparts;
 
 use SoapClient;
 use Exception;
+use PDO;
 class ProvideruserTest extends \Codeception\TestCase\Test
 {
     /**
@@ -51,12 +52,13 @@ class ProvideruserTest extends \Codeception\TestCase\Test
         $this->connectSoap('Avtostels');
     }
     public function testKdConnectDb(){
+        defined('YII_ENV') or define('YII_ENV', 'prod');
+        $db = require('config/db.php');
 
-        $link = mysql_connect('localhost', 'mysql_user', 'mysql_password');
-        if (!$link) {
-            die('Ошибка соединения: ' . mysql_error());
-        }
-        echo 'Успешно соединились';
-        mysql_close($link);
+        $link = new PDO($db['dsn'], $db['username'], $db['password']);
+        if ($link) {
+            $this->assertTrue(true);
+        }else{$this->assertTrue(false);}
+$link=null;
     }
 }
