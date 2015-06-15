@@ -5,6 +5,8 @@ namespace app\modules\autoparts\controllers;
 use Yii;
 use app\modules\autoparts\models\PartProvider;
 use app\modules\autoparts\models\PartProviderSearch;
+use app\modules\autoparts\models\PartProviderSrok;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,8 +61,13 @@ class ProviderController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new PartProviderSrok();
+        $query=$searchModel->find()->andWhere(['provider_id'=>$id]);
+        $srokprovider = new ActiveDataProvider(['query'=>$query]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'srokProvider' => $srokprovider,
+            'srokModel' =>$searchModel,
         ]);
     }
 
@@ -129,4 +136,5 @@ class ProviderController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

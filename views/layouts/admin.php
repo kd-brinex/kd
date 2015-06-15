@@ -26,6 +26,7 @@ $navbar = [
         ['label' => 'Запчасти', 'items' => [
             ['label' => 'Поставщики', 'url' => ['/admin/partsprovider']],
             ['label' => 'Учетные записи', 'url' => ['/admin/partsuser']],
+            ['label' => 'Сроки', 'url' => ['/admin/partssrok']],
 
         ]],
         [    'label' => 'Пользователи', 'items' => [

@@ -49,12 +49,12 @@ class PartProviderUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'login' => 'Login',
-            'password' => 'Password',
-            'store_id' => 'Store ID',
-            'provider_id' => 'Provider ID',
-            'marga' => 'Marga',
+            'name' => 'Название',
+            'login' => 'Логин',
+            'password' => 'Пароль',
+            'store_id' => 'Магазин',
+            'provider_id' => 'Поставщик запчастей',
+            'marga' => 'Наценка в процентах',
         ];
     }
 
@@ -73,7 +73,16 @@ class PartProviderUser extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TStore::className(), ['id' => 'store_id']);
     }
-
+    public function getStorelist()
+    {
+        $stores= new TStore();
+        $astores=$stores->find()->asArray()->all();
+        $res=[];
+        foreach ($astores as $a){
+            $res[$a['id']]=$a['name'];
+        }
+        return $res;
+    }
     public function getCitySrok()
     {
 //        var_dump($this->partProviderUsers);die;

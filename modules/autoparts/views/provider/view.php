@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\autoparts\models\PartProvider */
@@ -35,5 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'flagpostav',
         ],
     ]) ?>
-
+    <?php \yii\widgets\Pjax::begin(); ?>
+    <?= GridView::widget([
+        'dataProvider' => $srokProvider,
+//        'filterModel' => $srokModel,
+        'columns' => [
+//            ['class' => 'yii\grid\SerialColumn'],
+//            'provider_id',
+            'city_id',
+            'name',
+            'days',
+//            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    <?php \yii\widgets\Pjax::end(); ?>
 </div>
