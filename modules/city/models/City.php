@@ -31,12 +31,12 @@ class City extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'region_id', 'latitude', 'longitude','enable'], 'required'],
+            [['id', 'name', 'region_id', 'latitude', 'longitude', 'enable'], 'required'],
             [['id', 'region_id'], 'integer'],
             [['latitude', 'longitude'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['id'], 'unique'],
-            [['enable'],'boolean'],
+            [['enable'], 'boolean'],
 //            [['dist'],'number']
 
         ];
@@ -53,20 +53,20 @@ class City extends \yii\db\ActiveRecord
             'region_id' => 'Код региона',
             'latitude' => 'Широта',
             'longitude' => 'Долгота',
-            'enable'=>'Использовать',
+            'enable' => 'Использовать',
 
         ];
     }
+
     //связь с таблицей Geobase_region
     public function getRegion()
     {
-        return $this->hasOne(Region::className(), ['id'=>'region_id']);
+        return $this->hasOne(Region::className(), ['id' => 'region_id']);
     }
+
     /* Геттер для названия региона */
-    public function getRegionName() {
+    public function getRegionName()
+    {
         return $this->region->region_name;
-    }
-    public static function find(){
-        return parent::find()->leftJoin('t_store','t_store.city_id=geobase_city.id')->andWhere('not t_store.addr is null');
     }
 }

@@ -22,6 +22,7 @@ class PartProviderSrokSearch extends PartProviderSrok
         return[
 
             [['provider_id', 'city_id','days'], 'integer'],
+
             ];
     }
 
@@ -73,15 +74,15 @@ class PartProviderSrokSearch extends PartProviderSrok
         }
 
         $query->andFilterWhere([
-            'providername' => $this->providername,
-            'cityname' => $this->cityname,
+//            'providername' => $this->providername,
+//            'cityname' => $this->cityname,
             'days' => $this->days,
 //            'id' => $this->id,
         ]);
 
         $query->andFilterWhere(['like', 'providername', $this->providername])
-            ->andFilterWhere(['like', 'cityname', $this->cityname])
-            ->andFilterWhere(['like', 'days', $this->days]);
+            ->andFilterWhere(['like', 'cityname', $this->cityname]);
+//            ->andFilterWhere(['like', 'days', $this->days]);
 
         return $dataProvider;
     }

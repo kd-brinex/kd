@@ -61,13 +61,8 @@ class ProviderController extends Controller
      */
     public function actionView($id)
     {
-        $searchModel = new PartProviderSrok();
-        $query=$searchModel->find()->andWhere(['provider_id'=>$id]);
-        $srokprovider = new ActiveDataProvider(['query'=>$query]);
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'srokProvider' => $srokprovider,
-            'srokModel' =>$searchModel,
         ]);
     }
 

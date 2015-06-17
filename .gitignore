@@ -25,5 +25,5 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
-
+# файлы с примерами автокаталогов
 tests/_output/*
