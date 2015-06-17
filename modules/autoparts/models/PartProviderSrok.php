@@ -77,7 +77,7 @@ class PartProviderSrok extends \yii\db\ActiveRecord
     public function getCitylist()
     {
         $citys= new City();
-        $acitys=$citys->find()->asArray()->all();
+        $acitys=$citys->find()->leftJoin('t_store','t_store.city_id=geobase_city.id')->andWhere('not t_store.addr is null')->asArray()->all();
         $res=[];
         foreach ($acitys as $a){
             $res[$a['id']]=$a['name'];

@@ -36,18 +36,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'flagpostav',
         ],
     ]) ?>
-    <?php \yii\widgets\Pjax::begin(); ?>
-    <?= GridView::widget([
-        'dataProvider' => $srokProvider,
-//        'filterModel' => $srokModel,
-        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//            'provider_id',
-            'city_id',
-            'name',
-            'days',
-//            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+
 </div>

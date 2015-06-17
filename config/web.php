@@ -97,6 +97,7 @@ $config = [
                 'admin/partsprovider/update' => 'autoparts/provider/update',
                 'admin/partsprovider/delete' => 'autoparts/provider/delete',
                 'admin/partsprovider/index' => 'autoparts/provider/index',
+
                 'admin/partsuser' => 'autoparts/provideruser',
                 'admin/partsuser/index' => 'autoparts/provideruser/index',
                 'admin/partsuser/view' => 'autoparts/provideruser/view',
