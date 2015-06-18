@@ -16,7 +16,7 @@ $db = ['components'=>[
     'dsn' => 'mysql:host=localhost;dbname=brinex1',
     'username' => 'brinexdev',
     'password' => 'QwFGHythju8',
-    'charset' => 'QwFGHythju8'],
+    'charset' => 'utf8'],
 
 
     'test' => [
