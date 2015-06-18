@@ -14,6 +14,7 @@ return [
         'sort' => ['attributes' => ['name', 'price'],],
         'pagination' => ['pageSize' => 25,],
         'columns' => [
+            'sklad',
             [
                 'attribute'=>'code',
                 'label'=>'Артикул',
@@ -124,6 +125,7 @@ return [
                     "srokmin" => "days", //Доставка
                     "srokmax" => "dayswarranty", //Доставка
                     "sklad"=>"regionname",
+
                 ],
                 'marga' => 1.15,
                 'id' => 1,

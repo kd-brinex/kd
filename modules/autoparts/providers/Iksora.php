@@ -118,5 +118,11 @@ class Iksora extends PartsProvider
 //        var_dump($result);die;
         return $result;
     }
-
+    public function validate($value){
+        if (parent::validate($value)==false){return false;}
+        if ($value['sklad'] != 'АВТО-ИКСОРА СКЛАД') {
+            return false;
+        }
+        return true;
+    }
 }
