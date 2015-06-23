@@ -27,4 +27,4 @@ $db = ['components'=>[
         'charset' => 'utf8'],
 ]];
 //var_dump(YII_ENV);die;
-return $db['components'][YII_ENV];
+return $db;

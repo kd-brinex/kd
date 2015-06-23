@@ -1,6 +1,7 @@
 <?php
 $params = require(__DIR__ . '/params.php');
-$db_connect = require(__DIR__ . '/db.php');
+$db_connect= require(__DIR__ . '/db.php');
+//$db_connect = $db_config['components'][YII_ENV];
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -162,7 +163,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db_connect,
+        'db' => $db_connect['components'][YII_ENV],
         'view' => [
             'theme' => [
                 'pathMap' => [
@@ -201,6 +202,16 @@ $config = [
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
+        ],
+        'toyota' => [
+            'class' => 'app\modules\catalog\Catalog',
+            'db' => [
+                'class' => 'yii\db\Connection',
+                'dsn' => (YII_ENV=='dev')?'mysql:host=127.0.0.1;dbname=toyota;port=1111':'mysql:host=localhost;dbname=toyota',
+                'username' => 'brinexdev',
+                'password' => 'QwFGHythju8',
+                'charset' => 'utf8'],
+
         ],
         'auto' => [
             'class' => 'app\modules\auto\Auto',

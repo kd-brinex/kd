@@ -18,6 +18,7 @@ use yii\helpers\Html;
     'enableClientValidation' => false,
     'validateOnBlur'         => false,
 ]);
+//var_dump($user);die;
 $profile=$user->profile;
 ?>
 
