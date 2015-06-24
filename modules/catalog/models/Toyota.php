@@ -7,8 +7,9 @@
  */
 namespace app\modules\catalog\models;
 
-use yii\base\Model;
+
 use yii\data\ActiveDataProvider;
+use yii\db\Connection;
 use yii\helpers\Url;
 
 
@@ -20,7 +21,7 @@ class Toyota
          * Список всех моделей
          */
     {
-        $query = new AvQuery();
+        $query = new ToyotaQuery();
 
         $query->select('*')
             ->from('shamei');
@@ -35,7 +36,7 @@ class Toyota
          */
     {
         //        $query = parent::find()->andWhere(['catalog_code'=>'116520']);
-        $query = new AvQuery();
+        $query = new ToyotaQuery();
         $vin = $params['vin'];
         $query ->select(['johokt.catalog',
                 "get_vdate_frameno(johokt.catalog, johokt.frame, SUBSTRING('" . $vin . "',-7)) vdate"
@@ -46,6 +47,7 @@ class Toyota
                 , 'johokt.model_code'
                 , 'johokt.compl_code'
                 , 'shamei.opt'
+                , 'johokt.sysopt'
                 , 'shamei.prod_start'
                 , 'shamei.prod_end'
             ]
@@ -70,7 +72,7 @@ class Toyota
          */
     {
 
-        $query = new AvQuery();
+        $query = new ToyotaQuery();
         $query ->select([
         'johokt.catalog',
             'johokt.catalog_code',
@@ -135,7 +137,7 @@ class Toyota
          */
     {
 
-        $query = new AvQuery();
+        $query = new ToyotaQuery();
         $query->select(['catalog',
             'catalog_code',
             'model_code',
@@ -186,13 +188,22 @@ class Toyota
 
     public function searchCatalog($params)
     {
-        $query = new AvQuery();
-        $translate = new Translate();
-        $translate->translation('figmei','desc_en','desc_ru');
+//        $translate = new Translate();
+//        $translate->translation('figmei','desc_en','desc_ru');
+
+
+        $query = new ToyotaQuery();
         $query->select(['emi.*', 'figmei.desc_en', 'figmei.desc_ru'])
             ->from('emi')
             ->leftJoin('figmei','figmei.catalog=emi.catalog and figmei.part_group = emi.part_group')
-            ->andWhere(['emi.catalog'=>$params['catalog'],'emi.catalog_code'=>$params['catalog_code']]);
+            ->andWhere('emi.catalog=:catalog and emi.catalog_code=:catalog_code',[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']]);
+//        if ($params['vdate']==''){
+//            $mod_info=$this->getModelInfo($params);
+//
+//        }
+
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -217,35 +228,53 @@ class Toyota
 
         ]);
     }
-    public function getVdate($params)
+    public function getModelInfo($params)
     {
-        $query = new AvQuery();
-        $query->select(['catalog',
-            'catalog_code',
-            'model_code',
-            'prod_start',
-            'prod_end',
-            'frame',
-            'sysopt',
-            'compl_code',
-            'engine1',
-            'engine2',
-            'body',
-            'grade',
-            'atm_mtm',
-            'trans',
-            'f1',
-            'f2',
-            'f3',
-            'f4',
-            'f5'])
-            ->from('johokt')
-            ->where("catalog = '".$params['catalog']
-                ."' AND catalog_code = '".$params['catalog_code']
-                ."' AND model_code = '".$params['model_code']
-                ."' AND sysopt = '".$params['sysopt']
-                ."' AND compl_code = '".$params['compl_code']."'")
-        ->distinct();
-        var_dump($query);die;
+
+        $connect = new Connection(ToyotaQuery::getConnectParam());
+        $mod_info=$connect->createCommand("SELECT DISTINCT
+    catalog,catalog_code,model_code,prod_start,prod_end,frame,sysopt,compl_code,engine1,engine2,body,grade,atm_mtm,trans,f1,f2,f3,f4,f5
+FROM johokt
+WHERE catalog = :catalog
+    AND catalog_code = :catalog_code
+    AND model_code = :model_code
+    AND sysopt = :sysopt
+    AND compl_code = :compl_code")->bindValues([
+            ':catalog'=>$params['catalog'],
+            ':catalog_code'=>$params['catalog_code'],
+            ':model_code'=>$params['model_code'],
+            ':sysopt'=>$params['sysopt'],
+            ':compl_code'=>$params['compl_code'],
+        ])->queryAll();
+//var_dump($mod_info,$params,ToyotaQuery::getConnectParam());die;
+//        $query = new ToyotaQuery();
+//        $query->select(['catalog',
+//            'catalog_code',
+//            'model_code',
+//            'prod_start',
+//            'prod_end',
+//            'frame',
+//            'sysopt',
+//            'compl_code',
+//            'engine1',
+//            'engine2',
+//            'body',
+//            'grade',
+//            'atm_mtm',
+//            'trans',
+//            'f1',
+//            'f2',
+//            'f3',
+//            'f4',
+//            'f5'])
+//            ->from('johokt')
+//            ->where("catalog = '".$params['catalog']
+//                ."' AND catalog_code = '".$params['catalog_code']
+//                ."' AND model_code = '".$params['model_code']
+//                ."' AND sysopt = '".$params['sysopt']
+//                ."' AND compl_code = '".$params['compl_code']."'")
+//        ->distinct();
+//        var_dump($query);die;
+        return $mod_info;
     }
 }

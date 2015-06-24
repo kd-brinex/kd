@@ -10,6 +10,7 @@ class AvQuery extends \yii\db\Query
 
 {
     public static $db;
+    public static $image;
 
     public function createCommand($db = null)
     {
@@ -19,6 +20,19 @@ class AvQuery extends \yii\db\Query
         list ($sql, $params) = $db->getQueryBuilder()->build($this);
 
         return $db->createCommand($sql, $params);
+    }
+    public static function getConnectParam()
+    {
+        $connect_param = ['dsn'=>self::$db['dsn'],
+            'username' => self::$db['username'],
+            'password' => self::$db['password'],
+            'charset' => self::$db['charset']];
+        return $connect_param;
+    }
+
+    public static function getImageUrl()
+    {
+        return self::$image;
     }
 
 

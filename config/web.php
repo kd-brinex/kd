@@ -193,6 +193,7 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
             'layout'=> '/admin.php',
@@ -211,6 +212,7 @@ $config = [
                 'username' => 'brinexdev',
                 'password' => 'QwFGHythju8',
                 'charset' => 'utf8'],
+            'image'=>'http://new.kolesa-darom.ru:8080/image/toyota/',
 
         ],
         'auto' => [

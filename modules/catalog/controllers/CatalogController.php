@@ -57,6 +57,7 @@ class CatalogController extends Controller
 
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchCatalog($params);
+        $dataProvider->pagination=false;
         return $this->render('catalog', [
 //            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

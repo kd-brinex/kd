@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'catalog' => $data['catalog'],
                         'model_code' => $data['model_code'],
                         'compl_code' => $data['compl_code'],
+                        'sysopt' => $data['sysopt'],
+                        'vdate' => (isset($data['vdate']))?$data['vdate']:'',
                     ]));
                 },],
             'prod_start',
@@ -41,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'prod_end',
             'vdate',
-//            'opt'
+            'sysopt'
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

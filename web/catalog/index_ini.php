@@ -26,7 +26,8 @@ mysql_select_db($dbName) or die(mysql_error());
 /*---------------------------
  * Дополнительные параметры
  *---------------------------*/
-define("_IMG_IllSTR_INDEX_PATH", "/project_result/Toyota_EPC/"); // путь к рисункам
+//define("_IMG_IllSTR_INDEX_PATH", "/project_result/Toyota_EPC/"); // путь к рисункам
+define("_IMG_IllSTR_INDEX_PATH", "http://new.kolesa-darom.ru:8080/image/toyota/"); // путь к рисункам
 //define("_GET_POST_SEP", "~"); // разделитель параметров, системный
 
  
