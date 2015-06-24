@@ -1,0 +1,68 @@
+body {
+	background-color: #eee;
+	font-family: Tahoma;
+	font-size: 12px;
+}
+
+.block {
+	padding: 10px;
+	margin: 0 auto;
+	margin-bottom: 12px;
+	background-color: #fff;
+	border: 1px solid #666;
+}
+
+#form-block {
+	width: 300px;
+}
+
+#form-block label {
+	font-size: 1em;
+}
+
+#form-block input {
+	font-size: 1.5em;
+	border: 1px solid #888;
+	background-color: #fff;
+}
+
+#form-block input:hover {
+	background-color: #efefef;
+}
+
+#form-block button {
+	cursor: pointer;
+	border: 1px solid #8c8;
+	background-color: #efe;
+}
+
+#form-block button:hover {
+	
+	background-color: #cfc;
+}
+
+#result-block {
+	width: 90%;
+}
+
+#error-block {
+	width: 300px;
+	color: #600;
+	background-color: #ffefef;
+	border: 1px solid #966;
+}
+
+.result-table {
+	width: 100%;
+	border-collapse: collapse;
+	border: 0px;
+}
+
+.result-table th {
+	background-color: #ccf;
+	text-align: left;
+}
+
+.result-table td {
+	padding: 2px;
+}
