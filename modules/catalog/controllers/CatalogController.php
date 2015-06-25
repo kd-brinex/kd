@@ -13,11 +13,20 @@ class CatalogController extends Controller
     {
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
-        $dataProvider = $searchModel->search($params);
-
+        $dataProviderEU = $searchModel->search(['catalog'=>'EU']);
+        $dataProviderEU->pagination=false;
+        $dataProviderGR = $searchModel->search(['catalog'=>'GR']);
+        $dataProviderGR->pagination=false;
+        $dataProviderJP = $searchModel->search(['catalog'=>'JP']);
+        $dataProviderJP->pagination=false;
+        $dataProviderUS = $searchModel->search(['catalog'=>'US']);
+        $dataProviderUS->pagination=false;
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProviderEU' => $dataProviderEU,
+            'dataProviderGR' => $dataProviderGR,
+            'dataProviderJP' => $dataProviderJP,
+            'dataProviderUS' => $dataProviderUS,
             'params' => $params,
         ]);
 
@@ -56,10 +65,12 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
 
         $searchModel = new models\Toyota();
+        $searchModel->setData($params);
+//        var_dump($searchModel);die;
         $dataProvider=$searchModel->searchCatalog($params);
         $dataProvider->pagination=false;
         return $this->render('catalog', [
-//            'searchModel' => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'params' => $params,
         ]);
@@ -81,9 +92,10 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
 
         $searchModel = new models\Toyota();
+        $searchModel->setData($params);
         $dataProvider=$searchModel->searchAlbum($params);
         return $this->render('album', [
-//            'searchModel' => $searchModel,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'params' => $params,
         ]);

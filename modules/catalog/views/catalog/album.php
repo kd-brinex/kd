@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\widgets\ListView;
 
 
 /* @var $this yii\web\View */
@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = $params['catalog'];
 $this->params['breadcrumbs'][] = 'Toyota';
 $this->params['breadcrumbs'][] = $this->title;
-//var_dump($dataProvider->models);die;
+//var_dump($dataProvider);die;
 ?>
 <div class="catalog-models">
 
@@ -19,31 +19,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php //var_dump($searchModel);die;?>
-    <?= GridView::widget([
+    <?php
+//    echo $this->render('listblank',['toyota'=>$searchModel,'dataProvider'=>$dataProvider,'group'=>['key'=>'pic_code','value'=>4],'view'=>'album_image']);
+   echo ListView::widget([
         'dataProvider' => $dataProvider,
+       'itemView' => '_album',
 //        'filterModel' => $searchModel,
-        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-            'catalog',
-//            'f1',
-//            [
-//                'attribute'=>'catalog_code',
+//        'attributes' => [
+//            'desc_en',
 //
-//            ],
-            [
-                'attribute'=>'model_code',
-                'format'=>'raw',
-                'value'=>function ($data) {
-                    return Html::a(Html::encode($data->model_code),$data->urlModel);
-                },
-            ],
-
-            'prod_start',
-            'prod_end',
-//            'vdate',
-//            'opt'
-//            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+//            [   'attribute' => 'pic_code',
+//                'format'=>'raw',
+//                'value'=>function($model){return Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'300px']);}
+//            ]
+//]
+    ]);
+    ?>
 
 </div>

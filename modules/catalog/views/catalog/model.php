@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //        'filterModel' => $searchModel,
         'columns' => [
 //            ['class' => 'yii\grid\SerialColumn'],
-            'catalog',
-            'f1',
-            'catalog_code',
+//            'catalog',
+//            'f1',
+//            'catalog_code',
             [
                 'attribute' => 'model_code',
                 'format' => 'raw',
@@ -36,14 +36,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         'vdate' => (isset($data['vdate']))?$data['vdate']:'',
                     ]));
                 },],
-            'prod_start',
-            'prod_end',
+            [
+                'label'=>'Дата производства',
+                'value' => function($data) {
+                    return substr($data['prod_start'],-2).'/'.substr($data['prod_start'],0,4).' - '.substr($data['prod_end'],-2).'/'.substr($data['prod_end'],0,4);
+                }
+            ],
             'compl_code',
 
-
-//            'prod_end',
-            'vdate',
-            'sysopt'
+            ['attribute'=>'engine1',
+            'label'=>'Двигатель'],
+//            'engine2',
+//            'body',
+            [
+            'attribute'=>'atm_mtm',
+            'label'=>'Коробка'],
+            'grade',
+            'trans',
+//            'sysopt'
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

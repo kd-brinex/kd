@@ -9,13 +9,31 @@ namespace app\modules\catalog\models;
 
 
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\Connection;
 use yii\helpers\Url;
-
+use yii\base\Model;
 
 class Toyota
 {
+public $catalog;
+public $catalog_code;
+public $model_code;
+public $sysopt;
+public $compl_code;
+public $part_group;
 
+    public function setData($params){
+        foreach ($params as $property => $value) {
+            if (property_exists($this, $property)) {
+                if (is_array($this->$property)) {
+                    $this->$property = array_merge($this->$property, $value);
+                } else {
+                    $this->$property = $value;
+                }
+            }
+        }
+    }
     public function search($params)
         /*
          * Список всех моделей
@@ -24,7 +42,9 @@ class Toyota
         $query = new ToyotaQuery();
 
         $query->select('*')
-            ->from('shamei');
+            ->from('shamei')
+            ->orderBy(['model_name'=>'asc','prod_start'=>'asc'])
+        ->andFilterWhere($params);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         return $dataProvider;
 
@@ -159,7 +179,8 @@ class Toyota
             'f5'])
             ->distinct()
             ->from('johokt')
-            ->andWhere(['catalog'=>$params['catalog'],'catalog_code'=>$params['catalog_code']]);
+            ->andWhere(['catalog'=>$params['catalog'],'catalog_code'=>$params['catalog_code']])
+        ->orderBy(['model_code'=>'asc','prod_start'=>'ask']);
 //        ->params([':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query
@@ -193,10 +214,16 @@ class Toyota
 
 
         $query = new ToyotaQuery();
+
         $query->select(['emi.*', 'figmei.desc_en', 'figmei.desc_ru'])
+
             ->from('emi')
             ->leftJoin('figmei','figmei.catalog=emi.catalog and figmei.part_group = emi.part_group')
-            ->andWhere('emi.catalog=:catalog and emi.catalog_code=:catalog_code',[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']]);
+            ->andWhere('emi.catalog=:catalog and emi.catalog_code=:catalog_code', [
+                ':catalog'=>$params['catalog'],
+                ':catalog_code'=>$params['catalog_code'],
+//                ':model_code'=>$this->model_code
+            ]);
 //        if ($params['vdate']==''){
 //            $mod_info=$this->getModelInfo($params);
 //
@@ -276,5 +303,102 @@ WHERE catalog = :catalog
 //        ->distinct();
 //        var_dump($query);die;
         return $mod_info;
+    }
+
+
+    public function searchAlbum($params){
+if(!empty($params['vdate'])){
+    $mod_info=$this->getModelInfo($params);
+}
+        $query="SELECT
+  bzi.*,
+  kpt.compl_code,
+  inm.op1, inm.op2, inm.op3, inm.ftype, inm.desc_en
+
+FROM
+  bzi #список всех подгрупп(иллюстраций)
+
+    # применяемость подгруппы запчастей
+	LEFT JOIN kpt
+	  ON kpt.catalog = bzi.catalog
+        AND kpt.catalog_code = bzi.catalog_code
+        AND kpt.ipic_code = bzi.ipic_code # маска применяемости
+
+	# описания к подгрупп(иллюстраций)
+	LEFT OUTER JOIN inm
+	  ON inm.catalog = bzi.catalog
+        AND inm.catalog_code = bzi.catalog_code
+        AND inm.pic_desc_code = bzi.pic_desc_code
+        AND inm.op1 = bzi.op1
+
+WHERE
+  bzi.catalog = :catalog
+  AND bzi.catalog_code = :catalog_code
+  AND bzi.part_group = :part_group
+
+  # применяемость подгруппы запчастей относительно типу комплектации выбранной модели авто
+  AND kpt.compl_code IN (
+            SELECT DISTINCT(compl_code) FROM johokt WHERE catalog = :catalog AND catalog_code = :catalog_code AND model_code = :model_code)
+";
+        $param=[
+            ':catalog'=>$this->catalog,
+            ':catalog_code'=>$this->catalog_code,
+            ':part_group'=>$this->part_group,
+            ':model_code'=>$this->model_code,
+        ];
+// 	отработать по дате модели, если не известна дата VIN --
+// 		пустых дат нету	, поэтому споконо берем эти поля
+//			SELECT * FROM johokt WHERE IFNULL(prod_start,'') = ''
+//			SELECT * FROM johokt WHERE IFNULL(prod_end,'') = ''
+// 	!empty($mod_info) - проверим вдруг модель пустая
+if (empty($params['vdate']) and !empty($mod_info)) {
+    $query .= "
+    # При поиске по дате модели в приделах даты модели
+AND (bzi.start_date <= :prod_end AND bzi.end_date >=:prod_start)";
+    $mod_info[':prod_end']=$params['prod_end'];
+    $mod_info[':prod_start']=$params['prod_start'];
+}
+// 	отработать VIN --
+if (!empty($params['vdate'])) {
+    $query .= "
+        # При поиске по VIN - в приделах даты выпуска авто
+        AND (:vdate BETWEEN start_date AND end_date)";
+    $param[':vdare']=$params['vdate'];
+}
+
+        $connect = new Connection(ToyotaQuery::getConnectParam());
+        $picture=$connect->createCommand($query,$param)->queryAll();
+//var_dump($picture);die;
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $picture,
+        ]);
+    return $dataProvider;
+
+    }
+    public function searchAlbumNext($params)
+    {
+
+        $images= new ToyotaQuery();
+        $images ->select('*')
+            ->from('images')
+            ->andWhere(['catalog = :catalog','disk = :disk_num','pic_code = :pic_code']);
+
+var_dump($images);die;
+
+        $query = new ToyotaQuery();
+        $query->select([ 'img_nums.*',
+	"CASE `number_type`
+		WHEN '1' THEN
+				CONCAT('<a href=\"Figure.php?".$ulr_main."part_group=', img_nums.number, '\">** Refer Fig<a/>')
+		WHEN '4' THEN '** Std Part'
+		ELSE hinmei.desc_en
+	END desc_en",
+	"img_nums.number AS pnc"])
+            ->from('img_nums')
+    ->leftJoin('hinmei','hinmei.catalog = img_nums.catalog AND hinmei.pnc = img_nums.number')
+    ->andWhere(['img_nums.catalog = :catalog',
+   'disk = :$disk_num',
+    'pic_code = :pic_code']);
+
     }
 }
