@@ -7,8 +7,8 @@ use yii\bootstrap\Tabs;
 /* @var $searchModel app\modules\tovar\models\ParamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Toyota';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $params['title'];
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 ?>
 <div class="catalog-index">
 
@@ -24,22 +24,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= Tabs::widget([
         'items' => [
-            ['label' => 'EU',
+            ['label' => 'Европа',
                 'content' => $this->render('gridview',['dataProvider'=>$dataProviderEU]),
                 'active' => true,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
-            ['label' => 'GR',
+            ['label' => 'Ближний восток',
                 'content' => $this->render('gridview',['dataProvider'=>$dataProviderGR]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
-            ['label' => 'JP',
+            ['label' => 'Япония',
                 'content' => $this->render('gridview',['dataProvider'=>$dataProviderJP]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
-            ['label' => 'US',
+            ['label' => 'США',
                 'content' => $this->render('gridview',['dataProvider'=>$dataProviderUS]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],

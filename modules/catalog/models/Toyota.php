@@ -16,6 +16,8 @@ use yii\base\Model;
 
 class Toyota
 {
+public $name = "TOYOTA";
+public $model_name;
 public $catalog;
 public $catalog_code;
 public $model_code;
@@ -34,6 +36,7 @@ public $part_group;
             }
         }
     }
+
     public function search($params)
         /*
          * Список всех моделей

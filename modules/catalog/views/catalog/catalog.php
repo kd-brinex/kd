@@ -8,8 +8,8 @@ use yii\helpers\Url;
 /* @var $searchModel app\modules\tovar\models\ParamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 //var_dump($params,$dataProvider);die;
-//$this->title = $params['model_name'];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $params['title'];
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 
 
 ?>

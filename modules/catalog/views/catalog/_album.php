@@ -11,6 +11,7 @@ use yii\helpers\Html;
 <div class="album-block col-xs-4">
 <?= DetailView::widget([
     'model' => $model,
+    'template' => "<tr><td>{value}</td></tr>",
     'attributes'=>[
 //    'catalog',
 //        'catalog_code',
