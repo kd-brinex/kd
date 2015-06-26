@@ -13,7 +13,7 @@ use yii\helpers\Html;
     <div class="acatalog-block">
     <div>
         <?php
-        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'100px']);?>
+        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl(). "/ImgIllIndex/".$model['catalog']."/".$model['catalog_code']."/".$model['pic_code'].'.png',['height'=>'100px']);?>
 <!--        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'100px']);?>-->
     </div>
     <div>
@@ -23,7 +23,7 @@ use yii\helpers\Html;
         'catalog' => $model['catalog'],
         'vdate' => (isset($model['vdate']))?$model['vdate']:'',
         'part_group' => $model['part_group'],
-        'model_code' => $model->model_code,
+        'model_code' => $model['model_code'],
         ]));?>
     </div>
     </div>

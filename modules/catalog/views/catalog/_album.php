@@ -7,8 +7,10 @@ use yii\helpers\Html;
  * Date: 25.06.15
  * Time: 18:00
  */
+//var_dump($model);die;
 ?>
-<div class="album-block col-xs-4">
+<div class="col-md-6 col-sm-12">
+
 <?= DetailView::widget([
     'model' => $model,
     'template' => "<tr><td>{value}</td></tr>",
@@ -30,8 +32,9 @@ use yii\helpers\Html;
 //        'start_date',
         [   'label'=>'pic_code',
             'format'=>'raw',
-            'value'=> Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'300px'])
+            'value'=> Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl()."/Img/".$model['catalog']."/".$model['rec_num']."/".$model['pic_code'].'.png',['height'=>'300px'])
             ]
     ]
    ]);?>
     </div>
+

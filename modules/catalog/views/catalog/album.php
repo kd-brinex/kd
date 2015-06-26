@@ -7,9 +7,9 @@ use yii\widgets\ListView;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\tovar\models\ParamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = $params['catalog'];
-$this->params['breadcrumbs'][] = 'Toyota';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->title = $params['catalog'];
+//$this->params['breadcrumbs'][] = 'Toyota';
+//$this->params['breadcrumbs'][] = $this->title;
 //var_dump($dataProvider);die;
 ?>
 <div class="catalog-models">

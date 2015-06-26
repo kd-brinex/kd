@@ -14,7 +14,7 @@ class CatalogController extends Controller
     {
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
-//        $searchModel->setData($params);
+
 
 
         $dataProviderEU = $searchModel->search(['catalog'=>'EU']);
@@ -27,8 +27,8 @@ class CatalogController extends Controller
         $dataProviderUS->pagination=false;
 //        var_dump($dataProviderEU->query->getUrlParams('action'));die;
 //        Крошки
-        $params['title']=$dataProviderEU->query->name;
-        $params['breadcrumbs'][]=$dataProviderEU->query->name;
+//        $params['title']=$dataProviderEU->query->url_params['name'];
+//        $params['breadcrumbs'][]=$params['title'];
         return $this->render('index', [
 //            'searchModel' => $searchModel,
             'dataProviderEU' => $dataProviderEU,
@@ -46,9 +46,9 @@ class CatalogController extends Controller
         $searchModel = new models\Toyota();
         $dataProvider = $searchModel->searchVin($params);
         //Крошки
-        $params['title']=$dataProvider->query->name;
-        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+//        $params['title']=$dataProvider->query->name;
+//        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+//        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         $params['model_name']=$dataProvider->models[0]['model_name'];
         return $this->render('model', [
@@ -68,9 +68,9 @@ class CatalogController extends Controller
         $dataProvider = $searchModel->searchFrame($params);
 
 //Крошки
-        $params['title']=$dataProvider->query->name;
-        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+//        $params['title']=$dataProvider->query->name;
+//        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+//        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         return $this->render('model', [
             'searchModel' => $searchModel,
@@ -87,9 +87,9 @@ class CatalogController extends Controller
         $dataProvider=$searchModel->searchCatalog($params);
         $dataProvider->pagination=false;
 //Крошки
-        $params['title']=$dataProvider->query->name;
-        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+//        $params['title']=$dataProvider->query->name;
+//        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+//        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 //        var_dump($searchModel);die;
 
         return $this->render('catalog', [
@@ -105,9 +105,9 @@ class CatalogController extends Controller
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchModelSelect($params);
 //Крошки
-        $params['title']=$dataProvider->query->name;
-        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+//        $params['title']=$dataProvider->query->name;
+//        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+//        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         return $this->render('model', [
             'searchModel' => $searchModel,

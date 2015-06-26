@@ -22,15 +22,14 @@ class Toyota
          * Список всех моделей
          */
     {
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
+//        var_dump($query);die;
         $query->select('*')
             ->from('shamei')
             ->orderBy(['model_name'=>'asc','prod_start'=>'asc'])
         ->andFilterWhere($params);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
-
-//        var_dump()
+//        var_dump($dataProvider->models);die;
         return $dataProvider;
 
     }
@@ -41,8 +40,8 @@ class Toyota
          */
     {
         //        $query = parent::find()->andWhere(['catalog_code'=>'116520']);
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
+//        $query->setData($params);
         $vin = $params['vin'];
         $query ->select(['johokt.catalog',
                 "get_vdate_frameno(johokt.catalog, johokt.frame, SUBSTRING('" . $vin . "',-7)) vdate"
@@ -77,8 +76,7 @@ class Toyota
          */
     {
 
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
         $query ->select([
         'johokt.catalog',
             'johokt.catalog_code',
@@ -143,8 +141,7 @@ class Toyota
          */
     {
 
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
         $query->select(['catalog',
             'catalog_code',
             'model_code',
@@ -200,8 +197,7 @@ class Toyota
 //        $translate->translation('figmei','desc_en','desc_ru');
 
 
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
         $query->select(['emi.*', 'figmei.desc_en', 'figmei.desc_ru'])
 
             ->from('emi')
@@ -209,7 +205,7 @@ class Toyota
             ->andWhere('emi.catalog=:catalog and emi.catalog_code=:catalog_code', [
                 ':catalog'=>$params['catalog'],
                 ':catalog_code'=>$params['catalog_code'],
-//                ':model_code'=>$this->model_code
+//                ':model_code'=>$params['model_code']
             ]);
 //        if ($params['vdate']==''){
 //            $mod_info=$this->getModelInfo($params);
@@ -242,6 +238,16 @@ class Toyota
 
         ]);
     }
+    function getShameiInfo($params){
+        $connect = new Connection(ToyotaQuery::getConnectParam());
+        $res=$connect->createCommand("SELECT * FROM shamei WHERE catalog = :catalog AND catalog_code = :catalog_code;")
+        ->bindValues([
+                ':catalog'=>$params['catalog'],
+                ':catalog_code'=>$params['catalog_code'],])
+        ->queryAll();
+        return $res[0];
+    }
+
     public function getModelInfo($params)
     {
 
@@ -294,87 +300,142 @@ WHERE catalog = :catalog
 
 
     public function searchAlbum($params){
-if(!empty($params['vdate'])){
-    $mod_info=$this->getModelInfo($params);
+if(!empty($params['vdate']) or $params['vdate']==''){
+    $mod_info=$this->getShameiInfo($params);
+    $params=array_merge($params,$mod_info);
 }
-        $query="SELECT
-  bzi.*,
-  kpt.compl_code,
-  inm.op1, inm.op2, inm.op3, inm.ftype, inm.desc_en
 
-FROM
-  bzi #список всех подгрупп(иллюстраций)
+//var_dump($mod_info);die;
+        $query="SELECT DISTINCT(compl_code) FROM johokt WHERE catalog = :catalog AND catalog_code = :catalog_code AND model_code = :model_code";
+        $connect = new Connection(ToyotaQuery::getConnectParam());
+        $compl_code=$connect->createCommand($query,[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code'],':model_code'=>$params['model_code']])->queryAll();
+        $compl_code_array=[];
+        foreach($compl_code as $cc) {
+            $compl_code_array[] = $cc['compl_code'];
+            }
+//        var_dump($params,$compl_code);die;
 
-    # применяемость подгруппы запчастей
-	LEFT JOIN kpt
-	  ON kpt.catalog = bzi.catalog
+        $images= new ToyotaQuery($params);
+        $images->setUrlParams(['rec_num'=>$params['rec_num']]);
+//        $images->setUrlParams(['url_action'=>$images->getUrlAction('page')]);
+        $images->select([
+           'bzi.*' ,
+            'kpt.compl_code',
+            'inm.op1',
+            'inm.op2',
+            'inm.op3',
+            'inm.ftype',
+            'inm.desc_en',
+
+        ])->from('bzi')
+        ->leftJoin('kpt','kpt.catalog = bzi.catalog
         AND kpt.catalog_code = bzi.catalog_code
-        AND kpt.ipic_code = bzi.ipic_code # маска применяемости
-
-	# описания к подгрупп(иллюстраций)
-	LEFT OUTER JOIN inm
-	  ON inm.catalog = bzi.catalog
+        AND kpt.ipic_code = bzi.ipic_code')
+        ->join('LEFT OUTER JOIN','inm','inm.catalog = bzi.catalog
         AND inm.catalog_code = bzi.catalog_code
         AND inm.pic_desc_code = bzi.pic_desc_code
-        AND inm.op1 = bzi.op1
-
-WHERE
-  bzi.catalog = :catalog
-  AND bzi.catalog_code = :catalog_code
-  AND bzi.part_group = :part_group
-
-  # применяемость подгруппы запчастей относительно типу комплектации выбранной модели авто
-  AND kpt.compl_code IN (
-            SELECT DISTINCT(compl_code) FROM johokt WHERE catalog = :catalog AND catalog_code = :catalog_code AND model_code = :model_code)
-";
-        $param=[
-            ':catalog'=>$this->catalog,
-            ':catalog_code'=>$this->catalog_code,
-            ':part_group'=>$this->part_group,
-            ':model_code'=>$this->model_code,
-        ];
-// 	отработать по дате модели, если не известна дата VIN --
-// 		пустых дат нету	, поэтому споконо берем эти поля
-//			SELECT * FROM johokt WHERE IFNULL(prod_start,'') = ''
-//			SELECT * FROM johokt WHERE IFNULL(prod_end,'') = ''
-// 	!empty($mod_info) - проверим вдруг модель пустая
-if (empty($params['vdate']) and !empty($mod_info)) {
-    $query .= "
-    # При поиске по дате модели в приделах даты модели
-AND (bzi.start_date <= :prod_end AND bzi.end_date >=:prod_start)";
-    $mod_info[':prod_end']=$params['prod_end'];
-    $mod_info[':prod_start']=$params['prod_start'];
-}
-// 	отработать VIN --
-if (!empty($params['vdate'])) {
-    $query .= "
-        # При поиске по VIN - в приделах даты выпуска авто
-        AND (:vdate BETWEEN start_date AND end_date)";
-    $param[':vdare']=$params['vdate'];
-}
-
-        $connect = new Connection(ToyotaQuery::getConnectParam());
-        $picture=$connect->createCommand($query,$param)->queryAll();
-//var_dump($picture);die;
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $picture,
+        AND inm.op1 = bzi.op1')
+            ->andWhere(['kpt.compl_code' => $compl_code_array])
+            ->andWhere('bzi.catalog=:catalog AND
+  bzi.catalog_code=:catalog_code AND
+  bzi.part_group=:part_group'
+  ,[
+            ':catalog'=>$params['catalog'],
+            ':catalog_code'=>$params['catalog_code'],
+            ':part_group'=>$params['part_group'],
         ]);
+//var_dump($mod_info);die;
+        if (empty($params['vdate']) and !empty($mod_info)) {
+//            # При поиске по дате модели в приделах даты модели
+//            $images->andWhere("bzi.start_date<=:prod_end",[':prod_end'=>$mod_info[0]['prod_end']])
+//                ->andWhere("bzi.end_date>=:prod_start",[':prod_start'=>$mod_info[0]['prod_start']]);
+            $images->andWhere("bzi.start_date<=:prod_end",[':prod_end'=>intval($mod_info['prod_end'])])
+                ->andWhere("bzi.end_date>=:prod_start",[':prod_start'=>intval($mod_info['prod_start'])]);
+        }
+// 	отработать VIN --
+        if (!empty($params['vdate'])) {
+
+//        # При поиске по VIN - в приделах даты выпуска авто
+        $images->andWhere(['BETWEEN',':vdate','start_date AND end_date'],
+            [':vdate'=>$params['vdate']]);
+        }
+
+//        $query="SELECT
+//  bzi.*,
+//  kpt.compl_code,
+//  inm.op1, inm.op2, inm.op3, inm.ftype, inm.desc_en
+//
+//FROM
+//  bzi #список всех подгрупп(иллюстраций)
+//
+//    # применяемость подгруппы запчастей
+//	LEFT JOIN kpt
+//	  ON kpt.catalog = bzi.catalog
+//        AND kpt.catalog_code = bzi.catalog_code
+//        AND kpt.ipic_code = bzi.ipic_code # маска применяемости
+//
+//	# описания к подгрупп(иллюстраций)
+//	LEFT OUTER JOIN inm
+//	  ON inm.catalog = bzi.catalog
+//        AND inm.catalog_code = bzi.catalog_code
+//        AND inm.pic_desc_code = bzi.pic_desc_code
+//        AND inm.op1 = bzi.op1
+//
+//WHERE
+//  bzi.catalog = :catalog
+//  AND bzi.catalog_code = :catalog_code
+//  AND bzi.part_group = :part_group
+//
+//  # применяемость подгруппы запчастей относительно типу комплектации выбранной модели авто
+//  AND kpt.compl_code IN (
+//            SELECT DISTINCT(compl_code) FROM johokt WHERE catalog = :catalog AND catalog_code = :catalog_code AND model_code = :model_code)
+//";
+//        $param=[
+//            ':catalog'=>$params['catalog'],
+//            ':catalog_code'=>$params['catalog_code'],
+//            ':part_group'=>$params['part_group'],
+//            ':model_code'=>$params['model_code'],
+//        ];
+//// 	отработать по дате модели, если не известна дата VIN --
+//// 		пустых дат нету	, поэтому споконо берем эти поля
+////			SELECT * FROM johokt WHERE IFNULL(prod_start,'') = ''
+////			SELECT * FROM johokt WHERE IFNULL(prod_end,'') = ''
+//// 	!empty($mod_info) - проверим вдруг модель пустая
+//if (empty($params['vdate']) and !empty($mod_info)) {
+//    $query .= "
+//    # При поиске по дате модели в приделах даты модели
+//AND (bzi.start_date <= :prod_end AND bzi.end_date >=:prod_start)";
+//    $mod_info[':prod_end']=$params['prod_end'];
+//    $mod_info[':prod_start']=$params['prod_start'];
+//}
+//// 	отработать VIN --
+//if (!empty($params['vdate'])) {
+//    $query .= "
+//        # При поиске по VIN - в приделах даты выпуска авто
+//        AND (:vdate BETWEEN start_date AND end_date)";
+//    $param[':vdate']=$params['vdate'];
+//}
+
+//var_dump($picture);die;
+        $dataProvider = new ActiveDataProvider([
+            'query' => $images,
+        ]);
+        $dataProvider->pagination=false;
     return $dataProvider;
 
     }
     public function searchAlbumNext($params)
     {
 
-        $images= new ToyotaQuery();
-        $images->setData($params);
+        $images= new ToyotaQuery($params);
+
         $images ->select('*')
             ->from('images')
             ->andWhere(['catalog = :catalog','disk = :disk_num','pic_code = :pic_code']);
 
 var_dump($images);die;
 
-        $query = new ToyotaQuery();
-        $query->setData($params);
+        $query = new ToyotaQuery($params);
         $query->select([ 'img_nums.*',
 	"CASE `number_type`
 		WHEN '1' THEN
