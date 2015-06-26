@@ -356,7 +356,7 @@ if(!empty($params['vdate']) or $params['vdate']==''){
         if (!empty($params['vdate'])) {
 
 //        # При поиске по VIN - в приделах даты выпуска авто
-        $images->andWhere(['BETWEEN',':vdate','start_date AND end_date'],
+        $images->andWhere(':vdate BETWEEN start_date AND end_date',
             [':vdate'=>$params['vdate']]);
         }
 
@@ -449,6 +449,28 @@ var_dump($images);die;
     ->andWhere(['img_nums.catalog = :catalog',
    'disk = :$disk_num',
     'pic_code = :pic_code']);
+
+    }
+    public function searchPage($params){
+//        var_dump($params);die;
+        $page= new ToyotaQuery($params);
+        $page::$pref='old_';
+        $page->select('*,h.dпшеesc_en part_name')->limit(10)
+//            ->from('images img')
+            ->from('img_nums imgn')
+//            ->leftJoin('img_nums imgn','img.disk=imgn.disk and img.pic_code=imgn.pic_code')
+            ->leftJoin('hinmei h','h.pnc=imgn.number')
+//            ->andWhere('img.catalog=:catalog and img.disk=:disk and img.pic_code=:pic_code',
+            ->leftJoin('hnb','hnb.pnc=imgn.number')
+            ->leftJoin('ryakug r','r.desc_en=hnb.add_desc ')
+            ->andWhere('imgn.catalog=:catalog and imgn.disk=:disk and imgn.pic_code=:pic_code',
+                [':catalog'=>$params['catalog'],':disk'=>$params['rec_num'],':pic_code'=>$params['pic_code']]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $page,
+        ]);
+        $dataProvider->pagination=false;
+        return $dataProvider;
 
     }
 }

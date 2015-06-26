@@ -34,11 +34,11 @@ class AvQuery extends \yii\db\Query
 //        }
     }
 
-    public function getUrlAction($action)
-    {
-//        $vars=get_class_vars(self::class);
-        return Url::to(array_merge([$action],$this->url_params));
-    }
+//    public function getUrlAction($action)
+//    {
+////        $vars=get_class_vars(self::class);
+//        return Url::to(array_merge([$action],$this->url_params));
+//    }
 
     public function getParamSelect()
     {

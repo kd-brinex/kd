@@ -9,8 +9,9 @@ use yii\helpers\Html;
  */
 //var_dump($model);die;
 ?>
-<div class="col-md-6 col-sm-12">
 
+<div class="col-md-6 col-sm-12">
+    <?=Html::a('111',\yii\helpers\Url::to(array_merge(['page',$model])));?>
 <?= DetailView::widget([
     'model' => $model,
     'template' => "<tr><td>{value}</td></tr>",

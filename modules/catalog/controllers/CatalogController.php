@@ -127,4 +127,15 @@ class CatalogController extends Controller
             'params' => $params,
         ]);
     }
+    public function actionPage()
+    {
+        $params=\Yii::$app->request->queryParams;
+        $searchModel = new models\Toyota();
+        $dataProvider=$searchModel->searchPage($params[1]);
+        return $this->render('page', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'params' => $params,
+        ]);
+    }
 }
