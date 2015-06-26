@@ -16,26 +16,6 @@ use yii\base\Model;
 
 class Toyota
 {
-public $name = "TOYOTA";
-public $model_name;
-public $catalog;
-public $catalog_code;
-public $model_code;
-public $sysopt;
-public $compl_code;
-public $part_group;
-
-    public function setData($params){
-        foreach ($params as $property => $value) {
-            if (property_exists($this, $property)) {
-                if (is_array($this->$property)) {
-                    $this->$property = array_merge($this->$property, $value);
-                } else {
-                    $this->$property = $value;
-                }
-            }
-        }
-    }
 
     public function search($params)
         /*
@@ -43,12 +23,14 @@ public $part_group;
          */
     {
         $query = new ToyotaQuery();
-
+        $query->setData($params);
         $query->select('*')
             ->from('shamei')
             ->orderBy(['model_name'=>'asc','prod_start'=>'asc'])
         ->andFilterWhere($params);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
+
+//        var_dump()
         return $dataProvider;
 
     }
@@ -60,6 +42,7 @@ public $part_group;
     {
         //        $query = parent::find()->andWhere(['catalog_code'=>'116520']);
         $query = new ToyotaQuery();
+        $query->setData($params);
         $vin = $params['vin'];
         $query ->select(['johokt.catalog',
                 "get_vdate_frameno(johokt.catalog, johokt.frame, SUBSTRING('" . $vin . "',-7)) vdate"
@@ -84,7 +67,6 @@ public $part_group;
             'query' => $query,
 
         ]);
-//        var_dump($dataProvider);die;
         return $dataProvider;
 
     }
@@ -96,6 +78,7 @@ public $part_group;
     {
 
         $query = new ToyotaQuery();
+        $query->setData($params);
         $query ->select([
         'johokt.catalog',
             'johokt.catalog_code',
@@ -161,6 +144,7 @@ public $part_group;
     {
 
         $query = new ToyotaQuery();
+        $query->setData($params);
         $query->select(['catalog',
             'catalog_code',
             'model_code',
@@ -217,7 +201,7 @@ public $part_group;
 
 
         $query = new ToyotaQuery();
-
+        $query->setData($params);
         $query->select(['emi.*', 'figmei.desc_en', 'figmei.desc_ru'])
 
             ->from('emi')
@@ -382,6 +366,7 @@ if (!empty($params['vdate'])) {
     {
 
         $images= new ToyotaQuery();
+        $images->setData($params);
         $images ->select('*')
             ->from('images')
             ->andWhere(['catalog = :catalog','disk = :disk_num','pic_code = :pic_code']);
@@ -389,6 +374,7 @@ if (!empty($params['vdate'])) {
 var_dump($images);die;
 
         $query = new ToyotaQuery();
+        $query->setData($params);
         $query->select([ 'img_nums.*',
 	"CASE `number_type`
 		WHEN '1' THEN

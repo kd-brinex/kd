@@ -10,6 +10,9 @@ use yii\helpers\Url;
 //var_dump($params,$dataProvider);die;
 $this->title = $params['title'];
 $this->params['breadcrumbs']= $params['breadcrumbs'];
+$data=$dataProvider->models[0];
+$dataProvider->query->setData($data);
+var_dump($dataProvider->query);die;
 ?>
 <div class="catalog-model">
 
@@ -32,7 +35,7 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
                         'catalog' => $data['catalog'],
                         'model_code' => $data['model_code'],
                         'compl_code' => $data['compl_code'],
-//                        'model_name' => $data['model_name'],
+                        'model_name' => $data['model_name'],
                         'sysopt' => $data['sysopt'],
                         'vdate' => (isset($data['vdate']))?$data['vdate']:'',
                     ]));

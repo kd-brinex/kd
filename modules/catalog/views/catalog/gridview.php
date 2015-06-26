@@ -4,6 +4,8 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 //var_dump($dataProvider->models);die;
+$data=$dataProvider->models[0];
+$dataProvider->query->setData($data);
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

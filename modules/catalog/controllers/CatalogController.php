@@ -14,10 +14,8 @@ class CatalogController extends Controller
     {
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
-        //Крошки
-        $params['title']=$searchModel->name;
-        $params['breadcrumbs'][]=$searchModel->name;
+//        $searchModel->setData($params);
+
 
         $dataProviderEU = $searchModel->search(['catalog'=>'EU']);
         $dataProviderEU->pagination=false;
@@ -27,8 +25,12 @@ class CatalogController extends Controller
         $dataProviderJP->pagination=false;
         $dataProviderUS = $searchModel->search(['catalog'=>'US']);
         $dataProviderUS->pagination=false;
+//        var_dump($dataProviderEU->query->getUrlParams('action'));die;
+//        Крошки
+        $params['title']=$dataProviderEU->query->name;
+        $params['breadcrumbs'][]=$dataProviderEU->query->name;
         return $this->render('index', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProviderEU' => $dataProviderEU,
             'dataProviderGR' => $dataProviderGR,
             'dataProviderJP' => $dataProviderJP,
@@ -42,12 +44,11 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
         $params['vin']=(isset($params['vin']))?$params['vin']:'';
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
         $dataProvider = $searchModel->searchVin($params);
         //Крошки
-        $params['title']=$searchModel->name;
-        $params['breadcrumbs'][]=['label'=>$searchModel->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$searchModel->model_name;
+        $params['title']=$dataProvider->query->name;
+        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         $params['model_name']=$dataProvider->models[0]['model_name'];
         return $this->render('model', [
@@ -64,12 +65,13 @@ class CatalogController extends Controller
         $params['number']=(isset($params['number']))?$params['number']:'';
         $params['model_name']=(isset($params['model_name']))?$params['model_name']:'';
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
-        //Крошки
-        $params['title']=$searchModel->name;
-        $params['breadcrumbs'][]=['label'=>$searchModel->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=$searchModel->model_name;
         $dataProvider = $searchModel->searchFrame($params);
+
+//Крошки
+        $params['title']=$dataProvider->query->name;
+        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+
         return $this->render('model', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -82,15 +84,14 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
 
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
-
-        //Крошки
-        $params['title']=$searchModel->name;
-        $params['breadcrumbs'][]=['label'=>$searchModel->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=['label'=>$searchModel->model_name];
-//        var_dump($searchModel);die;
         $dataProvider=$searchModel->searchCatalog($params);
         $dataProvider->pagination=false;
+//Крошки
+        $params['title']=$dataProvider->query->name;
+        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+//        var_dump($searchModel);die;
+
         return $this->render('catalog', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -102,12 +103,12 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
 
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
-        //Крошки
-        $params['title']=$searchModel->name;
-        $params['breadcrumbs'][]=['label'=>$searchModel->name,'url'=>Url::to('toyota/catalog')];
-        $params['breadcrumbs'][]=['label'=>$searchModel->model_name];
         $dataProvider=$searchModel->searchModelSelect($params);
+//Крошки
+        $params['title']=$dataProvider->query->name;
+        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
+        $params['breadcrumbs'][]=$dataProvider->query->model_name;
+
         return $this->render('model', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -119,7 +120,6 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
 
         $searchModel = new models\Toyota();
-        $searchModel->setData($params);
         $dataProvider=$searchModel->searchAlbum($params);
         return $this->render('album', [
             'searchModel' => $searchModel,

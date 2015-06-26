@@ -35,5 +35,17 @@ class AvQuery extends \yii\db\Query
         return self::$image;
     }
 
+    public function setData($params){
+        foreach ($params as $property => $value) {
+            if (property_exists($this, $property)) {
+                if (is_array($this->$property)) {
+                    $this->$property = array_merge($this->$property, $value);
+                } else {
+                    $this->$property = $value;
+                }
+            }
+        }
+    }
+
 
 }
