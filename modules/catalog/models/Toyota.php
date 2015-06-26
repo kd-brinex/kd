@@ -455,7 +455,7 @@ var_dump($images);die;
 //        var_dump($params);die;
         $page= new ToyotaQuery($params);
         $page::$pref='old_';
-        $page->select('*,h.dпшеesc_en part_name')->limit(10)
+        $page->select('*,h.desc_en part_name')->limit(10)
 //            ->from('images img')
             ->from('img_nums imgn')
 //            ->leftJoin('img_nums imgn','img.disk=imgn.disk and img.pic_code=imgn.pic_code')
