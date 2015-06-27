@@ -455,14 +455,18 @@ var_dump($images);die;
 //        var_dump($params);die;
         $page= new ToyotaQuery($params);
         $page::$pref='old_';
-        $page->select('*,h.desc_en part_name')->limit(10)
-//            ->from('images img')
+//        $ulr_main = "vin=$vin&vdate=$vdate&siyopt_code=$siyopt_code&catalog=$catalog&catalog_code=$catalog_code&model_code=$model_code&sysopt=$sysopt&compl_code=$compl_code&";
+        $ulr_main='';
+        $page->select("*,CASE `imgn`.`number_type`
+		WHEN '1' THEN	`imgn`.`number`
+		WHEN '4' THEN '** Std Part'
+		ELSE `h`.`desc_en`
+	END desc_en")->limit(10)
+
             ->from('img_nums imgn')
 //            ->leftJoin('img_nums imgn','img.disk=imgn.disk and img.pic_code=imgn.pic_code')
-            ->leftJoin('hinmei h','h.pnc=imgn.number')
-//            ->andWhere('img.catalog=:catalog and img.disk=:disk and img.pic_code=:pic_code',
-            ->leftJoin('hnb','hnb.pnc=imgn.number')
-            ->leftJoin('ryakug r','r.desc_en=hnb.add_desc ')
+            ->leftJoin('hinmei h','h.catalog = imgn.catalog AND h.pnc = imgn.number')
+//
             ->andWhere('imgn.catalog=:catalog and imgn.disk=:disk and imgn.pic_code=:pic_code',
                 [':catalog'=>$params['catalog'],':disk'=>$params['rec_num'],':pic_code'=>$params['pic_code']]);
 
