@@ -181,11 +181,8 @@ class PartsProvider
 
     public function query($method)
     {
-        //Выполнение запроса
-//        var_dump($this->_soap_client->__getFunctions(),$method);die;
+
         $result = $this->soap($method);
-//        var_dump(1,$result);die;
-        //Закрытие соединение
         $this->close();
         return $result;
     }
