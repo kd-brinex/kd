@@ -5,11 +5,40 @@ namespace app\modules\catalog\controllers;
 use yii\web\Controller;
 
 use app\modules\catalog\models;
-use yii\helpers\Url;
-
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 class CatalogController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+//                    [
+//                        'actions' => ['index', 'create', 'update'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                        'matchCallback' => function ($rule, $action) {
+//                            return \Yii::$app->user->identity->getIsAdmin();
+//                        }
+//                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['catalog'],
+                        'roles' => ['@','admin']
+                    ],
+                ]
+            ]
+        ];
+    }
     public function actionIndex()
     {
         $params=\Yii::$app->request->queryParams;
@@ -82,7 +111,9 @@ class CatalogController extends Controller
     public function actionCatalog()
     {
         $params=\Yii::$app->request->queryParams;
-
+        $user=\Yii::$app->getUser();
+//        if (empty($user->id)){return $this->redirect('login',[]);}
+//        var_dump($user->id);die;
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchCatalog($params);
         $dataProvider->pagination=false;
@@ -118,7 +149,6 @@ class CatalogController extends Controller
     public function actionAlbum()
     {
         $params=\Yii::$app->request->queryParams;
-
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchAlbum($params);
         return $this->render('album', [
