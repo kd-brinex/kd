@@ -30,7 +30,23 @@ class Toyota
         ->andFilterWhere($params);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
 //        var_dump($dataProvider->models);die;
-        return $dataProvider;
+//        $model=$query->all();
+//        foreach($model as $m){
+//
+//        }
+//        var_dump($model);die;
+        $dataProvider->pagination=false;
+        $model=$dataProvider->models;
+
+
+        $arr = array();
+
+        foreach($model as $item)
+        {
+            $arr[$item['model_name']][] = $item ;
+        }
+
+        return $arr;
 
     }
 
@@ -140,36 +156,94 @@ class Toyota
          * Список модификаций выбраной модели
          */
     {
+        $charact=$this->searchCharact($params);
 
         $query = new ToyotaQuery($params);
-        $query->select(['catalog',
-            'catalog_code',
-            'model_code',
-            'prod_start',
-            'prod_end',
-            'frame',
-            'sysopt',
-            'compl_code',
-            'engine1',
-            'engine2',
-            'body',
-            'grade',
-            'atm_mtm',
-            'trans',
-            'f1',
-            'f2',
-            'f3',
-            'f4',
-            'f5'])
-            ->distinct()
-            ->from('johokt')
-            ->andWhere(['catalog'=>$params['catalog'],'catalog_code'=>$params['catalog_code']])
-        ->orderBy(['model_code'=>'asc','prod_start'=>'ask']);
+//        $query::$pref='old_';
+        $query->select(['j.catalog',
+            'j.catalog_code',
+            'j.model_code',
+            'j.prod_start',
+            'j.prod_end',
+            "case j.prod_end
+            when '999999' then concat(substring(j.prod_start,1,4),'/',substring(j.prod_start,5,2))
+            else concat(substring(j.prod_start,1,4),'/',substring(j.prod_start,5,2),'-',substring(j.prod_end,1,4),'/',substring(j.prod_start,5,2))
+            end prod",
+            'j.frame',
+            'j.sysopt',
+            'j.compl_code',
+            'j.engine1',
+            'j.engine2',
+            'j.body',
+            'j.grade',
+            'j.atm_mtm',
+            'j.trans',
+            'j.f1',
+            'j.f2',
+            'j.f3',
+            'j.f4',
+            'j.f5',
+//            'tkm.desc_en tdesc',
+//            'en.type ktype',
+//            'en.sign',
+            'en.desc_en engine_en',
+            'body.desc_en body_en',
+            'grade.desc_en grade_en',
+            'tm.desc_en tm_en',
+            'trans.desc_en trans_en',
+            'f1.desc_en f1_en',
+            'tkm_f1.desc_en f1_name',
+            'f2.desc_en f2_en',
+            'tkm_f2.desc_en f2_name',
+            'f3.desc_en f3_en',
+            'tkm_f3.desc_en f3_name',
+            'f4.desc_en f4_en',
+            'tkm_f4.desc_en f4_name',
+//            'dest.desc_en dest_en',
+        ])
+//            ->distinct()
+            ->from('johokt j')
+            ->leftJoin('kig en',"en.catalog = j.catalog and en.catalog_code=j.catalog_code and en.sign=j.engine1")
+            ->leftJoin('kig body',"body.catalog = j.catalog and body.catalog_code=j.catalog_code and body.sign=j.body")
+            ->leftJoin('kig grade',"grade.catalog = j.catalog and grade.catalog_code=j.catalog_code and grade.sign =j.grade")
+            ->leftJoin('kig tm',"tm.catalog = j.catalog and tm.catalog_code=j.catalog_code and tm.sign=j.atm_mtm")
+            ->leftJoin('kig trans',"trans.catalog = j.catalog and trans.catalog_code=j.catalog_code and trans.sign=j.trans")
+            ->leftJoin('kig f1',"f1.catalog = j.catalog and f1.catalog_code=j.catalog_code and f1.sign=j.f1")
+            ->leftJoin('tkm tkm_f1','tkm_f1.catalog = f1.catalog AND tkm_f1.catalog_code = f1.catalog_code AND tkm_f1.type = f1.type')
+            ->leftJoin('kig f2',"f2.catalog = j.catalog and f2.catalog_code=j.catalog_code and f2.sign=j.f2")
+            ->leftJoin('tkm tkm_f2','tkm_f2.catalog = f2.catalog AND tkm_f2.catalog_code = f2.catalog_code AND tkm_f2.type = f2.type')
+            ->leftJoin('kig f3',"f3.catalog = j.catalog and f3.catalog_code=j.catalog_code and f3.sign=j.f3")
+            ->leftJoin('tkm tkm_f3','tkm_f3.catalog = f3.catalog AND tkm_f3.catalog_code = f3.catalog_code AND tkm_f3.type = f3.type')
+            ->leftJoin('kig f4',"f4.catalog = j.catalog and f4.catalog_code=j.catalog_code and f4.sign=j.f4")
+            ->leftJoin('tkm tkm_f4','tkm_f4.catalog = f4.catalog AND tkm_f4.catalog_code = f4.catalog_code AND tkm_f4.type = f4.type')
+//            ->leftJoin('kig dest',"dest.catalog = j.catalog and dest.catalog_code=j.catalog_code and dest.sign=j.f5")
+//            ->leftJoin('kig dest',"dest.catalog = j.catalog and dest.catalog_code=j.catalog_code and find_in_set(sign,replace(f5,' ',','))>0")
+//            ->leftJoin('tkm','tkm.catalog = en.catalog AND tkm.catalog_code = en.catalog_code AND tkm.type = en.type')
+//            ->groupBy(['j.catalog','j.catalog_code','j.model_code','kig.desc_en'])
+            ->andWhere(['j.catalog'=>$params['catalog'],'j.catalog_code'=>$params['catalog_code']])
+
+//            ->andWhere('kig.catalog = :catalog and kig.catalog_code = :catalog_code',[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']])
+        ->orderBy(['model_code'=>'asc','prod_start'=>'ask'])            ;
+
+//        SELECT *
+//        from kig
+//where catalog = 'EU' and catalog_code = '671440' and find_in_set(sign,replace('USA DSL IV',' ',','))>0
 //        ->params([':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-        return $dataProvider;
+        $dataProvider->pagination=false;
+        $model=$dataProvider->models;
+        $arr = [];
+//var_dump($model);die;
+        foreach($model as $item)
+        {
+//var_dump($item);die;
+
+            $arr[$item['engine1'].'_'.$item['engine_en']][$item['model_code']][]= $item ;
+        }
+//var_dump($arr);die;
+        return $arr;
     }
 //    public function searchCatalog($params)
 //        /*
@@ -206,7 +280,8 @@ class Toyota
                 ':catalog'=>$params['catalog'],
                 ':catalog_code'=>$params['catalog_code'],
 //                ':model_code'=>$params['model_code']
-            ]);
+            ])
+        ->orderBy(['model_code'=>'asc']);
 //        if ($params['vdate']==''){
 //            $mod_info=$this->getModelInfo($params);
 //
@@ -217,6 +292,7 @@ class Toyota
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
         return $dataProvider;
     }
 
@@ -453,6 +529,21 @@ var_dump($images);die;
     }
     public function searchPage($params){
 //        var_dump($params);die;
+//        $query = "
+//SELECT
+//	shamei.*, # информация про модель
+//	johokt.*  # информация про серюю модели
+//  FROM johokt
+//
+//	JOIN shamei
+//	  ON shamei.catalog = johokt.catalog
+//	  AND shamei.catalog_code = johokt.catalog_code
+//  WHERE johokt.catalog = '$catalog'
+//    AND johokt.catalog_code = '$catalog_code'
+//    AND johokt.model_code = '$model_code'
+//    # условие выбранной sysopt модели
+//    AND johokt.sysopt = '$sysopt'
+//";
         $page= new ToyotaQuery($params);
         $page::$pref='old_';
 //        $ulr_main = "vin=$vin&vdate=$vdate&siyopt_code=$siyopt_code&catalog=$catalog&catalog_code=$catalog_code&model_code=$model_code&sysopt=$sysopt&compl_code=$compl_code&";
@@ -461,7 +552,7 @@ var_dump($images);die;
 		WHEN '1' THEN	`imgn`.`number`
 		WHEN '4' THEN '** Std Part'
 		ELSE `h`.`desc_en`
-	END desc_en")->limit(10)
+	END desc_en")
 
             ->from('img_nums imgn')
 //            ->leftJoin('img_nums imgn','img.disk=imgn.disk and img.pic_code=imgn.pic_code')
@@ -476,5 +567,15 @@ var_dump($images);die;
         $dataProvider->pagination=false;
         return $dataProvider;
 
+    }
+    public function searchCharact($params){
+        $charact = new ToyotaQuery($params);
+        $charact->select(['kig.*','tkm.desc_en'])
+            ->from('kig')
+            ->leftJoin('tkm','tkm.catalog = kig.catalog
+        AND tkm.catalog_code = kig.catalog_code
+        AND tkm.type = kig.type')
+            ->andWhere("kig.catalog = :catalog and kig.catalog_code = :catalog_code",[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']]);
+        return $charact->all();
     }
 }

@@ -17,17 +17,18 @@ $model=$dataProvider->query->url_params;
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
-        ['attribute'=>'number',
-        'format'=>'raw',
-        'value'=>function($model){
-            return Html::a($model['number'],Url::to(['/finddetails','article'=>$model['number']]));
-}],
-
-        'desc_en',
-        'x1',
-        'y1',
-        'x2',
-        'y2',
+//        ['attribute'=>'number',
+//        'format'=>'raw',
+//        'value'=>function($model){
+//            return Html::a($model['number'],Url::to(['/finddetails','article'=>$model['number']]));
+//}],
+//
+//        'desc_en',
+//        'x1',
+//        'y1',
+//        'x2',
+//        'y2',
+//        'id',
     ]
     ]);?>
     </div>
