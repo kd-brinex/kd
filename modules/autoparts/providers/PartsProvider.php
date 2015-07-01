@@ -212,9 +212,9 @@ class PartsProvider
         $xml = $this->query($this->methods['FindDetails'], $errors);
 
         $data = $this->parseSearchResponseXML($xml);
-//        var_dump($data);die;
+
         $ret = $this->formatSearchResponse($data);
-//var_dump($ret);die;
+
         /**Сортировка массива поп полю srokmax
          *
          * */

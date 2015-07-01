@@ -29,21 +29,21 @@ if(!empty($vin)) echo "<h3>Поиск по VIN: $vin</h3>";
 echo "<h3>Информация о выбранном автомобиле</h3>";
 
 /* Запрос EPC Toyota */
-$query = "
-SELECT 
-	shamei.*, # информация про модель
-	johokt.*  # информация про серюю модели
-  FROM johokt
-  
-	JOIN shamei
-	  ON shamei.catalog = johokt.catalog
-	  AND shamei.catalog_code = johokt.catalog_code
-  WHERE johokt.catalog = '$catalog'
-    AND johokt.catalog_code = '$catalog_code'
-    AND johokt.model_code = '$model_code'
-    # условие выбранной sysopt модели
-    AND johokt.sysopt = '$sysopt'
-";
+//$query = "
+//SELECT
+//	shamei.*, # информация про модель
+//	johokt.*  # информация про серюю модели
+//  FROM johokt
+//
+//	JOIN shamei
+//	  ON shamei.catalog = johokt.catalog
+//	  AND shamei.catalog_code = johokt.catalog_code
+//  WHERE johokt.catalog = '$catalog'
+//    AND johokt.catalog_code = '$catalog_code'
+//    AND johokt.model_code = '$model_code'
+//    # условие выбранной sysopt модели
+//    AND johokt.sysopt = '$sysopt'
+//";
 // johokt.sysopt = '$sysopt' нужно сверять именно sysopt, даже если оно и пустое
 //		$siyopt_code[1-4] - не подходит посокльку johokt может быть с пустым sysopt, тогда как freim.sysopt - будет задано
 

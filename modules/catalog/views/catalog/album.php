@@ -10,7 +10,7 @@ use yii\widgets\ListView;
 //$this->title = $params['catalog'];
 //$this->params['breadcrumbs'][] = 'Toyota';
 //$this->params['breadcrumbs'][] = $this->title;
-//var_dump($dataProvider);die;
+//var_dump($dataProvider->models);die;
 ?>
 <div class="catalog-models">
 

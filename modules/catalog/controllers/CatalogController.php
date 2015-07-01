@@ -19,9 +19,9 @@ class CatalogController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'rules' => [
 //                    [
 //                        'actions' => ['index', 'create', 'update'],
 //                        'allow' => true,
@@ -30,13 +30,18 @@ class CatalogController extends Controller
 //                            return \Yii::$app->user->identity->getIsAdmin();
 //                        }
 //                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['catalog'],
-                        'roles' => ['@','admin']
-                    ],
-                ]
-            ]
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['index','model'],
+//                        'roles' => ['?','@']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['catalog','album','page'],
+//                        'roles' => ['@']
+//                    ],
+//                ]
+//            ]
         ];
     }
     public function actionIndex()
@@ -47,13 +52,13 @@ class CatalogController extends Controller
 
 
         $dataProviderEU = $searchModel->search(['catalog'=>'EU']);
-        $dataProviderEU->pagination=false;
+//        $dataProviderEU->pagination=false;
         $dataProviderGR = $searchModel->search(['catalog'=>'GR']);
-        $dataProviderGR->pagination=false;
+//        $dataProviderGR->pagination=false;
         $dataProviderJP = $searchModel->search(['catalog'=>'JP']);
-        $dataProviderJP->pagination=false;
+//        $dataProviderJP->pagination=false;
         $dataProviderUS = $searchModel->search(['catalog'=>'US']);
-        $dataProviderUS->pagination=false;
+//        $dataProviderUS->pagination=false;
 //        var_dump($dataProviderEU->query->getUrlParams('action'));die;
 //        Крошки
 //        $params['title']=$dataProviderEU->query->url_params['name'];
@@ -79,11 +84,11 @@ class CatalogController extends Controller
 //        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
-        $params['model_name']=$dataProvider->models[0]['model_name'];
+//        $params['model_name']=$dataProvider->models[0]['model_name'];
         return $this->render('model', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'params' => $params,
+//            'params' => $params,
         ]);
 
     }
@@ -102,9 +107,9 @@ class CatalogController extends Controller
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         return $this->render('model', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'params' => $params,
+//            'params' => $params,
         ]);
 
     }
@@ -135,15 +140,18 @@ class CatalogController extends Controller
 
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchModelSelect($params);
+//        $dataProvider->pagination=false;
+
 //Крошки
 //        $params['title']=$dataProvider->query->name;
 //        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         return $this->render('model', [
-            'searchModel' => $searchModel,
+//            'model'=>$dataProvider->models
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'params' => $params,
+//            'params' => $params,
         ]);
     }
     public function actionAlbum()
@@ -161,10 +169,9 @@ class CatalogController extends Controller
     {
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
-        $dataProvider=$searchModel->searchPage($params[1]);
+        $model=$searchModel->searchPage($params[1]);
         return $this->render('page', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
             'params' => $params,
         ]);
     }

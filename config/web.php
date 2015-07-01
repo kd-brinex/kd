@@ -10,7 +10,12 @@ $config = [
     'name' => 'Колеса-даром',
 //    'layout' => 'main.twig',
     'components' => [
-//        'view' => [
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/modules/user/views'
+                ],
+            ],
 //            'class' => 'yii\web\View',
 //            'renderers' => [
 //                'twig' => [
@@ -20,7 +25,7 @@ $config = [
 //                    'globals' => ['html' => '\yii\helpers\Html'],
 //                ],
 //            ],
-//        ],
+        ],
 
         'session' => [
             'class' => 'yii\web\Session',
@@ -234,6 +239,7 @@ $config = [
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'Profile' => 'app\modules\user\models\Profile',
+
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
