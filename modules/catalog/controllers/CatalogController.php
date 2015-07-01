@@ -84,11 +84,11 @@ class CatalogController extends Controller
 //        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
-        $params['model_name']=$dataProvider->models[0]['model_name'];
+//        $params['model_name']=$dataProvider->models[0]['model_name'];
         return $this->render('model', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'params' => $params,
+//            'params' => $params,
         ]);
 
     }
@@ -107,9 +107,9 @@ class CatalogController extends Controller
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
 
         return $this->render('model', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'params' => $params,
+//            'params' => $params,
         ]);
 
     }
@@ -169,10 +169,9 @@ class CatalogController extends Controller
     {
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
-        $dataProvider=$searchModel->searchPage($params[1]);
+        $model=$searchModel->searchPage($params[1]);
         return $this->render('page', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
             'params' => $params,
         ]);
     }

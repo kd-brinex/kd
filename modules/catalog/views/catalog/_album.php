@@ -11,7 +11,7 @@ use yii\helpers\Html;
 ?>
 
 <div class="col-md-6 col-sm-12">
-    <?=Html::a('111',\yii\helpers\Url::to(array_merge(['page',$model])));?>
+
 <?= DetailView::widget([
     'model' => $model,
     'template' => "<tr><td>{value}</td></tr>",
@@ -19,7 +19,13 @@ use yii\helpers\Html;
 //    'catalog',
 //        'catalog_code',
 //        'compl_code',
-        'desc_en',
+    [
+        'label'=>'desc_en',
+        'format'=>'raw',
+        'value'=>Html::a($model['desc_en'], \yii\helpers\Url::to(array_merge(['page', $model])))
+
+    ],
+//        'desc_en',
 //        'end_date',
 //        'ftype',
 //        'illust_no',
