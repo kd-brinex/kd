@@ -2,6 +2,9 @@
  * Created by marat on 02.07.15.
  */
 $(document).ready(function () {
+    //h=$('.page_image').height()
+    //console.log(h)
+    //$('.page-scroll').height(h)
 
 
     $('.panel-label').mouseenter(function () {
@@ -32,11 +35,11 @@ $(document).ready(function () {
     });
 
     function scroll(e){
-
+    h=$('page-scroll').height();
         $('.page-scroll').scrollTop(0);
         $('.page-scroll').animate({
-            scrollTop: e.offset().top-100
-        }, 200);
+            scrollTop: e.offset().top-40
+        }, 500);
     }
 
 });
