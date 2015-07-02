@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 /**
  * Created by PhpStorm.
  * User: marat
@@ -9,10 +8,10 @@ use yii\helpers\Html;
  * Time: 10:53
  */
 //var_dump($model);die;
-$column = [
+$column=[
 //    'Артикул'=>'part_code',
-    'Номер' => 'pnc',
-    'Дата производства' => 'prod',
+    'Номер'=>'pnc',
+    'Дата производства'=>'prod',
 //    'end_date'=>'end_date',
 //    'field_type'=>'field_type',
 //    'add_desc'=>'add_desc',
@@ -20,7 +19,7 @@ $column = [
 //    'siyopt2'=>'siyopt2',
 //    'x1'=>'x1',
 //    'y1'=>'y1',
-    'Название' => 'desc_en',
+    'Название'=>'desc_en',
 //    'ipic_code'=>'ipic_code',
 ];
 $head = '<tr><th>Артикул</th>';
@@ -31,14 +30,14 @@ $head .= '</tr>';
 echo '<table class="table table-bordered">';
 echo $head;
 //var_dump($model);die;
-foreach ($model as $m) {
-    $article = ($m['number_type'] == 4) ? $m['number'] : $m['part_code'];
+foreach ($model as $m){
+    $article=($m['number_type']==4)?$m['number']:$m['part_code'];
 //    if($m['number_type']==4 and count($model)>1){var_dump($model);die;}
-    $row = '<tr><td>' . Html::a($article, Url::to(['/finddetails', 'article' => $article]), ['target' => 'blank']) . '</td>';
+$row='<tr><td>'.Html::a($article,Url::to(['/finddetails','article'=>$article]),['target'=>'blank']).'</td>';
     foreach ($column as $name) {
         $row .= '<td>' . $m[$name] . '</td>';
     }
-    $row .= '</tr>';
+$row.='</tr>';
     echo $row;
 }
 

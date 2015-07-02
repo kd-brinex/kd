@@ -5,8 +5,10 @@
     height: 200px;
     text-align: center;
     border-radius: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    /*margin-right: 5px;*/
+    margin-bottom: 30px;
+    width:100%;
+
 }
 .acatalog-tabs {
     margin: 10px;
@@ -30,14 +32,15 @@ table.submodel{
 }
 .page_label {
     position: absolute;
-    font-size: 19px;
-    line-height: 25px;
+    font-size: 17px;
+    line-height: 17px;
+    text-align: center;
     z-index: 999;
     background-color: #ffffff;
-
-    border-color: red;
+    border-radius: 5px;
+    border-color: #327E04;
     border-style: solid;
-    border-width: 1px;
+    border-width: 2px;
 }
 .page_image {
     left: 0px;
@@ -45,3 +48,24 @@ table.submodel{
     position: absolute;
     font-size: 10px;
 }
+.part-active {
+    background-color: #299520 !important;
+    color:#fff;
+
+}
+.part-active a {
+    color:#f8da4e;
+}
+.panel-heading {
+    background-color: transparent !important;
+}
+.page-scroll{
+    margin-top: 30px;
+    height: 600px;
+    overflow: scroll;
+}
+/*.panel-heading {*/
+    /*color: #333;*/
+    /*background-color: #f5f5f5;*/
+    /*border-color: #ddd;*/
+/*}*/
