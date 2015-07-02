@@ -171,7 +171,7 @@ class Toyota
             'tkm_f4.desc_en f4_name',
 //            'dest.desc_en dest_en',
         ])
-//            ->distinct()
+            ->distinct()
             ->from('johokt j')
             ->leftJoin('kig en',"en.catalog = j.catalog and en.catalog_code=j.catalog_code and en.sign=j.engine1")
             ->leftJoin('kig body',"body.catalog = j.catalog and body.catalog_code=j.catalog_code and body.sign=j.body")
@@ -239,7 +239,7 @@ class Toyota
 
         $query = new ToyotaQuery($params);
         $query->select(['emi.*', 'figmei.desc_en', 'figmei.desc_ru'])
-
+            ->distinct()
             ->from('emi')
             ->leftJoin('figmei','figmei.catalog=emi.catalog and figmei.part_group = emi.part_group')
             ->leftJoin('johokt j','j.catalog=emi.catalog and j.catalog_code=emi.catalog_code')
@@ -511,7 +511,12 @@ var_dump($images);die;
         $ulr_main='';
         $page->select([
             "imgn.*",
-            "h.desc_en",
+            "(imgn.x2-imgn.x1) width",
+            "(imgn.y2-imgn.y1) height",
+            "case (imgn.number_type)
+            when '4' then '** Std Parts'
+            else h.desc_en
+            end desc_en",
             "hnb.*",
             "kpt.ipic_code",
             "case hnb.end_date
@@ -523,9 +528,11 @@ var_dump($images);die;
             ->from('img_nums imgn')
 //            ->leftJoin('img_nums imgn','img.disk=imgn.disk and img.pic_code=imgn.pic_code')
             ->leftJoin('hinmei h','h.catalog = imgn.catalog AND h.pnc = imgn.number')
+
             ->leftJoin('hnb','hnb.catalog=:catalog and hnb.catalog_code=:catalog_code and hnb.pnc=h.pnc',[':catalog'=>$params['catalog'],':catalog_code'=>$params['catalog_code']])
             ->leftJoin('kpt','kpt.catalog=hnb.catalog and kpt.catalog_code=hnb.catalog_code and compl_code=:compl_code',[':compl_code'=>$params['compl_code']])
-            ->andWhere('imgn.catalog=:catalog and imgn.disk=:disk and imgn.pic_code=:pic_code and hnb.field_type=1 and substring(hnb.add_desc,1,6)=kpt.ipic_code',
+            ->andWhere('imgn.catalog=:catalog and imgn.disk=:disk and imgn.pic_code=:pic_code and (hnb.field_type=1 and substring(hnb.add_desc,1,6)=kpt.ipic_code or imgn.number_type=4)',
+//            ->andWhere('imgn.catalog=:catalog and imgn.disk=:disk and imgn.pic_code=:pic_code and hnb.field_type=1 and substring(hnb.add_desc,1,6)=kpt.ipic_code',
                 [':catalog'=>$params['catalog'],':disk'=>$params['rec_num'],':pic_code'=>$params['pic_code']]);
 
         $dataProvider = new ActiveDataProvider([
@@ -540,6 +547,7 @@ var_dump($images);die;
         foreach($model as $item)
         {
             $arr['models'][$item['number']][]= $item ;
+            $arr['labels'][$item['number']][$item['x1'].'x'.$item['y1']]=$item;
         }
         return $arr;
 

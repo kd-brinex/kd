@@ -105,8 +105,8 @@ class PartsProvider
 //        $data = \Yii::$app->request->queryParams;
 //            var_dump($this->article);die;
 //        $data = array_merge($data,\Yii::$app->request->post());
-        $data['store_id']= $this->store_id;
-        $data['article']=$this->article;
+//        $data['store_id']= $this->store_id;
+//        $data['article']=$this->article;
         $data['login'] = $this->login;
         $data['password'] = $this->password;
         return $data;

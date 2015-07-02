@@ -120,6 +120,12 @@ $config = [
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
                 'admin/permissions' => '/rbac/permissions/index',
+                // Автокаталоги
+                'toyota'=>'toyota/catalog',
+                'toyota/model'=>'toyota/catalog/model',
+                'toyota/catalog'=>'toyota/catalog/catalog',
+                'toyota/album'=>'toyota/catalog/album',
+                'toyota/page'=>'toyota/catalog/page',
 
 
             ],
