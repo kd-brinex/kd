@@ -9,8 +9,9 @@
 $model = $dataProvider->models;
 foreach ($model as $m) {
     if ($m[$group['key']] == $group['value']) {
-        echo '<div class="col-xs-2 row">';
+        echo '<div>';
+        echo '<div class="col-xs-6 col-lg-2 col-md-3 catalog-block">';
         echo $this->render($view, ['model' => $m,'toyota'=>$toyota]);
-        echo '</div>';
+        echo '</div></div>';
     }
 }

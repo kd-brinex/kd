@@ -23,6 +23,7 @@ class catalogAsset extends AssetBundle
 
     ];
     public $js = [
+        'js/page.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',

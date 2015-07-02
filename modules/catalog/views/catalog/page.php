@@ -15,7 +15,7 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="col-md-5 col-xs-12">
+<div class="page-scroll col-md-5 col-xs-12">
 
 <?php
 foreach ($model['models'] as $number=>$m){
@@ -26,8 +26,9 @@ foreach ($model['models'] as $number=>$m){
                 'label' => (($m[0]['number_type']!=4)?$number.' - '.$m[0]['desc_en']:$number.' - ** Std Parts'),
 //                'content'=>'',
                 'content'=>$this->render('parts_group',['model'=>$m]),
+
                 // Открыто по-умолчанию
-                'options'=>['class'=>"col-xs-12 row"],
+                'options'=>['class'=>"panel-label col-xs-12 row",'id'=>$number],
 //                    'contentOptions' => [  ]
             ],
         ]
@@ -44,7 +45,7 @@ foreach ($model['models'] as $number=>$m){
     foreach($model['labels'] as $labels){
 //    var_dump($m[0]);die;
         foreach($labels as $m) {
-            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['desc_en'] . '" style="text-align:center; line-height:15px; border-radius:5px; border-width:1px; border-style:solid; border-color:red; background-color:#fff; position: absolute; left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . $m['height'] . 'px; ">' . $m['number'] . '</div>';
+            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['desc_en'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . $m['height'] . 'px; ">' . $m['number'] . '</div>';
             echo $label;
         }
 
