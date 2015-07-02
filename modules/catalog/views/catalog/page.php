@@ -45,7 +45,7 @@ foreach ($model['models'] as $number=>$m){
     foreach($model['labels'] as $labels){
 //    var_dump($m[0]);die;
         foreach($labels as $m) {
-            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['desc_en'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . $m['height'] . 'px; ">' . $m['number'] . '</div>';
+            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['desc_en'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height']<20?'20':$m['height']) . 'px; ">' . $m['number'] . '</div>';
             echo $label;
         }
 

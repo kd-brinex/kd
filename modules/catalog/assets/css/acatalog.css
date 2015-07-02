@@ -62,7 +62,10 @@ table.submodel{
 .page-scroll{
     margin-top: 30px;
     height: 600px;
-    overflow: scroll;
+    overflow: auto;
+    /*position: fixed;*/
+    /*left:0;*/
+    /*top:0;*/
 }
 /*.panel-heading {*/
     /*color: #333;*/
