@@ -2,6 +2,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\bootstrap\Collapse;
+use yii\helpers\Url;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -13,45 +14,40 @@ use yii\bootstrap\Collapse;
 //var_dump($model);die;
 ?>
 
-<div class="col-md-6 col-xs-12">
-<?= Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl()."/Img/".$model['params']['catalog']."/".$model['params']['rec_num']."/".$model['params']['pic_code'].'.png',['width'=>'100%']);?>
-</div>
-<div class="col-md-6 col-xs-12">
+
+<div class="col-md-5 col-xs-12">
 
 <?php
-foreach ($model['models'] as $number=>$model){
+foreach ($model['models'] as $number=>$m){
 //    var_dump($model);die;
     echo Collapse::widget([
         'items' => [
             [
-                'label' => $number.' - '.$model[0]['desc_en'],
+                'label' => (($m[0]['number_type']!=4)?$number.' - '.$m[0]['desc_en']:$number.' - ** Std Parts'),
 //                'content'=>'',
-                'content'=>$this->render('parts_group',['model'=>$model]),
+                'content'=>$this->render('parts_group',['model'=>$m]),
                 // Открыто по-умолчанию
                 'options'=>['class'=>"col-xs-12 row"],
 //                    'contentOptions' => [  ]
             ],
         ]
     ]);
+//    :'<div class="panel-group collapse in"><div class="col-xs-12 panel panel-default row"><div class="panel-heading"><h4 class="panel-title">'.Html::a($m[0]['number'].' - ** Std Parts',Url::to(['/finddetails','article'=>$m[0]['number']]),['target'=>'blank']).'</h4></div></div></div>');
 }
-//var_dump($dataProvider);die;
-//GridView::widget([
-//    'dataProvider' => $dataProvider,
-//    'columns' => [
-//        ['attribute'=>'number',
-//        'format'=>'raw',
-//        'value'=>function($model){
-//            return Html::a($model['part_code'],Url::to(['/finddetails','article'=>$model['part_code']]));
-//}],
-//'number',
-//        'desc_en',
-//        'x1',
-//        'y1',
-//        'x2',
-//        'y2',
-//        'id',
-////        'part_code'
-//    ]
-//    ]);
 ?>
     </div>
+<div class="col-md-7 col-xs-12">
+    <div class="page_image">
+        <?= Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl()."/Img/".$model['params']['catalog']."/".$model['params']['rec_num']."/".$model['params']['pic_code'].'.png',[]);?>
+    </div>
+    <?php
+    foreach($model['labels'] as $labels){
+//    var_dump($m[0]);die;
+        foreach($labels as $m) {
+            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['desc_en'] . '" style="text-align:center; line-height:15px; border-radius:5px; border-width:1px; border-style:solid; border-color:red; background-color:#fff; position: absolute; left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . $m['height'] . 'px; ">' . $m['number'] . '</div>';
+            echo $label;
+        }
+
+    }
+    ?>
+</div>

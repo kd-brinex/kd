@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Collapse;
+use yii\bootstrap\Modal;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -10,19 +11,31 @@ use yii\bootstrap\Collapse;
  */
 foreach($dataProvider as $name=>$model)
 {
+    Modal::begin([
+        'header' => '<h2>'.$name.'</h2>',
+        'toggleButton' => [
+            'tag' => 'button',
+//            'class' => 'btn btn-lg btn-block btn-info ',
+            'class' => 'col-xs-12 col-md-3 row ',
+            'label' => $name,
+        ]
+    ]);
 
+    echo $this->render('_index_group_submodel',['model'=>$model]);
 
-        echo Collapse::widget([
-            'items' => [
-                [
-                    'label' => $name,
-                   'content'=>$this->render('_index_group_submodel',['model'=>$model]),
-                    // Открыто по-умолчанию
-                    'options'=>['class'=>"col-xs-12 col-md-6 row"],
-//                    'contentOptions' => [  ]
-                ],
-            ]
-        ]);
+    Modal::end();
+
+//        echo Collapse::widget([
+//            'items' => [
+//                [
+//                    'label' => $name,
+//                   'content'=>$this->render('_index_group_submodel',['model'=>$model]),
+//                    // Открыто по-умолчанию
+//                    'options'=>['class'=>"col-xs-12 col-md-6 row"],
+////                    'contentOptions' => [  ]
+//                ],
+//            ]
+//        ]);
 }
 //foreach($dataProvider->models as $m){
 //
