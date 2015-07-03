@@ -8,9 +8,9 @@ use yii\bootstrap\Collapse;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\tovar\models\ParamSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-//var_dump($dataProvider);die;
+//var_dump($params['breadcrumbs']);die;
 //$this->title = $params['title'];
-//$this->params['breadcrumbs']= $params['breadcrumbs'];
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 //$data=$dataProvider->models[0];
 //$dataProvider->query->setData($data);
 //var_dump($dataProvider->query);die;

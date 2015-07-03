@@ -20,7 +20,7 @@ foreach($dataProvider as $name=>$model)
             'label' => $name,
         ]
     ]);
-
+//        var_dump($model);die;
     echo $this->render('_index_group_submodel',['model'=>$model]);
 
     Modal::end();

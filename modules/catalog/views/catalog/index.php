@@ -8,7 +8,7 @@ use yii\bootstrap\Tabs;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //$this->title = $params['title'];
-//$this->params['breadcrumbs']= $params['breadcrumbs'];
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 //var_dump($dataProviderEU->query->getUrlParams('index'));die;
 ?>
 <div class="catalog-index">

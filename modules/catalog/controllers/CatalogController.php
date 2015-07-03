@@ -49,8 +49,7 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
 
-
-
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
         $dataProviderEU = $searchModel->search(['catalog'=>'EU']);
 //        $dataProviderEU->pagination=false;
         $dataProviderGR = $searchModel->search(['catalog'=>'GR']);
@@ -80,27 +79,32 @@ class CatalogController extends Controller
         $searchModel = new models\Toyota();
         $dataProvider = $searchModel->searchVin($params);
         //Крошки
+
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
 //        $params['title']=$dataProvider->query->name;
 //        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
 //        $params['breadcrumbs'][]=$dataProvider->query->model_name;
-
+//
 //        $params['model_name']=$dataProvider->models[0]['model_name'];
         return $this->render('model', [
 //            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-//            'params' => $params,
+            'params' => $params,
         ]);
 
     }
     public function actionIndexframe()
     {
         $params=\Yii::$app->request->queryParams;
+
         $params['frame']=(isset($params['frame']))?$params['frame']:'';
         $params['number']=(isset($params['number']))?$params['number']:'';
         $params['model_name']=(isset($params['model_name']))?$params['model_name']:'';
-        $searchModel = new models\Toyota();
-        $dataProvider = $searchModel->searchFrame($params);
 
+        $searchModel = new models\Toyota();
+
+        $dataProvider = $searchModel->searchFrame($params);
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
 //Крошки
 //        $params['title']=$dataProvider->query->name;
 //        $params['breadcrumbs'][]=['label'=>$dataProvider->query->name,'url'=>Url::to('toyota/catalog')];
@@ -120,7 +124,9 @@ class CatalogController extends Controller
 //        if (empty($user->id)){return $this->redirect('login',[]);}
 //        var_dump($user->id);die;
         $searchModel = new models\Toyota();
+
         $dataProvider=$searchModel->searchCatalog($params);
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
         $dataProvider->pagination=false;
 //Крошки
 //        $params['title']=$dataProvider->query->name;
@@ -140,6 +146,7 @@ class CatalogController extends Controller
 
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchModelSelect($params);
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
 //        $dataProvider->pagination=false;
 
 //Крошки
@@ -151,7 +158,7 @@ class CatalogController extends Controller
 //            'model'=>$dataProvider->models
 //            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-//            'params' => $params,
+            'params' => $params,
         ]);
     }
     public function actionAlbum()
@@ -159,6 +166,7 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
         $dataProvider=$searchModel->searchAlbum($params);
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
         return $this->render('album', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -170,6 +178,7 @@ class CatalogController extends Controller
         $params=\Yii::$app->request->queryParams;
         $searchModel = new models\Toyota();
         $model=$searchModel->searchPage($params[1]);
+        $params['breadcrumbs']=$searchModel->getBreadcrumbs($params[1]);
         return $this->render('page', [
             'model' => $model,
             'params' => $params,

@@ -39,7 +39,7 @@ use yii\helpers\Html;
 //        'start_date',
         [   'label'=>'pic_code',
             'format'=>'raw',
-            'value'=> Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl()."/Img/".$model['catalog']."/".$model['rec_num']."/".$model['pic_code'].'.png',['height'=>'300px'])
+            'value'=> Html::a(Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl()."/Img/".$model['catalog']."/".$model['rec_num']."/".$model['pic_code'].'.png',['height'=>'300px']), \yii\helpers\Url::to(array_merge(['page', $model])))
             ]
     ]
    ]);?>

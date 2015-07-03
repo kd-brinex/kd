@@ -49,7 +49,7 @@ foreach ($model as $model_code => $rows) {
                         'catalog' => $row['catalog'],
                         'model_code' => $row['model_code'],
                         'compl_code' => $row['compl_code'],
-//                        'model_name' => $data['model_name'],
+                        'model_name' => $row['model_name'],
                         'sysopt' => $row['sysopt'],
                         'vdate' => (isset($row['vdate']))?$row['vdate']:'',
                     ]));
