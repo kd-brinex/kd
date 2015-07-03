@@ -13,7 +13,7 @@ use yii\helpers\Html;
     <div class="acatalog-block">
     <div>
         <?php
-        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl(). "/ImgIllIndex/".$model['catalog']."/".$model['catalog_code']."/".$model['pic_code'].'.png',['height'=>'100px']);?>
+        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl(). "ImgIllIndex/".$model['catalog']."/".$model['catalog_code']."/".$model['pic_code'].'.png',['height'=>'100px']);?>
 <!--        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'100px']);?>-->
     </div>
     <div>
@@ -21,6 +21,9 @@ use yii\helpers\Html;
         Url::to(['album',
         'catalog_code' => $model['catalog_code'],
         'catalog' => $model['catalog'],
+            'model_name'=>$model['model_name'],
+            'compl_code'=>$model['compl_code'],
+//            'sysopt'=>$model['sysopt'],
         'vdate' => (isset($model['vdate']))?$model['vdate']:'',
         'part_group' => $model['part_group'],
         'model_code' => $model['model_code'],

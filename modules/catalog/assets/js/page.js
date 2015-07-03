@@ -29,7 +29,7 @@ $(document).ready(function () {
 
     $('.page_label').click(function () {
         $('.panel-collapse').removeClass('in')
-        a=$('#'+this.id).children().find('a')
+         a=$('#'+this.id).children().find('a')
         a.click();
         scroll(a)
     });

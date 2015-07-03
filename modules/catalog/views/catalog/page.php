@@ -18,6 +18,7 @@ use yii\helpers\Url;
 <div class="page-scroll col-md-5 col-xs-12">
 
 <?php
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 foreach ($model['models'] as $number=>$m){
 //    var_dump($model);die;
     echo Collapse::widget([

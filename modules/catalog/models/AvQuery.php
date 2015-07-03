@@ -44,6 +44,7 @@ class AvQuery extends \yii\db\Query
     {
         $select='';
         $p=self::$pref;
+//        var_dump($this->url_params);die;
         foreach($this->url_params as $key=>$val){
             $select.=($val!='')?", '$val' $p$key":'';
         }

@@ -11,7 +11,7 @@ use yii\bootstrap\Tabs;
 //$this->title = $params['title'];
 //$this->params['breadcrumbs']= $params['breadcrumbs'];
 
-
+$this->params['breadcrumbs']= $params['breadcrumbs'];
 ?>
 <div class="catalog-model">
 

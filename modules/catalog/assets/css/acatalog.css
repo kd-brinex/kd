@@ -56,6 +56,11 @@ table.submodel{
 .part-active a {
     color:#f8da4e;
 }
+.part-open {
+    background-color: #299520 !important;
+    color:#fff;
+
+}
 .panel-heading {
     background-color: transparent !important;
 }

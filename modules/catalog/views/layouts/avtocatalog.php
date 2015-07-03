@@ -19,13 +19,14 @@ $this->beginPage() ?>
         <?php $this->head() ?>
     </head>
     <body>
-    <?php $this->beginBody() ?>
-
+    <?php $this->beginBody();
+//var_dump($this->params['breadcrumbs']);die;
+    ?>
     <div class="col-lg-12 container">
         <?= Breadcrumbs::widget([
             'homeLink'=>[
                 'label'=>'Каталог',
-                'url'=>'/toyota/catalog/'],
+                'url'=>'http://www.kolesa-darom.ru/auto-parts/autocatalog/'],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
         <?= $content ?>
     </div>
