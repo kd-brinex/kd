@@ -113,7 +113,7 @@ class CatalogController extends Controller
         return $this->render('model', [
 //            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-//            'params' => $params,
+            'params' => $params,
         ]);
 
     }
