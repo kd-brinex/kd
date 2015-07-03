@@ -387,17 +387,20 @@ WHERE catalog = :catalog
   bzi.catalog_code=:catalog_code AND
   bzi.part_group=:part_group'
                 , [
+//                    ':compl_code'=>$compl_code_array,
                     ':catalog' => $params['catalog'],
                     ':catalog_code' => $params['catalog_code'],
                     ':part_group' => $params['part_group'],
                 ]);
-//var_dump($mod_info);die;
+//var_dump($images->all());die;
         if (empty($params['vdate']) and !empty($mod_info)) {
 //            # При поиске по дате модели в приделах даты модели
 //            $images->andWhere("bzi.start_date<=:prod_end",[':prod_end'=>$mod_info[0]['prod_end']])
 //                ->andWhere("bzi.end_date>=:prod_start",[':prod_start'=>$mod_info[0]['prod_start']]);
-            $images->andWhere("bzi.start_date<=:prod_end", [':prod_end' => intval($mod_info['prod_end'])])
-                ->andWhere("bzi.end_date>=:prod_start", [':prod_start' => intval($mod_info['prod_start'])]);
+            $images
+                ->andWhere("bzi.end_date<=:prod_end", [':prod_end' => ($mod_info['prod_end']==0)?'999999':$mod_info['prod_end'] ])
+                ->andWhere("bzi.start_date>=:prod_start", [':prod_start' => $mod_info['prod_start']]);
+//            var_dump($mod_info,$images->all());die;
         }
 // 	отработать VIN --
         if (!empty($params['vdate'])) {
