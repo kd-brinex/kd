@@ -98,14 +98,17 @@ class Toyota
     {
 
         $query = $this->searchModel($params);
-        $query->leftJoin('frames f', "j.model_code = CONCAT(f.frame_code, f.ext, '-', SUBSTRING_INDEX(f.model2, '(', 1)) OR j.model_code = CONCAT(f.frame_code, f.ext, '-', REPLACE(REPLACE(f.model2, '(', ''),')',''))")
+        $query->leftJoin('frames f',
+
+            "j.model_code = CONCAT(f.frame_code, f.ext, '-', SUBSTRING_INDEX(f.model2, '(', 1)) OR j.model_code = CONCAT(f.frame_code, f.ext, '-', REPLACE(REPLACE(f.model2, '(', ''),')',''))")
+            ->leftJoin('shamei s', '(s.catalog = j.catalog) and (s.catalog_code = j.catalog_code)')
             ->andWhere("f.catalog IN ('OV','DM')")
-            ->andWhere("f.frame_code = :frame", [':frame' => $params['frame']])
+            ->andWhere("f.frame_code = :frame_code", [':frame_code' => $params['frame']])
             ->andWhere("f.serial_number = :number", [':number' => $params['number']])
             ->andWhere("f.catalog = IF(j.catalog = 'JP', 'DM', 'OV')")
             ->andWhere("f.vdate BETWEEN j.prod_start AND j.prod_end OR IFNULL(f.vdate, '') = ''")
             ->andWhere("SUBSTRING(f.siyopt_code, 1, 4) = j.sysopt OR IFNULL(j.sysopt, '') = '' OR IFNULL(f.siyopt_code, '') = ''")
-            ->distinct();
+            ->distinct()->addSelect('s.model_name');
 
 
         $dataProvider = new ActiveDataProvider([
