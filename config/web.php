@@ -11,6 +11,7 @@ $config = [
 //    'layout' => 'main.twig',
     'components' => [
         'assetManager' => [
+            'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
         ],
         'view' => [
@@ -271,7 +272,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = 'yii\gii\Module';
 
-    $config['components']['assetManager']['forceCopy'] = true;
+//    $config['components']['assetManager']['forceCopy'] = true;
 }
 
 return $config;
