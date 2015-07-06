@@ -11,6 +11,7 @@ $config = [
 //    'layout' => 'main.twig',
     'components' => [
         'assetManager' => [
+            'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
         ],
         'view' => [
