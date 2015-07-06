@@ -133,9 +133,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
             foreach ($asset[$assetKey] as $dependency => $version) {
                 list($dependency, $version) = $this->convertDependency($dependency, $version, $vcsRepos, $composer);
                 $version = $this->assetType->getVersionConverter()->convertRange($version);
-                if (0 !== strpos($version, $dependency)) {
-                    $newDependencies[$this->assetType->getComposerVendorName().'/'.$dependency] = $version;
-                }
+                $newDependencies[$this->assetType->getComposerVendorName().'/'.$dependency] = $version;
             }
 
             $composer[$composerKey] = $newDependencies;
@@ -177,7 +175,7 @@ abstract class AbstractPackageConverter implements PackageConverterInterface
     protected function getMapDependencies()
     {
         return array(
-            'dependencies' => 'require',
+            'dependencies'    => 'require',
             'devDependencies' => 'require-dev',
         );
     }

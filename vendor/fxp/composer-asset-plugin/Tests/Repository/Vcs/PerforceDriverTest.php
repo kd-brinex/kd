@@ -53,6 +53,8 @@ class PerforceDriverTest extends BasePerforceDriverTest
      * Test that supports() simply return false.
      *
      * @covers \Composer\Repository\Vcs\PerforceDriver::supports
+     *
+     * @return void
      */
     public function testSupportsReturnsFalseNoDeepCheck()
     {
@@ -131,7 +133,7 @@ class PerforceDriverTest extends BasePerforceDriverTest
     {
         return array_merge(parent::getTestRepoConfig(), array(
             'asset-type' => 'ASSET',
-            'filename' => 'ASSET.json',
+            'filename'   => 'ASSET.json',
         ));
     }
 

@@ -63,7 +63,6 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getPackageNames
-     *
      * @param string $name
      * @param string $validName
      */

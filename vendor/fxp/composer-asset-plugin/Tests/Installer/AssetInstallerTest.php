@@ -12,6 +12,7 @@
 namespace Fxp\Composer\AssetPlugin\Tests\Installer;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7634d838ac4a272f6481cf5b1c937cb1",
+    "hash": "7de6741156a89d44dd42265a80ece934",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -703,16 +703,16 @@
         },
         {
             "name": "fxp/composer-asset-plugin",
-            "version": "v1.0.2",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/francoispluchino/composer-asset-plugin.git",
-                "reference": "c37a7ef0e253633ae0bdf29643129add73dfae71"
+                "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/c37a7ef0e253633ae0bdf29643129add73dfae71",
-                "reference": "c37a7ef0e253633ae0bdf29643129add73dfae71",
+                "url": "https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/dbc856439a09f07987de673aa8a264c1b88b0c6b",
+                "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b",
                 "shasum": ""
             },
             "require": {
@@ -755,7 +755,7 @@
                 "npm",
                 "package"
             ],
-            "time": "2015-06-04 10:37:32"
+            "time": "2015-01-25 13:24:06"
         },
         {
             "name": "guzzlehttp/guzzle",

@@ -15,13 +15,9 @@ use Composer\Composer;
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\OperationInterface;
 use Composer\DependencyResolver\Operation\UpdateOperation;
-use Composer\DependencyResolver\PolicyInterface;
-use Composer\DependencyResolver\Pool;
-use Composer\DependencyResolver\Request;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use Composer\Installer\PackageEvent;
-use Composer\Repository\CompositeRepository;
+use Composer\Script\PackageEvent;
 use Fxp\Composer\AssetPlugin\Composer\ScriptHandler;
 
 /**
@@ -61,8 +57,6 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
         $config->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
-                $val = null;
-
                 switch ($key) {
                     case 'cache-repo-dir':
                         return sys_get_temp_dir().'/composer-test-repo-cache';
@@ -70,7 +64,7 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
                         return sys_get_temp_dir().'/composer-test/vendor';
                 }
 
-                return $val;
+                return;
             }));
 
         $rootPackage = $this->getMock('Composer\Package\RootPackageInterface');
@@ -153,16 +147,6 @@ class ScriptHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getPackage')
             ->will($this->returnValue($this->package));
 
-        /* @var PolicyInterface $policy */
-        $policy = $this->getMock('Composer\DependencyResolver\PolicyInterface');
-        /* @var Pool $pool */
-        $pool = $this->getMockBuilder('Composer\DependencyResolver\Pool')->disableOriginalConstructor()->getMock();
-        /* @var CompositeRepository $installedRepo */
-        $installedRepo = $this->getMockBuilder('Composer\Repository\CompositeRepository')->disableOriginalConstructor()->getMock();
-        /* @var Request $request */
-        $request = $this->getMockBuilder('Composer\DependencyResolver\Request')->disableOriginalConstructor()->getMock();
-        $operations = array($this->getMock('Composer\DependencyResolver\Operation\OperationInterface'));
-
-        return new PackageEvent('foo-event', $this->composer, $this->io, true, $policy, $pool, $installedRepo, $request, $operations, $this->operation);
+        return new PackageEvent('foo-event', $this->composer, $this->io, true, $this->operation);
     }
 }

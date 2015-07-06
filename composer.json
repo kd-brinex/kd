@@ -13,16 +13,14 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
-    "replace": {
-        "yiisoft/yii2": "self.version"
-    },
     "require": {
         "php": ">=5.4.0",
+        "yiisoft/yii2": "2.0.4",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "dektrium/yii2-user": "0.9.*@dev",
         "yiisoft/yii2-twig": "*",
-        "fxp/composer-asset-plugin": "~1.0",
+        "fxp/composer-asset-plugin": "1.0.0",
         "dektrium/yii2-rbac": "dev-master",
         "yiisoft/yii2-codeception": "~2.0.0",
         "codeception/codeception":"2.0.*",
