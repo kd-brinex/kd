@@ -10,6 +10,9 @@ $config = [
     'name' => 'Колеса-даром',
 //    'layout' => 'main.twig',
     'components' => [
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
         'view' => [
             'theme' => [
                 'pathMap' => [
