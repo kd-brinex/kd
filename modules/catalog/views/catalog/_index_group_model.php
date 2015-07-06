@@ -9,14 +9,19 @@ use yii\bootstrap\Modal;
  * Date: 29.06.15
  * Time: 11:51
  */
+$n=0;
+$maxn=round(count($dataProvider)/4);
+//var_dump($maxn);die;
 foreach($dataProvider as $name=>$model)
 {
+    if ($n==0){echo '<div class="col-xs-12 col-md-3 row">';}
+
     Modal::begin([
         'header' => '<h2>'.$name.'</h2>',
         'toggleButton' => [
             'tag' => 'button',
 //            'class' => 'btn btn-lg btn-block btn-info ',
-            'class' => 'col-xs-12 col-md-3 row ',
+            'class' => 'col-xs-12 row ',
             'label' => $name,
         ]
     ]);
@@ -24,21 +29,8 @@ foreach($dataProvider as $name=>$model)
     echo $this->render('_index_group_submodel',['model'=>$model]);
 
     Modal::end();
+    $n=$n+1;
+    if ($n>$maxn){echo '</div>';$n=0;}
 
-//        echo Collapse::widget([
-//            'items' => [
-//                [
-//                    'label' => $name,
-//                   'content'=>$this->render('_index_group_submodel',['model'=>$model]),
-//                    // Открыто по-умолчанию
-//                    'options'=>['class'=>"col-xs-12 col-md-6 row"],
-////                    'contentOptions' => [  ]
-//                ],
-//            ]
-//        ]);
 }
-//foreach($dataProvider->models as $m){
-//
-//
-//    echo '<div class="col-lg-3">'.Html::a($m['model_name'],Url::to(['sub'])).'</div>';
-//}
+if ($n>0){echo '</div>';$n=0;} //Закрываем див

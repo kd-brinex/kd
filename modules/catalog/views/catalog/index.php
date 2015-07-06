@@ -22,7 +22,9 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
     <p>
         <?= $this->render('_search_frame', ['params'=>$params]) ?>
     </p>
-
+<p>
+    <?= html::input('text','find_model',null,['placeholder'=>'Поиск по модели','class'=>'form-control','id'=>'find_model'])?>
+</p>
     <?= Tabs::widget([
         'items' => [
             ['label' => 'Европа',
