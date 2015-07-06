@@ -35,5 +35,6 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Fxp\\Composer\\AssetPlugin\\' => array($vendorDir . '/fxp/composer-asset-plugin'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
 );
