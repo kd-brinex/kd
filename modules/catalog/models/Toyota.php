@@ -398,8 +398,8 @@ WHERE catalog = :catalog
 //            $images->andWhere("bzi.start_date<=:prod_end",[':prod_end'=>$mod_info[0]['prod_end']])
 //                ->andWhere("bzi.end_date>=:prod_start",[':prod_start'=>$mod_info[0]['prod_start']]);
             $images
-                ->andWhere("bzi.end_date<=:prod_end", [':prod_end' => ($mod_info['prod_end']==0)?'999999':$mod_info['prod_end'] ])
-                ->andWhere("bzi.start_date>=:prod_start", [':prod_start' => $mod_info['prod_start']]);
+                ->andWhere("bzi.start_date<=:prod_end", [':prod_end' => ($mod_info['prod_end']==0)?'999999':$mod_info['prod_end'] ])
+                ->andWhere("bzi.end_date>=:prod_start", [':prod_start' => $mod_info['prod_start']]);
 //            var_dump($mod_info,$images->all());die;
         }
 // 	отработать VIN --
