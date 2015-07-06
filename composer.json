@@ -13,9 +13,11 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
+    "replace": {
+        "yiisoft/yii2": "self.version"
+    },
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": "~2.0.3",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "dektrium/yii2-user": "0.9.*@dev",
