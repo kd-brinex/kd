@@ -6,8 +6,8 @@ use yii\web\Controller;
 
 use app\modules\catalog\models;
 use yii\filters\VerbFilter;
+use app\modules\netcat\Netcat;
 use yii\filters\AccessControl;
-
 class CatalogController extends Controller
 {
     public function behaviors()
@@ -19,29 +19,29 @@ class CatalogController extends Controller
                     'delete' => ['post'],
                 ],
             ],
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'actions' => ['index', 'create', 'update'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                        'matchCallback' => function ($rule, $action) {
-//                            return \Yii::$app->user->identity->getIsAdmin();
-//                        }
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['index','model'],
-//                        'roles' => ['?','@']
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['catalog','album','page'],
-//                        'roles' => ['@']
-//                    ],
-//                ]
-//            ]
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'update'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return \Yii::$app->user->identity->getIsAdmin();
+                        }
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index','model'],
+                        'roles' => ['?','@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['catalog','album','page'],
+                        'roles' => ['@']
+                    ],
+                ]
+            ]
         ];
     }
     public function actionIndex()
@@ -120,11 +120,12 @@ class CatalogController extends Controller
     public function actionCatalog()
     {
         $params=\Yii::$app->request->queryParams;
-        $user=\Yii::$app->getUser();
+//        $user=\Yii::$app->getUser();
 //        if (empty($user->id)){return $this->redirect('login',[]);}
 //        var_dump($user->id);die;
         $searchModel = new models\Toyota();
-
+//        $user_id=Netcat::remote_user_id();
+//        var_dump($user_id);die;
         $dataProvider=$searchModel->searchCatalog($params);
         $params['breadcrumbs']=$searchModel->getBreadcrumbs($params);
         $dataProvider->pagination=false;
@@ -138,6 +139,7 @@ class CatalogController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'params' => $params,
+//            'user_id' => $user_id,
         ]);
     }
     public function actionModel()
