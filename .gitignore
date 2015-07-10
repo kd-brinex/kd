@@ -27,3 +27,4 @@ phpunit.phar
 /phpunit.xml
 # файлы с примерами автокаталогов
 tests/_output/*
+config/db.php

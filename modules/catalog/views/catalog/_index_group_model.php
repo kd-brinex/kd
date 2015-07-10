@@ -11,7 +11,7 @@ use yii\bootstrap\Modal;
  */
 $n=0;
 $maxn=round(count($dataProvider)/4);
-//var_dump($maxn);die;
+
 foreach($dataProvider as $name=>$model)
 {
     if ($n==0){echo '<div class="col-xs-12 col-md-3 row">';}

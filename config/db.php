@@ -2,9 +2,9 @@
 $db = ['components'=>[
     'dev' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=127.0.0.1;dbname=brinex1;port=1111',
-        'username' => 'brinexdev',
-        'password' => 'QwFGHythju8',
+        'dsn' => 'mysql:host=localhost;dbname=brinex_dev',
+        'username' => 'root',
+        'password' => '25077300',
         'charset' => 'utf8',
         'enableSchemaCache' => true,
         'schemaCacheDuration' => 3600,

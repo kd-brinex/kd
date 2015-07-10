@@ -17,6 +17,7 @@ echo '<ul class="table table-striped row">';
             'catalog_code'=>$row['catalog_code'],
             'catalog'=>$row['catalog'],
             'model_name'=>$row['model_name'].'-'.$row['models_codes'],
+                'user_id'=>$row['user_id'],
         ])).'</li>';
     }
 echo '</ul>';
