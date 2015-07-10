@@ -20,14 +20,14 @@ use dektrium\user\Module as BaseModule;
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com>
  */
-class Module extends BaseModule
+class User extends BaseModule
 {
 //    public $controllerNamespace = 'dectrium\user\controllers';
 
     public function init()
     {
         parent::init();
-
+        $this->layout='avtocatalog';
         // custom initialization code goes here
     }
 }

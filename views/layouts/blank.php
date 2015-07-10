@@ -26,7 +26,7 @@ $this->beginPage() ?>
         <?= Breadcrumbs::widget([
             'homeLink'=>[
                 'label'=>'Каталог',
-                'url'=>'/toyota'],
+                'url'=>'http://www.kolesa-darom.ru/auto-parts/autocatalog/'],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
         <?= $content ?>
     </div>

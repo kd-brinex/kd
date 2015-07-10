@@ -10,19 +10,19 @@ use yii\helpers\Html;
  * Time: 13:10
  */
 //var_dump($model);die;
-foreach($model as $model_name=>$value){
+foreach ($model as $model_name => $value) {
 //    var_dump($value);die;
     $column = [
 //        'Vодификация' => 'model_code',
-        'Период выпуска'=>'prod',
-        'Кузов'=>'body_en',
-        'Grade'=>'grade_en',
-        'ATM,MTM'=>'tm_en',
-        'Gear shift type'=>'trans_en',
-        $value[0]['f1_name']=>'f1_en',
-        $value[0]['f2_name']=>'f2_en',
-        $value[0]['f3_name']=>'f3_en',
-        $value[0]['f4_name']=>'f4_en'
+        'Период выпуска' => 'prod',
+        'Кузов' => 'body_en',
+        'Grade' => 'grade_en',
+        'ATM,MTM' => 'tm_en',
+        'Gear shift type' => 'trans_en',
+        $value[0]['f1_name'] => 'f1_en',
+        $value[0]['f2_name'] => 'f2_en',
+        $value[0]['f3_name'] => 'f3_en',
+        $value[0]['f4_name'] => 'f4_en'
 //        'Transmission model'=>'tmod_en',
 //        'Rear tire'=>'rt_en',
 //    'destination'=>'dest_en',
@@ -44,24 +44,30 @@ foreach ($model as $model_code => $rows) {
 
 //        $url = \yii\helpers\Url::to(['album', 'catalog_code' => $row['catalog_code'], 'catalog' => $row['catalog'],]);
 
-        $url=Html::a(Html::encode($row['model_code']), Url::to(['catalog',
-                        'catalog_code' => $row['catalog_code'],
-                        'catalog' => $row['catalog'],
-                        'model_code' => $row['model_code'],
-                        'compl_code' => $row['compl_code'],
-                        'model_name' => $row['model_name'],
-                        'sysopt' => $row['sysopt'],
-                        'vdate' => (isset($row['vdate']))?$row['vdate']:'',
-                    ]));
+        $url = Html::a(Html::encode($row['model_code']), Url::to(['catalog',
+            'catalog_code' => $row['catalog_code'],
+            'catalog' => $row['catalog'],
+            'model_code' => $row['model_code'],
+            'compl_code' => $row['compl_code'],
+            'model_name' => $row['model_name'],
+            'sysopt' => $row['sysopt'],
+            'vdate' => (isset($row['vdate'])) ? $row['vdate'] : '',
+            'vin' => (isset($row['vin'])) ? $row['vin'] : '',
+            'frame' => (isset($row['frame'])) ? $row['frame'] : '',
+            'number' => (isset($row['number'])) ? $row['number'] : '',
+            'user_id' => (isset($row['user_id'])) ? $row['user_id'] : 0,
+
+        ]));
 
 
-        $text = '<td>'.$url.'</td>';
+        $text = '<td>' . $url . '</td>';
         foreach ($column as $name) {
             $text .= '<td>' . $row[$name] . '</td>';
         }
-        $text='<tr>'.Html::a($text, $url).'</tr>';
+        $text = '<tr>' . Html::a($text, $url) . '</tr>';
         echo $text;
 //    echo $text;
     }
 
-}  echo '</table>';
+}
+echo '</table>';

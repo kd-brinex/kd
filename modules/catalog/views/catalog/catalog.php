@@ -41,5 +41,6 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
         ]
     ]); ?>
 
+<?php var_dump($dataProvider)?>
 
 </div>

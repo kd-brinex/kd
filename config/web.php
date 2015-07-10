@@ -77,13 +77,14 @@ $config = [
             'suffix' => '',
             'rules' => [
                 '' => 'site/index',
+//                '' => 'toyota/catalog',
                 'login' => 'user/security/login',
                 'register' => 'user/registration/register',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'partner' => 'site/partner',
                 'profile' => 'user/settings/profile',
-                'ugb' => 'site/ugb',
+//                'ugb' => 'site/ugb',
                 'ugb' => 'site/ugb',//перегружает данные в таблицы городов
                 'citys' => 'city/city',
                 'cities/<id:\w+>' => 'city/city/view',
@@ -183,6 +184,7 @@ $config = [
             'theme' => [
                 'pathMap' => [
                     '@dektrium/user/views/settings' => '@app/modules/user/views/settings',
+                    '@dektrium/user/views/security' => '@app/modules/user/views/security',
 
                 ],
             ],
@@ -245,16 +247,18 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/admin.php',
+            'layout' => '/blank',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'Profile' => 'app\modules\user\models\Profile',
+
 
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
 //                'admin' => 'app\modules\user\controllers\AdminController'
             ],
+
 
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,

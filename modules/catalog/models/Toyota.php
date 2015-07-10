@@ -22,12 +22,13 @@ class Toyota
          * Список всех моделей
          */
     {
+//        var_dump($params);die;
         $query = new ToyotaQuery($params);
 //        var_dump($query);die;
         $query->select('*')
             ->from('shamei')
             ->orderBy(['model_name' => 'asc', 'prod_start' => 'asc'])
-            ->andFilterWhere($params);
+            ->andFilterWhere(['catalog'=>$params['catalog']]);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
 //        var_dump($dataProvider->models);die;
 //        $model=$query->all();
@@ -39,7 +40,7 @@ class Toyota
         $model = $dataProvider->models;
 
 
-        $arr = array();
+        $arr = [];
 
         foreach ($model as $item) {
             $arr[$item['model_name']][] = $item;
@@ -588,11 +589,14 @@ WHERE catalog = :catalog
     {
         $b = [];
 //        var_dump($params);die;
+
         $action = \Yii::$app->controller->action->id;
         if ($action == "index") {
             return $b;
         }
-        $b['marka'] = ['label' => 'Toyota', 'url' => ['/toyota']];
+        $b['marka'] = ['label' => 'Toyota', 'url' => ['/toyota',
+            'user_id'=>$params['user_id']
+        ]];
 
         if ($action == "indexframe") {
             return $b;
@@ -612,6 +616,7 @@ WHERE catalog = :catalog
             'catalog_code' => $params['catalog_code'],
             'catalog' => $params['catalog'],
             'model_name' => $params['model_name'],
+            'user_id'=>$params['user_id']
         ]];
         $b['catalog'] = ['label' => $params['model_code'],];
 
@@ -629,6 +634,7 @@ WHERE catalog = :catalog
             'model_name' => $params['model_name'],
             'sysopt' => (isset($params['sysopt'])) ? $params['sysopt'] : '',
             'vdate' => (isset($params['vdate'])) ? $params['vdate'] : '',
+            'user_id'=>$params['user_id']
         ]];
         $b['album'] = ['label' => $params['part_group'],];
 
@@ -646,6 +652,7 @@ WHERE catalog = :catalog
             'sysopt' => (isset($params['sysopt'])) ? $params['sysopt'] : '',
             'part_group' => (isset($params['part_group'])) ? $params['part_group'] : '',
             'vdate' => (isset($params['vdate'])) ? $params['vdate'] : '',
+            'user_id'=>$params['user_id']
         ]];
         $b['page'] = ['label' => $params['compl_code'],];
         if ($action == "page") {
