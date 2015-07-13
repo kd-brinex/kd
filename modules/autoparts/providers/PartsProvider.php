@@ -31,7 +31,7 @@ class PartsProvider
     public $name = '';
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
-    public $row_count = 10;
+    public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
     public $fields = [
         "code" => "code",//Номер
@@ -234,7 +234,7 @@ class PartsProvider
 //            if($r==0){$r=r_usort($a,$b,'price');}
 //            return $r;
 //        });
-////        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
+        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
 
 //var_dump($ret);die;
 
