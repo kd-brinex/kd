@@ -210,7 +210,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-
+        'parser' =>[
+          'class'=>'app\modules\parser\Parser'
+        ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
             'layout'=> '/admin.php',
