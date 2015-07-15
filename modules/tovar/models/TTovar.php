@@ -81,8 +81,7 @@ class TTovar extends \yii\db\ActiveRecord
             ->leftJoin('t_value v','v.tovar_id=t.id')
             ->leftJoin('t_param p','v.param_id=p.id')
         ->where('t.tip_id=:tip_id',[':tip_id'=>$params['tip_id']])
-            ->orderBy('p.name
-            ')
+            ->orderBy('p.name')
             ->distinct();
         return $query->all();
     }
@@ -103,13 +102,13 @@ class TTovar extends \yii\db\ActiveRecord
         else
         {$options=json_decode($joptions);}
         $n = 1;
-//        var_dump($options);die;
+//        var_dump($joptions);die;
         foreach ($options as $id => $value) {
             if (!empty($value)){
             $name = 't' . $n;
             $query->leftJoin('t_value ' . $name, 't.id=' . $name . '.tovar_id and ' . $name . '.param_id=:' . $name, [':' . $name => $id])
                 ->andWhere([$name . '.value_char' => $value])
-                ->addSelect($name . '.value_char f' . $n);
+                ->addSelect($name . '.value_char ' . $id);
             $n = $n + 1;}
         }
         $query->leftJoin('t_price p', 'p.id_tovar=t.id and p.id_store=:store_id', [':store_id' => $params['store_id']])
