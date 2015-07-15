@@ -19,28 +19,26 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
     <?= Tabs::widget([
         'items' => [
             ['label' => 'Tool/Engine/Fuel',
-                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataProvider,'group'=>['key'=>'main_group','value'=>1],'view'=>'block']),
+                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataCatalog,'group'=>['key'=>'main_group','value'=>1],'view'=>'block']),
                 'active' => true,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'Power Train/Chassis',
-                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataProvider,'group'=>['key'=>'main_group','value'=>2],'view'=>'block']),
+                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataCatalog,'group'=>['key'=>'main_group','value'=>2],'view'=>'block']),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'Body',
-                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataProvider,'group'=>['key'=>'main_group','value'=>3],'view'=>'block']),
+                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataCatalog,'group'=>['key'=>'main_group','value'=>3],'view'=>'block']),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'Electrical',
-                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataProvider,'group'=>['key'=>'main_group','value'=>4],'view'=>'block']),
+                'content' => $this->render('listview',['toyota'=>$searchModel,'dataProvider'=>$dataCatalog,'group'=>['key'=>'main_group','value'=>4],'view'=>'block']),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
         ]
     ]); ?>
-
-<?php var_dump($dataProvider)?>
 
 </div>

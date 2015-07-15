@@ -14,9 +14,10 @@ echo '<ul class="table table-striped row">';
 //        var_dump($row);die;
         $text= substr($row['prod_start'],-2).'/'.substr($row['prod_start'],0,4).' - '.substr($row['prod_end'],-2).'/'.substr($row['prod_end'],0,4) .'_'.$row['models_codes'] ;
         echo '<li>'.Html::a($text,Url::to(['model',
-            'catalog_code'=>$row['catalog_code'],
-            'catalog'=>$row['catalog'],
-            'model_name'=>$row['model_name'].'-'.$row['models_codes'],
+                'name'=>$row['model_name'],
+                'model_name'=>$row['model_name'].'-'.$row['models_codes'],
+                'catalog'=>$row['catalog'],
+                'catalog_code'=>$row['catalog_code'],
                 'user_id'=>$row['user_id'],
         ])).'</li>';
     }

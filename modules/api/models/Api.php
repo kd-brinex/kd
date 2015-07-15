@@ -135,13 +135,15 @@ return $xml;
         $a['tip_id']=$params['tip_id'];
         $a['page']=$params['page'];
         $a['page_size']=$params['page_size'];
+        $a['store_id']=$params['store_id'];
+        $a['where']=$params['where'];
         $s='{';
 //        var_dump($params['options']);die;
         foreach($params['options'] as $key=>$val)
         {
             if (!empty($val)){$s.='"'.$key.'":"'.$val.'",';}
         }
-        $s=substr($s,0,-1);
+        $s=($s!='{')?substr($s,0,-1):$s;
         $s.='}';
         $a['options']=$s;
         $url=Url::toRoute($a);

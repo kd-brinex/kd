@@ -21,63 +21,17 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
 <?php
 foreach($dataProvider as $name=>$model)
 {
-
-
+//    var_dump($model);die;
     echo Collapse::widget([
         'items' => [
             [
                 'label' => $name,
-//                'content'=>'',
                 'content'=>$this->render('model_group',['model'=>$model]),
-                // Открыто по-умолчанию
                 'options'=>['class'=>"col-xs-12 row"],
-//                    'contentOptions' => [  ]
             ],
         ]
     ]);
 }
-//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//            'catalog',
-//            'f1',
-//            'catalog_code',
-//            [
-//                'attribute' => 'model_code',
-//                'format' => 'raw',
-//                'value' => function ($data) {
-//                    return Html::a(Html::encode($data['model_code']), Url::to(['catalog',
-//                        'catalog_code' => $data['catalog_code'],
-//                        'catalog' => $data['catalog'],
-//                        'model_code' => $data['model_code'],
-//                        'compl_code' => $data['compl_code'],
-////                        'model_name' => $data['model_name'],
-//                        'sysopt' => $data['sysopt'],
-//                        'vdate' => (isset($data['vdate']))?$data['vdate']:'',
-//                    ]));
-//                },],
-//            [
-//                'label'=>'Дата производства',
-//                'value' => function($data) {
-//                    return substr($data['prod_start'],-2).'/'.substr($data['prod_start'],0,4).' - '.substr($data['prod_end'],-2).'/'.substr($data['prod_end'],0,4);
-//                }
-//            ],
-//            'compl_code',
-//
-//            ['attribute'=>'engine1',
-//            'label'=>'Двигатель'],
-////            'engine2',
-////            'body',
-//            [
-//            'attribute'=>'atm_mtm',
-//            'label'=>'Коробка'],
-//            'grade',
-//            'trans',
-//            'sysopt'
-//            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]);
+
 ?>
 </div>

@@ -16,6 +16,10 @@ use yii\base\Model;
 
 class Toyota
 {
+    public function getMarka()
+    {
+        return "Toyota";
+    }
 
     public function search($params)
         /*
@@ -85,7 +89,8 @@ class Toyota
         foreach ($model as $item) {
 //var_dump($item);die;
 
-            $arr[$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
+            $arr[$this-> getMarka().' / '.$item['model_name'].' / ' .$item['engine_en']][$item['model_code']][] = $item;
+//            $arr[$this->getMarka().' '.$item['model_name'].' '.$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
         }
 //var_dump($arr);die;
         return $arr;
@@ -123,7 +128,8 @@ class Toyota
         foreach ($model as $item) {
 //var_dump($item);die;
 
-            $arr[$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
+            $arr[$this->getMarka().' / '.$item['model_name'].' / ' . $item['engine_en']][$item['model_code']][] = $item;
+//            $arr[$this->getMarka().' '.$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
         }
 //var_dump($arr);die;
         return $arr;
@@ -191,17 +197,34 @@ class Toyota
             ->leftJoin('tkm tkm_f4', 'tkm_f4.catalog = f4.catalog AND tkm_f4.catalog_code = f4.catalog_code AND tkm_f4.type = f4.type');
         return $query;
     }
+    public function searchModelAll($params)
+    {
+        $query = $this->searchModel($params);
+        $query->andWhere('j.catalog = :catalog and j.catalog_code = :catalog_code',[':catalog' => $params['catalog'], ':catalog_code' => $params['catalog_code']])
+            ->orderBy(['model_code' => 'asc', 'prod_start' => 'ask']);
+        return $query;
 
+    }
+    public function searchModelOne($params)
+    {
+        $query=$this->searchModelAll($params);
+//        var_dump($query->all());die;
+        $query->andWhere('j.model_code = :model_code',[':model_code'=>$params['model_code']]);
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query
+//        ]);
+        return $query->all();
+    }
     public function searchModelSelect($params)
         /*
          * Список модификаций выбраной модели
          */
     {
 
-        $query = $this->searchModel($params);
-        $query->andWhere(['j.catalog' => $params['catalog'], 'j.catalog_code' => $params['catalog_code']])
-            ->orderBy(['model_code' => 'asc', 'prod_start' => 'ask']);
-
+//        $query = $this->searchModel($params);
+//        $query->andWhere(['j.catalog' => $params['catalog'], 'j.catalog_code' => $params['catalog_code']])
+//            ->orderBy(['model_code' => 'asc', 'prod_start' => 'ask']);
+        $query=$this->searchModelAll($params);
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
@@ -210,7 +233,8 @@ class Toyota
         $arr = [];
 
         foreach ($model as $item) {
-            $arr[$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
+            $arr[$this->getMarka().' / '.$item['model_name'].' / ' . $item['engine_en']][$item['model_code']][] = $item;
+//            $arr[$this->getMarka().' '.$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
         }
         return $arr;
     }
