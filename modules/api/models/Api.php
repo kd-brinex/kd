@@ -107,13 +107,16 @@ return $xml;
     }
     public static function ttovar_tip($params)
     {
+//        var_dump($params);die;
         if (!isset($params['tip_id'])){return json_encode(['error'=>$params]);}
         $tovars=new TTovar();
         $dp= $tovars->search_tip_id($params);
+//        var_dump($dp);die;
         foreach($dp->models as $model){
                 $ret['response'][$model['id']]=$model;
         }
-        $ret['header']=['totatCount'=>$dp->totalCount];
+        $ret['header']=['totalCount'=>$dp->totalCount];
+//        var_dump($ret,json_encode($ret));die;
         return json_encode($ret);
     }
     public static function ttovar_tip_id_list()
@@ -137,11 +140,13 @@ return $xml;
         $a['page_size']=$params['page_size'];
         $a['store_id']=$params['store_id'];
         $a['where']=$params['where'];
+        $a['orderby']=$params['orderby'];
         $s='{';
 //        var_dump($params['options']);die;
         foreach($params['options'] as $key=>$val)
         {
-            if (!empty($val)){$s.='"'.$key.'":"'.$val.'",';}
+            $s.='"'.$key.'":"'.$val.'",';
+//            if (!empty($val)){$s.='"'.$key.'":"'.$val.'",';}
         }
         $s=($s!='{')?substr($s,0,-1):$s;
         $s.='}';

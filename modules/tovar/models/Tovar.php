@@ -186,5 +186,4 @@ class Tovar extends \yii\db\ActiveRecord
         });
         return $details;
     }
-
 }

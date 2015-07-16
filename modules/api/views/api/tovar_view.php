@@ -7,6 +7,7 @@
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\grid\GridView;
 //var_dump($param_list  );die;
 ?>
 
@@ -28,8 +29,10 @@ use yii\widgets\ActiveForm;
             <?= Html::input('text', 'page_size',(isset($params['page_size']))?$params['page_size']:'',['class'=>'form-control','placeholder'=>'25'] ) ?>
             <?= Html::label('.. and where');?>
             <?= Html::input('text', 'where',(isset($params['where']))?$params['where']:'',['class'=>'form-control','placeholder'=>'p.price>0 and p.count>0'] ) ?>
+            <?= Html::label('.. order by');?>
+            <?= Html::input('text', 'orderby',(isset($params['orderby']))?$params['orderby']:'',['class'=>'form-control','placeholder'=>'price asc and count asc'] ) ?>
             <?php
-//            var_dump($params);die;
+//            var_dump($param_list);die;
             foreach($param_list as $p)
             {
                 echo Html::label($p['name'].'('.$p['id'].')');
@@ -45,5 +48,16 @@ use yii\widgets\ActiveForm;
     </div>
 <?php ActiveForm::end(); ?>
 <?php
-print_r($tovars);
+//var_dump($tovars);die;
+$t=json_decode($tovars,true);
+//var_dump($t);die;
+echo '<div>Найдено в базе - <b>'.$t['header']['totalCount'].'</b></div>';
+if(isset($t['response'])){
+echo GridView::widget(['dataProvider' => new \yii\data\ArrayDataProvider([
+    'allModels'=>$t['response'],
+    'pagination'=>false,
+
+    ])]);
+//var_dump($tovars);
+}
 ?>

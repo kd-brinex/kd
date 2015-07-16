@@ -39,6 +39,7 @@ class ApiController extends Controller
 //        var_dump($params);die;
         $params=array_merge($params,$_POST);
         $tovars=Api::ttovar_tip($params);
+//        var_dump($tovars);die;
         return $tovars;
     }
     public function actionIndex()
@@ -54,6 +55,7 @@ class ApiController extends Controller
         $params['options']=isset($params['options'])?$params['options']:[];
         $params['store_id']=isset($params['store_id'])?$params['store_id']:109;
         $params['where']=isset($params['where'])?$params['where']:'';
+        $params['orderby']=isset($params['orderby'])?$params['orderby']:'';
         $tovars=Api::ttovar_tip($params);
         $tip_id=Api::ttovar_tip_id_list();
         $param_list=Api::tparam_list($params);
