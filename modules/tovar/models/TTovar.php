@@ -4,6 +4,7 @@ namespace app\modules\tovar\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\Query;
 
 /**
@@ -74,13 +75,16 @@ class TTovar extends \yii\db\ActiveRecord
 
     public function search_params($params)
     {
-        if (empty($params['tip_id'])){return [];}
+        if (empty($params['tip_id'])) {
+            return [];
+        }
         $query = new Query();
         $query->select('p.id, p.name, p.title')
-        ->from('t_tovar t')
-            ->leftJoin('t_value v','v.tovar_id=t.id')
-            ->leftJoin('t_param p','v.param_id=p.id')
-        ->where('t.tip_id=:tip_id',[':tip_id'=>$params['tip_id']])
+            ->from('t_tovar t')
+            ->leftJoin('t_value v', 'v.tovar_id=t.id')
+            ->leftJoin('t_param p', 'v.param_id=p.id')
+            ->where('t.tip_id=:tip_id', [':tip_id' => $params['tip_id']])
+            ->andWhere('not p.id is null')
             ->orderBy('p.name')
             ->distinct();
         return $query->all();
@@ -90,39 +94,55 @@ class TTovar extends \yii\db\ActiveRecord
     {
         $query = new Query();
         $query->from('t_tovar t');
-        $options=[];
+        $options = [];
         $joptions = isset($params['options']) ? $params['options'] : [];
 //        var_dump($joptions);die;
-        if (is_array($joptions)){
-            foreach ($joptions as $key=> $value)
-            {
-                if (!empty($key)){$options[$key]=$value;}
+        if (is_array($joptions)) {
+            foreach ($joptions as $key => $value) {
+                if (!empty($key)) {
+                    $options[$key] = $value;
+                }
             }
+        } else {
+            $options = json_decode($joptions);
         }
-        else
-        {$options=json_decode($joptions);}
         $n = 1;
 //        var_dump($joptions);die;
         foreach ($options as $id => $value) {
-            if (!empty($value)){
             $name = 't' . $n;
+            $fname =  $id;
+//            $query->leftJoin('t_value ' . $name, 't.id=' . $name . '.tovar_id and ' . $name . '.param_id=' . $id)
             $query->leftJoin('t_value ' . $name, 't.id=' . $name . '.tovar_id and ' . $name . '.param_id=:' . $name, [':' . $name => $id])
-                ->andWhere([$name . '.value_char' => $value])
-                ->addSelect($name . '.value_char ' . $id);
-            $n = $n + 1;}
+                ->addSelect([$fname => $name . '.value_char']);
+            if (!empty($value)) {
+                $p = ':value_' . $n;
+                $param = [$p => $value];
+//                var_dump($param,$name . '.value_char='.$p);die;
+                $query->andWhere($name . '.value_char=' . $p, $param);
+//                $n=$n+1;
+            }
+            $n = $n + 1;
         }
         $query->leftJoin('t_price p', 'p.id_tovar=t.id and p.id_store=:store_id', [':store_id' => $params['store_id']])
             ->addSelect('p.price,p.id_store,p.count,t.id,t.name,t.tip_id,t.category_id');
-        $query->limit($params['page_size'])->offset(($params['page'] - 1) * $params['page_size']);
+//        $query->limit($params['page_size'])->offset(($params['page'] - 1) * $params['page_size']);
         $query->andWhere($params['where']);
+        $query->orderBy($params['orderby']);
+//        var_dump($query);die;
         $dataProvider = new ActiveDataProvider(['query' => $query]);
+//        $dataProvider = new ArrayDataProvider(['allModels' => $query->all()]);
+        $dataProvider->pagination->page=$params['page']-1;
+        $dataProvider->pagination->pageSize=$params['page_size'];
+//        var_dump($dataProvider->models);die;
+
 //var_dump($dataProvider);die;
         return $dataProvider;
 
     }
+
     public function search_all()
     {
-        $query=$this->find();
+        $query = $this->find();
         $query->groupBy(['tip_id'])->select('id, tip_id');
         return $query->all();
     }
