@@ -8,7 +8,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-var_dump($dataModel[0]);
+var_dump($vin_info[0]);
 $this->params['breadcrumbs']= $params['breadcrumbs'];
 $attributes=[
     [

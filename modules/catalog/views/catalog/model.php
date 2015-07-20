@@ -13,7 +13,7 @@ use yii\bootstrap\Collapse;
 $this->params['breadcrumbs']= $params['breadcrumbs'];
 //$data=$dataProvider->models[0];
 //$dataProvider->query->setData($data);
-//var_dump($dataProvider->query);die;
+//var_dump($dataProvider);die;
 ?>
 <div class="catalog-model">
 
