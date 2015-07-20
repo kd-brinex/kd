@@ -83,7 +83,9 @@ class CatalogController extends Controller
         $params['vin'] = (isset($params['vin'])) ? $params['vin'] : '';
 //        $params['user_id']=(isset($params['user_id']))?$params['user_id']:'';
         $searchModel = new models\Toyota();
-        $dataProvider = $searchModel->searchVin($params);
+//        $vin_info = $searchModel->TOY_VIN_info($params);
+        $dataProvider = $searchModel->searchVin2($params);
+
         //Крошки
 
         $params['breadcrumbs'] = $searchModel->getBreadcrumbs($params);
@@ -97,6 +99,7 @@ class CatalogController extends Controller
 //            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'params' => $params,
+//            'vin_info' => $vin_info,
         ]);
 
     }

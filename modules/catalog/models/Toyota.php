@@ -10,6 +10,7 @@ namespace app\modules\catalog\models;
 
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
+use yii\db\Query;
 use yii\db\Connection;
 use yii\helpers\Url;
 use yii\base\Model;
@@ -53,7 +54,69 @@ class Toyota
         return $arr;
 
     }
+public function searchVin2($params)
+{
+    $vin_list=$this->TOY_VIN_info($params);
+    $pnc = (isset($params['pnc']) ? $params['pnc'] : "86841"); // PNC
+    $res=[];
+//    var_dump($vin_list);die;
+    $res_VIN=$vin_list[0];
+//    foreach($vin_list as $res_VIN) {
+        $siyopt_code = $res_VIN['siyopt_code'];
+        $model_code = $res_VIN['model_code'];
+        $models_codes = $res_VIN['models_codes'];
+        $catalog = $res_VIN['catalog'];
+        $catalog_code = $res_VIN['catalog_code'];
+        $compl_code = $res_VIN['compl_code'];
+        $sysopt = $res_VIN['sysopt'];
+        $vdate = $res_VIN['vdate'];
 
+//----------------------------------------------
+// ТУПО КУСОК  из Parts_Number_Translation_Results.php
+//----------------------------------------------
+
+        /* Запрос EPC Toyota */
+//        $query = new ToyotaQuery($params);
+        $vin = $params['vin'];
+        $query = $this->searchModel($params);
+        $query->addSelect(['j.catalog',
+            "get_vdate_frameno(j.catalog, j.frame, SUBSTRING('" . $vin . "',-7)) vdate"
+            , 's.f1'
+            , 's.model_name'
+            , 's.catalog_code'
+            , 's.models_codes'
+            , 'j.model_code'
+            , 'j.compl_code'
+            , 's.opt'
+            , 'j.sysopt'])
+            ->leftJoin('shamei s', '(s.catalog = j.catalog) and (s.catalog_code = j.catalog_code)')
+            ->andWhere("vin8<>''")
+            ->andWhere("vin8 = SUBSTRING('" . $vin . "', 1, LENGTH(vin8))")
+        ->andWhere("j.catalog_code = :catalog_code",[":catalog_code"=>$catalog_code])
+//        ->andWhere("get_vdate_frameno(j.catalog, j.frame, SUBSTRING('" . $vin . "',-7)) = :date",[":date"=>$vdate])
+//        ->andWhere("s.prod_start <= :vdate",[":vdate"=>$vdate])
+        ->andWhere(":vdate BETWEEN j.prod_start AND j.prod_end",[":vdate"=>(int) $vdate])
+        ->andWhere("j.model_code = :model_code",[":model_code"=>$model_code])
+        ->andWhere("j.compl_code = :compl_code",[":compl_code"=>$compl_code]);
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+
+    ]);
+    $dataProvider->pagination = false;
+    $model = $dataProvider->models;
+    $arr = [];
+//var_dump($model);die;
+    foreach ($model as $item) {
+//var_dump($item);die;
+
+        $arr[$this-> getMarka().' / '.$item['model_name'].' / ' .$item['engine_en']][$item['model_code']][] = $item;
+//            $arr[$this->getMarka().' '.$item['model_name'].' '.$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
+    }
+//var_dump($arr);die;
+    return $arr;
+//    }
+
+}
     public function searchVin($params)
         /*
          * Поиск модификации по ВИНу
@@ -62,6 +125,7 @@ class Toyota
         //        $query = parent::find()->andWhere(['catalog_code'=>'116520']);
 //        $query = new ToyotaQuery($params);
 //        $query->setData($params);
+
         $vin = $params['vin'];
         $query = $this->searchModel($params);
         $query->addSelect(['j.catalog',
@@ -687,6 +751,76 @@ WHERE catalog = :catalog
 
         return $b;
     }
+    public function TOY_VIN_info($prms){
+        // VIN - проверка
+        $vin = trim($prms['vin']);
+        if(empty($vin)){
+            echo "_TOY_VIN_info - пустой VIN";
+            return array();
+        }
+        // VIN - serial number
+        $vin_sn = substr($vin, -7);
 
+        // mysql_fetch_array($r_q, MYSQL_ASSOC) - будет глатать поля с одинаковыми именами, поэтму нужно предусмотреть для frames.catalog имя f_catalog
+        $query = new ToyotaQuery($prms);
+        $query->select('f.id,
+        f.catalog f_catalog,
+        f.frame_code,
+        f.serial_group,
+        f.serial_number,
+        f.ext,
+        f.model2,
+        f.vdate,
+        f.color_trim_code,
+        f.siyopt_code,
+        f.opt,
+        j.*,
+        s.*')
+            ->from('johokt j')
+            ->leftJoin('frames f','f.frame_code = j.frame')
+            ->leftJoin('shamei s','s.catalog = j.catalog  AND s.catalog_code = j.catalog_code')
+            ->where("j.vin8 LIKE CONCAT(SUBSTRING('$vin', 1, 8), '%')")
+            ->andWhere("j.vin8 = SUBSTRING('$vin', 1, LENGTH(vin8))")
+            ->andWhere("f.catalog = IF(j.catalog = 'JP', 'DM', 'OV')")
+            ->andWhere("f.serial_number = '$vin_sn'")
+            ->andWhere("CONCAT(f.frame_code, f.ext, '-', SUBSTRING_INDEX(f.model2, '(', 1)) = j.model_code")
+            ->andWhere("(f.vdate BETWEEN j.prod_start AND j.prod_end or IFNULL(f.vdate, '') = '')")
+            ->andWhere("(SUBSTRING(f.siyopt_code, 1, 4) = j.sysopt OR IFNULL(j.sysopt, '') = '' OR IFNULL(f.siyopt_code, '') = '')");
+        if(isset($prms['catalog']))
+            $query->andWhere("j.catalog = :catalog",[':catalog'=>$prms['catalog']]);
+
+        $res = $query->all(); // выполним
+
+        // просимофорим разработчика что с VIN получился не однозначный поиск
+        // результатом должна быть только одна строчка, будем ловить если не так
+//        if(isset($prms['catalog']) and count($res)>1) var_dump('БЛЯХА - почемуто больше чем одна запись, а хочется однозначно найти VIN!',$res);
+
+        return $res;
+    }
+    /*~~~
+     По идее VIN-запрос будет получать однозначные записи из johokt
+
+         Проверка
+            Немного грубовато с prod_start, но дата участвует в отборе frames.vdate BETWEEN johokt.prod_start AND johokt.prod_end
+        SELECT catalog,catalog_code,vin8,model_code,prod_start,sysopt, COUNT(compl_code)
+        FROM johokt
+        WHERE vin8 <> '' # при VIN поиске будет всегда задано
+        GROUP BY catalog,catalog_code,vin8,model_code,prod_start,sysopt
+        HAVING COUNT(compl_code) > 1
+
+
+        некоторые frames имеют в этом поле 1-й непонятный символ, например JTEHT05J202087962
+        2013.06.01 = 2 символа в конце 1 части MHFFMRWK30K066683
+
+    // 		а также
+    //		OV ! ACV30 ! U160 ! U160344 ! 6 ! L ! CEANKA ! 200601 ! 4Q2FB45 ! 303WZ01E ! 0
+    //		OV ! ACV30 ! U160 ! U160345 ! 3 ! L ! CEPNKA ! 200212 ! 8Q0FB13 ! 184W ! 0
+    //
+    // Обязательно SUBSTRING_INDEX(frames.model2, '(', 1)) - бо бывают вот такие frames
+    //		DM ! CE121 ! 3001 ! 3001563 !  ! AEPNE(A) ! 200105 ! 040YG17 ! 186WZ07H ! 0
+    //		DM ! CE121 ! 3001 ! 3001564 !  ! AEMNE(A) ! 200105 ! 040YG17 ! 186WZ07H ! 0
+    // 		вот все возможные, для них johokt : CE121-AEMEE, CE121-AEMNE, CE121-AEPEE, CE121-AEPNE, CE121G-AWPNE
+    //		потому предлагается тупо убирать все что в собках (A)
+    ~~~*/
 
 }
