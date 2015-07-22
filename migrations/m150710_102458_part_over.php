@@ -23,6 +23,8 @@ class m150710_102458_part_over extends Migration
             'flagpostav' => Schema::TYPE_STRING,
             'date_update' => Schema::TYPE_TIMESTAMP.' DEFAULT NOW()' ,
         ],'CHARACTER SET utf8 COLLATE utf8_general_ci');
+        $this->createIndex('parts_unique','part_over',['code','name','flagpostav'],true);
+
     }
     public function down()
     {
