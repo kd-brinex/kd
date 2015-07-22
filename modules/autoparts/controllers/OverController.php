@@ -2,10 +2,9 @@
 
 namespace app\modules\autoparts\controllers;
 
-use app\modules\autoparts\models\PartProvider;
+use yii\filters\AccessControl;
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\TStoreSearch;
-use dektrium\rbac\models\Search;
 use Yii;
 use app\modules\autoparts\models\PartOver;
 use app\modules\autoparts\models\PartOverSearch;
@@ -13,7 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\autoparts\models\UploadForm;
-use app\modules\autoparts\models\TStore;
+
 use yii\web\UploadedFile;
 
 
@@ -33,7 +32,17 @@ class OverController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['Parts', 'Admin'],
+                        ]
+                    ]
+                ],
+
         ];
     }
 

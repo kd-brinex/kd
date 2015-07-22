@@ -16,6 +16,7 @@ class PartProviderUserSearch extends PartProviderUser
      * @inheritdoc
      */
     public $srok;
+//    public $provider_name;
     public function rules()
     {
         return [
@@ -51,8 +52,9 @@ class PartProviderUserSearch extends PartProviderUser
         ]);
 
         $this->load($params);
+//        var_dump($dataProvider->models);die;
         $query->andFilterWhere([
-//            'id' => $this->id,
+            'id' => $this->id,
             'store_id' => $this->store_id,
             'provider_id' => $this->provider_id,
 //            'marga' => $this->marga,

@@ -225,6 +225,7 @@ $config = [
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
+            'layout'=> '/admin.php',
         ],
         'toyota' => [
             'class' => 'app\modules\catalog\Catalog',
@@ -252,7 +253,7 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/blank',
+            'layout' => '/admin',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'Profile' => 'app\modules\user\models\Profile',
