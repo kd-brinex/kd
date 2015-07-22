@@ -57,6 +57,10 @@ class Toyota
 public function searchVin2($params)
 {
     $vin_list=$this->TOY_VIN_info($params);
+//    var_dump($vin_list);die;
+    $arr = [];
+    $query=null;
+    if (count($vin_list)>0){
     $pnc = (isset($params['pnc']) ? $params['pnc'] : "86841"); // PNC
     $res=[];
 //    var_dump($vin_list);die;
@@ -104,7 +108,7 @@ public function searchVin2($params)
     ]);
     $dataProvider->pagination = false;
     $model = $dataProvider->models;
-    $arr = [];
+
 //var_dump($model);die;
     foreach ($model as $item) {
 //var_dump($item);die;
@@ -112,9 +116,9 @@ public function searchVin2($params)
         $arr[$this-> getMarka().' / '.$item['model_name'].' / ' .$item['engine_en']][$item['model_code']][] = $item;
 //            $arr[$this->getMarka().' '.$item['model_name'].' '.$item['engine1'] . '_' . $item['engine_en']][$item['model_code']][] = $item;
     }
-//var_dump($arr);die;
+//var_dump($arr);die;}
     return $arr;
-//    }
+    }
 
 }
     public function searchVin($params)
@@ -754,10 +758,10 @@ WHERE catalog = :catalog
     public function TOY_VIN_info($prms){
         // VIN - проверка
         $vin = trim($prms['vin']);
-        if(empty($vin)){
-            echo "_TOY_VIN_info - пустой VIN";
-            return array();
-        }
+//        if(empty($vin)){
+//            echo "_TOY_VIN_info - пустой VIN";
+//            return array();
+//        }
         // VIN - serial number
         $vin_sn = substr($vin, -7);
 

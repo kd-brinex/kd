@@ -1,8 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
+use yii\bootstrap\Alert;
 use yii\bootstrap\Collapse;
 
 /* @var $this yii\web\View */
@@ -19,6 +18,7 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
 
     <h1><?= Html::encode($this->title) ?></h1>
 <?php
+if(!empty($dataProvider)){
 foreach($dataProvider as $name=>$model)
 {
 //    var_dump($model);die;
@@ -30,8 +30,16 @@ foreach($dataProvider as $name=>$model)
                 'options'=>['class'=>"col-xs-12 row"],
             ],
         ]
-    ]);
+    ]);}
 }
+else{
+    echo Alert::widget([
+        'options' => [
+            'class' => 'alert-danger'
+        ],
+        'body' => '<b>'.$params['vin'].'</b> Это VIN не найден в нашей базе.'
+    ]);
+ }
 
 ?>
 </div>
