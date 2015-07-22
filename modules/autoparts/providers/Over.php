@@ -108,6 +108,10 @@ class Over extends PartsProvider
 
 
     }
+    public function update_quantity($value)
+    {
+        return ($value['quantity']<1)?1:$value['quantity'];
+    }
 
     public function update_sklad($value)
     {

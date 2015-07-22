@@ -60,10 +60,6 @@ class UploadForm extends Model
 
 
             }
-
-
-
-
                 $model1->load(['PartOver' => $text]);
                 $model1->save();
             }

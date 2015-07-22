@@ -122,6 +122,8 @@ $config = [
                 'admin/partssrok/create' => 'autoparts/providersrok/create',
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
+
+                'admin/partsload' => 'autoparts/over',
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
