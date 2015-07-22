@@ -42,7 +42,7 @@ class PartOver extends \yii\db\ActiveRecord
             [['price'], 'number'],
             [['quantity', 'srokmin', 'srokmax', 'lotquantity', 'skladid'], 'integer'],
             [['date_update'], 'safe'],
-            [['code','name', 'manufacture', 'sklad', 'flagpostav'], 'string', 'max' => 255]
+            [['code', 'name', 'manufacture', 'sklad', 'flagpostav'], 'string', 'max' => 255]
         ];
     }
 
@@ -66,17 +66,14 @@ class PartOver extends \yii\db\ActiveRecord
             'flagpostav' => 'Код поставщика',
             'date_update' => 'Дата обновления',
 
+
         ];
     }
+
     public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'cityid']);
     }
-
-
-
-
-
 
 
 }

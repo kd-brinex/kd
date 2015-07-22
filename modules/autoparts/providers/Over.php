@@ -10,6 +10,7 @@
 namespace app\modules\autoparts\providers;
 
 use yii\db\Query;
+
 class Over extends PartsProvider
 {
     public $internal_day=4;
@@ -107,10 +108,6 @@ class Over extends PartsProvider
         return $result;
 
 
-    }
-    public function update_quantity($value)
-    {
-        return ($value['quantity']<1)?1:$value['quantity'];
     }
 
     public function update_sklad($value)
