@@ -43,8 +43,10 @@ class PartProviderSrok extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'provider_id' => 'Поставщик запчастей',
-            'city_id' => 'Город',
+            'provider_id' => 'Код поставщика',
+            'providerName'=>'Поставщик',
+            'city_id' => 'Код города',
+            'cityName' => 'Город',
             'days' => 'Количество дней',
             'name' => 'Город'
         ];

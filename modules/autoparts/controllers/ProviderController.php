@@ -17,7 +17,6 @@ class ProviderController extends Controller
 {
     public function behaviors()
     {
-        $this->layout = "/admin.php";
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
