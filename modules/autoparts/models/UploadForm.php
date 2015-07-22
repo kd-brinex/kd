@@ -38,38 +38,46 @@ class UploadForm extends Model
     {
 
 
-        $query = PartOver::deleteAll(['flagpostav' =>$this->flagpostav]);
+        PartOver::deleteAll(['flagpostav' =>$this->flagpostav]);
+        $data=[];
 
 
 
 
         foreach ($mas['f'] as $i=>$value) {
-            $model1 = new PartOver();
+            //$model1 = new PartOver();
 
-            $temp = explode(';', $value);
+            $temp = explode(';', trim($value));
             if ($i==0){
                 $fields_name = $temp;
-
-
+                $fields_name[] = 'flagpostav';
+                $count_fields_name = count($fields_name);
             }
+            else {
+                $temp[] = $this->flagpostav;
+                if ($count_fields_name== count($temp)) {
+                    $data[] = $temp;
+                }
+//                for ($j = 0; $j < count($fields_name); $j++) {
+//                    $data[][trim($fields_name[$j])] = $temp[$j];
+//                    $data[]['flagpostav'] = $this->flagpostav;
+//
 
-            for ($j=0;$j<count($fields_name);$j++)
-            {
-                $text[trim($fields_name[$j])]=$temp[$j];
-                $text['flagpostav'] = $this->flagpostav;
-
-
-            }
-
-
-
-
-                $model1->load(['PartOver' => $text]);
-                $model1->save();
+//                }
             }
 
 
 
+//                $model1->load(['PartOver' => $text]);
+//                $model1->save();
+            }
+//        echo '<pre>';
+//        print_r($data);
+//        echo '<pre>';
+
+        $sql = \Yii::$app->db->createCommand()->batchInsert('part_over', $fields_name,$data)->rawSql;
+        $sql=str_replace('INSERT','INSERT IGNORE',$sql);
+        \Yii::$app->db->createCommand($sql)->execute();
 
 
         }
