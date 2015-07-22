@@ -6,6 +6,9 @@ use app\modules\tovar\models\TovarSearch;
 use Yii;
 use yii\base\Model;
 use app\modules\tovar\models\Tovar;
+use app\modules\tovar\models\TTovar;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 class Api extends Model
 {
@@ -59,6 +62,7 @@ return $xml;
 //
         if (!isset($params['tip_id'])){return json_encode(['error'=>$params]);}
     $tovars=new TovarSearch();
+//        var_dump($params);
     $fields=\Yii::$app->params['Api']['tovar_tip'];
 //  var_dump($fields);die;
     $dp= $tovars->category_list($params);
@@ -100,5 +104,55 @@ return $xml;
 
 
         return json_encode($ret);
+    }
+    public static function ttovar_tip($params)
+    {
+//        var_dump($params);die;
+        if (!isset($params['tip_id'])){return json_encode(['error'=>$params]);}
+        $tovars=new TTovar();
+        $dp= $tovars->search_tip_id($params);
+//        var_dump($dp);die;
+        foreach($dp->models as $model){
+                $ret['response'][$model['id']]=$model;
+        }
+        $ret['header']=['totalCount'=>$dp->totalCount];
+//        var_dump($ret,json_encode($ret));die;
+        return json_encode($ret);
+    }
+    public static function ttovar_tip_id_list()
+    {
+        $tovars=new TTovar();
+        $models=$tovars->search_all();
+        return ArrayHelper::map($models, 'tip_id', 'tip_id');
+
+    }
+    public static function tparam_list($params)
+    {
+        $tovars=new TTovar();
+        $models=$tovars->search_params($params);
+        return $models;
+//        return ArrayHelper::map($models, 'id', 'name');
+    }
+    public static function getUrl_ttovar_tip($params){
+        $a=['ttovar_tip'];
+        $a['tip_id']=$params['tip_id'];
+        $a['page']=$params['page'];
+        $a['page_size']=$params['page_size'];
+        $a['store_id']=$params['store_id'];
+        $a['where']=$params['where'];
+        $a['orderby']=$params['orderby'];
+        $s='{';
+//        var_dump($params['options']);die;
+        foreach($params['options'] as $key=>$val)
+        {
+            $s.='"'.$key.'":"'.$val.'",';
+//            if (!empty($val)){$s.='"'.$key.'":"'.$val.'",';}
+        }
+        $s=($s!='{')?substr($s,0,-1):$s;
+        $s.='}';
+        $a['options']=$s;
+        $url=Url::toRoute($a);
+        return $url;
+
     }
 }

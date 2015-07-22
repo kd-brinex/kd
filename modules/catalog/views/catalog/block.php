@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+
 /**
  * Created by PhpStorm.
  * User: marat
@@ -10,26 +11,27 @@ use yii\helpers\Html;
 //var_dump($model);die;
 ?>
 
-    <div class="acatalog-block">
+<div class="acatalog-block">
     <div>
         <?php
-        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl(). "ImgIllIndex/".$model['catalog']."/".$model['catalog_code']."/".$model['pic_code'].'.png',['height'=>'100px']);?>
-<!--        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'100px']);?>-->
+        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl() . "ImgIllIndex/" . $model['catalog'] . "/" . $model['catalog_code'] . "/" . $model['pic_code'] . '.png', ['height' => '100px']); ?>
+        <!--        echo Html::img(\app\modules\catalog\models\ToyotaQuery::getImageUrl().$model['pic_code'].'.png',['height'=>'100px']);?>-->
     </div>
     <div>
         <?= Html::a(Html::encode($model['desc_en']),
-        Url::to(['album',
-        'catalog_code' => $model['catalog_code'],
-        'catalog' => $model['catalog'],
-            'model_name'=>$model['model_name'],
-            'compl_code'=>$model['compl_code'],
+            Url::to(['album',
+                'catalog_code' => $model['catalog_code'],
+                'catalog' => $model['catalog'],
+                'model_name' => $model['model_name'],
+                'compl_code' => $model['compl_code'],
 //            'sysopt'=>$model['sysopt'],
-        'vdate' => (isset($model['vdate']))?$model['vdate']:'',
-        'part_group' => $model['part_group'],
-        'model_code' => $model['model_code'],
-        ]));?>
+                'vdate' => (isset($model['vdate'])) ? $model['vdate'] : '',
+                'part_group' => $model['part_group'],
+                'model_code' => $model['model_code'],
+                'user_id' => (isset($model['user_id'])) ? $model['user_id'] : '',
+            ])); ?>
     </div>
-    </div>
+</div>
 
 
 

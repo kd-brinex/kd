@@ -14,15 +14,7 @@ class Kd extends PartsProvider
 {
     public function init()
     {
-
-        try {
-//            $this->_soap_client = new SoapClient($this->_wsdl_uri, $this->options);
-            $this->find = true;
-        } catch (Exception $e) {
-            $this->errors[] = 'Произошла ошибка связи с сервером ' . $this->name . '. ' . $e->getMessage();
-            $this->find = false;
-        }
-//            var_dump($this->_soap_client,$this->find);die;
+        $this->find = true;
         return $this->find;
     }
 
