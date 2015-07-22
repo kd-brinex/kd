@@ -13,6 +13,7 @@ $config = [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
+            'linkAssets' => true
         ],
         'view' => [
             'theme' => [
@@ -178,7 +179,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db_connect['components'][YII_ENV],
+        'db' => $db_connect,
         'view' => [
             'theme' => [
                 'pathMap' => [

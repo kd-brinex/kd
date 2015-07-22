@@ -179,6 +179,7 @@ class TovarController extends Controller
 
     public function actionFinddetails()
     {
+
         $params = \Yii::$app->request->queryParams;
         $parts = Yii::$app->params['Parts'];
         $details= Tovar::findDetails($params);

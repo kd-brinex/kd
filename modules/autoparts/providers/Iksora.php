@@ -46,6 +46,7 @@ class Iksora extends PartsProvider
     }
     public function getData()
     {
+
         $data = parent::getData();
         $defaults = array(
             'detailnumber' => (isset($data['article']))?$data['article']:$this->article,

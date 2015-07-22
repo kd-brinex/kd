@@ -275,9 +275,10 @@ class PartsProvider
 
     public function formatSearchResponse($data)
     {
+
         $ret = [];
         $fields = $this->fields;
-//        var_dump($fields,$data);die;
+
         foreach ($data as $key => $row) {
 //            if ($this->validate($row)) {
                 foreach ($fields as $field => $value) {
@@ -289,7 +290,9 @@ class PartsProvider
                     $method = "update_" . $field;
                     $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
+
                 }
+
             if (!$this->validate($ret[$key])){unset($ret[$key]);}
 //            }
 
