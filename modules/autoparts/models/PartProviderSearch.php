@@ -12,6 +12,8 @@ use yii\data\ActiveDataProvider;
  */
 class PartProviderSearch extends PartProvider
 {
+    public $flagpostav;
+
     /**
      * @inheritdoc
      */
@@ -40,10 +42,9 @@ class PartProviderSearch extends PartProvider
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params=[])
     {
         $query = PartProvider::find();
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -67,5 +68,18 @@ class PartProviderSearch extends PartProvider
             ->andFilterWhere(['like', 'wheight', $this->weight]);
 
         return $dataProvider;
+    }
+
+
+    public function get_flag_postav(){
+
+        $h =  $this->search();
+        $mas=[];
+        foreach ($h->models as $n){
+            $mas[$n->flagpostav] = ($n->flagpostav);
+
+        }
+
+        return $mas;
     }
 }

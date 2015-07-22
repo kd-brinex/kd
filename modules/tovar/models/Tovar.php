@@ -139,29 +139,37 @@ class Tovar extends \yii\db\ActiveRecord
     {
         $parts = Yii::$app->params['Parts'];
         $avtoproviders = $parts['PartsProvider'];
+
         $details = [];
         $where=(isset($params['provider_id'])?['id'=>$params['provider_id']]:['enable'=>1]);
         $providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
+
         if (isset($params['article']) && $params['article'] != '') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
+
             foreach ($providers as $p) {
-//                var_dump($p);die;
+
+
                 if (isset($avtoproviders[$p['name']])) {
                     $provider = array_merge($avtoproviders[$p['name']], $params);
                     $fparts = new $provider['class']($provider);
                     $fparts->flagpostav = $p['flagpostav'];
+
                     $e = [];
                     $det = $fparts->findDetails($e);
+
                     if (isset($params['test'])){print_r($fparts->errors);}
 //                    var_dump($det);die;
                     $details = array_merge($details, $det);
+
                     $fparts->close();
                 }
+
             }
         }
 

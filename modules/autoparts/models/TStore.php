@@ -19,6 +19,7 @@ use app\modules\city\models\City;
  */
 class TStore extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -70,6 +71,12 @@ class TStore extends \yii\db\ActiveRecord
     public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getCityname()
+    {
+        return (isset($this->city)) ? $this->city->name : ' ';
+
     }
 
 
