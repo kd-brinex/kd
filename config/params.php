@@ -78,8 +78,8 @@ return [
                 'class' => 'app\modules\autoparts\providers\Kd',
 //                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
                 'fields' => [
-                    'code'=>'code',
-                    "name" => "name", //Информация
+                    'code'=>'detailnumber',
+                    "name" => "detailname", //Информация
                     "manufacture" => "maker_name", //Производитель
                     "srokmin" => "srokmin", //Доставка
                     "srokmax" => "srokmax", //Доставка
