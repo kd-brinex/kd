@@ -12,9 +12,13 @@ use app\models\ContactForm;
 use app\models\PartnerForm;
 use app\modules\city\ipgeobase;
 use app\modules\city\models\CitySearch;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
+
+
 public function behaviors()
     {
 //        $this->layout = "/main.twig";

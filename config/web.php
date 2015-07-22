@@ -13,6 +13,7 @@ $config = [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
+            'linkAssets' => true
         ],
         'view' => [
             'theme' => [
