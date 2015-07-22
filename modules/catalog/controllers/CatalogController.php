@@ -81,6 +81,7 @@ class CatalogController extends Controller
     {
         $params = \Yii::$app->request->queryParams;
         $params['vin'] = (isset($params['vin'])) ? $params['vin'] : '';
+
 //        $params['user_id']=(isset($params['user_id']))?$params['user_id']:'';
         $searchModel = new models\Toyota();
 //        $vin_info = $searchModel->TOY_VIN_info($params);
@@ -133,7 +134,7 @@ class CatalogController extends Controller
     public function actionCatalog()
     {
         $params = \Yii::$app->request->queryParams;
-
+//        $params['user_id']= (isset($params['user_id'])) ? $params['user_id'] : '0';
         // добавляем каталог в личный кабинет пользователя
         \app\modules\netcat\Netcat::remote_add_catalog($params);
 

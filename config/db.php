@@ -1,30 +1,21 @@
 <?php
-$db = ['components'=>[
-    'dev' => [
+$db =(YII_ENV=='prod')?
+    [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=brinex1',
+    'username' => 'brinexdev',
+    'password' => 'QwFGHythju8',
+    'charset' => 'utf8'
+    ]
+    :
+    [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=127.0.0.1;dbname=brinex1;port=1111',
+        'dsn' => 'mysql:host=localhost;dbname=brinex_dev',
         'username' => 'brinexdev',
         'password' => 'QwFGHythju8',
         'charset' => 'utf8',
         'enableSchemaCache' => true,
         'schemaCacheDuration' => 3600,
-        'schemaCache' => 'cache',],
-
-
-    'prod' => [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=brinex1',
-    'username' => 'brinexdev',
-    'password' => 'QwFGHythju8',
-    'charset' => 'utf8'],
-
-
-    'test' => [
-        'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=localhost;dbname=brinex1',
-        'username' => 'brinexdev',
-        'password' => 'QwFGHythju8',
-        'charset' => 'utf8'],
-]];
-//var_dump(YII_ENV);die;
+        'schemaCache' => 'cache',
+    ];
 return $db;
