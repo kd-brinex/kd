@@ -17,7 +17,7 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="row">
 
-
+        <div class="container">
 <div class="col-xs-12 col-md-4">
     <div class="row form-vin">
     <?= Html::tag('h3','Поиск по названию модели')?>
@@ -55,6 +55,7 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
         ]
     ]); ?>
 </div>
+        </div>
     <?php
 //    GridView::widget([
 //        'dataProvider' => $dataProvider,
