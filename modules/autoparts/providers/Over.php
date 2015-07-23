@@ -41,6 +41,7 @@ class Over extends PartsProvider
         $article = strtoupper($article);
         $p['code'] = str_replace([' ', '-'], [], $article);
 
+
         return $p;
 
     }
