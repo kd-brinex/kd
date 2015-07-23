@@ -57,6 +57,7 @@ class PartsProvider
         "pid" => "pid",//код магазина
         "srokdays" => "srokdays",//Доставка от скалада до магазина
         "weight" => "weight",
+        "cross"=> "cross",
     ];
 
 
