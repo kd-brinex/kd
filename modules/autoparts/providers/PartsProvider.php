@@ -33,6 +33,7 @@ class PartsProvider
     public $id = 1;//id провайдера в таблице part_provider
     public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
+    public $weight = 0;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
