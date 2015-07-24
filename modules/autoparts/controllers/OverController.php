@@ -169,6 +169,8 @@ class OverController extends Controller
                 $model->file->saveAs('../uploads/' . $model->file->baseName . '.' . $model->file->extension);
                 $text['f'] = file('../uploads/' . $model->file);
 
+
+
                 $model->insertData($text);
 
                 $this->redirect('index');
