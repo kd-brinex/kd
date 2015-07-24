@@ -46,17 +46,23 @@ class UploadForm extends Model
 
         foreach ($mas['f'] as $i=>$value) {
             //$model1 = new PartOver();
-
+            $value = iconv('cp1251','utf-8', $value);
             $temp = explode(';', trim($value));
             if ($i==0){
                 $fields_name = $temp;
                 $fields_name[] = 'flagpostav';
                 $count_fields_name = count($fields_name);
+                $code_index = array_search('code',$fields_name);
+
             }
             else {
                 $temp[] = $this->flagpostav;
                 if ($count_fields_name== count($temp)) {
+                    $article = strtoupper($temp[$code_index]);
+                    $temp[$code_index] = str_replace([' ', '-'], [], $article);
                     $data[] = $temp;
+
+
                 }
 //                for ($j = 0; $j < count($fields_name); $j++) {
 //                    $data[][trim($fields_name[$j])] = $temp[$j];
