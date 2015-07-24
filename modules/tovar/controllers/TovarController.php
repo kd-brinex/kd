@@ -182,7 +182,8 @@ class TovarController extends MainController
 
         $params = \Yii::$app->request->queryParams;
         $parts = Yii::$app->params['Parts'];
-        $details= Tovar::findDetails($params);
+
+        $details= (isset($params['article']))?Tovar::findDetails($params):[];
 
 
         $provider = new ArrayDataProvider([
