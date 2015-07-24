@@ -2,9 +2,9 @@
 $db =
     [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=localhost;dbname=brinex_dev',
-        'username' => 'brinexdev',
-        'password' => 'QwFGHythju8',
+        'dsn' => 'mysql:host=localhost;dbname=brinex1',
+        'username' => 'brinex',
+        'password' => 'G90BqaKJ',
         'charset' => 'utf8',
 //        'enableSchemaCache' => true,
 //        'schemaCacheDuration' => 3600,
