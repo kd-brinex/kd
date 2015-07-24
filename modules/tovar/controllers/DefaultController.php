@@ -2,9 +2,9 @@
 
 namespace app\modules\tovar\controllers;
 
-use yii\web\Controller;
+use app\controllers\MainController;
 
-class DefaultController extends Controller
+class DefaultController extends MainController
 {
     public function actionIndex()
     {

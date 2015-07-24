@@ -106,13 +106,15 @@ class OverController extends Controller
      */
     public function actionUpdate($id)
     {
+        $flagpostav = new PartProviderSearch();
+        $flag_postav_list = $flagpostav->get_flag_postav();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model,'flag_postav_list'=>$flag_postav_list
             ]);
         }
     }

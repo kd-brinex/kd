@@ -118,7 +118,15 @@ class Tovar extends \yii\db\ActiveRecord
 
     public function getBasket()
     {
-        return $this->hasOne(BasketSearch::className(), ['tovar_id' => 'id']);
+        $basket = BasketSearch::find()
+            ->select('id')
+            ->where(['uid' => 9])
+            ->orWhere(['session_id' => Yii::$app->session->oldSessId])
+            ->orWhere(['session_id' => Yii::$app->session->id])
+            ->andWhere(['tovar_id' => $this->id])
+            ->one();
+
+        return $basket;
     }
 
     public function getInbasket()

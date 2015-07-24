@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'price',
             'quantity',
             'date_update',
-
+            'flagpostav',
             // 'srokmin',
             // 'srokmax',
             // 'lotquantity',

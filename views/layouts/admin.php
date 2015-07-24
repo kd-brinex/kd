@@ -72,7 +72,7 @@ NavBar::end();
 
     <div class="row row-offcanvas row-offcanvas-left">
 
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-xs-12 col-sm-12">
             <p class="pull-right visible-xs col-xs-12">
                 <button type="button" class="btn btn-toolbar btn-group-xs" data-toggle="offcanvas">Товары</button>
             </p>
