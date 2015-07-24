@@ -46,7 +46,13 @@ class UploadForm extends Model
 
         foreach ($mas['f'] as $i=>$value) {
             //$model1 = new PartOver();
-            $value = iconv('cp1251','utf-8', $value);
+
+            $a = mb_detect_encoding($value, array('UTF-8', 'Windows-1251', 'KOI8-R', 'ISO-8859-5'));
+
+            if ($a!='UTF-8') {
+                $value = iconv("Windows-1251", "UTF-8", $value);
+            }
+
             $temp = explode(';', trim($value));
             if ($i==0){
                 $fields_name = $temp;

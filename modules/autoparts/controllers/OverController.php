@@ -170,6 +170,7 @@ class OverController extends Controller
                 $text['f'] = file('../uploads/' . $model->file);
 
 
+
                 $model->insertData($text);
 
                 $this->redirect('index');
