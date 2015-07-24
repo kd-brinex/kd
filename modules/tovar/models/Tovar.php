@@ -137,6 +137,7 @@ class Tovar extends \yii\db\ActiveRecord
      */
     public static function findDetails($params)
     {
+
         $parts = Yii::$app->params['Parts'];
         $avtoproviders = $parts['PartsProvider'];
         $cross[$params['article']] = 0;
@@ -184,7 +185,11 @@ class Tovar extends \yii\db\ActiveRecord
 
 
 
-                            $details = array_merge($details, $det);
+
+                            if (isset($det[0]['code'])) {
+                                $details = array_merge($details, $det);
+                                $det=[];
+                            }
 
 
                         }
@@ -192,9 +197,6 @@ class Tovar extends \yii\db\ActiveRecord
 
                         if (isset($params['test'])) {
                             print_r($fparts->errors);
-                        }
-                        if (isset($det[0]['code'])) {
-                            $details = array_merge($details, $det);
                         }
 
 
