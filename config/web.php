@@ -32,15 +32,15 @@ $config = [
         ],
 
         'session' => [
-            'class' => 'yii\web\Session',
+            'class' => 'app\components\BrxSession',
 //            'timeout'=>28800,
 //            'cookieParams' => array (
 //                'lifetime' =>86400,
 //                'path' => '/',
 //                'httponly' => 'on',
 //            ),
-            // 'db' => 'mydb',
-//             'sessionTable' => 'session',
+//             'db' => 'db',
+//             'sessionTable' => '{{%sessions}}',
 
         ],
         'city' => [

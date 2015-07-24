@@ -23,6 +23,8 @@ use yii\authclient\ClientInterface;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
+use app\modules\basket\models\BasketSearch;
+
 /**
  * Controller that manages user authentication process.
  *
@@ -89,6 +91,12 @@ class SecurityController extends Controller
         $this->performAjaxValidation($model);
 
         if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
+
+            $basket_sess = BasketSearch::find()
+                ->where(['session_id' => \Yii::$app->session->oldSessId])
+                ->all();
+            if($basket_sess)
+                BasketSearch::updateAll(['uid' => \Yii::$app->user->id], ['session_id' => \Yii::$app->session->oldSessId]);
             return $this->goBack();
         }
 

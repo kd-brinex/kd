@@ -2,13 +2,13 @@
 
 namespace app\modules\catalog\controllers;
 
-use yii\web\Controller;
+use app\controllers\MainController;
 
 use app\modules\catalog\models;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-class CatalogController extends Controller
+class CatalogController extends MainController
 {
     public function behaviors()
     {

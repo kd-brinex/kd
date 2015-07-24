@@ -5,15 +5,18 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\AccessRule;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\PartnerForm;
 use app\modules\city\ipgeobase;
 use app\modules\city\models\CitySearch;
+use yii\web\Session;
 
-class SiteController extends Controller
+use \app\modules\basket\models\BasketSearch;
+
+class SiteController extends MainController
 {
 public function behaviors()
     {
@@ -69,7 +72,6 @@ public function behaviors()
     public function actionIndex()
     {
 //        $this->layout = false;
-
         return $this->render('index',[]);
     }
 
@@ -81,8 +83,10 @@ public function behaviors()
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
             return $this->goBack();
         } else {
+
             return $this->render('login', [
                 'model' => $model,
             ]);

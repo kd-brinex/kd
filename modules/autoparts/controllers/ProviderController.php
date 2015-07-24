@@ -7,14 +7,14 @@ use app\modules\autoparts\models\PartProvider;
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\PartProviderSrok;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 /**
  * ProviderController implements the CRUD actions for PartProvider model.
  */
-class ProviderController extends Controller
+class ProviderController extends MainController
 {
     public function behaviors()
     {

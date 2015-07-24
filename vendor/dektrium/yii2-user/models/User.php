@@ -21,6 +21,8 @@ use yii\db\ActiveRecord;
 use yii\log\Logger;
 use yii\web\IdentityInterface;
 
+use app\modules\basket\models\BasketSearch;
+
 /**
  * User ActiveRecord model.
  *
@@ -312,6 +314,11 @@ class User extends ActiveRecord implements IdentityInterface
             \Yii::getLogger()->log('User has been confirmed', Logger::LEVEL_INFO);
     
             if ($this->save(false)) {
+                $basket_sess = BasketSearch::find()
+                    ->where(['session_id' => \Yii::$app->session->oldSessId])
+                    ->all();
+                if($basket_sess)
+                    BasketSearch::updateAll(['uid' => $this->id], ['session_id' => \Yii::$app->session->oldSessId]);
                 \Yii::$app->session->setFlash('success', \Yii::t('user', 'Thank you, registration is now complete.'));
             } else {
                 \Yii::$app->session->setFlash('danger', \Yii::t('user', 'Something went wrong and your account has not been confirmed.'));
