@@ -5,18 +5,20 @@ namespace app\modules\autoparts\controllers;
 use Yii;
 use app\modules\autoparts\models\PartProvider;
 use app\modules\autoparts\models\PartProviderSearch;
-use yii\web\Controller;
+use app\modules\autoparts\models\PartProviderSrok;
+use yii\data\ActiveDataProvider;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
 /**
  * ProviderController implements the CRUD actions for PartProvider model.
  */
-class ProviderController extends Controller
+class ProviderController extends MainController
 {
     public function behaviors()
     {
+        $this->layout = "/admin.php";
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -72,7 +74,7 @@ class ProviderController extends Controller
     public function actionCreate()
     {
         $model = new PartProvider();
-//var_dump(Yii::$app->request->post());die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -93,7 +95,6 @@ class ProviderController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

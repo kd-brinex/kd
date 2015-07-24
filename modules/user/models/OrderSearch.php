@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\autoparts\models;
+namespace app\modules\user\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\autoparts\models\TStore;
+use app\modules\user\models\Order;
 
 /**
- * TStoreSearch represents the model behind the search form about `app\modules\autoparts\models\TStore`.
+ * OrderSearch represents the model behind the search form about `app\modules\basket\models\Order`.
  */
-class TStoreSearch extends TStore
+class OrderSearch extends Order
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class TStoreSearch extends TStore
     public function rules()
     {
         return [
-            [['id', 'city_id'], 'integer'],
-            [['name', 'addr', 'tel'], 'safe'],
+            [['id', 'uid', 'quantity', 'status'], 'integer'],
+            [['product_id', 'reference', 'datetime'], 'safe'],
+
         ];
     }
 
@@ -41,11 +42,15 @@ class TStoreSearch extends TStore
      */
     public function search($params)
     {
-        $query = TStore::find();
-        $query->andWhere('city_id = :city_id');
-        $query->addParams($params);
+        $params = [
+            ':uid' => Yii::$app->user->id
+        ];
+        $query = Order::find()
+            ->andWhere('uid = :uid')
+            ->addParams($params);
 
         $dataProvider = new ActiveDataProvider([
+
             'query' => $query,
         ]);
 
@@ -59,12 +64,15 @@ class TStoreSearch extends TStore
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'city_id' => $this->city_id,
+            'uid' => $this->uid,
+            'quantity' => $this->quantity,
+            'status' => $this->status,
+            'datetime' => $this->datetime,
+            'part_name' => $this->part_name,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'addr', $this->addr])
-            ->andFilterWhere(['like', 'tel', $this->tel]);
+        $query->andFilterWhere(['like', 'product_id', $this->product_id])
+            ->andFilterWhere(['like', 'reference', $this->reference]);
 
         return $dataProvider;
     }

@@ -7,7 +7,7 @@ use Yii;
 use app\modules\city\models\City;
 use app\modules\city\models\CityList;
 use app\modules\city\models\CitySearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -15,7 +15,7 @@ use yii\filters\AccessControl;
 /**
  * CityController implements the CRUD actions for City model.
  */
-class CityController extends Controller
+class CityController extends MainController
 {
     public function behaviors()
     {

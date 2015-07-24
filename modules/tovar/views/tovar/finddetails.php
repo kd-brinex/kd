@@ -25,7 +25,6 @@ Yii::$app->view->registerCssFile('/css/parts.css');
 </div>
 
 <?php
-//var_dump($provider);
 
  echo GridView::widget([
     'dataProvider' => $provider,

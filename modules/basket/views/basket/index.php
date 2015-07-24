@@ -7,48 +7,42 @@ use yii\helpers\Html;
 /* @var $model app\modules\basket\models\Zakaz */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<div class="basketStepsBlock col-xs-12">
+    <div id="step1" class="basketSteps" style="display:block"><i style="float: left;" class="icon-white icon-circle-success"></i>Выберите товары для заказа</div>
+    <div id="step2" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Заполните форму для связи с Вам</div>
+    <div id="step3" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Выберите магазин в Вашем городе</div>
+</div>
 <?php $form = \yii\widgets\ActiveForm::begin([
     'id' => 'profile-form',
-    'options' => ['class' => 'form-horizontal'],
+    'options' => ['class' => 'form-horizontal', 'onsubmit' => 'return false;'],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
         'labelOptions' => ['class' => 'col-lg-3 control-label'],
     ],
-    'enableAjaxValidation'   => true,
-    'enableClientValidation' => false,
-    'validateOnBlur'         => false,
+    'enableAjaxValidation'   => false,
+    'enableClientValidation' => true,
+    'validateOnBlur'         => true,
 ]);
-//var_dump($user);die;
-$profile=$user->profile;
 ?>
 
 
 <?php
+
 echo Tabs::widget([
     'items' => [
         [
-            'label' => 'Заказ',
-            'content' => '<h1>Ваш заказ.</h1>'
-                . '<div id="basket">'
-                . $this->render('zakaz_tab', ['model' => $bmodel, 'itogo' => $itogo])
-                . '</div>',
+            'label' => 'Корзина',
+            'content' => $basketContent,
             'active' => true,
             'headerOptions' => [
-                'id' => 'zakaz'
+                'id' => '1-basket-tab'
             ],],
+
         [
             'label' => 'Клиент',
-            'content' => '<h2>Укажите контактные данные.</h2>'
-                . '<div id="user">'
-
-            .$form->field($profile, 'name')
-            .$form->field($profile, 'public_email')
-            .$form->field($profile, 'location')
-                . '</div>'
-            ,
-
+            'content' => $this->render('profile_tab',$user_data),
             'headerOptions' => [
-                'id' => 'user'
+                'id' => '2-basket-tab'
             ],
 
         ],
@@ -63,19 +57,15 @@ echo Tabs::widget([
 //        ],
         [
             'label' => 'Доставка',
-            'content' => '<h2>Выберите способ получения товара.</h2>',
+            'content' => $this->render('delivery_tab', $delivery_data),
 
             'headerOptions' => [
-                'id' => 'delivery'
+                'id' => '3-basket-tab'
             ],
 
         ],]]);?>
 
-<div class="form-group">
-    <div class="col-xs-offset-3 col-xs-6">
-        <?= \yii\helpers\Html::submitButton(Yii::t('user', 'Оформить заказ'), ['class' => 'btn btn-block btn-success']) ?><br>
-</div>
-</div>
+
 
 <?php \yii\widgets\ActiveForm::end(); ?>
 

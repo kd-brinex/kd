@@ -5,7 +5,7 @@ namespace app\modules\tovar\controllers;
 use Yii;
 use app\modules\tovar\models\Tovar;
 use app\modules\tovar\models\TovarSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
@@ -14,7 +14,7 @@ use yii\data\ArrayDataProvider;
 /**
  * TovarController implements the CRUD actions for Tovar model.
  */
-class TovarController extends Controller
+class TovarController extends MainController
 {
     public function behaviors()
     {
@@ -197,6 +197,28 @@ class TovarController extends Controller
             'columns' =>$parts['columns'],
 
         ]);
+
+    }
+    public function actionBasket(){
+        $data = Yii::$app->request->post();
+        $toBasket = new \app\modules\basket\models\BasketSearch();
+        $toBasket->tovar_count = 1;
+        $toBasket->tovar_price = $data['price'];
+        $toBasket->session_id = Yii::$app->session->id;
+        $toBasket->tovar_min = 1;
+        $toBasket->manufacturer = $data['manufacture'];
+        $toBasket->part_number = $data['code'];
+        $toBasket->period = $data['srokmax'];
+        $toBasket->part_name = $data['name'];
+        $toBasket->allsum = $data['price'];
+        if(Yii::$app->user->id)
+            $toBasket->uid = Yii::$app->user->id;
+        if($toBasket->save())
+            return \yii\helpers\Html::a('В корзине', \yii\helpers\Url::to(['/basket']),[
+                'title' => 'Заказать',
+                'class' => 'btn btn-grey btn-xs',
+                'target' => '_blank'
+            ]);
 
     }
 

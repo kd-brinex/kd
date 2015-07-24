@@ -41,6 +41,14 @@
 	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.05);
 	box-shadow: inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.05);
 }
+.btn-error{
+	color:#fff;
+	background-color: #ff6664;
+}
+.btn-error:hover{
+	color:#fff !important;
+	background-color: #ff1c19;
+}
 .btn.disabled, .btn[disabled] {
 	cursor: default;
 	background-image: none;
@@ -50,18 +58,27 @@
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
-
+.btn-grey{
+	background-color: #C8C8C8 !important;
+	color: #fff !important;
+}
 [class^="icon-"] {
 	display: inline-block;
 	width: 14px;
 	height: 14px;
 	line-height: 14px;
 	vertical-align: text-top;
-	background-image: url("glyphicons-halflings.png");
 	background-position: 14px 14px;
 	background-repeat: no-repeat;
 	margin-top: 1px;
 }
+.icon-black{
+	background-image: url("glyphicons-halflings.png");
+}
+.icon-white{
+	background-image: url("glyphicons-halflings-white.png");
+}
+
 .icon-th {
 	background-position: -240px 0;
 }
@@ -70,6 +87,21 @@
 }
 .icon-align-justify {
 	background-position: -336px -48px;
+}
+.icon-edit{
+	background-position: 0px -72px;
+}
+.icon-success{
+	background-position: -288px 0px;
+}
+.icon-cross{
+	background-position: -312px 0px;
+}
+.icon-warn{
+	background-position: -144px -120px;
+}
+.icon-circle-success{
+	background-position: -72px -96px;
 }
 /* Position */
 .borders-lite {
@@ -495,4 +527,13 @@
 }
 .icon-delete {
 	background-position: -312px 0;
+}
+.gridRowStateBgColor1{
+
+}
+.gridRowStateBgColor2{
+	background-color: #E5F4FF !important;
+}
+.gridRowStateBgColor3{
+	background-color: #D2ECFF !important;
 }

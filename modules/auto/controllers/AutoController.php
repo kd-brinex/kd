@@ -2,10 +2,10 @@
 
 namespace app\modules\auto\controllers;
 
-use yii\web\Controller;
+use app\controllers\MainController;
 use app\modules\auto\models\Auto;
 
-class AutoController extends Controller
+class AutoController extends MainController
 {
     public function actionIndex()
     {
