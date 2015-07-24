@@ -50,8 +50,12 @@ return [
             ],
              [
                  'attribute'=>'provider',
-                 'label'=>'Поставщик',
+                 'label'=>'Провайдер',
              ],
+            [
+                'attribute'=>'flagpostav',
+                'label'=>'Поставщик',
+            ],
             [
                 'attribute'=>'estimation',
                 'label'=>'Надежность',
@@ -88,6 +92,33 @@ return [
                 'marga' => 1,
                 'id' => 5,
                 'name' => 'Колеса даром',
+                'methods' => ['FindDetails' => 'FindDetails'],
+
+            ],
+            'Over' => [
+                'class' => 'app\modules\autoparts\providers\Over',
+                'internal_day'=>4,
+//                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
+                'fields' => [
+                    'code' => 'code',
+                    'name' => 'name',
+                    'manufacture' => 'maker_name',
+                    'price' => 'price',
+                    'quantity' => 'quantity',
+                    'srokmin' => 'srokmin',
+                    'srokmax' => 'srokmax',
+                    'estimation' =>'0',
+                    'lotquantity' => 'lotquantity',
+                    'pricedate' => 'pricedate',
+                    'skladid' => 'skladid',
+                    'sklad' => 'sklad',
+                    'flagpostav' => 'flagpostav',
+                    'storeid' => 'storeid',
+
+                ],
+                'marga' => 1,
+                'id' => 7,
+                'name' => 'Over',
                 'methods' => ['FindDetails' => 'FindDetails'],
 
             ],

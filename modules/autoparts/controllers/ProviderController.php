@@ -20,7 +20,7 @@ class ProviderController extends MainController
     {
         $this->layout = "/admin.php";
         return [
-           'verbs' => [
+            'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
@@ -30,8 +30,8 @@ class ProviderController extends MainController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'allow' =>true,
-                        'roles' =>['Parts','Admin'],
+                        'allow' => true,
+                        'roles' => ['Parts', 'Admin'],
                     ]
                 ]
             ],
@@ -93,7 +93,7 @@ class ProviderController extends MainController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-//var_dump(Yii::$app->request->post());die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

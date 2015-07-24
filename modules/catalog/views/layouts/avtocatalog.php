@@ -8,6 +8,7 @@
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 $asset = app\modules\catalog\catalogAsset::register($this);
+
 $this->beginPage() ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -26,12 +27,13 @@ $this->beginPage() ?>
         <?= Breadcrumbs::widget([
             'homeLink'=>[
                 'label'=>'Каталог',
-                'url'=>'http://www.kolesa-darom.ru/auto-parts/autocatalog/'],
+                'url'=>'/toyota'],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
         <?= $content ?>
     </div>
 
     <?php $this->endBody() ?>
     </body>
+
     </html>
 <?php $this->endPage() ?>

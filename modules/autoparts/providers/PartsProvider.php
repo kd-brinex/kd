@@ -31,8 +31,9 @@ class PartsProvider
     public $name = '';
     public $flagpostav = '';
     public $id = 1;//id провайдера в таблице part_provider
-    public $row_count = 10;
+    public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
+    public $weight=0;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -55,6 +56,8 @@ class PartsProvider
         "storeid" => "storeid",//код магазина
         "pid" => "pid",//код магазина
         "srokdays" => "srokdays",//Доставка от скалада до магазина
+        "weight" => "weight",
+        "cross"=> "cross",
     ];
 
 
@@ -183,7 +186,7 @@ class PartsProvider
     {
 
         $result = $this->soap($method);
-        $this->close();
+      //  $this->close();
         return $result;
     }
 
@@ -234,7 +237,7 @@ class PartsProvider
 //            if($r==0){$r=r_usort($a,$b,'price');}
 //            return $r;
 //        });
-////        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
+        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
 
 //var_dump($ret);die;
 
@@ -275,9 +278,10 @@ class PartsProvider
 
     public function formatSearchResponse($data)
     {
+
         $ret = [];
         $fields = $this->fields;
-//        var_dump($fields,$data);die;
+
         foreach ($data as $key => $row) {
 //            if ($this->validate($row)) {
                 foreach ($fields as $field => $value) {
@@ -289,7 +293,9 @@ class PartsProvider
                     $method = "update_" . $field;
                     $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
+
                 }
+
             if (!$this->validate($ret[$key])){unset($ret[$key]);}
 //            }
 
@@ -380,6 +386,12 @@ class PartsProvider
     {
 
         return $value['srokmin'] . (($value['srokmin'] < $value['srokmax']) ? '-' . $value['srokmax'] : '');
+    }
+
+    public function update_weight($value)
+    {
+
+        return $this->weight;
     }
 
     public function update_pid($value)

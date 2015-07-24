@@ -74,10 +74,10 @@ class PartProviderSrokSearch extends PartProviderSrok
         }
 
         $query->andFilterWhere([
-//            'providername' => $this->providername,
-//            'cityname' => $this->cityname,
+            'providername' => $this->providername,
+            'city_id' => $this->city_id,
             'days' => $this->days,
-//            'id' => $this->id,
+            'provider_id' => $this->provider_id,
         ]);
 
         $query->andFilterWhere(['like', 'providername', $this->providername])

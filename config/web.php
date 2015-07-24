@@ -13,6 +13,7 @@ $config = [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
+            'linkAssets' => true
         ],
         'view' => [
             'theme' => [
@@ -77,13 +78,14 @@ $config = [
             'suffix' => '',
             'rules' => [
                 '' => 'site/index',
+//                '' => 'toyota/catalog',
                 'login' => 'user/security/login',
                 'register' => 'user/registration/register',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'partner' => 'site/partner',
                 'profile' => 'user/settings/profile',
-                'ugb' => 'site/ugb',
+//                'ugb' => 'site/ugb',
                 'ugb' => 'site/ugb',//перегружает данные в таблицы городов
                 'citys' => 'city/city',
                 'cities/<id:\w+>' => 'city/city/view',
@@ -120,13 +122,15 @@ $config = [
                 'admin/partssrok/create' => 'autoparts/providersrok/create',
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
+
+                'admin/partsload' => 'autoparts/over',
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
                 'admin/permissions' => '/rbac/permissions/index',
                 // Автокаталоги
                 'toyota'=>'toyota/catalog',
-                'toyota/model'=>'toyota/catalog/model',
+                'toyota/model/<name:\w+>'=>'toyota/catalog/model',
                 'toyota/catalog'=>'toyota/catalog/catalog',
                 'toyota/album'=>'toyota/catalog/album',
                 'toyota/page'=>'toyota/catalog/page',
@@ -178,11 +182,12 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db_connect['components'][YII_ENV],
+        'db' => $db_connect,
         'view' => [
             'theme' => [
                 'pathMap' => [
                     '@dektrium/user/views/settings' => '@app/modules/user/views/settings',
+                    '@dektrium/user/views/security' => '@app/modules/user/views/security',
 
                 ],
             ],
@@ -208,7 +213,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-
+        'parser' =>[
+          'class'=>'app\modules\parser\Parser'
+        ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
             'layout'=> '/admin.php',
@@ -218,6 +225,7 @@ $config = [
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
+            'layout'=> '/admin.php',
         ],
         'toyota' => [
             'class' => 'app\modules\catalog\Catalog',
@@ -245,16 +253,18 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/admin.php',
+            'layout' => '/admin',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'Profile' => 'app\modules\user\models\Profile',
+
 
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
 //                'admin' => 'app\modules\user\controllers\AdminController'
             ],
+
 
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,

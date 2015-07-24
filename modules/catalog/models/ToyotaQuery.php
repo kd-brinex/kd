@@ -21,7 +21,8 @@ class ToyotaQuery extends AvQuery
             'sysopt',
             'compl_code',
             'part_group',
-            'rec_num'
+            'rec_num',
+            'user_id',
         ];
     }
 

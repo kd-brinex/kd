@@ -13,11 +13,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
         'options'=>['name' =>'search-vin',],
     ]); ?>
-    <div class="row">
-<div class="col-xs-10">
-    <?= Html::input('text', 'vin',(isset($params['vin']))?$params['vin']:'',['class'=>'form-control','placeholder'=>'JTJBT20X740046047'] ) ?>
+    <div class="col-xs-12 col-md-4">
+<div class="row form-vin">
+
+    <?= Html::tag('h3','Поиск автомобиля по VIN')?>
+    <?= Html::input('text', 'vin',(isset($params['vin']))?$params['vin']:'',['class'=>'form-control','placeholder'=>'Введите VIN. Например:JTJBT20X740046047'] ) ?>
+    <?= Html::input('hidden', 'user_id',(isset($params['user_id']))?$params['user_id']:'',[] ) ?>
+    <?= Html::submitButton('Искать по VIN', ['class' => 'col-xs-12 btn btn-primary']) ?>
 </div>
-    <?= Html::submitButton('Поиск по VIN', ['class' => 'col-xs-2 btn btn-primary']) ?>
+
     </div>
     <?php ActiveForm::end(); ?>
 

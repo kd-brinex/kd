@@ -15,41 +15,47 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="row">
 
-    <p>
+        <div class="container">
+<div class="col-xs-12 col-md-4">
+    <div class="row form-vin">
+    <?= Html::tag('h3','Поиск по названию модели')?>
+    <?= html::input('text','find_model',null,['placeholder'=>'Введите название. Например:Corolla','class'=>'form-control','id'=>'find_model'])?>
+
+        </div>
+</div>
         <?= $this->render('_search_vin', ['params'=>$params]) ?>
-    </p>
-    <p>
         <?= $this->render('_search_frame', ['params'=>$params]) ?>
-    </p>
-<p>
-    <?= html::input('text','find_model',null,['placeholder'=>'Поиск по модели','class'=>'form-control','id'=>'find_model'])?>
-</p>
+        </div>
+<div class="container">
     <?= Tabs::widget([
+
         'items' => [
             ['label' => 'Европа',
-                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderEU]),
+                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderEU,'params'=>$params]),
                 'active' => true,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'Ближний восток',
-                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderGR]),
+                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderGR,'params'=>$params]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'Япония',
-                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderJP]),
+                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderJP,'params'=>$params]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
             ['label' => 'США',
-                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderUS]),
+                'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderUS,'params'=>$params]),
                 'active' => false,
                 'options'=>['class'=>'acatalog-tabs'],
             ],
         ]
     ]); ?>
-
+</div>
+        </div>
     <?php
 //    GridView::widget([
 //        'dataProvider' => $dataProvider,

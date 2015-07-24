@@ -54,7 +54,7 @@ class Partkom extends PartsProvider
     }
     public function parseSearchResponseXML($xml) {
         $data = [];
-//        var_dump($xml);die;
+//        var_dump($xml,1212);die;
         foreach($xml as $row) {
             $_row = [];
             foreach($row as $key => $field) {

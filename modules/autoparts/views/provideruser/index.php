@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'login',
             'password',
             'store_id',
-            'provider.name',
+            'provider_id',
             'marga',
             ['class' => 'yii\grid\ActionColumn'],
         ],

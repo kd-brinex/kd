@@ -21,7 +21,8 @@ use dektrium\user\widgets\Connect;
 
 $this->title = Yii::t('user', 'Sign in');
 $this->params['breadcrumbs'][] = $this->title;
-var_dump('090');die;
+//var_dump('090');die;
+
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
@@ -51,8 +52,11 @@ var_dump('090');die;
                 <?= Html::submitButton(Yii::t('user', 'Sign in'), ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']) ?>
 
                 <?php ActiveForm::end(); ?>
+
             </div>
         </div>
+
+
         <?php if ($module->enableConfirmation): ?>
             <p class="text-center">
                 <?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
@@ -61,5 +65,12 @@ var_dump('090');die;
         <?= Connect::widget([
             'baseAuthUrl' => ['/user/security/auth']
         ]) ?>
+        <div><?= Html::a(yii\bootstrap\Button::widget([
+                'label' => 'Регистрация',
+                'options' => [
+                    'class' => 'btn btn-primary btn-block',
+//                    'style' => 'align:center'
+                ]]),yii\helpers\Url::to('user/register'))?></div>
     </div>
+
 </div>

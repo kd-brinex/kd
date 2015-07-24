@@ -145,53 +145,108 @@ class Tovar extends \yii\db\ActiveRecord
      */
     public static function findDetails($params)
     {
+
         $parts = Yii::$app->params['Parts'];
         $avtoproviders = $parts['PartsProvider'];
+        $cross[$params['article']] = 0;
         $details = [];
-        $where=(isset($params['provider_id'])?['id'=>$params['provider_id']]:['enable'=>1]);
-        $providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
+        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);
+        //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
+        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();
 //        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
+
         if (isset($params['article']) && $params['article'] != '') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
+
             foreach ($providers as $p) {
-//                var_dump($p);die;
+
+
                 if (isset($avtoproviders[$p['name']])) {
-                    $provider = array_merge($avtoproviders[$p['name']], $params);
+                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);
                     $fparts = new $provider['class']($provider);
-                    $fparts->flagpostav = $p['flagpostav'];
+                    //$fparts->flagpostav = $p['flagpostav'];
+                    //$fparts->setData($p);
+
                     $e = [];
-                    $det = $fparts->findDetails($e);
-                    if (isset($params['test'])){print_r($fparts->errors);}
-//                    var_dump($det);die;
-                    $details = array_merge($details, $det);
+
+                    if ($p['cross'] == 1) {
+                        $det = $fparts->findDetails($e);
+
+
+                        foreach ($det as $i) {
+                            $cross[$i['code']] = $i['groupid'];
+                        }
+                    } else {
+
+                        foreach ($cross as $key => $value) {
+
+
+
+                            $fparts->article = $key;
+
+
+                            $det = $fparts->findDetails($e);
+
+
+
+
+                            if (isset($det[0]['code'])) {
+                                $details = array_merge($details, $det);
+                                $det=[];
+                            }
+
+
+                        }
+
+
+                        if (isset($params['test'])) {
+                            print_r($fparts->errors);
+                        }
+
+
+
+                    }
+                    if (isset($det[0]['code'])) {
+                        $details = array_merge($details, $det);
+                    }
                     $fparts->close();
                 }
+
+
             }
-        }
 
-        /**Сортировка массива поп полю srokmax
-         *
-         * */
-        function r_usort($a,$b,$key)
-        {
-            $inta = intval($a[$key]);
-            $intb = intval($b[$key]);
 
-            if ($inta != $intb) {
-                return ($inta > $intb) ? 1 : -1;
+            /**Сортировка массива поп полю srokmax
+             *
+             * */
+
+            function r_usort($a, $b, $key)
+            {
+                $inta = intval($a[$key]);
+                $intb = intval($b[$key]);
+
+                if ($inta != $intb) {
+                    return ($inta > $intb) ? 1 : -1;
+                }
+                return 0;
             }
-            return 0;
-        }
 
-        usort($details, function ($a, $b) {
-            $r=r_usort($a,$b,'price') ;
-            if($r==0){$r=r_usort($a,$b,'srokmax');}
-            return $r;
-        });
-        return $details;
+            usort($details, function ($a, $b) {
+                $r = r_usort($a,$b ,'weight');
+                if ($r==0){
+                    $r = r_usort($a, $b, 'price');
+                    if ($r == 0) {
+                        $r = r_usort($a, $b, 'srokmax');
+                    }
+                }
+
+                return $r;
+            });
+            return $details;
+        }
     }
 }

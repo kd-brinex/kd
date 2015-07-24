@@ -14,6 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'enable')->checkbox() ?>
 
+    <?= $form->field($model, 'cross')->checkbox() ?>
+
     <?= $form->field($model, 'name')->textInput(['maxlength' => 15]) ?>
 
     <?= $form->field($model, 'weight')->textInput([]) ?>

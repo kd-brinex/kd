@@ -91,8 +91,7 @@ class PartProviderUser extends \yii\db\ActiveRecord
 
     public function getSrok()
     {
-//        var_dump($this->getCitySrok());
-        return $this->citySrok->days;
+        return ($this->citySrok)?$this->citySrok->days:'99';
     }
     public function getProviderDD(){
         $d=new PartProvider();

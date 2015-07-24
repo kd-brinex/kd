@@ -26,7 +26,9 @@ class AvQuery extends \yii\db\Query
 
     public function setUrlParams($params)
     {
+//        var_dump($params);die;
         $this->url_params=array_merge($this->url_params,$params);
+//        var_dump($this->url_params);die;
 //        $fields=$this->getFields();
 //        foreach ($fields as $f){
 //            $this->url_params[$f]=(isset($params[$f])) ? self::__get($params[$f]) : '';
