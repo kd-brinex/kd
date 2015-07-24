@@ -166,8 +166,8 @@ class OverController extends Controller
 
 
             if ($model->file && $model->validate()) {
-                $model->file->saveAs('/var/www/kolesa-darom.dev/uploads/' . $model->file->baseName . '.' . $model->file->extension);
-                $text['f'] = file('/var/www/kolesa-darom.dev/uploads/' . $model->file);
+                $model->file->saveAs('../uploads/' . $model->file->baseName . '.' . $model->file->extension);
+                $text['f'] = file('../uploads/' . $model->file);
 
                 $model->insertData($text);
 
