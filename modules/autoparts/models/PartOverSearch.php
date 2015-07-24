@@ -22,7 +22,7 @@ class PartOverSearch extends PartOver
             [['id', 'quantity', 'srokmin', 'srokmax', 'lotquantity', 'skladid'], 'integer'],
             [['name', 'manufacture', 'pricedate', 'sklad', 'date_update'], 'safe'],
             [['price'], 'number'],
-            [['code'], 'string'],
+            [['code','flagpostav'], 'string'],
         ];
     }
 
