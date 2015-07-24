@@ -139,7 +139,7 @@ class Tovar extends \yii\db\ActiveRecord
     {
         $parts = Yii::$app->params['Parts'];
         $avtoproviders = $parts['PartsProvider'];
-        $cross = [];
+        $cross[$params['article']] = 0;
         $details = [];
         $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);
         //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
@@ -174,6 +174,7 @@ class Tovar extends \yii\db\ActiveRecord
                     } else {
 
                         foreach ($cross as $key => $value) {
+
 
 
                             $fparts->article = $key;
