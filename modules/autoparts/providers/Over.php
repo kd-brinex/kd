@@ -133,15 +133,15 @@ class Over extends PartsProvider
         return $value['flagpostav'];
     }
 
-//    public function update_srokmin($value)
-//    {
-////        return $value['srokmin'] ;
+    public function update_srokmin($value)
+    {
+        return $value['srokmin'] ;
 //        return 0;
-//    }
-//
-//    public function update_srokmax($value)
-//    {
-////        return $value['srokmax'] ;
+    }
+
+    public function update_srokmax($value)
+    {
+        return $value['srokmax'] ;
 //        return 0;
-//    }
+    }
 }
