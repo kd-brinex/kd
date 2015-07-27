@@ -102,7 +102,7 @@ return [
                 'fields' => [
                     'code' => 'code',
                     'name' => 'name',
-                    'manufacture' => 'maker_name',
+                    'manufacture' => 'manufacture',
                     'price' => 'price',
                     'quantity' => 'quantity',
                     'srokmin' => 'srokmin',
