@@ -68,4 +68,22 @@ class TStoreSearch extends TStore
 
         return $dataProvider;
     }
+    public function searchCity(){
+        $query = TStore::find()->groupBy('city_id');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $dataProvider;
+    }
+
+        public function getCityList(){
+
+        $h =  $this->searchCity();
+        $mas=[];
+        foreach ($h->models as $n){
+            $mas[$n->city_id] = $n->cityname;
+        }
+        return $mas;
+    }
 }

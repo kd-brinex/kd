@@ -119,7 +119,7 @@ class Over extends PartsProvider
 
     public function update_estimation($value)
     {
-        return round($value['estimation']);
+        return ($value['estimation']>0)?$value['estimation']:90;
     }
 
     public function validate($value)
@@ -132,15 +132,16 @@ class Over extends PartsProvider
 
         return $value['flagpostav'];
     }
-//    public function update_srokmin($value)
-//    {
-////        return $value['srokmin'] ;
+
+    public function update_srokmin($value)
+    {
+        return $value['srokmin'] ;
 //        return 0;
-//    }
-//
-//    public function update_srokmax($value)
-//    {
-////        return $value['srokmax'] ;
+    }
+
+    public function update_srokmax($value)
+    {
+        return $value['srokmax'] ;
 //        return 0;
-//    }
+    }
 }
