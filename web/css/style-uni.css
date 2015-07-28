@@ -724,8 +724,26 @@ ebay
 	background: hsla(0,0%,0%,0.2) url(http://kolesa-darom.ru/img2/velo/uni-zoom.png) no-repeat center;
 	border-radius: 3px;
 }
-
-
+.product-bonustest{
+	position: relative;
+	width: 86px;
+	height: 34px;
+	background: url(/img/ball-1.png) no-repeat;
+}
+.product-bonustest span{
+	display: block;
+	position: absolute;
+	top: 11px;
+	left: 42px;
+	font-weight: bold;
+	color: #00b600;
+	font-size: 12px;
+}
+.panel-heading h4 a{
+	margin: 0 0 20px !important;
+	font-size: 18px !important;
+	color: #000;
+}
 .offer-page-desc {
 	margin-top: 16px;
 	margin-left: 330px;

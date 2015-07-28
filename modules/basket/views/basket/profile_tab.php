@@ -4,6 +4,9 @@
     use \yii\bootstrap\Modal;
     use \yii\bootstrap\Button;
 ?>
+<div class="basketStepsBlock col-xs-12">
+    <div id="step2" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Заполните форму для связи с Вам</div>
+</div>
 <h2>Укажите контактные данные.</h2>
 <div id="user">
 

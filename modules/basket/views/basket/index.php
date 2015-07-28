@@ -7,11 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\modules\basket\models\Zakaz */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="basketStepsBlock col-xs-12">
-    <div id="step1" class="basketSteps" style="display:block"><i style="float: left;" class="icon-white icon-circle-success"></i>Выберите товары для заказа</div>
-    <div id="step2" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Заполните форму для связи с Вам</div>
-    <div id="step3" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Выберите магазин в Вашем городе</div>
-</div>
+
 <?php $form = \yii\widgets\ActiveForm::begin([
     'id' => 'profile-form',
     'options' => ['class' => 'form-horizontal', 'onsubmit' => 'return false;'],

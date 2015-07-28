@@ -42,7 +42,7 @@ echo ListView::widget([
 echo Collapse::widget([
     'items' => [
         [
-            'label' => 'Дополнительные характеристики.',
+            'label' => 'Спецификация.',
             'content' =>
                 GridView::widget([
 
@@ -53,8 +53,15 @@ echo Collapse::widget([
                     'dataProvider' => $dataProvider,
 //              'filterModel'=>$searchModel,
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'title',
+                        [
+                          'class' => 'yii\grid\SerialColumn',
+                          'header' => '№'
+
+                        ],
+                        [
+                          'attribute' => 'title',
+                          'label' => 'Характеристика'
+                        ],
                         'value_char',
 
 //        ['class' => 'yii\grid\ActionColumn'],

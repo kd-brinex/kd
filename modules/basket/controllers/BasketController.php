@@ -98,7 +98,7 @@ class BasketController extends MainController
                         if(Yii::$app->user->id)
                             $toBasket->uid = Yii::$app->user->id;
                         if($toBasket->save())
-                            return '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-white"></i>Уже в корзине</a>';
+                            return '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-black"></i>Уже в корзине</a>';
                         else if(YII_DEBUG)
                             var_dump($toBasket->getErrors());
                     } else {
@@ -106,7 +106,7 @@ class BasketController extends MainController
                     }
                 }
 
-                return '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-white"></i>Уже в корзине</a>';
+                return '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-black"></i>Уже в корзине</a>';
                 break;
             case 'update':
                     $data = Yii::$app->request->post();

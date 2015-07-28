@@ -95,7 +95,6 @@ basket
     text-transform: uppercase;
     font-weight: bold;
     border-radius: 4px;
-    display: none;
 }
 .pulse {
     -webkit-animation: pulse 700ms linear 3;
