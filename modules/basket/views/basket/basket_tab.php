@@ -10,6 +10,9 @@ use yii\helpers\Html;
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 
 ?>
+<div class="basketStepsBlock col-xs-12">
+    <div id="step1" class="basketSteps" style="display:block"><i style="float: left;" class="icon-white icon-circle-success"></i>Выберите товары для заказа</div>
+</div>
 <h1>Ваша корзина.</h1>
 <div id="basket">
     <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12">

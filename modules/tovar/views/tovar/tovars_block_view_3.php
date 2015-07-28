@@ -30,10 +30,19 @@ echo yii\widgets\DetailView::widget([
 
 */
 //var_dump($model);die;?>
-
+<!--<table class="table offer-v3-table">-->
+<!--    <tr>-->
+<!--        <th>Наименование товара</th>-->
+<!--        <th>В магазине</th><th>На складе</th>-->
+<!--        <th>Цена</th>-->
+<!--        <th>Заказать</th>-->
+<!--    </tr>-->
     <td class="offer-v3-name">
-        <div class="offer-v3-code"><?=$model->id?></div>
-        <h3><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
+        <div class="offer-v3-code">Код: <?=$model->id?></div>
+        <h3 style=";margin:3px;margin-top:5px"><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
+        <div class="offer-v3-srok">
+            <?= $model->srok ?>
+        </div>
     </td>
     <td class="offer-v3-store"><?=$model->count?></td>
     <td class="offer-v3-stock"><?=$model->count?></td>
@@ -42,4 +51,5 @@ echo yii\widgets\DetailView::widget([
         <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>3]);?>
     </td>
 
+<!--</table>-->
 

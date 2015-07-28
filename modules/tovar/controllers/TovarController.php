@@ -156,16 +156,16 @@ class TovarController extends MainController
             $params['viewType'] = 1;
         }
         if ($params['viewType'] == 1) {
-            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12'];
-            $params['itemOptions'] = ['tag' => 'div'];
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12', 'style' => 'padding:0px'];
+            $params['itemOptions'] = ['tag' => 'div', 'class' => 'col-sm-3 offer-v1-item-cont'];
         }
         if ($params['viewType'] == 2) {
-            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12 '];
-            $params['itemOptions'] = ['tag' => 'div'];
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12 offer-v2-container', 'style' => 'padding:0px'];
+            $params['itemOptions'] = ['tag' => 'div', 'class' => 'offer-v2-item-cont borders-lite'];
         }
         if ($params['viewType'] == 3) {
-            $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12'];
-            $params['itemOptions'] = ['tag' => 'tr'];
+            $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12 table offer-v3-table'];
+            $params['itemOptions'] = ['tag' => 'tr', 'class'=>'tr-hover'];
         }
 //        var_dump($params);die;
         $searchModel = new TovarSearch();

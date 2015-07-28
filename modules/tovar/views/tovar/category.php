@@ -10,18 +10,24 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
 
 $this->title=$params['tip_id'];
 $this->params['breadcrumbs'][]=$this->title;
+$headers = $params['viewType'] == 3 ? '<tr><th>Наименование товара</th><th>В магазине</th><th>На складе</th><th>Цена</th><th>Заказать</th></tr>' : '';
 echo ListView::widget([
-    'summary'=>'',
+    'layout' => "$headers{items}\n<tr><td style=\"border:none;text-align: left\" colspan=\"5\">\n{summary}{pager}</td></tr>",
     'dataProvider' => $dataProvider,
-//    'showHeader' => false,
     'options'=>$params['options'],
 
     'itemOptions' => $params['itemOptions'],
 
-    'itemView' => ($params['viewType']==1
-    )?
-        function ($model){return $this->render('tovars_block_view_1', ['model' => $model]);}:
-        (($params['viewType']==2)?
-            function ($model){return $this->render('tovars_block_view_2', ['model' => $model]);}:
-            function ($model){return $this->render('tovars_block_view_3', ['model' => $model]);}),
+    'itemView' => ($params['viewType'] == 1)?
+                        function ($model){
+                                return $this->render('tovars_block_view_1', ['model' => $model]);
+                        } :
+                        (
+                         ($params['viewType'] == 2) ? function ($model){
+                                                        return $this->render('tovars_block_view_2', ['model' => $model]);
+                                                      }:
+                                                      function ($model){
+                                                        return $this->render('tovars_block_view_3', ['model' => $model]);
+                                                      }
+                        ),
 ]);?>

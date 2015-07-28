@@ -8,7 +8,7 @@ use yii\helpers\Url;
  */
 //var_dump($model->inbasket);die;
     if ($model->inbasket>0){
-        echo '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-white"></i>Уже в корзине</a>';}
+        echo '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-black"></i>Уже в корзине</a>';}
     else
     {
         echo '<div tovar_id="'.$model->id.'" onclick="put(this)">
