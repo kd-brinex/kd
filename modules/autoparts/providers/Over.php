@@ -36,7 +36,7 @@ class Over extends PartsProvider
 
         $data = parent::getData();
 //        $p['ts.id'] = (isset($data['store_id']) ? $data['store_id'] : 109);
-        $p['ppu.store_id'] = (isset($data['store_id']) ? $data['store_id'] : 109);
+        $p['ppu.store_id'] = (isset($data['store_id']) ? $data['store_id'] : $this->store_id);
         $article = (isset($data['article']) ? $data['article'] : $this->article);
         $article = strtoupper($article);
         $p['code'] = str_replace([' ', '-'], [], $article);
