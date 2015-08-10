@@ -187,6 +187,7 @@ class Tovar extends \yii\db\ActiveRecord
 
 
                             if (isset($det[0]['code'])) {
+                                $det[0]['groupid'] = $value;
                                 $details = array_merge($details, $det);
                                 $det=[];
                             }

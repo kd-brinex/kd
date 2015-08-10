@@ -99,6 +99,7 @@ $config = [
                 'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
 //                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
                 'finddetails' => 'tovar/tovar/finddetails',
+                'finddetailstest' => 'tovar/tovar/finddetailstest',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
 

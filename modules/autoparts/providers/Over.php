@@ -124,7 +124,6 @@ class Over extends PartsProvider
 
     public function validate($value)
     {
-
         return true;
     }
     public function update_flagpostav($value)

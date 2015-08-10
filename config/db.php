@@ -2,7 +2,7 @@
 $db =
     [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=localhost;dbname=brinex_dev',
+        'dsn' => 'mysql:host=localhost;dbname=brinex1',
         'username' => 'brinexdev',
         'password' => 'QwFGHythju8',
         'charset' => 'utf8',

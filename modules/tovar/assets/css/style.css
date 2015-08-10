@@ -1,0 +1,25 @@
+.table{
+    margin:10px 0;
+
+}
+.table thead tr th
+{
+    text-align:center;
+    background-color: white;
+}
+#user_list1,#user_list0,#user_list2
+{
+    //margin-top:300px;
+    position: absolute;
+    opacity:0;
+}
+tbody>tr>td
+{
+    text-align: center;
+    vertical-align: middle !important;
+
+}
+.table>thead>tr>th:hover{
+    cursor:pointer;
+}
+

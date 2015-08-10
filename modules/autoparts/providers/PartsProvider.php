@@ -218,6 +218,9 @@ class PartsProvider
 
         $ret = $this->formatSearchResponse($data);
 
+
+
+
         /**Сортировка массива поп полю srokmax
          *
          * */
@@ -240,6 +243,7 @@ class PartsProvider
         if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
 
 //var_dump($ret);die;
+
 
         return $ret;
 

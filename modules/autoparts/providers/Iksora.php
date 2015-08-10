@@ -69,6 +69,7 @@ class Iksora extends PartsProvider
                 'Login'=>$data['login'],
                 'Password'=>$data['password']];
 
+
         return $xml;
     }
 
@@ -93,6 +94,7 @@ class Iksora extends PartsProvider
             $data[] = $_row;
         }
 //        var_dump($data);die;
+
         return $data;
     }
     public function update_estimation($value){
@@ -109,6 +111,10 @@ class Iksora extends PartsProvider
         $estimation=round(($count>0)?($summa/$count)*20:0,0);
         return $estimation;
     }
+    public function update_groupid($value){
+
+        return $value['groupid'];
+    }
     public function soap($method){
         $method_xml='xml'.$method;
         /**        Для получения входящего xml нужно описать функцию, которая возвращает результат для запроса.*/
@@ -117,6 +123,7 @@ class Iksora extends PartsProvider
 //        var_dump($result);die;
         $result = new SimpleXMLElement($this->getResultXML($result, $method));
 //        var_dump($result);die;
+
         return $result;
     }
     public function validate($value){

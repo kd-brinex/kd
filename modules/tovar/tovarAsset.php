@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\modules\autoparts;
+namespace app\modules\tovar;
 
 use yii\web\AssetBundle;
 
@@ -15,14 +15,15 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class autopartsAsset extends AssetBundle
+class tovarAsset extends AssetBundle
 {
-    public $sourcePath = '@app/modules/autoparts/assets';
+    public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
-        'css/style.css',
+        'css/style.css'
     ];
     public $js = [
         'http://code.jquery.com/jquery-1.8.3.js',
+        'js/jquery.tablesorter.js',
         'js/base.js',
 
 
@@ -33,7 +34,7 @@ class autopartsAsset extends AssetBundle
     ];
     public $depends = [
 //        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+
 //        'yii\bootstrap\BootstrapPluginAsset',
 //        'yii\gii\TypeAheadAsset',
     ];
