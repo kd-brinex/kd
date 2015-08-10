@@ -31,43 +31,39 @@ echo yii\widgets\DetailView::widget([
 */
 //var_dump($model->inbasket);die;?>
 
-<!--    <div class="col-xs-12">-->
-        <div class="col-xs-6">
+    <div class="offer-v2-item">
+        <div class="offer-v2-img">
             <a href="<?=url::toRoute(['view','id'=>$model->id],true)?>">
-                 <img src="<?=$model->Image?>">
+                 <img class="offer-v2-img-bg" src="<?=$model->Image?>">
             </a>
         </div>
-        <div class="col-xs-6">
-            <div class="col-xs-6 offer-v2-code">Код: <?= $model->id ?></div>
-            <div class="col-xs-6 offer-v2-bonus"><a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
-                    <img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +10</a></div>
-<!--            <div class="offer-v2-price-name">Цена</div>-->
-            <div class="offer-v2-price-new"><?=$model->asCurrency($model->price)?></div>
-
-            <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>2]);?>
-
-
-        </div>
-        <div class="col-xs-12">
+        <div class="offer-v2-info">
             <h3><a href="<?=url::toRoute(['view','id'=>$model->id],true)?>"><?=$model->name?></a></h3>
-
-            <div><?=$model->description?></div>
-
-<!--            <div class="col-xs-12 ">-->
-                <div>
-
-                        <div class="col-xs-4"><?=$model->srok?></div>
-
-                        <div class="col-xs-4">В магазине<br><span><?=$model->count?></span></div>
-                        <div class="col-xs-4">На складе<br><span><?=$model->count?></span></div>
-                </div>
-<!--            </div>-->
-
+            <div class="offer-v2-code">Код: <?= $model->id ?></div>
+<!--            <table class="table offer-v2-spec-table">-->
+<!--            </table>-->
+            <div class="offer-v2-deliv">
+                <table class="table page-table-deliv">
+                    <tr><td class="page-table-deliv-1"><span class="offer-v1-deliv-days"><?=$model->srok?></span></td>
+                    <td class="page-table-deliv-2">В магазине<br><span><?=$model->count?></td>
+                    <td class="page-table-deliv-2">На складе<br><span><?=$model->count?></span></td></tr>
+                </table>
+            </div>
         </div>
+        <div class="offer-v2-order">
+            <div class="offer-v2-price-name">Цена</div>
+            <div class="offer-v2-price-new"><?=$model->asCurrency($model->price)?></div>
+            <div class="offer-v2-bonus">
+                    <a href="/samara/buyer/program-ball/" target="_blank" title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">
+                    <img src="http://kolesa-darom.ru/img2/goods-bonuspoint.png"> +10</a>
+            </div>
+            <?=$this->render('btn_basket', ['model' => $model,'viewtype'=>2]);?>
+        </div>
+        <div class="clr"></div>
 
 
 
-<!--    </div>-->
-<hr align="center" width="100%" color="#337ab7" >
+
+    </div>
 
 

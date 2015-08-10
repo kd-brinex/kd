@@ -5,7 +5,7 @@ namespace app\modules\tovar\controllers;
 use Yii;
 use app\modules\tovar\models\Tovar;
 use app\modules\tovar\models\TovarSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
@@ -14,7 +14,7 @@ use yii\data\ArrayDataProvider;
 /**
  * TovarController implements the CRUD actions for Tovar model.
  */
-class TovarController extends Controller
+class TovarController extends MainController
 {
     public function behaviors()
     {
@@ -156,16 +156,16 @@ class TovarController extends Controller
             $params['viewType'] = 1;
         }
         if ($params['viewType'] == 1) {
-            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12'];
-            $params['itemOptions'] = ['tag' => 'div'];
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12', 'style' => 'padding:0px'];
+            $params['itemOptions'] = ['tag' => 'div', 'class' => 'col-sm-3 offer-v1-item-cont'];
         }
         if ($params['viewType'] == 2) {
-            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12 '];
-            $params['itemOptions'] = ['tag' => 'div'];
+            $params['options'] = ['tag' => 'div', 'class' => 'col-sm-12 offer-v2-container', 'style' => 'padding:0px'];
+            $params['itemOptions'] = ['tag' => 'div', 'class' => 'offer-v2-item-cont borders-lite'];
         }
         if ($params['viewType'] == 3) {
-            $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12'];
-            $params['itemOptions'] = ['tag' => 'tr'];
+            $params['options'] = ['tag' => 'table', 'class' => 'col-xs-12 table offer-v3-table'];
+            $params['itemOptions'] = ['tag' => 'tr', 'class'=>'tr-hover'];
         }
 //        var_dump($params);die;
         $searchModel = new TovarSearch();
@@ -197,6 +197,28 @@ class TovarController extends Controller
             'columns' =>$parts['columns'],
 
         ]);
+
+    }
+    public function actionBasket(){
+        $data = Yii::$app->request->post();
+        $toBasket = new \app\modules\basket\models\BasketSearch();
+        $toBasket->tovar_count = 1;
+        $toBasket->tovar_price = $data['price'];
+        $toBasket->session_id = Yii::$app->session->id;
+        $toBasket->tovar_min = 1;
+        $toBasket->manufacturer = $data['manufacture'];
+        $toBasket->part_number = $data['code'];
+        $toBasket->period = $data['srokmax'];
+        $toBasket->part_name = $data['name'];
+        $toBasket->allsum = $data['price'];
+        if(Yii::$app->user->id)
+            $toBasket->uid = Yii::$app->user->id;
+        if($toBasket->save())
+            return \yii\helpers\Html::a('В корзине', \yii\helpers\Url::to(['/basket']),[
+                'title' => 'Заказать',
+                'class' => 'btn btn-grey btn-xs',
+                'target' => '_blank'
+            ]);
 
     }
 

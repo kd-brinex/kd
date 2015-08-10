@@ -74,11 +74,7 @@ class Tovar extends \yii\db\ActiveRecord
 
     public function getImage()
     {
-//        var_dump($this);die;
-
         $p = Yii::$app->params;
-//        var_dump( $p['image'][$this->tip_id]);die;
-
         return (isset($p['image'][$this->tip_id]['name'])) ?
             $p['host'] . $p['image'][$this->tip_id]['normal'] . $this[$p['image'][$this->tip_id]['name']] . '.jpg' :
             'http://img2.kolesa-darom.ru/img/' . $this->tip_id . '/' . $this->category_id . '.jpg';
@@ -118,29 +114,32 @@ class Tovar extends \yii\db\ActiveRecord
 
     public function getBasket()
     {
-        return $this->hasOne(BasketSearch::className(), ['tovar_id' => 'id']);
-    }
+        $basket = BasketSearch::find()
+            ->select('id')
+            ->where(['uid' => 9])
+            ->orWhere(['session_id' => Yii::$app->session->oldSessId])
+            ->orWhere(['session_id' => Yii::$app->session->id])
+            ->andWhere(['tovar_id' => $this->id])
+            ->one();
 
+        return $basket;
+    }
     public function getInbasket()
     {
         return (isset($this->basket)) ? $this->basket->id : 0;
     }
-
     public function asCurrency($value)
     {
         $rub = str_replace(',00', '', Yii::$app->formatter->asCurrency($value, 'RUB'));
         return $rub;
     }
-
     /**
      * findDetails - описание функции
      */
     public static function findDetails($params)
     {
-
         $parts = Yii::$app->params['Parts'];
         $avtoproviders = $parts['PartsProvider'];
-        $cross[$params['article']] = 0;
         $details = [];
         $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);
         //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
@@ -148,75 +147,46 @@ class Tovar extends \yii\db\ActiveRecord
 //        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
-
         if (isset($params['article']) && $params['article'] != '') {
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
-
             foreach ($providers as $p) {
-
-
                 if (isset($avtoproviders[$p['name']])) {
                     $provider = array_merge($avtoproviders[$p['name']], $params,$p);
                     $fparts = new $provider['class']($provider);
                     //$fparts->flagpostav = $p['flagpostav'];
                     //$fparts->setData($p);
-
                     $e = [];
-
                     if ($p['cross'] == 1) {
                         $det = $fparts->findDetails($e);
-
-
                         foreach ($det as $i) {
                             $cross[$i['code']] = $i['groupid'];
                         }
                     } else {
-
+                        if (empty($cross)){$cross[$params['article']] = 0;}
                         foreach ($cross as $key => $value) {
-
-
-
                             $fparts->article = $key;
-
-
                             $det = $fparts->findDetails($e);
-
-
-
-
                             if (isset($det[0]['code'])) {
                                 $det[0]['groupid'] = $value;
                                 $details = array_merge($details, $det);
                                 $det=[];
                             }
-
-
                         }
-
-
                         if (isset($params['test'])) {
                             print_r($fparts->errors);
                         }
-
-
-
                     }
                     if (isset($det[0]['code'])) {
                         $details = array_merge($details, $det);
                     }
                     $fparts->close();
                 }
-
-
             }
-
-
             /**Сортировка массива поп полю srokmax
              *
              * */
-
             function r_usort($a, $b, $key)
             {
                 $inta = intval($a[$key]);
@@ -227,7 +197,6 @@ class Tovar extends \yii\db\ActiveRecord
                 }
                 return 0;
             }
-
             usort($details, function ($a, $b) {
                 $r = r_usort($a,$b ,'weight');
                 if ($r==0){

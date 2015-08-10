@@ -36,7 +36,7 @@ class Over extends PartsProvider
 
         $data = parent::getData();
 //        $p['ts.id'] = (isset($data['store_id']) ? $data['store_id'] : 109);
-        $p['ppu.store_id'] = (isset($data['store_id']) ? $data['store_id'] : 109);
+        $p['ppu.store_id'] = (isset($data['store_id']) ? $data['store_id'] : $this->store_id);
         $article = (isset($data['article']) ? $data['article'] : $this->article);
         $article = strtoupper($article);
         $p['code'] = str_replace([' ', '-'], [], $article);
@@ -119,7 +119,7 @@ class Over extends PartsProvider
 
     public function update_estimation($value)
     {
-        return round($value['estimation']);
+        return ($value['estimation']>0)?$value['estimation']:90;
     }
 
     public function validate($value)
@@ -131,15 +131,16 @@ class Over extends PartsProvider
 
         return $value['flagpostav'];
     }
+
 //    public function update_srokmin($value)
 //    {
-////        return $value['srokmin'] ;
-//        return 0;
+//        return $value['srokmin'] ;
+////        return 0;
 //    }
 //
 //    public function update_srokmax($value)
 //    {
-////        return $value['srokmax'] ;
-//        return 0;
+//        return $value['srokmax'] ;
+////        return 0;
 //    }
 }

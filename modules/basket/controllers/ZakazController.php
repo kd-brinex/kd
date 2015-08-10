@@ -5,14 +5,14 @@ namespace app\modules\basket\controllers;
 use Yii;
 use app\modules\basket\models\Zakaz;
 use app\modules\basket\models\ZakazSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ZakazController implements the CRUD actions for Zakaz model.
  */
-class ZakazController extends Controller
+class ZakazController extends MainController
 {
     public function behaviors()
     {

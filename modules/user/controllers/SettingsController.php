@@ -42,6 +42,8 @@ class SettingsController extends BaseSettingsController
 
     public function actionOrders()
     {
-       return  $this->render('orders',[]);
+        $model = new \app\modules\user\models\OrderSearch();
+        $model = $model->search([]);
+        return  $this->render('orders',['model' => $model]);
     }
 }

@@ -5,14 +5,14 @@ namespace app\modules\tovar\controllers;
 use Yii;
 use app\modules\tovar\models\Param;
 use app\modules\tovar\models\ParamSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ParamController implements the CRUD actions for Param model.
  */
-class ParamController extends Controller
+class ParamController extends MainController
 {
     public function behaviors()
     {

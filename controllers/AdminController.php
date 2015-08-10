@@ -5,11 +5,11 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\AccessRule;
-use yii\web\Controller;
+use app\controllers\MainController;;
 use yii\filters\VerbFilter;
 
 
-class AdminController extends Controller
+class AdminController extends MainController
 {
 public function behaviors()
     {

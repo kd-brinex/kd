@@ -5,14 +5,14 @@ namespace app\modules\city\controllers;
 use Yii;
 use app\modules\city\models\Region;
 use app\modules\city\models\RegionSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * RegionController implements the CRUD actions for Region model.
  */
-class RegionController extends Controller
+class RegionController extends MainController
 {
     public function behaviors()
     {

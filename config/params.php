@@ -64,10 +64,12 @@ return [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{basket}',
                 'buttons' => [
-                    'basket' => function ($url, $model) {
-                        return Html::a('<i class="icon-shopping-cart icon-white"></i>Заказать', $url, [
+                    'basket' => function ($url, $model, $key) {
+                         return Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [
                             'title' => 'Заказать',
+                             'id' => 'orderBud'.$key,
                             'class' => 'btn btn-primary btn-xs',
+                            'onClick' => '$.ajax({ type :"POST", "data" : '.\yii\helpers\JSON::encode($model).', url : "'.\yii\helpers\Url::to(['tovar/basket']).'", success : function(d) { $("#orderBud'.$key.'").parent().html(d) } });return false;'
                         ]);
                     },
                 ],
@@ -100,7 +102,7 @@ return [
                 'fields' => [
                     'code' => 'code',
                     'name' => 'name',
-                    'manufacture' => 'maker_name',
+                    'manufacture' => 'manufacture',
                     'price' => 'price',
                     'quantity' => 'quantity',
                     'srokmin' => 'srokmin',
