@@ -151,6 +151,7 @@ class Tovar extends \yii\db\ActiveRecord
             if (!isset($params['store_id'])) {
                 $params['store_id'] = 109;
             }
+
             foreach ($providers as $p) {
                 if (isset($avtoproviders[$p['name']])) {
                     $provider = array_merge($avtoproviders[$p['name']], $params,$p);
@@ -165,9 +166,11 @@ class Tovar extends \yii\db\ActiveRecord
                         }
                     } else {
                         if (empty($cross)){$cross[$params['article']] = 0;}
+
                         foreach ($cross as $key => $value) {
                             $fparts->article = $key;
                             $det = $fparts->findDetails($e);
+
                             if (isset($det[0]['code'])) {
                                 $det[0]['groupid'] = $value;
                                 $details = array_merge($details, $det);
@@ -181,6 +184,7 @@ class Tovar extends \yii\db\ActiveRecord
                     if (isset($det[0]['code'])) {
                         $details = array_merge($details, $det);
                     }
+
                     $fparts->close();
                 }
             }

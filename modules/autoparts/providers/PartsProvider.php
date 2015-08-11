@@ -332,7 +332,7 @@ class PartsProvider
 
     public function update_provider($value)
     {
-        return $this->name;
+        return 'KD'.$this->id.'-'.$this->store_id;
     }
 
     public function update_storeid($value)

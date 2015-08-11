@@ -2,9 +2,9 @@
 
 namespace app\filters;
 
-use yii\filters\AccessRule;
+use yii\filters\AccessRule as BaseRule;
 
-class AccessRule extends AccessRule
+class AccessRule extends BaseRule
 {
 
     /** @inheritdoc */
