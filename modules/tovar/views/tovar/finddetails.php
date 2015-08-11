@@ -17,7 +17,7 @@ foreach ($provider->allModels as $key => $value) {
 }
 
 
-var_dump($provider);die;
+
 for ($ii = 0; $ii < 3; $ii++) {
 
     $tablee[$ii] = "
@@ -52,7 +52,7 @@ for ($ii = 0; $ii < 3; $ii++) {
             if ($mas[$ii][$i]['estimation']>=90) $cl='fine';
                 elseif ($mas[$ii][$i]['estimation']<90) $cl='good';
                     else $cl='bad';
-            $tablee[$ii] .= '<td><div title="Надежность поставщика (склад '.$mas[$ii][$i]['flagpostav'].'-'.$mas[$ii][$i]['storeid'].')'.$mas[$ii][$i]['estimation'].'% " class="'.$cl.'">' . $mas[$ii][$i]['srokmax'] . '</div></td>';
+            $tablee[$ii] .= '<td><div title="Надежность поставщика (склад '.$mas[$ii][$i]['provider'].')'.$mas[$ii][$i]['estimation'].'% " class="'.$cl.'">' . $mas[$ii][$i]['srokmax'] . '</div></td>';
             $key = $ii.'-'.$i;
             $tablee[$ii] .= '<td>'. Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [
                     'title' => 'Заказать',
