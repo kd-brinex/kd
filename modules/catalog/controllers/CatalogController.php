@@ -6,7 +6,7 @@ use app\controllers\MainController;
 
 use app\modules\catalog\models;
 use yii\filters\VerbFilter;
-use app\modules\netcat\Netcat;
+//use app\modules\netcat\Netcat;
 use yii\filters\AccessControl;
 
 class CatalogController extends MainController

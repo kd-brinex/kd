@@ -45,6 +45,7 @@ $(document).ready(function () {
 function find_model(ftext) {
     //console.log($("button:contains(ftext)"));
     $('[type="button"]:contains('+ftext+')').toggleClass('model-hide');
+    //$('[type="button"]:contains('+ftext+')').hide();
 }
 
 function scroll(e) {
