@@ -1,0 +1,93 @@
+#w0{
+    margin-bottom:10px;
+}
+.table{
+
+    width:1060px !important;
+    overflow:hidden;
+    border:1px solid #d3d3d3;
+    background:#fefefe;
+
+
+    -moz-border-radius:5px; /* FF1+ */
+    -webkit-border-radius:5px; /* Saf3-4 */
+    border-radius:5px;
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.table>thead>tr>th
+{
+    text-align:center;
+    text-shadow: 1px 1px 1px #fff;
+    background:#e8eaeb;
+    background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
+    background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
+    padding:0;
+
+
+}
+
+
+
+#user_list1 ,#user_list0  ,#user_list2
+{
+    opacity:0;
+    position:absolute;
+}
+
+#user_list11 ,#user_list00 ,#user_list22
+{
+
+    //position:absolute;
+
+}
+
+
+
+tbody>tr>td
+{
+    text-align: center;
+
+    border-top:1px solid #e0e0e0;
+    border-right:1px solid #e0e0e0;
+    background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
+    background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
+
+
+
+}
+.table>thead>tr>th:hover{
+    cursor:pointer;
+}
+
+.fine {
+    background: #28d228 none repeat scroll 0 0;
+    width: 20px;
+    height:20px;
+    margin:0 auto;
+    border-radius:3px;
+}
+.finee {
+    background: #28d228 none repeat scroll 0 0;
+    width: 20px;
+    height:20px;
+    margin:0 auto;
+    border-radius:3px;
+}
+.good {
+    background: #f99b17 none repeat scroll 0 0;
+    width: 20px;
+    height:20px;
+    margin:0 auto;
+    border-radius:3px;
+}
+.bad {
+    background: #ff0000 none repeat scroll 0 0;
+    width: 20px;
+    height:20px;
+    margin:0 auto;
+    border-radius:3px;
+}
+.red{
+    color:red !important;
+}
