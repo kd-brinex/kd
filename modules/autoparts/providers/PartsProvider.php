@@ -218,6 +218,9 @@ class PartsProvider
 
         $ret = $this->formatSearchResponse($data);
 
+
+
+
         /**Сортировка массива поп полю srokmax
          *
          * */
@@ -242,6 +245,7 @@ class PartsProvider
         }
 
 //var_dump($ret);die;
+
 
         return $ret;
 
