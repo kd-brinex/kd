@@ -245,12 +245,12 @@ $config = [
         ],
         'hyundai' => [
             'class' => 'app\modules\autocatalog\Autocatalog',
-            'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs',
             'layout' => 'autocatalog',
-            'marka' =>'hyundai',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
             'model'=>[
                 'class'=>'app\modules\autocatalog\models\Hyundai',
+                'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs',
+                'marka' =>'hyundai',
             ],
             'db' => [
                 'class' => 'yii\db\Connection',

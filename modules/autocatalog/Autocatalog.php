@@ -15,8 +15,6 @@ class Autocatalog extends Module
 
     public $db;         //Настройка доступа к БД
     public $model;      //Описание модели доступа к данным
-    public $image_path;      //Путь к рисункам
-    public $marka;      //Марка авто
     public $connect;    //Connection к базе
     public $catalog;    //Компонет доступа к базе модели
 
@@ -28,13 +26,19 @@ class Autocatalog extends Module
 //        $this->connect=new Connection($this->db);
 
     }
+
     private function getDataProvider($query){
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $imageExpr=new Expression('CONCAT_WS("/","'.$this->image_path.'","Titles")');
-        $query->addSelect(['image_path'=>$imageExpr]);
+        $properties =get_object_vars($this->catalog);
+        foreach ($properties as $name => $var)
+        {
+        $imageExpr=new Expression("'".((is_array($var))?implode('|',$var):$var)."'");
+        $query->addSelect([ucfirst($name)=>$imageExpr]);
+        }
         $dataProvider->db=$this->connect;
+
         return $dataProvider;
     }
     /**
@@ -50,16 +54,26 @@ class Autocatalog extends Module
      * getModellist - список моделей выбраной марки
      * @param $prm
      */
+    public function getResult($method,$prm)
+    {
+        if(!method_exists($this->catalog,$method)){return result;}
+        $dataProvider=$this->getDataProvider($this->catalog->$method($prm));
+        $result['dataProvider'] = $dataProvider;
+        $result['properties'] =get_object_vars($this->catalog);
+
+        return $result;
+
+    }
     public function getModelList($prm)
     {
-        $dataProvider=$this->getDataProvider($this->catalog->getModelList($prm));
-        $dataProvider->pagination=false;
-        $model = $dataProvider->models;
-        $arr = [];
+        $data=$this->getResult(__FUNCTION__,$prm);
+        $data['dataProvider']->pagination=false;
+        $model = $data['dataProvider']->models;
+        $data['models'] = [];
         foreach ($model as $item) {
-            $arr[$item['model_name']][] = $item;
+            $data['models'][$item['model_name']][] = $item;
         }
-        return $arr;
+        return $data;
     }
 
     /**
@@ -67,13 +81,11 @@ class Autocatalog extends Module
      * @param $prm
      * @return array
      */
-    public function getCatalogList($prm=[])
+    public function getCatalogList($prm)
     {
-        $funcname=__FUNCTION__;
-        if(!method_exists($this->catalog,$funcname)){return null;}
-        $dataProvider=$this->getDataProvider($this->catalog->$funcname($prm));
-        $dataProvider->pagination=false;
-        return $dataProvider;
+        $data=$this->getResult(__FUNCTION__,$prm);
+        $data['dataProvider']->pagination=false;
+        return $data;
     }
     public function getTranslate($lang_code,$lex_desc)
     {

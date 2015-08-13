@@ -47,12 +47,14 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $regionList = $this->module->catalog->getRegionList();
         $params['region']=(isset($params['region'])?$params['region']:key($regionList));
+//        var_dump($params);die;
+        $this->module->catalog->setAttributes($params);
         $data=$this->module->getModelList($params);
+//        var_dump($data);die;
 //        var_dump($prm);die;
-        return $this->render('index',[
+        return $this->render($data['properties']['marka'].'/index.php',[
             'data'=>$data,
             'regionList'=>$regionList,
-            'marka'=>$this->module->marka,
             'params'=>$params,
 
         ]);
@@ -62,12 +64,10 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $data = $this->module->getCatalogList($params);
 //        var_dump($catalog);die;
-        return $this->render('model',[
+        return $this->render($data['properties']['marka'].'/model',[
             'data'=>$data,
-            'marka'=>$this->module->marka,
             'params'=>$params,
-            'image_path'=>$this->module->image_path,
-        ]);
+             ]);
 
     }
 

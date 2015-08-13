@@ -1,5 +1,6 @@
 <?php
 namespace app\modules\autocatalog\models;
+
 /**
  * Created by PhpStorm.
  * User: marat
@@ -22,26 +23,29 @@ class Hyundai extends CCar
 //private $catalog_name;  // - название каталога
 //private $region ;       // - код региона
 
-
+    /**
+     * @param $prm
+     * @return Query
+     */
     public function getModelList($prm)
     {
 //        $prm['where']= (isset($params['region']))?['data_regions LIKE %:region%',[':region'=>$params['region']]]:'';
+        $this->setAttributes($prm);
         $query = new Query();
 //        var_dump($prm['where']);die;
         $query->select(
             'c.family model_name,
-            c.data_regions region,
-            c.cat_name catalog_name,
-           c.catalogue_code catalog_code'
+             c.data_regions,
+             c.cat_name catalog_name,
+             c.catalogue_code catalog_code'
         )
-
             ->distinct()
             ->from('catalog c')
 //            ->orderBy('family')
-        ->where('data_regions LIKE :region',[':region'=>'%'.$prm['region'].'%'])
-        ;
+            ->where('data_regions LIKE :region', [':region' => '%' . $prm['region'] . '%']);
         return $query;
     }
+
     public function getRegionList()
     {
         return [
@@ -55,6 +59,7 @@ class Hyundai extends CCar
             'HMI' => 'Индия',
         ];
     }
+
     public function getVehicle($prm)
     {
 //        $this->lang = 'RU'; // по умолчанию - Английский
@@ -70,11 +75,15 @@ class Hyundai extends CCar
 
     public function getCatalogList($prm)
     {
+        var_dump($prm);die;
+//        $this->setAttributes($prm);
+        $this->Years = 1;
         $this->lang = 'RU'; // по умолчанию - Английский
-        $this->catalog_code = (isset($prm["catalog_code"]) ? $prm["catalog_code"] : $this->catalog_code);
-        $this->catalog_name = (isset($prm["catalog_name"]) ? $prm["catalog_name"] : $this->catalog_name);
-        $this->prod_start = (isset($prm["prod_start"]) ? $prm["prod_start"] : $this->prod_start);
-        $this->region = (isset($prm["region"]) ? $prm["region"] : $this->region);
+        $this->setAttributes($prm);
+//        $this->catalog_code = (isset($prm["catalog_code"]) ? $prm["catalog_code"] : $this->catalog_code);
+//        $this->catalog_name = (isset($prm["catalog_name"]) ? $prm["catalog_name"] : $this->catalog_name);
+//        $this->prod_start = (isset($prm["prod_start"]) ? $prm["prod_start"] : $this->prod_start);
+//        $this->region = (isset($prm["region"]) ? $prm["region"] : $this->region);
         $query = new Query();
 //var_dump($this->catalog_name);die;
 
@@ -88,25 +97,26 @@ class Hyundai extends CCar
   c.catalogue_code catalog_code,
   c.family model_name,
   c.cat_name catalog_name,
-  c.data_regions region,
+  c.data_regions,
   c.cat_folder image,
   c.production_from date_start,
   c.production_to date_end"
         )
+            ->from('catalog c')
+            ->join('JOIN', 'cats0_catalog c0', 'c.catalogue_code = c0.catalogue_code')
+            ->where('c.catalogue_code=:catalogue_code', [':catalogue_code' => $this->catalog_code])
+            ->andWhere('c.cat_name = :catalog', [':catalog' => $this->catalog_name]);
+        return $query;
+    }
 
-        ->from('catalog c')
-        ->join('JOIN','cats0_catalog c0','c.catalogue_code = c0.catalogue_code')
-        ->where('c.catalogue_code=:catalogue_code',[':catalogue_code'=>$this->catalog_code])
-        ->andWhere('c.cat_name = :catalog',[':catalog'=>$this->catalog_name]);
-        return $query;
-    }
-    public function getTranslate($lang_code,$lex_desc)
+    public function getTranslate($lang_code, $lex_desc)
     {
-        $query= new Query();
+        $query = new Query();
         $query->select('$lang_code.lex_desc')
-            ->from([$lang_code=>'mc_lexicon'])
-            ->leftJoin(['EN'=>'mc_lexicon'],'EN.lex_code=$lang_code.lex_code')
-            ->where('EN.lex_desc=:lex_desc and $lang_code.lang_code=:lang_code',[':lex_desc'=>$lex_desc,':lang_code'=>$lang_code]);
+            ->from([$lang_code => 'mc_lexicon'])
+            ->leftJoin(['EN' => 'mc_lexicon'], 'EN.lex_code=$lang_code.lex_code')
+            ->where('EN.lex_desc=:lex_desc and $lang_code.lang_code=:lang_code', [':lex_desc' => $lex_desc, ':lang_code' => $lang_code]);
         return $query;
     }
+
 }
