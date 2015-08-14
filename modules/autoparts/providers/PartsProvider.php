@@ -34,6 +34,7 @@ class PartsProvider
     public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
     public $weight=0;
+    public $ball;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -58,6 +59,7 @@ class PartsProvider
         "srokdays" => "srokdays",//Доставка от скалада до магазина
         "weight" => "weight",
         "cross"=> "cross",
+        "ball"=>"ball",
     ];
 
 
@@ -401,6 +403,11 @@ class PartsProvider
     public function update_pid($value)
     {
         return $this->id;
+    }
+    public function  update_ball($value)
+    {
+
+        return floor($value["price"]*0.05);
     }
 
     public function validate($value)
