@@ -187,10 +187,13 @@ class Tovar extends \yii\db\ActiveRecord
 
                     $fparts->close();
                 }
+
             }
             /**Сортировка массива поп полю srokmax
              *
              * */
+
+
             function r_usort($a, $b, $key)
             {
                 $inta = intval($a[$key]);
@@ -201,6 +204,7 @@ class Tovar extends \yii\db\ActiveRecord
                 }
                 return 0;
             }
+
             usort($details, function ($a, $b) {
                 $r = r_usort($a,$b ,'weight');
                 if ($r==0){
@@ -212,7 +216,9 @@ class Tovar extends \yii\db\ActiveRecord
 
                 return $r;
             });
+
             return $details;
+
         }
     }
 }
