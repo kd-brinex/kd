@@ -9,8 +9,8 @@ use app\modules\tovar\tovarAsset;
 
 tovarAsset::register($this);
 
-
-
+$mas=[];
+//var_dump($provider->Models);die;
 foreach ($provider->allModels as $key => $value) {
     $mas[$value['groupid']][] = $value;
 

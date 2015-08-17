@@ -10,7 +10,7 @@ use yii\bootstrap\Tabs;
 
 //$this->title = $params['title'];
 //$this->params['breadcrumbs']= $params['breadcrumbs'];
-//var_dump($dataProvider);die;
+var_dump($dataProvider);die;
 $marka=$data['properties']['marka'];
 ?>
 <div class="catalog-index">

@@ -186,6 +186,7 @@ $config = [
                 ],
             ],
         ],
+
         'db' => $db_connect,
         'view' => [
             'theme' => [
@@ -252,14 +253,15 @@ $config = [
                 'class'=>'app\modules\autocatalog\models\Hyundai',
                 'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs',
                 'marka' =>'hyundai',
-            ],
-            'db' => [
-                'class' => 'yii\db\Connection',
-                'dsn' =>'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+                'db' => [
+                    'class' => 'yii\db\Connection',
+                    'dsn' =>'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
 //: 'mysql:host=localhost;dbname=hyundai',
-                'username' => 'brinexdev',
-                'password' => 'QwFGHythju8',
-                'charset' => 'utf8'],
+                    'username' => 'brinexdev',
+                    'password' => 'QwFGHythju8',
+                    'charset' => 'utf8'],
+            ],
+
         ],
         'kia' => [
             'class' => 'app\modules\autocatalog\Autocatalog',
