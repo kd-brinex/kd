@@ -108,8 +108,6 @@ class Over extends PartsProvider
             ->andWhere('date_update  > NOW() - INTERVAL :internal_day DAY',[':internal_day'=>$this->internal_day])->all();
 
         return $result;
-
-
     }
 
     public function update_sklad($value)
@@ -124,7 +122,6 @@ class Over extends PartsProvider
 
     public function validate($value)
     {
-
         return true;
     }
     public function update_flagpostav($value)

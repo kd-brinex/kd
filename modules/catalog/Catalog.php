@@ -20,7 +20,7 @@ use \yii\base\Module as BaseModule;
  */
 class Catalog extends BaseModule
 {
-    public $controllerNamespace = 'app\modules\catalog\controllers';
+//    public $controllerNamespace = 'app\modules\catalog\controllers';
     public $db;
     public $models;
     public $image;
@@ -31,7 +31,7 @@ class Catalog extends BaseModule
         models\AvQuery::$db=$this->db;
         models\AvQuery::$image=$this->image;
         models\Translate::$db=$this->db;
-        $this->layout='avtocatalog';
+//        $this->layout='avtocatalog';
         // custom initialization code goes here
     }
 }

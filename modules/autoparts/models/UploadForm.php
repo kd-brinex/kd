@@ -29,7 +29,7 @@ class UploadForm extends Model
     {
         return [
             [['file'], 'required'],
-            [['file'], 'file'],
+            [['file'], 'file','maxSize'=>20000000],
             [['flagpostav'], 'string'],
 
         ];

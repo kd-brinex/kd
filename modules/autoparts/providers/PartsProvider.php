@@ -34,6 +34,7 @@ class PartsProvider
     public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
     public $weight=0;
+    public $ball;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -58,6 +59,7 @@ class PartsProvider
         "srokdays" => "srokdays",//Доставка от скалада до магазина
         "weight" => "weight",
         "cross"=> "cross",
+        "ball"=>"ball",
     ];
 
 
@@ -218,6 +220,9 @@ class PartsProvider
 
         $ret = $this->formatSearchResponse($data);
 
+
+
+
         /**Сортировка массива поп полю srokmax
          *
          * */
@@ -240,6 +245,7 @@ class PartsProvider
         if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
 
 //var_dump($ret);die;
+
 
         return $ret;
 
@@ -328,7 +334,7 @@ class PartsProvider
 
     public function update_provider($value)
     {
-        return $this->name;
+        return 'KD'.$this->id.'-'.$this->store_id;
     }
 
     public function update_storeid($value)
@@ -397,6 +403,11 @@ class PartsProvider
     public function update_pid($value)
     {
         return $this->id;
+    }
+    public function  update_ball($value)
+    {
+
+        return floor($value["price"]*0.05);
     }
 
     public function validate($value)
