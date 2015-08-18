@@ -15,20 +15,19 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": "2.0.4",
+        "yiisoft/yii2": "2.0.*",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "dektrium/yii2-user": "0.9.*@dev",
         "yiisoft/yii2-twig": "*",
         "fxp/composer-asset-plugin": "1.0.0",
         "dektrium/yii2-rbac": "dev-master",
-        "yiisoft/yii2-codeception": "~2.0.0",
         "codeception/codeception":"2.0.*",
         "codeception/specify":"*",
-        "codeception/verify":"*"
+        "codeception/verify":"*",
+        "yiisoft/yii2-codeception": "~2.0.0"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
         "yiisoft/yii2-faker": "*"
