@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -83,24 +84,16 @@ NavBar::end();
 
         <?php
         Modal::begin([
-            'header' => '<h2>' . 'Города' . '</h2>',
+            'header' => '<img src="/img/kolesa-darom_logo.png"/>',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
                 'label' => $city_name,
                 'id' => 'button_city_list',
-
-            ]
-        ]);
-        echo Button::widget([
-            'label' => 'Выбрать город',
-            'options' => [
-                'class' => 'btn-lg btn-default',
-                'style' => 'margin:5px',
-                'onclick' => 'load_city_list()',
+                'onclick'=>'load_city_list()',
             ],
-            'tagName' => 'div'
         ]);
+
 
         echo '<div id="city_list"></div>';
         Modal::end(); ?>

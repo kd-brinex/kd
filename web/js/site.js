@@ -5,12 +5,13 @@ function setCookie (name, value, expires, path, domain, secure) {
     ((domain) ? "; domain=" + domain : "") +
     ((secure) ? "; secure" : "");
 }
-function setCookies(name,value)
+function setCookies(name,value,cl)
 {
     var dExpire = new Date();
     dExpire.setDate( dExpire.getDate() + 21 );
     setCookie(name, value, dExpire, '/');
-    window.location.reload();
+    if (cl)
+    {window.location.reload()};
     console.log(name,value);
 }
 function hideButton(char,class1,class2){
@@ -32,8 +33,21 @@ function load_city_list(){
             $('#city_list').html(text);
         }
     });
-    //$('#city_list').html('казань');
-    //console.log('Казань');
+    $('.modal-dialog').animate({width: "950px"} , 190);
+
+}
+function load_city_list_region(){
+    $.ajax({
+        type: "GET",
+        url: "/city/city/list_region",
+        data:"",
+        success: function(text){
+            $('#city_list').html(text);
+        }
+    });
+
+    $('.modal-dialog').animate({width: "350px"} , 190);
+
 }
 function detail_info(model,tree){
     $.ajax({
