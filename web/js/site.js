@@ -31,6 +31,7 @@ function load_city_list(){
         data:"",
         success: function(text){
             $('#city_list').html(text);
+            $('#city_list1').html(text);
         }
     });
     $('.modal-dialog').animate({width: "950px"} , 190);
@@ -43,6 +44,7 @@ function load_city_list_region(){
         data:"",
         success: function(text){
             $('#city_list').html(text);
+            $('#city_list1').html(text);
         }
     });
 
