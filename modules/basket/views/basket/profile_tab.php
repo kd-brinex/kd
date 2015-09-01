@@ -27,19 +27,23 @@
     echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес']);
 //    echo $form->field($profile, 'location')->textInput(['placeholder' => 'Ваш город', 'value' => $city->name]);
     echo '<div class="form-group field-profile-location required"><label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
-    Modal::begin(['header' => '<h2>' . 'Города' . '</h2>','toggleButton' => ['tag' => 'input', 'type'=>'text', 'readonly'=>'readonly', 'id'=> 'profile-location','class' => 'btn btn-info btn-block', 'name'=>'Profile[location]', 'value' => $city->name ? $city->name : 'Выбрать город', 'id' => 'button_city_list']]);//Html::button('Выбрать город',['class'=>'', 'data-toggle' => 'modal', 'data-target'=>'#w13',   ']);//'<button type="button" id="button_city_list" class="btn btn-block btn-info" data-toggle="modal" data-target="#w11">Выбрать город</button>';
+    Modal::begin([
+        'header' => '<img src="/img/kolesa-darom_logo.png"/>',
+        'toggleButton' => ['tag' => 'input',
+            'type'=>'text',
+            'readonly'=>'readonly',
+            'id'=> 'profile-location',
+            'class' => 'btn btn-info btn-block',
+            'name'=>'Profile[location]',
+            'value' => $city->name ? $city->name : 'Выбрать город',
 
-    echo Button::widget([
-        'label' => 'Выбрать город',
-        'options' => [
-            'class' => 'btn-lg btn-default',
-            'style' => 'margin:5px',
-            'onclick' => 'load_city_list()',
-        ],
-        'tagName' => 'div'
-    ]);
+            'onclick'=>'load_city_list()',
+        ]]);
 
-    echo '<div id="city_list"></div>';
+
+
+
+    echo '<div id="city_list1"></div>';
     Modal::end();
     echo '</div><div class="col-sm-offset-3 col-lg-9"><div class="help-block"></div></div></div>';
     echo $form->field($profile, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
