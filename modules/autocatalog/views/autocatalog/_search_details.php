@@ -9,17 +9,16 @@ use yii\widgets\ActiveForm;
 ?>
 
 <?php $form = ActiveForm::begin([
-    'action' => ['index'],
+    'action' => [''],
     'method' => 'get',
     'options' => ['name' => 'search-vin',],
 ]); ?>
 <div class="row">
     <div class="col-md-10">
-        <?= Html::input('text', 'vin', (isset($params['vin'])) ? $params['vin'] : '', ['class' => 'form-control', 'placeholder' => 'Введите VIN. Например:JTJBT20X740046047']) ?>
+        <?= Html::input('text', 'article', (isset($params['article'])) ? $params['article'] : '', ['class' => 'form-control', 'placeholder' => 'Введите артикул детали по каталогу']) ?>
     </div>
-    <?= Html::input('hidden', 'user_id', (isset($params['user_id'])) ? $params['user_id'] : '', []) ?>
     <div class="col-md-1">
-        <?= Html::submitButton('Искать по VIN', ['class' => ' btn btn-primary']) ?>
+        <?= Html::submitButton('Искать запчасть', ['class' => ' btn btn-primary']) ?>
     </div>
 </div>
 <?php ActiveForm::end(); ?>

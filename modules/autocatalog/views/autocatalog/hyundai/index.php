@@ -10,7 +10,8 @@ use yii\bootstrap\Tabs;
 
 //$this->title = $params['title'];
 //$this->params['breadcrumbs']= $params['breadcrumbs'];
-//var_dump($dataProvider);die;
+var_dump($dataProvider);die;
+$marka=$data['properties']['marka'];
 ?>
 <div class="catalog-index">
 
@@ -26,8 +27,6 @@ use yii\bootstrap\Tabs;
 
                 </div>
             </div>
-            <?= $this->render('_search_vin', ['params' => $params]) ?>
-            <?= $this->render('_search_frame', ['params' => $params]) ?>
         </div>
         <div class="container">
             <?php
@@ -46,7 +45,7 @@ use yii\bootstrap\Tabs;
                 'items' => $items,
             ]);
 
-            echo $this->render('_index_group_model',['data'=>$data,'params'=>$params]);
+            echo $this->render('_index_group_model',['data'=>$data['models'],'params'=>$params]);
             ?>
 
         </div>
