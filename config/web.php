@@ -98,7 +98,7 @@ $config = [
                 'auto/models/<typeid:\w+>_<markid:\w+>' => 'auto/auto/models',
                 'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
 //                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
-                'finddetails' => 'tovar/tovar/finddetails',
+                'finddetails' => 'autocatalog/autocatalog',
                 'finddetailstest' => 'tovar/tovar/finddetailstest',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
@@ -136,7 +136,7 @@ $config = [
                 'toyota/album' => 'toyota/catalog/album',
                 'toyota/page' => 'toyota/catalog/page',
 
-                'hyundai' => 'hyundai/autocatalog',
+                'autocatalog' => 'autocatalog/autocatalog',
 
 
                 'kia' => 'kia/autocatalog',
@@ -240,42 +240,64 @@ $config = [
                 'username' => 'brinexdev',
                 'password' => 'QwFGHythju8',
                 'charset' => 'utf8'],
-            'image' => 'http://new.kolesa-darom.ru:8080/image/toyota/',
+            'image' => 'http://3.kolesa-darom.ru:8080/image/toyota/',
             'layout' => 'avtocatalog',
             'controllerNamespace' => 'app\modules\catalog\controllers',
 
         ],
-        'hyundai' => [
+        'autocatalog' => [
             'class' => 'app\modules\autocatalog\Autocatalog',
             'layout' => 'autocatalog',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
-            'model'=>[
-                'class'=>'app\modules\autocatalog\models\Hyundai',
-                'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs',
-                'marka' =>'hyundai',
-                'db' => [
-                    'class' => 'yii\db\Connection',
-                    'dsn' =>'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+            'models' => [
+                'hyundai' => [
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'prop' => [
+                        'marka' => 'Hyundai',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
 //: 'mysql:host=localhost;dbname=hyundai',
-                    'username' => 'brinexdev',
-                    'password' => 'QwFGHythju8',
-                    'charset' => 'utf8'],
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
+                'kia' => [
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'prop' => [
+                        'marka' => 'Kia',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+//: 'mysql:host=localhost;dbname=hyundai',
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
             ],
 
-        ],
-        'kia' => [
-            'class' => 'app\modules\autocatalog\Autocatalog',
-            'db' => [
-                'class' => 'yii\db\Connection',
-                'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=hyundai;port=1111' : 'mysql:host=localhost;dbname=hyundai',
-                'username' => 'brinexdev',
-                'password' => 'QwFGHythju8',
-                'charset' => 'utf8'],
-
-            'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/',
-            'layout' => 'autocatalog',
-            'marka' => 'kia',
-            'controllerNamespace' => 'app\modules\autocatalog\controllers',
         ],
         'auto' => [
             'class' => 'app\modules\auto\Auto',

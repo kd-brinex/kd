@@ -11,18 +11,28 @@ use yii;
  * Date: 03.08.15
  * Time: 9:54
  */
+;
+
 class Autocatalog extends Module
 {
-    public $model;
-    public $car;
+    public $models;
+    public $catalog;
     public function init()
     {
         parent::init();
-        $this->car= Yii::createObject($this->model);
+        foreach ($this->models as $key=>$model)
+        {
+            $this->catalog[$key]=\Yii::createObject($model);
+        }
+
     }
-    public function getDB()
+public function getCatalog()
+{
+   return $this->catalog;
+}
+    public function getModelList($prm)
     {
-        return $this->car->db;
+        return $this->catalog[$prm['marka']]->__FUNCTION__;
     }
 
 
