@@ -4,8 +4,72 @@ body {
     /*background: url(http://kolesa-darom.ru/img2/bgbody-hotline.gif) repeat-y top;*/
     padding: 0;
     margin: 0;
-}
 
+}
+.modal-dialog
+{
+    width:950px;
+    font-size:12px;
+}
+.modal-content button
+{
+    display: block;
+    margin:5px auto  !important;
+}
+.stories
+{
+
+    font-weight: bold;
+
+
+}
+.stories1
+{
+
+    font-weight: bold;
+    text-align: center;
+
+}
+.stories>ul,.stories1>ul
+{
+    padding-left:10px;
+}
+.stories>ul>li,.stories1>ul>li
+{
+    list-style-type: none;
+}
+.stories>ul>li>a,.stories1>ul>li>a
+{
+    color:#0ea3e2 !important;
+}
+.delivery{
+    border-left:1px solid #ddd;
+
+}
+.delivery1{
+    border-left:1px solid #ddd;
+    text-align: center;
+}
+.delivery p.delivery_title,.delivery1 p.delivery_title
+{
+    font-weight: bold;
+}
+.delivery p.delivery_name,.delivery1 p.delivery_name
+{
+    margin-bottom:2px;
+
+
+}
+.delivery p.delivery_name>a:hover,.delivery1 p.delivery_name>a:hover
+{
+    color:black !important;
+    text-decoration:none;
+
+}
+.delivery_name>a
+{
+    color:#777 !important;
+}
 .wrap {
     /*min-height: 100%;*/
     height: auto;
