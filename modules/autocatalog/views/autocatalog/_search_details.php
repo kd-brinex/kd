@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <?php $form = ActiveForm::begin([
-    'action' => [''],
+    'action' => ['details'],
     'method' => 'get',
     'options' => ['name' => 'search-vin',],
 ]); ?>
