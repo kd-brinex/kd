@@ -63,4 +63,8 @@ public function behaviors()
         return $this->render('index',[]);
     }
 
+    public function actionOrders(){
+        return $this->render('orders',[]);
+    }
+
 }

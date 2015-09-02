@@ -18,11 +18,10 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css','css/style.css','css/offcanvas.css',
+        'css/site.css','css/style.css','css/offcanvas.css','css/animate.css',
     ];
     public $js = [
-        'js/site.js','js/offcanvas.js',
-
+        'js/site.js','js/offcanvas.js','js/bootstrap-notify.js'
     ];
 //    public $jsOptions=['position' => '\yii\web\index::POS_HEAD'];
     public $depends = [

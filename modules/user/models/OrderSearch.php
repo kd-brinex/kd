@@ -50,7 +50,6 @@ class OrderSearch extends Order
             ->addParams($params);
 
         $dataProvider = new ActiveDataProvider([
-
             'query' => $query,
         ]);
 

@@ -7,6 +7,7 @@
  */
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 $this->title = Yii::t('user', 'My orders');
@@ -66,7 +67,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                                 [
                                     'label' => 'Статус',
-                                    'attribute' => 'state.status_name'
+                                    'attribute' => 'state.status_name',
+                                    'format' => 'raw',
+                                    'value' => function($model){
+                                        $url = '';
+                                        if(isset($model['product_id']) && $model['product_id'] != '')
+                                            $url = ['/tovar/'.$model['product_id']];
+
+                                        if(isset($model['product_article']) && $model['product_article'] != '')
+                                            $url = ['/tovar/tovar/finddetails', 'article' => $model['product_article']];
+                                        return $model['status'] === $model::DENIED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
+                                    }
                                 ],
                                 [
                                     'header' => 'Заказ с сайта/<br>Референс',

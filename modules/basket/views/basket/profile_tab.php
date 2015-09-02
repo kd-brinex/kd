@@ -24,8 +24,7 @@
     ]);
 
     echo $form->field($profile, 'name')->textInput(['placeholder' => 'Ваше имя']);
-    echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес']);
-//    echo $form->field($profile, 'location')->textInput(['placeholder' => 'Ваш город', 'value' => $city->name]);
+    echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $profile->gravatar_email]);
     echo '<div class="form-group field-profile-location required"><label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
     Modal::begin([
         'header' => '<img src="/img/kolesa-darom_logo.png"/>',
