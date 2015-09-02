@@ -24,8 +24,7 @@
     ]);
 
     echo $form->field($profile, 'name')->textInput(['placeholder' => 'Ваше имя']);
-    echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес']);
-//    echo $form->field($profile, 'location')->textInput(['placeholder' => 'Ваш город', 'value' => $city->name]);
+    echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $profile->gravatar_email]);
     echo '<div class="form-group field-profile-location required"><label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
     Modal::begin(['header' => '<h2>' . 'Города' . '</h2>','toggleButton' => ['tag' => 'input', 'type'=>'text', 'readonly'=>'readonly', 'id'=> 'profile-location','class' => 'btn btn-info btn-block', 'name'=>'Profile[location]', 'value' => $city->name ? $city->name : 'Выбрать город', 'id' => 'button_city_list']]);//Html::button('Выбрать город',['class'=>'', 'data-toggle' => 'modal', 'data-target'=>'#w13',   ']);//'<button type="button" id="button_city_list" class="btn btn-block btn-info" data-toggle="modal" data-target="#w11">Выбрать город</button>';
 

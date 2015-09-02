@@ -1,6 +1,7 @@
 <?php
 $params = require(__DIR__ . '/params.php');
 $db_connect= require(__DIR__ . '/db.php');
+
 //$db_connect = $db_config['components'][YII_ENV];
 $config = [
     'id' => 'basic',
@@ -123,7 +124,12 @@ $config = [
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
 
+                'admin/orders' => 'autoparts/orders',
+                'admin/orders/update' => 'autoparts/orders/update',
+                'admin/orders/send' => 'autoparts/orders/send',
+
                 'admin/partsload' => 'autoparts/over',
+
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
@@ -210,6 +216,7 @@ $config = [
                 ],
             ],
         ],
+
     ],
     'params' => $params,
     'modules' => [
@@ -270,6 +277,10 @@ $config = [
             'confirmWithin' => 21600,
             'admins' => ['marat'],
 
+        ],
+        // Extensions
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
         ]
     ]
 ];

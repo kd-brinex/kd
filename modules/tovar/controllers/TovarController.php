@@ -185,7 +185,6 @@ class TovarController extends MainController
 
         $details= (isset($params['article']))?Tovar::findDetails($params):[];
 
-
         $provider = new ArrayDataProvider([
             'allModels' => $details,
             'sort' => $parts['sort'],
@@ -202,6 +201,7 @@ class TovarController extends MainController
     public function actionBasket(){
         $data = Yii::$app->request->post();
         $toBasket = new \app\modules\basket\models\BasketSearch();
+//        $toBasket->tovar_id = $data['code'];
         $toBasket->tovar_count = 1;
         $toBasket->tovar_price = $data['price'];
         $toBasket->session_id = Yii::$app->session->id;
@@ -211,6 +211,7 @@ class TovarController extends MainController
         $toBasket->period = $data['srokmax'];
         $toBasket->part_name = $data['name'];
         $toBasket->allsum = $data['price'];
+//        $toBasket->provider_id = $data['pid'];
         if(Yii::$app->user->id)
             $toBasket->uid = Yii::$app->user->id;
         if($toBasket->save())

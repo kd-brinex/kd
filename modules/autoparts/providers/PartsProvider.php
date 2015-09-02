@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marat
- * Date: 21.04.15
- * Time: 13:35
- */
 
 namespace app\modules\autoparts\providers;
 
@@ -34,6 +28,7 @@ class PartsProvider
     public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
     public $weight=0;
+    public $ePrices = [];
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -75,7 +70,6 @@ class PartsProvider
 
     public function setData($params)
     {
-
         foreach ($params as $property => $value) {
             if (property_exists($this, $property)) {
                 if (is_array($this->$property)) {
@@ -85,7 +79,8 @@ class PartsProvider
                 }
             }
         }
-
+//        var_dump($this->ePrices);die;
+        $this->_wsdl_uri = isset($params['method']) ? $params[$params['method'].'_wsdl_uri'] : $this->_wsdl_uri;
         $puser = new PartProviderUserSearch();
 
         $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
@@ -213,14 +208,9 @@ class PartsProvider
             return [];
         }
         $xml = $this->query($this->methods['FindDetails'], $errors);
-
         $data = $this->parseSearchResponseXML($xml);
-
         $ret = $this->formatSearchResponse($data);
-
-        /**Сортировка массива поп полю srokmax
-         *
-         * */
+        /**       Сортировка массива поп полю srokmax      **/
 //        function r_usort($a,$b,$key)
 //        {
 //            $inta = intval($a[$key]);
@@ -237,12 +227,16 @@ class PartsProvider
 //            if($r==0){$r=r_usort($a,$b,'price');}
 //            return $r;
 //        });
-        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
-
+        if ($this->row_count>0){
+            $ret = array_slice($ret,0,$this->row_count);
+        }
 //var_dump($ret);die;
-
         return $ret;
+    }
 
+    public function toBasket(){
+        $xml = $this->query($this->methods['toBasket']);
+        var_dump($xml);
     }
 
     public function generateRandom($maxlen = 32)

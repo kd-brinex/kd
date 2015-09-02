@@ -136,25 +136,25 @@ class Tovar extends \yii\db\ActiveRecord
     /**
      * findDetails - описание функции
      */
-    public static function findDetails($params)
+    public static function findDetails($params)                                                                                     //  здесь приходят article и provider_id из URI
     {
-        $parts = Yii::$app->params['Parts'];
-        $avtoproviders = $parts['PartsProvider'];
+        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
+        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
         $details = [];
-        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);
+        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);                              //  массив condition для запроса в бд в таблицу part_provider (если есть provider_id то забираем по нему если нет то всех включенных)
         //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
-        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();
+        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();  //  собственно сам запрос в таблицу и сортировка
 //        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
-        if (isset($params['article']) && $params['article'] != '') {
-            if (!isset($params['store_id'])) {
+        if (isset($params['article']) && $params['article'] != '') {                                                                //  работаем если есть артикуль
+            if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
                 $params['store_id'] = 109;
             }
-            foreach ($providers as $p) {
-                if (isset($avtoproviders[$p['name']])) {
-                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);
-                    $fparts = new $provider['class']($provider);
+            foreach ($providers as $p) {                                                                                            //  понеслась! цикл по всем вытащенным провайдерам
+                if (isset($avtoproviders[$p['name']])) {                                                                            //  проверка есть ли провайдер в конфиге params (работаем если true)
+                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);                                                //?  сливаем все настройки
+                    $fparts = new $provider['class']($provider);                                                                    //  создаем объект(провайдера) и загружаем ему параметры
                     //$fparts->flagpostav = $p['flagpostav'];
                     //$fparts->setData($p);
                     $e = [];

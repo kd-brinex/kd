@@ -20,6 +20,7 @@ use app\modules\tovar\models\Tovar;
 
 class BasketController extends MainController
 {
+
     public function actionIndex()
     {
         $bmodel = new BasketSearch();
@@ -71,7 +72,6 @@ class BasketController extends MainController
 
     public function actionPut()
     {
-//        $this->layout = false;
         $params = Yii::$app->request->post();
         $post = array_merge(Yii::$app->request->post());
         $params = Yii::$app->request->queryParams;
@@ -88,7 +88,6 @@ class BasketController extends MainController
                 if($id){
                     $tovar = Tovar::findOne(['id' => $id]);
                     if($tovar){
-
                         $toBasket = new BasketSearch();
                         $toBasket->tovar_id = $id;
                         $toBasket->tovar_count = 1;
@@ -105,7 +104,6 @@ class BasketController extends MainController
                         return false;
                     }
                 }
-
                 return '<a class="btn" href="'.url::toRoute(['/basket/basket'], true).'"><i class="icon-shopping-cart icon-black"></i>Уже в корзине</a>';
                 break;
             case 'update':
@@ -137,6 +135,7 @@ class BasketController extends MainController
                             if($product){
                                 $data = [
                                     $product->id,
+//                                    null,
                                     $basket->manufacturer,
                                     $product->name,
                                     $basket->tovar_price,
@@ -144,7 +143,8 @@ class BasketController extends MainController
                                     \app\modules\user\models\Order::JUST_ORDERED,
                                     date('Y-m-d H:i:s'),
                                     $basket->description,
-                                    $fdata['deliveryStore']
+                                    $fdata['deliveryStore'],
+//                                    $basket->provider_id
                                 ];
                                 if(!Yii::$app->user->isGuest)
                                     array_unshift($data, Yii::$app->user->id);
@@ -152,6 +152,7 @@ class BasketController extends MainController
                                     $data = array_merge($data, $profileData);
                             } else {
                                 $data = [
+//                                    null,
                                     $basket->part_number,
                                     $basket->manufacturer,
                                     $basket->part_name,
@@ -160,7 +161,8 @@ class BasketController extends MainController
                                     \app\modules\user\models\Order::JUST_ORDERED,
                                     date('Y-m-d H:i:s'),
                                     $basket->description,
-                                    $fdata['deliveryStore']
+                                    $fdata['deliveryStore'],
+//                                    $basket->provider_id
                                 ];
                                 if(!Yii::$app->user->isGuest)
                                     array_unshift($data, Yii::$app->user->id);
@@ -170,12 +172,13 @@ class BasketController extends MainController
 //                            if(isset($fdata['deliveryStore']) && $fdata['deliveryStore'] != ''){
 //                                array_merge($data, []);
 //                            }
+//                            var_dump($data);
                             $orderData[] = $data;
 
                         }
                     }
                 }
-                $rows = ['product_id', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description','store_id'];
+                $rows = ['product_id',/*'product_article',*/ 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description','store_id'/*,'provider_id'*/];
 
                 if (!Yii::$app->user->isGuest) {
                     array_unshift($rows, 'uid');
@@ -189,6 +192,7 @@ class BasketController extends MainController
 //                if(isset($fdata['deliveryStore']) && $fdata['deliveryStore'] != ''){
 //                    array_merge($rows, ['store_id']);
 //                }
+//                var_dump($rows);die;
                 $request = Yii::$app->db->createCommand()->batchInsert('orders', $rows, $orderData)->execute();
                 if($request > 0 )
                     return true;

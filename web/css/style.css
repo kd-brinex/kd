@@ -204,5 +204,46 @@ td.itemDescription textarea{
 .editableInput{
     border:1px solid #ccc !important;
 }
+.orders-user-block > div{
+    background-color: #fff;
+    padding:10px;
+    margin:10px;
+}
+.orders-user-block span.label
+{
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    text-transform: UPPERCASE;
+    font-weight: bold;
+    color: #9d9d9d;
+    font-size: 10px;
+}
+.ordersDetailRow{
+    background-color: #fff;
+}
+.rc-handle{
+    transition: all 200ms ease-out;
+}
+.rc-handle:hover{
+    background-color: #ddd;
+}
+.alert{
+    border:none;
+    border-radius:0;
+    border-left-width:20px;
+    border-left-style:solid;
+    padding: 25px;
+    box-shadow: 0px 1px 5px #525252;
+}
+.notify-message-block{
+    padding-left: 7px;
+}
+
+.notify-message-block  p{
+    font-weight: bold;
+    margin-bottom:0;
+    font-size: 18px;
+}
 
 

@@ -170,6 +170,7 @@ return [
             'Emex' => [
                 'class' => 'app\modules\autoparts\providers\Emex',
                 '_wsdl_uri' => 'http://ws.emex.ru/EmExService.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
+                'toBasket_wsdl_uri' => 'http://ws.emex.ru/EmEx_Basket.asmx?WSDL',
                 'fields' => [
                     "code" => "DetailNum",//Номер
                     "name" => "DetailNameRus", //Информация
@@ -187,7 +188,10 @@ return [
                 'marga' => 1.15,
                 'id' => 4,
                 'name' => 'Emex',
-                'methods' => ['FindDetails' => 'FindDetailAdv3'],
+                'methods' => [
+                        'FindDetails' => 'FindDetailAdv3',
+                        'toBasket' => 'InsertToBasket2'
+                    ],
 
                 ],
             'Partkom' => [
