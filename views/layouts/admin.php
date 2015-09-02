@@ -28,6 +28,7 @@ $navbar = [
             ['label' => 'Учетные записи', 'url' => ['/admin/partsuser']],
             ['label' => 'Сроки', 'url' => ['/admin/partssrok']],
             ['label' => 'Загрузка прайсов', 'url' => ['/admin/partsload']],
+            ['label' => 'Заказы', 'url' => ['/admin/orders']]
 
         ]],
         [    'label' => 'Пользователи', 'items' => [

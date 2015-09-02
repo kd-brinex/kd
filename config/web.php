@@ -124,7 +124,12 @@ $config = [
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
 
+                'admin/orders' => 'autoparts/orders',
+                'admin/orders/update' => 'autoparts/orders/update',
+                'admin/orders/send' => 'autoparts/orders/send',
+
                 'admin/partsload' => 'autoparts/over',
+
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
@@ -186,7 +191,6 @@ $config = [
                 ],
             ],
         ],
-
         'db' => $db_connect,
         'view' => [
             'theme' => [
@@ -218,19 +222,19 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-        'parser' => [
-            'class' => 'app\modules\parser\Parser'
+        'parser' =>[
+          'class'=>'app\modules\parser\Parser'
         ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
-            'layout' => '/admin.php',
+            'layout'=> '/admin.php',
         ],
         'api' => [
             'class' => 'app\modules\api\Module',
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
-            'layout' => '/admin.php',
+            'layout'=> '/admin.php',
         ],
         'toyota' => [
             'class' => 'app\modules\catalog\Catalog',
@@ -331,6 +335,10 @@ $config = [
             'confirmWithin' => 21600,
             'admins' => ['marat'],
 
+        ],
+        // Extensions
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
         ]
     ]
 ];
