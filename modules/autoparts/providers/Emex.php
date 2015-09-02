@@ -74,6 +74,7 @@ class Emex extends PartsProvider
             }
             $data[] = $_row;
         }
+
         return $data;
     }
 
@@ -99,6 +100,21 @@ class Emex extends PartsProvider
 
     public function update_estimation($value){
         return round( $value['estimation']);
+    }
+
+    public function update_groupid($value){
+        switch ($value['groupid']) {
+            case 'Original':
+                $value['groupid'] = '0';
+                break;
+            case 'ReplacementOriginal':
+                $value['groupid'] = '1';
+                break;
+            case 'ReplacementNonOriginal':
+                $value['groupid'] = '2';
+                break;
+        }
+        return $value['groupid'];
     }
 //    public function update_srokmin($value)
 //    {

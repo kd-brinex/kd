@@ -102,6 +102,10 @@ class Kd extends PartsProvider
     {
         return round($value['estimation']);
     }
+    public function update_groupid($value){
+
+        return $value['groupid'];
+    }
 //    public function update_srokmin($value)
 //    {
 ////        return $value['srokmin'] ;

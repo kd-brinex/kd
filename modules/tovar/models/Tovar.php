@@ -151,10 +151,10 @@ class Tovar extends \yii\db\ActiveRecord
             if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
                 $params['store_id'] = 109;
             }
-            foreach ($providers as $p) {                                                                                            //  понеслась! цикл по всем вытащенным провайдерам
-                if (isset($avtoproviders[$p['name']])) {                                                                            //  проверка есть ли провайдер в конфиге params (работаем если true)
-                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);                                                //?  сливаем все настройки
-                    $fparts = new $provider['class']($provider);                                                                    //  создаем объект(провайдера) и загружаем ему параметры
+            foreach ($providers as $p) {
+                if (isset($avtoproviders[$p['name']])) {
+                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);
+                    $fparts = new $provider['class']($provider);
                     //$fparts->flagpostav = $p['flagpostav'];
                     //$fparts->setData($p);
                     $e = [];
@@ -169,6 +169,7 @@ class Tovar extends \yii\db\ActiveRecord
                             $fparts->article = $key;
                             $det = $fparts->findDetails($e);
                             if (isset($det[0]['code'])) {
+                                $det[0]['groupid'] = $value;
                                 $details = array_merge($details, $det);
                                 $det=[];
                             }

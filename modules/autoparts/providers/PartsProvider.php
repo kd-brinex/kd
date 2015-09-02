@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: marat
+ * Date: 21.04.15
+ * Time: 13:35
+ */
 
 namespace app\modules\autoparts\providers;
 
@@ -29,6 +35,7 @@ class PartsProvider
     public $srokdays = 0;
     public $weight=0;
     public $ePrices = [];
+    public $ball;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -53,6 +60,7 @@ class PartsProvider
         "srokdays" => "srokdays",//Доставка от скалада до магазина
         "weight" => "weight",
         "cross"=> "cross",
+        "ball"=>"ball",
     ];
 
 
@@ -70,6 +78,7 @@ class PartsProvider
 
     public function setData($params)
     {
+
         foreach ($params as $property => $value) {
             if (property_exists($this, $property)) {
                 if (is_array($this->$property)) {
@@ -90,7 +99,7 @@ class PartsProvider
             $this->store_id = $p->models[0]->attributes['store_id'];
             $this->password = $p->models[0]->attributes['password'];
             $this->marga = $p->models[0]->attributes['marga'] / 100 + 1;
-            $this->srokdays= $p->models[0]->srok;
+            $this->srokdays = $p->models[0]->srok;
             $this->find = true;
 
         } else {
@@ -161,7 +170,7 @@ class PartsProvider
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
 //            var_dump($result);die;
         } catch (Exception $e) {
-            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. '.$result;
+            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. ' . $result;
 //var_dump($this->errors);die;
             return false;
         }
@@ -181,7 +190,7 @@ class PartsProvider
     {
 
         $result = $this->soap($method);
-      //  $this->close();
+        //  $this->close();
         return $result;
     }
 
@@ -231,6 +240,7 @@ class PartsProvider
             $ret = array_slice($ret,0,$this->row_count);
         }
 //var_dump($ret);die;
+
         return $ret;
     }
 
@@ -278,19 +288,21 @@ class PartsProvider
 
         foreach ($data as $key => $row) {
 //            if ($this->validate($row)) {
-                foreach ($fields as $field => $value) {
-                    if (isset($row[$value])) {
-                        $ret[$key][$field] = $row[$value];
-                    } else {
-                        $ret[$key][$field] = "";
-                    }
-                    $method = "update_" . $field;
-                    $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
-
-
+            foreach ($fields as $field => $value) {
+                if (isset($row[$value])) {
+                    $ret[$key][$field] = $row[$value];
+                } else {
+                    $ret[$key][$field] = "";
                 }
+                $method = "update_" . $field;
+                $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
-            if (!$this->validate($ret[$key])){unset($ret[$key]);}
+
+            }
+
+            if (!$this->validate($ret[$key])) {
+                unset($ret[$key]);
+            }
 //            }
 
         }
@@ -322,7 +334,7 @@ class PartsProvider
 
     public function update_provider($value)
     {
-        return $this->name;
+        return 'KD' . $this->id . '-' . $this->store_id;
     }
 
     public function update_storeid($value)
@@ -352,7 +364,8 @@ class PartsProvider
         return htmlspecialchars($value['name']);
     }
 
-    public function update_srokdays($value){
+    public function update_srokdays($value)
+    {
         return $this->srokdays;
     }
 
@@ -392,6 +405,11 @@ class PartsProvider
     {
         return $this->id;
     }
+    public function  update_ball($value)
+    {
+
+        return floor($value["price"]*0.05);
+    }
 
     public function validate($value)
     {
@@ -407,10 +425,10 @@ class PartsProvider
             return false;
         }
 
-    //проверка по цене
-    if ($value['price'] <= 0) {
-        return false;
-    }
+        //проверка по цене
+        if ($value['price'] <= 0) {
+            return false;
+        }
 
         return true;
     }
