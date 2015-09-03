@@ -34,6 +34,16 @@ public function getCatalog()
     {
         return $this->catalog[$prm['marka']]->__FUNCTION__;
     }
-
+    public function searchVIN($prm)
+    {
+        $modelList=$this->getModelList($prm);
+        $res=false;
+        foreach ($modelList as $model)
+        {
+            $res=$model->searchVIN($prm);
+            if($res){return $res;}
+        }
+        return $res;
+    }
 
 }

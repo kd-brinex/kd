@@ -11,14 +11,14 @@ namespace app\modules\autoparts\controllers;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
-use app\modules\user\models\Order;
+use app\modules\user\models\Orders;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 
 class OrdersController extends Controller
 {
     public function actionIndex(){
-        $query = Order::find();
+        $query = Orders::find();
         $orders = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -57,7 +57,7 @@ class OrdersController extends Controller
             Yii::$app->soapClient->run();
 //            var_dump($soap->__getFunctions());
 
-            var_dump($soap);
+//            var_dump($soap);
 
 
 //            foreach($model as $row){

@@ -18,5 +18,8 @@ class CCar extends BaseModel
     {
         return $this->$db;  // use the "db2" application component
     }
+    public function searchVIN($params){
+        return false;
+    }
 
 }
