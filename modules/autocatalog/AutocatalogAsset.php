@@ -15,9 +15,10 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
+
 class AutocatalogAsset extends AssetBundle
 {
-    public $sourcePath = '@app/modules/catalog/assets';
+    public $sourcePath = '@app/modules/autocatalog/assets';
     public $css = [
         'css/acatalog.css',
 
@@ -31,4 +32,5 @@ class AutocatalogAsset extends AssetBundle
     public $publishOptions = [
         'forceCopy' => YII_DEBUG,
     ];
+
 }

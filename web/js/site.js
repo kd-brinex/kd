@@ -91,8 +91,6 @@ function put(o){
 function count(o){
    var count = o.value;
    var id = o.id;
-    //$("#"+id+"_summa").text( $("#"+id+"_price").text()*count);
-    //($("#"+id+"_price").value*count);
     $.ajax({
         type: "POST",
         url: "/basket/count",
@@ -106,14 +104,10 @@ function count(o){
 }
 function del(o){
     var id = $('div',o).attr('tovar_id') ;
-    //console.log(id,
-    //$('#'+id+'_offer').attr('id'));
-    //$('#'+id+'_offer').css("display","none");
     $.ajax({
         type: "POST",
         url: "/basket/del",
-        data:{'id':id,
-                'tovar_count':0},
+        data:{'id':id, 'tovar_count':0},
         success: function(result){
             $("#basket").html(result);
         }
@@ -133,16 +127,13 @@ function removeBasketItems(){
                 'success': function (d) {
                     if ('id' in d) {
                         for (var item in d.id) {
-
                             $('tr[data-key="' + d.id[item] + '"]').animate({opacity:0},500, function(){
                                     $(this).remove();
                                     countBasketSum();
                                     if($('tr[data-key]').length == 0){
                                         $("#basket").replaceWith('<p>Ваша корзина пуста.</p>');
                                 }
-
                             });
-
                         }
                     }
                 }
@@ -172,7 +163,7 @@ function countBasketMarkedItemsSum(){
             var mainPrice = 0;
             var allItemsCount = allMarkedItems.length;
             allMarkedItems.each(function () {
-                if ($(this).val() != 1) {
+                if ($(this).val() != 0) {
                     var rowId = $(this).val();
                     var itemPrice = parseInt($('tr[data-key=' + rowId + '] > td.itemPrice').text());
                     var itemCount = parseInt($('tr[data-key=' + rowId + '] > td.itemCount input').val());
@@ -203,19 +194,13 @@ function toggleTab(tabNum){
     tabNum = tabNum ? tabNum : null;
     if(tabNum != null){
         var stepBlock = $('#step'+tabNum);
-        var ch1 = $('#basket input[type=checkbox]:checked');
-        if(ch1.length < 1)
-
-
-                if(stepBlock.hasClass('pulse'))
-                    stepBlock.removeClass('pulse').find('i').removeClass('icon-warn').addClass('icon-circle-success');
-                $('#'+tabNum+'-basket-tab  a[data-toggle="tab"]').click();
-                //$('.basketSteps').fadeOut(0).promise().done(function(){
-                //    $('#step'+tabNum).fadeIn(300);
-                //});
-                return true;
-
-
+        if(stepBlock.hasClass('pulse'))
+            stepBlock.removeClass('pulse').find('i').removeClass('icon-warn').addClass('icon-circle-success');
+        $('#'+tabNum+'-basket-tab  a[data-toggle="tab"]').click();
+        //$('.basketSteps').fadeOut(0).promise().done(function(){
+        //    $('#step'+tabNum).fadeIn(300);
+        //});
+        return true;
     }
 }
 function checkTab(){
@@ -398,3 +383,66 @@ $('#city_select').click(function(){
 //    //load_city_list();
 //
 //}
+function notify(message, type){
+    var message = message != null ? message : 'Текст сообщения отсутствует';
+    var type = type != null ? type : 'info';
+    $.notify({
+        icon: 'glyphicon glyphicon-warning-sign',
+        title: 'СООБЩЕНИЕ',
+        message: message,
+       // url: 'https://',
+        target: '_blank'
+    },{
+        element: 'body',
+        position: null,
+        type: type,
+        allow_dismiss: true,
+        newest_on_top: false,
+        showProgressbar: false,
+        placement: {
+            from: "top",
+            align: "left"
+        },
+        offset: 20,
+        spacing: 10,
+        z_index: 1031,
+        delay: 5000,
+        timer: 1000,
+        url_target: '_blank',
+        mouse_over: null,
+        animate: {
+            enter: 'animated bounceInLeft',
+            exit: 'animated bounceOutLeft'
+        },
+        onShow: null,
+        onShown: null,
+        onClose: null,
+        onClosed: null,
+        icon_type: 'class',
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        '<div class="notify-message-block"> ' +
+        '<p data-notify="title">{1}</p> ' +
+        '<span data-notify="message">{2}</span>' +
+        '<div class="progress" data-notify="progressbar">' +
+        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+        '</div>' +
+        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        '</div></div>'
+    });
+}
+function sendAllToProvider(){
+    var keys = $('#orders-manage-grid').yiiGridView('getSelectedRows');
+    if(keys.length > 0){
+        $.ajax({
+            'url' : '/admin/orders/send',
+            'type' : 'POST',
+            'data' : {'id' : keys},
+            'success' : function(d){
+                alert(d);
+            }
+        });
+    } else {
+        notify('Вы не выбрали ни одного заказа', 'danger');
+    }
+}

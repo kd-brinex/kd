@@ -10,29 +10,6 @@ use app\modules\tovar\tovarAsset;
 tovarAsset::register($this);
 Yii::$app->view->registerCssFile('/css/parts.css');
 
-?>
-<div class="center-td">
-    <div class="sel-parts borders">
-        <div class="sel-parts-1">
-            <h2>Найти запчасть<br>по номеру детали</h2>
-            <br>
-
-            <form name="search" method="GET" action="">
-                <input type="text" class="bootstrap-input" name="article" id="article">
-                <input type="submit" class="btn" value="Найти">
-            </form>
-        </div>
-        <div class="sel-parts-2">
-            <h2>Номер детали<br>можно узнать в каталогах</h2>
-            <br>
-            <?= Html::a('Открыть каталог автомобилей', '/auto', ['class' => 'btn']); ?>
-            <!--<a class="btn" href="http://kd.auto2d.com//">Открыть каталог автомобилей </a>-->
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
-
-<?php
 
 if (!empty($provider->allModels)) {
     foreach ($provider->allModels as $key => $value) {
@@ -86,7 +63,7 @@ if (!empty($provider->allModels)) {
                         'title' => 'Заказать',
 
                         'class' => 'btn btn-primary btn-xs orderBud' . $key . '',
-                        'onClick' => '$.ajax({ type :"POST", "data" : ' . Json::encode($mas[$ii][$i]) . ', url : "' . \yii\helpers\Url::to(['tovar/basket']) . '", success : function(d) { $(".orderBud' . $key . '").parent().html(d) } });return false;'
+                        'onClick' => '$.ajax({ type :"POST", "data" : ' . Json::encode($mas[$ii][$i]) . ', url : "' . \yii\helpers\Url::to(['/tovar/tovar/basket']) . '", success : function(d) { $(".orderBud' . $key . '").parent().html(d) } });return false;'
                     ]) . '</td>';
                 $tablee[$ii] .= '</tr>';
             }

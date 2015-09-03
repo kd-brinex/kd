@@ -98,7 +98,7 @@ $config = [
                 'auto/models/<typeid:\w+>_<markid:\w+>' => 'auto/auto/models',
                 'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
 //                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
-                'finddetails' => 'tovar/tovar/finddetails',
+                'finddetails' => 'autocatalog/autocatalog',
                 'finddetailstest' => 'tovar/tovar/finddetailstest',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
@@ -124,7 +124,12 @@ $config = [
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
 
+                'admin/orders' => 'autoparts/orders',
+                'admin/orders/update' => 'autoparts/orders/update',
+                'admin/orders/send' => 'autoparts/orders/send',
+
                 'admin/partsload' => 'autoparts/over',
+
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
@@ -136,7 +141,7 @@ $config = [
                 'toyota/album' => 'toyota/catalog/album',
                 'toyota/page' => 'toyota/catalog/page',
 
-                'hyundai' => 'hyundai/autocatalog',
+                'autocatalog' => 'autocatalog/autocatalog',
 
 
                 'kia' => 'kia/autocatalog',
@@ -217,19 +222,19 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-        'parser' => [
-            'class' => 'app\modules\parser\Parser'
+        'parser' =>[
+          'class'=>'app\modules\parser\Parser'
         ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
-            'layout' => '/admin.php',
+            'layout'=> '/admin.php',
         ],
         'api' => [
             'class' => 'app\modules\api\Module',
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
-            'layout' => '/admin.php',
+            'layout'=> '/admin.php',
         ],
         'toyota' => [
             'class' => 'app\modules\catalog\Catalog',
@@ -239,41 +244,64 @@ $config = [
                 'username' => 'brinexdev',
                 'password' => 'QwFGHythju8',
                 'charset' => 'utf8'],
-            'image' => 'http://new.kolesa-darom.ru:8080/image/toyota/',
+            'image' => 'http://3.kolesa-darom.ru:8080/image/toyota/',
             'layout' => 'avtocatalog',
             'controllerNamespace' => 'app\modules\catalog\controllers',
 
         ],
-        'hyundai' => [
+        'autocatalog' => [
             'class' => 'app\modules\autocatalog\Autocatalog',
-            'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs',
             'layout' => 'autocatalog',
-            'marka' =>'hyundai',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
-            'model'=>[
-                'class'=>'app\modules\autocatalog\models\Hyundai',
-            ],
-            'db' => [
-                'class' => 'yii\db\Connection',
-                'dsn' =>'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+            'models' => [
+                'hyundai' => [
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'prop' => [
+                        'marka' => 'Hyundai',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
 //: 'mysql:host=localhost;dbname=hyundai',
-                'username' => 'brinexdev',
-                'password' => 'QwFGHythju8',
-                'charset' => 'utf8'],
-        ],
-        'kia' => [
-            'class' => 'app\modules\autocatalog\Autocatalog',
-            'db' => [
-                'class' => 'yii\db\Connection',
-                'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=hyundai;port=1111' : 'mysql:host=localhost;dbname=hyundai',
-                'username' => 'brinexdev',
-                'password' => 'QwFGHythju8',
-                'charset' => 'utf8'],
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
+                'kia' => [
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'prop' => [
+                        'marka' => 'Kia',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+//: 'mysql:host=localhost;dbname=hyundai',
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
+            ],
 
-            'image_path' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/',
-            'layout' => 'autocatalog',
-            'marka' => 'kia',
-            'controllerNamespace' => 'app\modules\autocatalog\controllers',
         ],
         'auto' => [
             'class' => 'app\modules\auto\Auto',
@@ -307,6 +335,10 @@ $config = [
             'confirmWithin' => 21600,
             'admins' => ['marat'],
 
+        ],
+        // Extensions
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
         ]
     ]
 ];

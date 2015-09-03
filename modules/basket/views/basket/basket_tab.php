@@ -92,11 +92,12 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
                [
                    'class' => 'yii\grid\CheckboxColumn',
                    'checkboxOptions' => [
-                       'onChange' => 'countBasketMarkedItemsSum()'
-                   ],
+                       'onChange' => 'countBasketMarkedItemsSum()',
+                                          ],
                    'header' => yii\helpers\Html::checkBox('selection_all', false, [
                        'class' => 'select-on-check-all',
-                       'onChange' => 'countBasketMarkedItemsSum()'
+                       'onChange' => 'countBasketMarkedItemsSum()',
+                       'value' => '0'
                    ]),
                ]
            ],

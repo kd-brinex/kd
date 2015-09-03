@@ -22,15 +22,11 @@ class tovarAsset extends AssetBundle
         'css/style.css'
     ];
     public $js = [
-        'http://code.jquery.com/jquery-1.8.3.js',
         'js/jquery.tablesorter.js',
         'js/base.js',
-
-
-
     ];
     public $publishOptions = [
-        'forceCopy' => true
+        'forceCopy' => YII_DEBUG
     ];
     public $depends = [
 //        'yii\web\YiiAsset',

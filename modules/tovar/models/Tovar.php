@@ -136,22 +136,21 @@ class Tovar extends \yii\db\ActiveRecord
     /**
      * findDetails - описание функции
      */
-    public static function findDetails($params)
+    public static function findDetails($params)                                                                                     //  здесь приходят article и provider_id из URI
     {
-        $parts = Yii::$app->params['Parts'];
-        $avtoproviders = $parts['PartsProvider'];
+        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
+        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
         $details = [];
-        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);
+        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);                              //  массив condition для запроса в бд в таблицу part_provider (если есть provider_id то забираем по нему если нет то всех включенных)
         //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
-        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();
+        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();  //  собственно сам запрос в таблицу и сортировка
 //        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
 //        var_dump($providers,$params);die;
 //        $providers= PartProvider::find()->asArray()->all();
-        if (isset($params['article']) && $params['article'] != '') {
-            if (!isset($params['store_id'])) {
+        if (isset($params['article']) && $params['article'] != '') {                                                                //  работаем если есть артикуль
+            if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
                 $params['store_id'] = 109;
             }
-
             foreach ($providers as $p) {
                 if (isset($avtoproviders[$p['name']])) {
                     $provider = array_merge($avtoproviders[$p['name']], $params,$p);
@@ -166,11 +165,9 @@ class Tovar extends \yii\db\ActiveRecord
                         }
                     } else {
                         if (empty($cross)){$cross[$params['article']] = 0;}
-
                         foreach ($cross as $key => $value) {
                             $fparts->article = $key;
                             $det = $fparts->findDetails($e);
-
                             if (isset($det[0]['code'])) {
                                 $det[0]['groupid'] = $value;
                                 $details = array_merge($details, $det);
@@ -184,16 +181,12 @@ class Tovar extends \yii\db\ActiveRecord
                     if (isset($det[0]['code'])) {
                         $details = array_merge($details, $det);
                     }
-
                     $fparts->close();
                 }
-
             }
             /**Сортировка массива поп полю srokmax
              *
              * */
-
-
             function r_usort($a, $b, $key)
             {
                 $inta = intval($a[$key]);
@@ -204,7 +197,6 @@ class Tovar extends \yii\db\ActiveRecord
                 }
                 return 0;
             }
-
             usort($details, function ($a, $b) {
                 $r = r_usort($a,$b ,'weight');
                 if ($r==0){
@@ -216,9 +208,7 @@ class Tovar extends \yii\db\ActiveRecord
 
                 return $r;
             });
-
             return $details;
-
         }
     }
 }

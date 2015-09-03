@@ -8,30 +8,15 @@ namespace app\modules\autocatalog\models;
  * Time: 8:32
  */
 use yii\base\Model as BaseModel;
-
-class CCar extends BaseModel implements ICar
+use Yii;
+class CCar extends BaseModel
 {
-    public $model_name;    // - название модели
-    public $prod_start;    // - начало производства
-    public $prod_end;      // - окончание производства
-    public $models_codes;  // - код модели
-    public $catalog_code;  // - код каталога
-    public $catalog_name;  // - название каталога
-    public $region;       // - код региона
-    public $lang;          // - язык
-
-    public function getModelList($prm)
+    public $prop;
+    public $db;
+    public $image;
+    public function getDb()
     {
-        return [];
+        return $this->$db;  // use the "db2" application component
     }
 
-    public function getRegionList()    //Список регионов
-    {
-        return [];
-    }
-
-    public function getVehicle($prm)
-    {
-        return [];
-    }
 }
