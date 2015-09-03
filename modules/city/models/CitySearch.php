@@ -32,7 +32,7 @@ class CitySearch extends City
             [['latitude', 'longitude'], 'number'],
             [['enable'], 'boolean'],
 //            [['point'],'safe'],
-            [['regionName','ip'],'safe'],
+            [['regionName'],'safe'],
 
 
         ];
@@ -76,7 +76,7 @@ class CitySearch extends City
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'enable' => $this->enable,
-            'ip' => $this->ip,
+
 //            'point'=>$this->point,
 
         ]);
