@@ -13,7 +13,7 @@ class m150902_114527_order extends Migration
 
         $this->createTable('order',[
             'id' => Schema::TYPE_PK,
-            'number' => Schema::TYPE_STRING.'(15)',
+            'number' => Schema::TYPE_STRING.'(25)',
             'date' => Schema::TYPE_DATETIME,
             'user_id' => Schema::TYPE_INTEGER
         ]);

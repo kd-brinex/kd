@@ -10,7 +10,7 @@ use app\modules\user\models\Order;
 /**
  * OrderSearch represents the model behind the search form about `app\modules\basket\models\Order`.
  */
-class OrderSearch extends Order
+class OrdersSearch extends Orders
 {
     /**
      * @inheritdoc
@@ -45,7 +45,7 @@ class OrderSearch extends Order
         $params = [
             ':uid' => Yii::$app->user->id
         ];
-        $query = Order::find()
+        $query = Orders::find()
             ->andWhere('uid = :uid')
             ->addParams($params);
 
