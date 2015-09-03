@@ -57,6 +57,7 @@ class CityController extends MainController
     {
 
         $searchModel = new CitySearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -85,12 +86,13 @@ class CityController extends MainController
     public function actionCreate()
     {
         $model = new City();
+        $model->regions = $model->all_regions();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model
             ]);
         }
     }

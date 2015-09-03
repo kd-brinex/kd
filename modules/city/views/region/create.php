@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\city\models\Region */
 
-$this->title = 'Create Region';
+$this->title = 'Добавить регион';
 $this->params['breadcrumbs'][] = ['label' => 'Regions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

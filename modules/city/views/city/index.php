@@ -9,6 +9,7 @@ use yii\grid\GridView;
 
 $this->title = 'Cities';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="city-index">
 
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create City', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить город', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -29,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'region_id',
             'latitude',
             'longitude',
-             'enable',
+             'enable:boolean',
+             'regionName',
+             'ip',
              ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
