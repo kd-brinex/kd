@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'longitude',
              'enable:boolean',
              'regionName',
-             'ip',
              ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

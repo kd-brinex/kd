@@ -29,7 +29,6 @@ foreach ($model->regions as $key)
 
     <?= $form->field($model, 'longitude')->textInput() ?>
 
-    <?= $form->field($model, 'ip')->textInput() ?>
 
     <?= $form->field($model, 'enable')->checkbox() ?>
 

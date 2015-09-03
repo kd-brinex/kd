@@ -37,7 +37,7 @@ class City extends \yii\db\ActiveRecord
             [['latitude', 'longitude'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['enable'], 'boolean'],
-            [['ip'], 'safe'],
+
 //            [['dist'],'number']
 
         ];
@@ -56,7 +56,6 @@ class City extends \yii\db\ActiveRecord
             'longitude' => 'Долгота',
             'enable' => 'Использовать',
             'regionName'=> 'Регион',
-            'ip' => 'IP адрес'
 
         ];
     }
