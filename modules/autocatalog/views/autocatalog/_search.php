@@ -43,7 +43,7 @@ $items=[
 
     ],
 ];
-var_dump($items);die;
+
 ?>
 <div>
             <?=Tabs::widget([

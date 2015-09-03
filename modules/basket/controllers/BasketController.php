@@ -3,7 +3,7 @@
 namespace app\modules\basket\controllers;
 
 use app\modules\basket\models\Order;
-use app\modules\basket\models\OrderSearch;
+//use app\modules\basket\models\OrderSearch;
 use app\modules\user\models\Profile;
 use dektrium\user\models\User;
 use dektrium\user\models\UserSearch;
@@ -135,7 +135,7 @@ class BasketController extends MainController
                             if($product){
                                 $data = [
                                     $product->id,
-//                                    null,
+                                    null,
                                     $basket->manufacturer,
                                     $product->name,
                                     $basket->tovar_price,
@@ -152,7 +152,7 @@ class BasketController extends MainController
                                     $data = array_merge($data, $profileData);
                             } else {
                                 $data = [
-//                                    null,
+                                    null,
                                     $basket->part_number,
                                     $basket->manufacturer,
                                     $basket->part_name,
@@ -178,7 +178,7 @@ class BasketController extends MainController
                         }
                     }
                 }
-                $rows = ['product_id',/*'product_article',*/ 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description','store_id'/*,'provider_id'*/];
+                $rows = ['product_id','product_article', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description','store_id'/*,'provider_id'*/];
 
                 if (!Yii::$app->user->isGuest) {
                     array_unshift($rows, 'uid');
@@ -192,14 +192,23 @@ class BasketController extends MainController
 //                if(isset($fdata['deliveryStore']) && $fdata['deliveryStore'] != ''){
 //                    array_merge($rows, ['store_id']);
 //                }
-//                var_dump($rows);die;
+//                var_dump($rows, $orderData);die;
+                 $order=new Order();
+                $user_id=Yii::$app->user->id;
+                $number=$user_id.'-'.date("Ymd_hns");
+//                var_dump($number);die;
+                $order_data=['number'=>$number,'date'=>date("Y-m-d h:n:s"),'user_id'=>$user_id];
+                $order->load($order_data);
+                $order->save();
+//                var_dump($order->id);die;
+//                Yii::$app->db->createCommand()->batchInsert('order', ['number','date','user_id'], [$number,time(),Yii::$app->user->id])->execute();
                 $request = Yii::$app->db->createCommand()->batchInsert('orders', $rows, $orderData)->execute();
                 if($request > 0 )
                     return true;
                 break;
             case 'remove':
-                if(BasketSearch::deleteAll(['in', 'id', $post['id']]))
-                    return JSON::encode($_POST);//$this->basket_row($dataProvider);
+//                if(BasketSearch::deleteAll(['in', 'id', $post['id']]))
+//                    return JSON::encode($_POST);//$this->basket_row($dataProvider);
                 break;
         }
 //        $model->put($params);

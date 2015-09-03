@@ -16,7 +16,7 @@ class Profile extends BaseUser
         $ret=[
                 [['name', 'public_email', 'location', 'telephone'], 'required', 'message' => 'Необходимо заполнить поле «{attribute}».'],
                 [['public_email'], 'email'],
-                [['name', 'location'], 'match', 'pattern' => '/^[а-яА-ЯёЁ-\s]+$/u', 'message' => 'Поле «{attribute}» может содержать только русские буквы.'],
+                [['name', 'location'], 'match', 'pattern' => '/^[а-яА-ЯёЁ\s-]+$/u', 'message' => 'Поле «{attribute}» может содержать только русские буквы.'],
                 [['name'], 'string', 'max' => 15, 'tooLong' => 'Поле «{attribute}» не может превышать 15-ти символов'],
                 [['telephone'], 'match', 'pattern' => '/^[0-9+]+$/', 'message' => 'Введите номер телефона в формате: +79876543210'],
                 [['telephone'], 'unique'],
