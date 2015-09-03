@@ -83,8 +83,16 @@ NavBar::end();
 
 
         <?php
+
         Modal::begin([
-            'header' => '<img src="/img/kolesa-darom_logo.png"/>',
+            'header' => '<div class="header_img"><img src="/img/kolesa-darom_logo.png"/></div><div class="cities pull-right"><input id="city_select" type="text" placeholder="Выберите город">
+
+            <ul class="cities_select pull-right invisible">
+            </ul>
+
+            </div>
+            <div class="clearfix"></div>
+            ',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
@@ -97,6 +105,7 @@ NavBar::end();
 
         echo '<div id="city_list"></div>';
         Modal::end(); ?>
+
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
