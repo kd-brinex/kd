@@ -106,7 +106,7 @@ class CityController extends MainController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->regions = $model->all_regions();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
