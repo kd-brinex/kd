@@ -94,6 +94,7 @@ class BasketController extends MainController
                         $toBasket->tovar_price = $tovar->price;
                         $toBasket->session_id = Yii::$app->session->id;
                         $toBasket->tovar_min = 1;
+                        $toBasket->provider_id = 5; //id=5 провайдер KD ищет в локальной базе
                         if (Yii::$app->user->id)
                             $toBasket->uid = Yii::$app->user->id;
                         if ($toBasket->save())
