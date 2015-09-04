@@ -149,13 +149,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Описание',
                 'value' => 'description'
             ],
-//            [
-//                'class' => '\kartik\grid\CheckboxColumn',
-//                'hiddenFromExport' => true,
-//                'checkboxOptions' => function($model){
-//                    return ['disabled' => !(boolean)$model['provider_id']];
-//                }
-//            ]
+            [
+                'class' => '\kartik\grid\CheckboxColumn',
+                'hiddenFromExport' => true,
+                'checkboxOptions' => function($model){
+                    return ['disabled' => !(boolean)$model['provider_id']];
+                }
+            ]
 
         ],
 //        'toolbar' => [

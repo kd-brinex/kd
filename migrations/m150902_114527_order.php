@@ -10,6 +10,7 @@ class m150902_114527_order extends Migration
         $this->addColumn('orders', 'order_id', Schema::TYPE_INTEGER);
         $this->alterColumn('orders','product_id',Schema::TYPE_STRING.'(9) NULL');
         $this->alterColumn('orders','product_article',Schema::TYPE_STRING.'(32) NULL');
+        $this->addColumn('orders','provider_id',Schema::TYPE_INTEGER);
 
         $this->createTable('order',[
             'id' => Schema::TYPE_PK,
@@ -28,6 +29,7 @@ class m150902_114527_order extends Migration
         $this->addForeignKey('orders_order_fk', 'orders', 'order_id', 'order', 'id', 'RESTRICT', 'RESTRICT');
         $this->addForeignKey('order_user_fk', 'order', 'user_id', 'user', 'id', 'RESTRICT', 'RESTRICT');
         $this->addForeignKey('order_pay_order_fk', 'order_pay', 'order_id', 'order', 'id', 'RESTRICT', 'RESTRICT');
+        $this->addForeignKey('orders_part_provider_fk', 'orders', 'provider_id', 'part_provider', 'id', 'RESTRICT', 'RESTRICT');
     }
 
     public function down()
@@ -35,7 +37,9 @@ class m150902_114527_order extends Migration
         $this->dropForeignKey('orders_order_fk', 'orders');
         $this->dropForeignKey('order_user_fk', 'order');
         $this->dropForeignKey('order_pay_order_fk', 'order_pay');
+        $this->dropForeignKey('orders_part_provider_fk', 'orders');
         $this->dropColumn('orders','order_id');
+        $this->dropColumn('orders','provider_id');
         $this->dropTable('order');
         $this->dropTable('order_pay');
         echo "m150902_114527_order cannot be reverted.\n";

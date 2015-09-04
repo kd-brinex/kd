@@ -3,7 +3,7 @@
 namespace app\modules\user\models;
 
 use Yii;
-
+use app\modules\user\models\OrdersState;
 /**
  * This is the model class for table "orders".
  *
@@ -81,7 +81,7 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     public function getState(){
-        return $this->hasOne(OrderState::className(), ['id' => 'status']);
+        return $this->hasOne(OrdersState::className(), ['id' => 'status']);
     }
 
     public function getStore(){

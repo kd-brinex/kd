@@ -47,7 +47,7 @@ class OrdersController extends Controller
         $post = Yii::$app->request->post();
         $result = [];
         if(isset($post) && $post != '' && is_array($post)){
-            $model = Order::find()->with('provider')->where($post)->all();
+            $model = Orders::find()->with('provider')->where($post)->all();
             //Yii::$app->soapClient->init();
             $options = [
                 'wsdl' => 'http://ws.emex.ru/EmEx_Basket.asmx?WSDL',
@@ -85,7 +85,7 @@ class OrdersController extends Controller
     }
 
     protected function findModel($id){
-        if(($model = Order::findOne($id)) !== null)
+        if(($model = Orders::findOne($id)) !== null)
             return $model;
         else
            throw new Exception('This not found');

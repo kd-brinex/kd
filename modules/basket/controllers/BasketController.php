@@ -155,6 +155,7 @@ class BasketController extends MainController
                                     $basket->description,
                                     $fdata['deliveryStore'],
                                     $order_id,
+                                    $basket->provider_id,
 //                                    $basket->provider_id
                                 ];
                                 if (!Yii::$app->user->isGuest)
@@ -173,7 +174,8 @@ class BasketController extends MainController
                                     date('Y-m-d H:i:s'),
                                     $basket->description,
                                     $fdata['deliveryStore'],
-                                    $order_id
+                                    $order_id,
+                                    $basket->provider_id,
 //                                    $basket->provider_id
                                 ];
                                 if (!Yii::$app->user->isGuest)
@@ -190,7 +192,7 @@ class BasketController extends MainController
                         }
                     }
                 }
-                $rows = ['product_id', 'product_article', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description', 'store_id', 'order_id'];
+                $rows = ['product_id', 'product_article', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description', 'store_id', 'order_id','provider_id'];
 
                 if (!Yii::$app->user->isGuest) {
                     array_unshift($rows, 'uid');
