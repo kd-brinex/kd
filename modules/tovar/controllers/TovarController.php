@@ -212,7 +212,7 @@ class TovarController extends MainController
         $toBasket->period = $data['srokmax'];
         $toBasket->part_name = $data['name'];
         $toBasket->allsum = $data['price'];
-//        $toBasket->provider_id = $data['pid'];
+        $toBasket->provider_id = $data['pid'];
         if(Yii::$app->user->id)
             $toBasket->uid = Yii::$app->user->id;
         if($toBasket->save())
