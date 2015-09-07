@@ -36,7 +36,7 @@ public function getCatalog()
     }
     public function searchVIN($prm)
     {
-        $modelList=$this->getModelList($prm);
+        $modelList=$this->getCatalog();
         $res=false;
         foreach ($modelList as $model)
         {

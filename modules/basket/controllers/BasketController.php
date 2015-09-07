@@ -121,7 +121,7 @@ class BasketController extends MainController
             case 'order':
                 // создаем новый заказ
                 $user_id = Yii::$app->user->id;
-                $number = $user_id . '-' . date("ymd_his");
+                $number = ($user_id)?$user_id:'N' . '-' . date("ymd_his");
                 $order_data = ['number' => $number, 'date' => date("Y-m-d H:i:s"), 'user_id' => $user_id];
                 $order = new Order();
                 $order->load($order_data, '');

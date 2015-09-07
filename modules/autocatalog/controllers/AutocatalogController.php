@@ -63,9 +63,11 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $catalog = $this->module->getCatalog();
+        $model = $this->module->searchVIN($params);
         return $this->render('vin', [
             'catalog' => $catalog,
-            'params' =>$params
+            'params' =>$params,
+            'model' => $model
         ]);
     }
     public function actionDetails()

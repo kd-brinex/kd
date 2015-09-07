@@ -19,34 +19,35 @@ $items=[
     [
         'label' => 'Номер детали',
         'content' => $this->render('_search_details',['params'=>$params]),
-        'active' => ($action=='details')?true:false,
-        'options'=>['class'=>'acatalog-tabs'],
+        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
+        'active' => true,
     ],
     [
         'label' => 'VIN',
+
         'content' => $this->render('_search_vin',['params'=>$params]),
-        'options'=>['class'=>'acatalog-tabs'],
-        'active' => ($action=='vin')?true:false,
+        'options'=>['class'=>'acatalog-tabs', 'tag' => 'div'],
+
     ],
     [
         'label' => 'Автокаталог',
         'content' => $cat,
-        'options'=>['class'=>'acatalog-tabs'],
-        'active' => ($action=='catalog')?true:false,
+        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
 
     ],
     [
         'label' => 'Каталог ТО',
         'content' => $to,
-        'options'=>['class'=>'acatalog-tabs'],
-        'active' => ($action=='catalogto')?true:false,
+        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
 
     ],
+
 ];
 
 ?>
 <div>
             <?=Tabs::widget([
-    'items' => $items
+    'items' => $items,
+
 ]);?>
 </div>
