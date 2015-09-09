@@ -114,7 +114,7 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
     <div class="form-group">
         <div class="col-xs-offset-9 col-xs-12">
             <?= \yii\helpers\Html::button('Удалить', ['class' => 'btn btn-error', 'onClick' => 'removeBasketItems()'])?>
-            <?= \yii\helpers\Html::button(Yii::t('user', 'Оформить'), ['class' => 'btn btn-success', 'onClick' => 'toggleTab(2)']) ?>
+            <?= \yii\helpers\Html::button(Yii::t('user', 'Оформить'), ['class' => 'btn btn-success', 'onClick' => 'checkTab()']) ?>
         </div>
     </div>
 

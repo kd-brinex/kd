@@ -185,7 +185,7 @@ class TovarController extends MainController
 
 
         $details= (isset($params['article']))?Tovar::findDetails($params):[];
-
+//        var_dump($details);die;
         $provider = new ArrayDataProvider([
             'allModels' => $details,
             'sort' => $parts['sort'],
