@@ -22,9 +22,18 @@ class DefaultController extends ProviderController
 
     public function actionIndex(){
 
-    phpinfo();
-        /*EMEX*/
-//       var_dump($this->provider('Emex')->findDetails(['code' => 'HY012']));
+
+        function asd($d){
+            return $d;
+        }
+
+        $sdf = function(){
+          return '123';
+        };
+
+        var_dump(asd($sdf));die;
+    /*EMEX*/
+//       var_dump($this->provider('Emex')->findDetails(['code' => '32-D88-F']));
 
 //        Ответ
         //public 'GroupId' => int -370
@@ -64,7 +73,7 @@ class DefaultController extends ProviderController
         //public 'Comment' => string '' (length=0)
 
         /*Iksora*/
-//        var_dump($this->provider('Iksora')->findDetails(['code' => 'HY012']));
+//        var_dump($this->provider('Iksora')->findDetails(['code' => '32-D88-F']));
 //        Ответ
 //        public 'FindResult' =>
 //            object(stdClass)[174]
@@ -88,10 +97,7 @@ class DefaultController extends ProviderController
 //                      public 'date' => string '2015-08-20T00:00:00' (length=19)
 //
         /*Partkom*/
-//        var_dump($this->provider('Partkom')->findDetails([ // основная проблема поиска в трех последних параметрах
-//            'code'=> '90915YZZE1',
-//            'manufacture' => 920,
-//        ]));
+//        var_dump($this->provider('Partkom')->findDetails(['code'=> '32-D88-F'])); // основная проблема поиска в трех последних параметрах
 //        Ответ
 //        0 =>
 //          array (size=22)
@@ -135,7 +141,7 @@ class DefaultController extends ProviderController
 //        Ответ пустой масив
 
 //        MOSKVORECHIE
-//        var_dump($this->provider('Moskvorechie')->findDetails(['code' => '32-D88-F']));
+//        var_dump($this->provider('Moskvorechie')->findDetails(['code' => '32-D88-F'])); //32-D88-F
 
 //        Ответ
 //        string '{"result":
@@ -174,7 +180,7 @@ class DefaultController extends ProviderController
 //                        ]
 //                    ]
 //                 ];
-//        var_dump($this->provider('Berg')->findDetails(['code' => 'HY012', 'manufacture' => 672]));
+//        var_dump($this->provider('Berg')->findDetails(['code' => '32-D88-F']));//32-D88-F
 //        Ответ
 //        {"resources":
 //              [
@@ -270,30 +276,5 @@ class DefaultController extends ProviderController
 //                           'assured_time' => string '2015-08-31T10:33:51+0300' (length=24)
 //                           'state_id' => int 296
 //                           'comment' => string 'произвольный комментарий 3' (length=49)
-
-
-
-
-
-//        function array_searchRecursive( $needle, $haystack, $arrayOrString = 0, $strict = false, $path = [], $fullIndex = ''){
-//            if(!is_array($haystack))
-//                return false;
-//
-//            foreach($haystack as $key => $val){
-//                if (is_array($val) && $subPath = array_searchRecursive($needle, $val, $arrayOrString, $strict, $path, $fullIndex))
-//                    $path = array_merge($path, array($key), $subPath);
-//                else if((!$strict && $val == $needle) || ($strict && $val === $needle))
-//                    $path[] = $key;
-//
-//                foreach ($path as $k) {
-//                    $fullIndex .= '[' . $k . ']';
-//                }
-//
-//                return $result = $arrayOrString ? $fullIndex : $path;
-//
-//            }
-//            return false;
-//        }
-//
     }
 }

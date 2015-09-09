@@ -99,20 +99,20 @@ class Order extends \yii\db\ActiveRecord
             $this->datetime = new \yii\db\Expression('NOW()');
         }
 
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('Y-m-d H:i:s');
+//        $date = new \DateTime($this->pay_datetime);
+//        $this->pay_datetime = $date->format('Y-m-d H:i:s');
 
         $date = new \DateTime($this->datetime);
         $this->datetime = $date->format('Y-m-d H:i:s');
         return parent::beforeSave($insert);
     }
     public function afterSave($insert, $changedAttributes){
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('d.m.Y H:i');
+//        $date = new \DateTime($this->pay_datetime);
+//        $this->pay_datetime = $date->format('d.m.Y H:i');
     }
     public function afterFind(){
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('d.m.Y H:i');
+//        $date = new \DateTime($this->pay_datetime);
+//        $this->pay_datetime = $date->format('d.m.Y H:i');
 
         $date = new \DateTime($this->datetime);
         $this->datetime = $date->format('d.m.Y H:i');

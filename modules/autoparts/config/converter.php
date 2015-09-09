@@ -31,7 +31,8 @@ return [
             19 => 'pid',
             20 => 'srokdays',
             21 => 'weight',
-            22 => 'cross'
+            22 => 'cross',
+            23 => 'ball',
         ],
         'providersFieldsParams' => [
             'Emex' => [
@@ -75,25 +76,8 @@ return [
                     'findDetails' => [
                         'params' => [
                             'in' => [
-//                                  public 'number' => string 'HY012' (length=5)
-//                                  public 'maker' => string 'HDK' (length=3)
-//                                  public 'name' => string 'ШРУС ВНЕШНИЙ' (length=23)
-//                                  public 'quantity' => string '>4' (length=2)
-//                                  public 'lotquantity' => int 2
-//                                  public 'price' => float 1827.42
-//                                  public 'pricedestination' => float 0
-//                                  public 'days' => int 0
-//                                  public 'dayswarranty' => int 0
-//                                  public 'region' => string 'АВТО-ИКСОРА СКЛАД' (length=32)
-//                                  public 'estimation' => string '5 5 5' (length=5)
-//                                  public 'orderreference' => string '0-91001-1-64-3-43385284-2-0' (length=27)
-//                                  public 'group' => string 'Original' (length=8)
-//                                  public 'date' => string '2015-08-20T00:00:00' (length=19)
                                 0 =>    'Number',                               // Номер
                                 2 =>    'Maker',                                // Производитель
-
-    //                            StockOnly' => '
-    //                            SubstFilter' =>
                             ],
                             'out' => [
                                 0 => 'number',
@@ -101,9 +85,12 @@ return [
                                 2 => 'maker',
                                 3 => 'price',
                                 4 => 'quantity',
+                                5 => 'days',
+                                6 => 'dayswarranty',
+                                8 => 'orderrefernce',
                                 11=> 'lotquantity',
+                                12=> 'date',
                                 13=> 'pricedestination',
-                                20=> 'days',
                                 15=> 'region',
                                 10=> 'estimation',
                                 16=> 'group',
@@ -126,9 +113,6 @@ return [
                                 11 =>   'minQuantity',
                                 12 =>   'lastUpdateDate',
                                 13 =>   'PriceDestination',
-    //                          'statSuccessCount'=>'statSuccessCount',
-    //                          'statRefusalCount'=>'statRefusalCount',
-    //                          'statTotalOrderCount'=>'statTotalOrderCount',
                                 14 =>   'providerId',
                                 15 =>   'providerDescription',
                                 16 =>   'detailGroup',
@@ -138,8 +122,10 @@ return [
                                 1 =>    'description',
                                 2 =>    'maker',
                                 3 =>    'price',
+                                4 =>    'quantity',
                                 5 =>    'minDeliveryDays',
-                                6 =>    'maxDeliveryDays',
+                                6 =>    'warrantedDeliveryDays',
+                                10 =>   'statProvider',
                                 11 =>   'minQuantity',
                                 12 =>   'lastUpdateDate',
                                 13 =>   'PriceDestination',
@@ -161,21 +147,14 @@ return [
                                 2 => 'f',                                      // = brand name - Название производителя, при необходимости мы сможете отфильтровать по определенному производителю.
                             ],
                             'out' => [
-                                0 => 'nr',
-                                1 => 'name',
-                                2 => 'brand',
-                                3 => 'price'
-
-//                                "nr":"334614",
-//                              "brand":"Kayaba",
-//                              "name":"Амортизатор BMW 3 E46 -05 пер.прав.газ.SPORT",
-//                              "stock":"1",
-//                              "delivery":"2 дня",
-//                              "minq":"1",
-//                              "upd":"25.08.15 08:02",
-//                              "price":"4674.30",
-//                              "currency":"руб.",
-//                              "gid":"1001232170"
+                                1  => 'name',
+                                2  => 'brand',
+                                3  => 'price',
+                                4  => 'stock',
+                                6  => 'delivery',
+                                8  => 'gid',
+                                11 => 'minq',
+                                12 => 'upd',
                             ]
                         ]
                     ]
@@ -193,6 +172,16 @@ return [
         //                              2  => 'brand_name',
                                     ]
                                 ]
+                            ],
+                            'out' => [
+                                0 => 'article',
+                                1 => 'name',
+                                3 => 'price',
+                                4 => 'quantity',
+                                5 => 'average_period',
+                                6 => 'assured_period',
+                                10 => 'reliability',
+                                11 => 'multiplication_factor'
                             ]
                         ]
                     ]

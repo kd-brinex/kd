@@ -2,6 +2,7 @@
 
 namespace app\modules\tovar\models;
 
+use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\basket\models\BasketSearch;
 use Yii;
 use app\modules\autoparts\models\PartProvider;
@@ -138,77 +139,102 @@ class Tovar extends \yii\db\ActiveRecord
      */
     public static function findDetails($params)                                                                                     //  здесь приходят article и provider_id из URI
     {
-        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
-        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
         $details = [];
-        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);                              //  массив condition для запроса в бд в таблицу part_provider (если есть provider_id то забираем по нему если нет то всех включенных)
-        //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
-        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();  //  собственно сам запрос в таблицу и сортировка
-//        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
-//        var_dump($providers,$params);die;
-//        $providers= PartProvider::find()->asArray()->all();
-        if (isset($params['article']) && $params['article'] != '') {                                                                //  работаем если есть артикуль
-            if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
-                $params['store_id'] = 109;
-            }
-            foreach ($providers as $p) {
-                if (isset($avtoproviders[$p['name']])) {
-                    $provider = array_merge($avtoproviders[$p['name']], $params,$p);
-                    $fparts = new $provider['class']($provider);
-                    //$fparts->flagpostav = $p['flagpostav'];
-                    //$fparts->setData($p);
-                    $e = [];
-                    if ($p['cross'] == 1) {
-                        $det = $fparts->findDetails($e);
-                        foreach ($det as $i) {
-                            $cross[$i['code']] = $i['groupid'];
-                        }
-                    } else {
-                        if (empty($cross)){$cross[$params['article']] = 0;}
-                        foreach ($cross as $key => $value) {
-                            $fparts->article = $key;
-                            $det = $fparts->findDetails($e);
-                            if (isset($det[0]['code'])) {
-                                $det[0]['groupid'] = $value;
-                                $details = array_merge($details, $det);
-                                $det=[];
-                            }
-                        }
-                        if (isset($params['test'])) {
-                            print_r($fparts->errors);
-                        }
-                    }
-                    if (isset($det[0]['code'])) {
-                        $details = array_merge($details, $det);
-                    }
-                    $fparts->close();
-                }
-            }
-            /**Сортировка массива поп полю srokmax
-             *
-             * */
-            function r_usort($a, $b, $key)
-            {
-                $inta = intval($a[$key]);
-                $intb = intval($b[$key]);
+        $providerObj = null;
+        $providers = PartProviderSearch::find()
+                    ->where('enable = :enable', [':enable' => 1])
+                    ->all();
+        foreach($providers as $provider){
+            if($provider->enable) {/*name == 'Berg'*/
+                $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
+                $items = $providerObj->findDetails(['code' => $params['article']]);
 
-                if ($inta != $intb) {
-                    return ($inta > $intb) ? 1 : -1;
+                foreach($items as $item){
+//                    if($provider->cross){
+//                        $crossDetails = $providerObj->findDetails(['code' => $item['code']]);
+//                        foreach($crossDetails as $detail){
+//                            array_push($details, $detail);
+//                        }
+//                    }
+                    array_push($details, $item);
                 }
-                return 0;
             }
-            usort($details, function ($a, $b) {
-                $r = r_usort($a,$b ,'weight');
-                if ($r==0){
-                    $r = r_usort($a, $b, 'price');
-                    if ($r == 0) {
-                        $r = r_usort($a, $b, 'srokmax');
-                    }
-                }
-
-                return $r;
-            });
-            return $details;
         }
-    }
+        return $details;
+    //        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
+//        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
+//        $details = [];
+//        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);                              //  массив condition для запроса в бд в таблицу part_provider (если есть provider_id то забираем по нему если нет то всех включенных)
+//        //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
+//        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();  //  собственно сам запрос в таблицу и сортировка
+////        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
+////        var_dump($providers,$params);die;
+////        $providers= PartProvider::find()->asArray()->all();
+//        if (isset($params['article']) && $params['article'] != '') {                                                                //  работаем если есть артикуль
+//            if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
+//                $params['store_id'] = 109;
+//            }
+//            foreach ($providers as $p) {
+//                if (isset($avtoproviders[$p['name']])) {
+//                   $provider = Yii::$app->getModule('autoparts')->run->provider($p['name']);
+//                    $details = $provider->findDetails(['code' => $params['article']]);
+////                   $provider = array_merge($avtoproviders[$p['name']], $params,$p);
+////                    $fparts = new $provider['class']($provider);
+////                    //$fparts->flagpostav = $p['flagpostav'];
+////                    //$fparts->setData($p);
+////                    $e = [];
+////                    if ($p['cross'] == 1) {
+////                        $det = $fparts->findDetails($e);
+//////                        var_dump($det);die;
+////                        foreach ($det as $i) {
+////                            $cross[$i['code']] = $i['groupid'];
+////                        }
+////                    } else {
+////                        if (empty($cross)){$cross[$params['article']] = 0;}
+//////                        foreach ($cross as $key => $value) {
+//////                            $fparts->article = $key;
+//////                            $det = $fparts->findDetails($e);
+//////                            if (isset($det[0]['code'])) {
+//////                                $det[0]['groupid'] = $value;
+//////                                $details = array_merge($details, $det);
+//////                                $det=[];
+//////                            }
+//////                        }
+////                        if (isset($params['test'])) {
+////                            print_r($fparts->errors);
+////                        }
+////                    }
+////                    if (isset($det[0]['code'])) {
+////                        $details = array_merge($details, $det);
+////                    }
+////                    $fparts->close();
+//                }
+//            }
+//                /**Сортировка массива поп полю srokmax
+//             *
+//             * */
+//            function r_usort($a, $b, $key)
+//            {
+//                $inta = intval($a[$key]);
+//                $intb = intval($b[$key]);
+//
+//                if ($inta != $intb) {
+//                    return ($inta > $intb) ? 1 : -1;
+//                }
+//                return 0;
+//            }
+//            usort($details, function ($a, $b) {
+//                $r = r_usort($a,$b ,'weight');
+//                if ($r==0){
+//                    $r = r_usort($a, $b, 'price');
+//                    if ($r == 0) {
+//                        $r = r_usort($a, $b, 'srokmax');
+//                    }
+//                }
+//
+//                return $r;
+//            });
+//            return $details;
+        }
+//    }
 }

@@ -22,7 +22,7 @@ class OrdersController extends Controller
         $orders = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 2
+                'pageSize' => 50
             ]
         ]);
         return $this->render('orders', ['orders' => $orders]);
