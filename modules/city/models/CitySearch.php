@@ -54,6 +54,7 @@ class CitySearch extends City
      *
      * @return ActiveDataProvider
      */
+
     public function search($params)
     {
         $query = City::find();
@@ -61,11 +62,10 @@ class CitySearch extends City
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
+            // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
@@ -76,20 +76,23 @@ class CitySearch extends City
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'enable' => $this->enable,
+
 //            'point'=>$this->point,
-            'regionName'=>$this->regionName,
 
         ]);
 
-//        $query->andFilterWhere(['like', 'name', $this->name]);
 
-        return $query;
+
+        return $dataProvider;
     }
     public function find_list($params){
     $query['stories'] = City::find()->select('geobase_city.name,geobase_city.id')
         ->leftJoin('t_store','t_store.city_id=geobase_city.id')
             ->where('t_store.id IS NOT NULL')->orderBy('geobase_city.name')->asArray()->all();
-    $query['regions'] = Region::find()->asArray()->orderBy('geobase_region.name')->all();
+    $query['stories_all'] = City::find()->leftJoin('t_store','t_store.city_id=geobase_city.id')
+        ->where('t_store.id IS NULL')->orderBy('geobase_city.name')->asArray()->all();
+        //echo '<pre>';print_r($query['stories_all']);echo '</pre>';die;
+  $query['regions'] = Region::find()->asArray()->orderBy('geobase_region.name')->all();
 
         return $query;
 

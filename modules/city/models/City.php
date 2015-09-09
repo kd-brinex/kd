@@ -16,6 +16,7 @@ use app\modules\city\models\Region;
  */
 class City extends \yii\db\ActiveRecord
 {
+    public $regions;
     /**
      * @inheritdoc
      */
@@ -31,12 +32,12 @@ class City extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'region_id', 'latitude', 'longitude', 'enable'], 'required'],
+            [['name', 'region_id', 'latitude', 'longitude', 'enable'], 'required'],
             [['id', 'region_id'], 'integer'],
             [['latitude', 'longitude'], 'number'],
             [['name'], 'string', 'max' => 50],
-            [['id'], 'unique'],
             [['enable'], 'boolean'],
+
 //            [['dist'],'number']
 
         ];
@@ -51,9 +52,10 @@ class City extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Город',
             'region_id' => 'Код региона',
-            'latitude' => 'Широта',
+            'latitude' =>'Широта',
             'longitude' => 'Долгота',
             'enable' => 'Использовать',
+            'regionName'=> 'Регион',
 
         ];
     }
@@ -67,6 +69,11 @@ class City extends \yii\db\ActiveRecord
     /* Геттер для названия региона */
     public function getRegionName()
     {
-        return $this->region->region_name;
+        return $this->region->name;
+    }
+
+    public function  all_regions()
+    {
+        return Region::find()->asArray()->all();
     }
 }

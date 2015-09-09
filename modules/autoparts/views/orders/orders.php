@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'ID/Артикул',
                 'format' => 'raw',
                 'value' => function($model){
-                    $string = '<strong style="color:#9D9D9D">'.($model['product_id']?$model['product_id']:'Нет').'</strong> / <strong style="color:#9D9D9D"></strong>';//'.($model['product_article']?$model['product_article']:'Нет').'
+                    $string = '<strong style="color:#9D9D9D">'.($model['product_id']?$model['product_id']:'Нет').'</strong> / <strong style="color:#9D9D9D">'.($model['product_article']?$model['product_article']:'Нет').'</strong>';
                     return $string;
                 }
             ],
@@ -98,34 +98,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Дата',
                 'value' => 'datetime'
             ],
-//            [
-//                'class' => 'kartik\grid\EditableColumn',
-//                'label' => 'Платеж',
-//                'attribute' => 'pay_datetime',
-//                'editableOptions'=> function ($model, $key, $index) {
-//                    return [
-//                        'header'=>'дату платежа',
-//                        'size'=>'md',
-//                        'inputType' => \kartik\editable\Editable::INPUT_WIDGET,
-//                        'widgetClass' => '\kartik\widgets\DateTimePicker',
-//                        'options' => [
-//                           'value' => /*$model['pay_datetime']*/'',
-//                           'pluginOptions' => [
-//                               'autoclose'=>true,
-//                               'format' => 'dd.mm.yyyy hh:mm'
-//                           ]
-//                        ],
-//                        'formOptions' => [
-//                            'action' => 'update'
-//                        ],
-//
-//
-//                     ];
-//                },
-//                'value' => 'normalizeDate'
-//
-//
-//            ],
+            [
+                'class' => 'kartik\grid\EditableColumn',
+                'label' => 'Платеж',
+                'attribute' => 'pay_datetime',
+                'editableOptions'=> function ($model, $key, $index) {
+                    return [
+                        'header'=>'дату платежа',
+                        'size'=>'md',
+                        'inputType' => \kartik\editable\Editable::INPUT_WIDGET,
+                        'widgetClass' => '\kartik\widgets\DateTimePicker',
+                        'options' => [
+                           'value' => $model['pay_datetime'],
+                           'pluginOptions' => [
+                               'autoclose'=>true,
+                               'format' => 'dd.mm.yyyy hh:mm'
+                           ]
+                        ],
+                        'formOptions' => [
+                            'action' => 'update'
+                        ],
+
+
+                     ];
+                },
+                'value' => 'normalizeDate'
+
+
+            ],
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'expandAllTitle' => 'Место доставки',
@@ -153,7 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => '\kartik\grid\CheckboxColumn',
                 'hiddenFromExport' => true,
                 'checkboxOptions' => function($model){
-                    return ['disabled' => /*!(boolean)$model['provider_id']*/''];
+                    return ['disabled' => !(boolean)$model['provider_id']];
                 }
             ]
 

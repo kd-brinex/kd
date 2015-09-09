@@ -16,14 +16,35 @@ echo '<div id="city_list_block">';
 echo '<div class="city">';
 
 ?>
+<ul class="stories_s" style="display: none;">
+    <p class="ul_title">Шинные центры:</p>
+    <p class="not_found ul_title">Ничего не найдено.</p>
+    <?php
+    foreach ($data['stories'] as $city)
+    {
+        echo '<li><a href="#"  onclick="setCookies(\'city\',\''.$city['id'].'\',\'cl=true\')">'.$city['name'].'</a></li>';
+    }
+    ?>
+</ul>
+<ul class="stories_all" style="display: none">
+    <p class="ul_title">Доставка в другие города:</p>
+    <?php
+    foreach ($data['stories_all'] as $city)
+    {
+        echo '<li><a href="#"   onclick="setCookies(\'city\',\''.$city['id'].'\',\'cl=true\')">'.$city['name'].'</a></li>';
+    }
+    ?>
+</ul>
+
 <div class="row">
     <div class="col-lg-3 stories">
-        <p>Шинные центры:</p>
+
         <ul>
+            <p>Шинные центры:</p>
             <?php
                 foreach ($data['stories'] as $city)
                 {
-                    echo '<li><a href="#"   char="'.mb_substr($city['name'],0,1,'utf-8').'" onclick="setCookies(\'city\',\''.$city['id'].'\',\'cl=true\')">'.$city['name'].'</a></li>';
+                    echo '<li><a href="#"  onclick="setCookies(\'city\',\''.$city['id'].'\',\'cl=true\')">'.$city['name'].'</a></li>';
                 }
             ?>
         </ul>
