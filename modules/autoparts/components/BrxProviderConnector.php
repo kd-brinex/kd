@@ -70,6 +70,7 @@ class BrxProviderConnector
         return $params;
     }
 
+
     private function getAuthParamsByTemplate($method){
         foreach($this->authParamsTemplate as $key => $value){
             if(($index = array_search($key, $this->authParams)) !== false)

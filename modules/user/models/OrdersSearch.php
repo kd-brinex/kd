@@ -45,7 +45,7 @@ class OrdersSearch extends Orders
         $params = [
             ':uid' => Yii::$app->user->id
         ];
-        $query = Orders::find()
+        $query = self::find()
             ->andWhere('uid = :uid')
             ->addParams($params);
 

@@ -198,7 +198,7 @@ td.itemDescription textarea{
     border: none;
     background-color: inherit;
     width: 150px;
-    height: 150px;
+    /*height: 150px;*/
     resize: none;
 }
 .editableInput{

@@ -47,7 +47,6 @@ class AutocatalogController extends MainController
         ];
     }
 
-
     public function actionIndex()
     {
         $params = \Yii::$app->request->queryParams;
@@ -94,5 +93,6 @@ class AutocatalogController extends MainController
             'params' =>$params
         ]);
     }
+
 
 }
