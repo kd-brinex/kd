@@ -8,7 +8,7 @@ namespace app\modules\autocatalog\models;
  * Time: 16:49
  */
 use yii\db\Query;
-
+use yii\db\Expression;
 class Hyundai extends CCar
 {
     public function searchVIN($params)
@@ -22,22 +22,22 @@ class Hyundai extends CCar
             ->where('vin = :vin', [':vin' => $vin]);
 
         $vin_options = $query_options->one($this->getDb()); // результат - 1 запись (даже при множесвенном MC_API->vin_vin_model)
-
+//var_dump($vin_options);die;
         $query_models = new Query();
-        $query_models->select('vv.vin, vv.vin_date, vv.*')
+        $query_models->select('vv.vin, vv.vin_date, vv.*, vm.catalogue_code, vm.group_type')
             ->from('vin_vin vv')
             ->leftJoin('vin_model vm', 'vv.vin_model_id = vm.vin_model_id')
             ->where('vin = :vin', [':vin' => $vin]);
-        if (!empty($params['catalog_code'])) $query_models->andWhere("catalog_code = :catalog_code", [':catalog_code' => $params['catalog_code']]);
+        if (!empty($params['catalogue_code'])) $query_models->andWhere("catalogue_code = :catalog_code", [':catalog_code' => $params['catalog_code']]);
         $vin_models = $query_models->all($this->getDb()); // результат может быть множественным!!! 5XYZH4AG8BG000618
 
-
+//var_dump($vin_models);die;
         if (empty($vin_models) and !empty($vin_options)) {
 
             $query_models->select('*')
                 ->from('vin_model')
                 ->where('vin_model_id = :vin_model_id', [':vin_model_id' => $vin_options['vin_model_id']]);
-            if (!empty($params['catalog_code'])) $query_models->andWhere("catalog_code = :catalog_code", [':catalog_code' => $params['catalog_code']]);
+            if (!empty($params['catalogue_code'])) $query_models->andWhere("catalogue_code = :catalog_code", [':catalog_code' => $params['catalog_code']]);
 
             $vin_models = $query_models->all($this->getDb());
         }
@@ -66,7 +66,7 @@ class Hyundai extends CCar
             // в cats0_catalog - больше на 1 модель - MAL020PA01, но винов для нее - нету
             // SELECT * FROM vin_model WHERE catalogue_code = 'MAL020PA01';
             // SELECT * FROM vin_vin WHERE vin_model_id IN (19968, 26799) LIMIT 10;
-            var_dump($vin_model);die;
+//            var_dump($vin_model);die;
             $catalog = $this->catalog(array('catalogue_code' => $vin_model['catalogue_code']));
             //$catalog = $catalog[0];
             $v_res['catalog'] = $catalog;
@@ -75,7 +75,7 @@ class Hyundai extends CCar
             $v_res['cat_catalog'] = $cat_catalog;//[0];
 
             $v_res['vin_model_year'] = self::vin_model_year(array('vin' => $vin, 'production_date' => $vin_options['production_date']));
-
+//var_dump($vin_model);die;
             //получить цвет
             $v_res['catalog_extcolor'] = array();
             if ($vin_options['exterior_color'] != '') {
@@ -88,7 +88,7 @@ class Hyundai extends CCar
 
             $catalog_ucctype = $this->cat_ucctype(array('lang_code' => $req_lang_code, 'catalogue_code' => $vin_model['catalogue_code'])); //виды харакетристик авто
             $v_res['catalog_ucctype'] = $catalog_ucctype;
-            $v_res['catalog_ucctype_key'] = array_flip_2($catalog_ucctype, 'ucc_type'); //проиндексируем
+            $v_res['catalog_ucctype_key'] = $this->array_flip_2($catalog_ucctype, 'ucc_type'); //проиндексируем
             $v_res['catalog_ucc'] = $this->cat_ucc(array('lang_code' => $req_lang_code, 'catalogue_code' => $vin_model['catalogue_code'])); //харакетристики авто
 
             // для оптимизации получим сразу все описания options
@@ -160,13 +160,13 @@ $query = new Query();
         }*/
 
         $res = $query->one($this->getDb());
-        return $res[0];
+        return $res;
     }
     public function get_catalog_image_path(array $prms){
         if(empty($prms['cat_folder']))
             return "";
 
-        return $this->image."Cutups/".$prms['cat_folder'].".rle";
+        return $this->image['models']."Cutups/".$prms['cat_folder'].".rle";
     }
     public function cat_catalog(array $prms){
         if(empty($prms['lang_code']) or empty($prms['catalogue_code']))
@@ -390,16 +390,16 @@ $query = new Query();
             'up_lex_desc'=>$COALESCE4,
         ]);
         $query->from(['color' => $query_from]);
-        $query->join('LEFT OUTER','lex_lex lex_def',"lex_def.lang_code = 'EN' AND color.up_lex_code = lex_def.lex_code" );
-        $query->join('LEFT OUTER','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND color.up_lex_code = lex_loc.lex_code" );
-        $query->join('LEFT OUTER','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND color.up_lex_code = lex_qual_def.lex_code" );
-        $query->join('LEFT OUTER','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND color.up_lex_code = lex_qual_loc.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex lex_def',"lex_def.lang_code = 'EN' AND color.up_lex_code = lex_def.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND color.up_lex_code = lex_loc.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND color.up_lex_code = lex_qual_def.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND color.up_lex_code = lex_qual_loc.lex_code" );
 
 
-        $query->join('LEFT OUTER','lex_lex down_lex_def',"down_lex_def.lang_code = 'EN' AND color.down_lex_code = down_lex_def.lex_code" );
-        $query->join('LEFT OUTER','lex_lex down_lex_loc',"down_lex_loc.lang_code = 'RU' AND color.down_lex_code = down_lex_loc.lex_code" );
-        $query->join('LEFT OUTER','lex_lex down_lex_qual_def',"down_lex_qual_def.lang_code = 'QE' AND color.down_lex_code = down_lex_qual_def.lex_code" );
-        $query->join('LEFT OUTER','lex_lex down_lex_qual_loc',"down_lex_qual_loc.lang_code = 'QR' AND color.down_lex_code = down_lex_qual_loc.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex down_lex_def',"down_lex_def.lang_code = 'EN' AND color.down_lex_code = down_lex_def.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex down_lex_loc',"down_lex_loc.lang_code = 'RU' AND color.down_lex_code = down_lex_loc.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex down_lex_qual_def',"down_lex_qual_def.lang_code = 'QE' AND color.down_lex_code = down_lex_qual_def.lex_code" );
+        $query->join('LEFT OUTER JOIN','lex_lex down_lex_qual_loc',"down_lex_qual_loc.lang_code = 'QR' AND color.down_lex_code = down_lex_qual_loc.lex_code" );
 
 //
 //        $sql = "
@@ -447,6 +447,7 @@ $query = new Query();
 
         return $res;
     }
+
     public function cat_ucctype(array $prms){
         if(empty($prms['lang_code']) or empty($prms['catalogue_code']))
             die(__METHOD__.": Не заданы обязательные параметры!");
@@ -462,10 +463,10 @@ $query = new Query();
             'lex_desc'=>$COALESCE2,
         ]);
         $query -> from('cats0_ucctype ucctype')
-            ->join('LEFT OUTER','lex_lex lex_def',"lex_def.lang_code = 'EN' AND ucctype.lex_code = lex_def.lex_code")
-            ->join('LEFT OUTER','lex_lex lex_loc',"lex_loc.lang_code = 'RU AND ucctype.lex_code = lex_loc.lex_code")
-            ->join('LEFT OUTER','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND ucctype.lex_code = lex_qual_def.lex_code")
-            ->join('LEFT OUTER','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND ucctype.lex_code = lex_qual_loc.lex_code");
+            ->join('LEFT OUTER JOIN','lex_lex lex_def',"lex_def.lang_code = 'EN' AND ucctype.lex_code = lex_def.lex_code")
+            ->join('LEFT OUTER JOIN','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND ucctype.lex_code = lex_loc.lex_code")
+            ->join('LEFT OUTER JOIN','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND ucctype.lex_code = lex_qual_def.lex_code")
+            ->join('LEFT OUTER JOIN','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND ucctype.lex_code = lex_qual_loc.lex_code");
         $query->where('catalogue_code=:catalogue_code',[':catalogue_code'=>$prms['catalogue_code']]);
 
 //        $sql = "
@@ -505,15 +506,15 @@ $query = new Query();
             'ucc_lang_code'=>$COALESCE3,
             'ucc_lex_desc'=>$COALESCE4,
         ]);
-        $query->from('ats0_ucc ucc');
-        $query->join('LEFT OUTER','lex_lex lex_def',"lex_def.lang_code = 'EN' AND ucc.type_lex_code = lex_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND ucc.type_lex_code = lex_loc.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND ucc.type_lex_code = lex_qual_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND ucc.type_lex_code = lex_qual_loc.lex_code");
-        $query->join('LEFT OUTER','lex_lex ucc_lex_def',"ucc_lex_def.lang_code = 'EN' AND ucc.lex_code1 = ucc_lex_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex ucc_lex_loc',"ucc_lex_loc.lang_code = 'RU' AND ucc.lex_code1 = ucc_lex_loc.lex_code");
-        $query->join('LEFT OUTER','lex_lex ucc_lex_qual_def',"ucc_lex_qual_def.lang_code = 'QE' AND ucc.lex_code1 = ucc_lex_qual_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex ucc_lex_qual_loc',"ucc_lex_qual_loc.lang_code = 'QR' AND ucc.lex_code1 = ucc_lex_qual_loc.lex_code");
+        $query->from('cats0_ucc ucc');
+        $query->join('LEFT OUTER JOIN','lex_lex lex_def',"lex_def.lang_code = 'EN' AND ucc.type_lex_code = lex_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND ucc.type_lex_code = lex_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND ucc.type_lex_code = lex_qual_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND ucc.type_lex_code = lex_qual_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex ucc_lex_def',"ucc_lex_def.lang_code = 'EN' AND ucc.lex_code1 = ucc_lex_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex ucc_lex_loc',"ucc_lex_loc.lang_code = 'RU' AND ucc.lex_code1 = ucc_lex_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex ucc_lex_qual_def',"ucc_lex_qual_def.lang_code = 'QE' AND ucc.lex_code1 = ucc_lex_qual_def.lex_code");
+        $query->join('LEFT OUTER JOIN ','lex_lex ucc_lex_qual_loc',"ucc_lex_qual_loc.lang_code = 'QR' AND ucc.lex_code1 = ucc_lex_qual_loc.lex_code");
         $query->where('catalogue_code=:catalogue_code',['catalogue_code'=>$prms['catalogue_code']]);
 //        $sql = "
 //SELECT
@@ -571,10 +572,10 @@ $query = new Query();
             'lex_desc'=>$COALESCE2
         ]);
         $query->from('cats0_options');
-        $query->join('LEFT OUTER','lex_lex lex_def',"lex_def.lang_code = 'EN' AND cats0_options.lex_code1 = lex_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND cats0_options.lex_code1 = lex_loc.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND cats0_options.lex_code1 = lex_qual_def.lex_code");
-        $query->join('LEFT OUTER','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND cats0_options.lex_code1 = lex_qual_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_def',"lex_def.lang_code = 'EN' AND cats0_options.lex_code1 = lex_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND cats0_options.lex_code1 = lex_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND cats0_options.lex_code1 = lex_qual_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND cats0_options.lex_code1 = lex_qual_loc.lex_code");
         $query->where('catalogue_code=:catalogue_code',[':catalogue_code'=>$prms['catalogue_code']]);
         if(!empty($options)) $query->andWhere(['option'=>$options]);
 //        $sql = "
@@ -596,7 +597,56 @@ $query = new Query();
 //        if(!empty($options)) $where[] = "`option` IN ($options)";
 
         $res = $query->all($this->getDb());
-        $res = array_flip_2($res, 'option'); // проиндексируем
+        $res = $this->array_flip_2($res, 'option'); // проиндексируем
+
+        return $res;
+    }
+    function array_flip_2(array $_array, $_key){
+        $res = array();
+        foreach($_array as $row){
+            $res[$row[$_key]] = $row;
+        }
+        return $res;
+    }
+    public function cat_color_interior(array $prms){
+        if(empty($prms['lang_code']))
+            die(__METHOD__.": Не задано обязательный параметр - lang_code!");
+
+        if(empty($prms['color_code'])) return '';
+
+        $lang_code = $prms['lang_code'];
+        $q_lang_code = 'Q'.substr($lang_code,0,1);
+        $query = new Query();
+        $COALESCE1 = new Expression('COALESCE(lex_qual_loc.lang_code, lex_loc.lang_code, lex_qual_def.lang_code, lex_def.lang_code)');
+        $COALESCE2 = new Expression('COALESCE(lex_qual_loc.lex_desc, lex_loc.lex_desc, lex_qual_def.lex_desc, lex_def.lex_desc)');
+        $query->select('color_code');
+        $query->addSelect([
+            'lang_code'=>$COALESCE1,
+            'lex_desc'=>$COALESCE2
+        ]);
+        $query->from('cats0_intcolor color');
+        $query->join('LEFT OUTER JOIN','lex_lex lex_def',"lex_def.lang_code = 'EN' AND color.lex_code = lex_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_loc',"lex_loc.lang_code = 'RU' AND color.lex_code = lex_loc.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_def',"lex_qual_def.lang_code = 'QE' AND color.lex_code = lex_qual_def.lex_code");
+        $query->join('LEFT OUTER JOIN','lex_lex lex_qual_loc',"lex_qual_loc.lang_code = 'QR' AND color.lex_code = lex_qual_loc.lex_code");
+        $query->where('color_code=:color_code',[':color_code'=>$prms['color_code']]);
+
+//        $sql = "
+//#EXPLAIN
+//SELECT
+//  color_code,
+//  COALESCE(lex_qual_loc.lang_code, lex_loc.lang_code, lex_qual_def.lang_code, lex_def.lang_code) lang_code,
+//  COALESCE(lex_qual_loc.lex_desc, lex_loc.lex_desc, lex_qual_def.lex_desc, lex_def.lex_desc) lex_desc
+//FROM cats0_intcolor color
+//  LEFT OUTER JOIN lex_lex lex_def ON lex_def.lang_code = 'EN' AND color.lex_code = lex_def.lex_code
+//  LEFT OUTER JOIN lex_lex lex_loc ON lex_loc.lang_code = '$lang_code' AND color.lex_code = lex_loc.lex_code
+//  LEFT OUTER JOIN lex_lex lex_qual_def ON lex_qual_def.lang_code = 'QE' AND color.lex_code = lex_qual_def.lex_code
+//  LEFT OUTER JOIN lex_lex lex_qual_loc ON lex_qual_loc.lang_code = '$q_lang_code' AND color.lex_code = lex_qual_loc.lex_code
+//WHERE
+//  color_code = '".$prms['color_code']."'
+//";
+
+        $res = $query->all($this->getDb());
 
         return $res;
     }
