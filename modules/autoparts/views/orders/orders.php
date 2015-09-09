@@ -98,34 +98,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Дата',
                 'value' => 'datetime'
             ],
-            [
-                'class' => 'kartik\grid\EditableColumn',
-                'label' => 'Платеж',
-                'attribute' => 'pay_datetime',
-                'editableOptions'=> function ($model, $key, $index) {
-                    return [
-                        'header'=>'дату платежа',
-                        'size'=>'md',
-                        'inputType' => \kartik\editable\Editable::INPUT_WIDGET,
-                        'widgetClass' => '\kartik\widgets\DateTimePicker',
-                        'options' => [
-                           'value' => $model['pay_datetime'],
-                           'pluginOptions' => [
-                               'autoclose'=>true,
-                               'format' => 'dd.mm.yyyy hh:mm'
-                           ]
-                        ],
-                        'formOptions' => [
-                            'action' => 'update'
-                        ],
-
-
-                     ];
-                },
-                'value' => 'normalizeDate'
-
-
-            ],
+//            [
+//                'class' => 'kartik\grid\EditableColumn',
+//                'label' => 'Платеж',
+//                'attribute' => 'pay_datetime',
+//                'editableOptions'=> function ($model, $key, $index) {
+//                    return [
+//                        'header'=>'дату платежа',
+//                        'size'=>'md',
+//                        'inputType' => \kartik\editable\Editable::INPUT_WIDGET,
+//                        'widgetClass' => '\kartik\widgets\DateTimePicker',
+//                        'options' => [
+//                           'value' => /*$model['pay_datetime']*/'',
+//                           'pluginOptions' => [
+//                               'autoclose'=>true,
+//                               'format' => 'dd.mm.yyyy hh:mm'
+//                           ]
+//                        ],
+//                        'formOptions' => [
+//                            'action' => 'update'
+//                        ],
+//
+//
+//                     ];
+//                },
+//                'value' => 'normalizeDate'
+//
+//
+//            ],
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'expandAllTitle' => 'Место доставки',
