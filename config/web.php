@@ -257,7 +257,7 @@ $config = [
             'models' => [
                 'hyundai' => [
                     'class' => 'app\modules\autocatalog\models\Hyundai',
-                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',
                         'model' => '',

@@ -34,7 +34,7 @@ class AutocatalogController extends MainController
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'model', 'indexvin', 'indexframe'],
+                        'actions' => ['index', 'model', 'vin', 'frame','details'],
                         'roles' => ['?', '@']
                     ],
                     [
@@ -51,6 +51,28 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $catalog = $this->module->getCatalog();
+
+
+        return $this->render('index', [
+            'catalog' => $catalog,
+            'params' =>$params
+        ]);
+    }
+    public function actionVin()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $catalog = $this->module->getCatalog();
+        $model = $this->module->searchVIN($params);
+        return $this->render('vin', [
+            'catalog' => $catalog,
+            'params' =>$params,
+            'model' => $model
+        ]);
+    }
+    public function actionDetails()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $catalog = $this->module->getCatalog();
         if (isset($params['article'])) {
             $parts = \Yii::$app->params['Parts'];
             $details = (isset($params['article'])) ? Tovar::findDetails($params) : [];
@@ -59,18 +81,14 @@ class AutocatalogController extends MainController
                 'sort' => $parts['sort'],
                 'pagination' => $parts['pagination'],
             ]);
-//            /var/www/kolesa-darom.dev/modules/tovar/views/tovar/finddetails.php
-//          return  $this->render('@app/modules/tovar/views/tovar/finddetails',
-//              ['provider' => $provider,
-//            'columns' =>$parts['columns'],]);
+
             return $this->render('index', [
                 'catalog' => $catalog,
                 'provider' => $provider,
                 'columns' => $parts['columns'],
                 'params' =>$params]);
         }
-
-        return $this->render('index', [
+        return $this->render('details', [
             'catalog' => $catalog,
             'params' =>$params
         ]);

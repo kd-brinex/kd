@@ -2,27 +2,26 @@
 
 namespace app\modules\autoparts\controllers;
 
+use Yii;
+
+use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\web\NotFoundHttpException;
+
+use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\TStoreSearch;
-use Yii;
 use app\modules\autoparts\models\PartOver;
 use app\modules\autoparts\models\PartOverSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\modules\autoparts\models\UploadForm;
-
-use yii\web\UploadedFile;
-
-
 
 /**
  * OverController implements the CRUD actions for PartOver model.
  */
 class OverController extends Controller
 {
-
 
     public function behaviors()
     {

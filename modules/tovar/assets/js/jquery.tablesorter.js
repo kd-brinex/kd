@@ -342,37 +342,43 @@
                         tableBody = $(table.tBodies[0]),
                         rows = [];
 
-
                     for (var i = 0; i < totalRows; i++) {
                         var pos = n[i][checkCell];
-
                         rows.push(r[pos]);
 
                         if (!table.config.appender) {
-
                             //var o = ;
                             var l = r[pos].length;
                             for (var j = 0; j < l; j++) {
                                 tableBody[0].appendChild(r[pos][j]);
                             }
-
-                            //
                         }
-
                     }
 
+                    var k = '#user_list'+table.config.la,
+                        kk = '#user_list'+table.config.la+table.config.la,
+                        ktr = '#user_list'+table.config.la+table.config.la+' tr';
                     var k='#user_list'+table.config.la;
                     var kk='#user_list'+table.config.la+table.config.la;
                     var ktr = '#user_list'+table.config.la+table.config.la+' tr';
 
 
                     $(kk).html($(k).html());
-                    var i,empty=[],mas = new Array(),mas1 = new Array(),test=0,k=1,u=1,rowcount=1;
-                    var tr =$(ktr);
 
-                    for (i=0;i<tr.length;i++){
+                    var i,
+                        empty = [],
+                        mas = new Array(),
+                        mas1 = new Array(),
+                        test = 0,
+                        k = 1,
+                        u = 1,
+                        rowcount = 1,
+                        tr = $(ktr),
+                        height = [];
+                    for(i = 0; i < tr.length; i++){
                         mas[i] = new Array();
                         mas1[i] = new Array();
+
                         mas[i]['height'] = $(tr[i]).css('height');
                         $(tr[i]).children().each(function(j){
                             mas[i][test] = $(this).html();
@@ -382,13 +388,16 @@
 
                         });
                         test=0;
-                    }
 
+                        height[i] = $(tr[i]).css('height');
+                        console.log(height[i]);
+                    }
                     var table1='<table border="1" id="user_list'+table.config.la+table.config.la+'"><thead>';
                     for (i=0;i<mas.length;i++)
                     {
 
 
+                        table1=table1+'<tr id="row'+i+'" style="height:'+height[i]+'">';
                         table1=table1+'<tr style="height:'+mas[i]['height']+'">';
                         for (j=0;j<mas[i].length;j++)
                         {

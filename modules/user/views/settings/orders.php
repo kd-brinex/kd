@@ -6,8 +6,7 @@
  * Time: 12:13
  */
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\helpers\Url;
+use kartik\grid\GridView;
 
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 $this->title = Yii::t('user', 'My orders');
@@ -27,62 +26,64 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div id="orders">
                         <?=GridView::widget([
                             'id' => 'OrdersGrid',
-                            'rowOptions' => function($model){
-                                return ['class' => 'gridRowStateBgColor'.$model['status']];
-                            },
+                            'hover' => true,
+                            'pjax' => true,
+//                            'rowOptions' => function($model){
+//                                return ['class' => 'gridRowStateBgColor'.$model['status']];
+//                            },
                             'dataProvider' => $model,
                             'columns' => [
                                 [
-                                    'label' => 'ID',
-                                    'attribute' => 'id'
+                                    'label' => 'Номер заказа',
+                                    'attribute' => 'number'
                                 ],
                                 [
-                                    'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">Номер детали</span>',
-                                    'format' => 'raw',
-                                    'value' => function($model){
-                                        return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
-                                    }
-                                ],
-                                [
-                                    'label' => 'Название детали',
-                                    'attribute' => 'part_name'
-                                ],
-                                [
-                                    'label' => 'Цена',
-                                    'attribute' => 'part_price'
-                                ],
-                                [
-                                    'label' => 'Кол-во',
-                                    'attribute' => 'quantity'
+                                    'label' => 'Дата заказа',
+                                    'attribute' => 'date'
                                 ],
                                 [
                                     'label' => 'Сумма',
-                                    'value' => function($model){
-                                        return $model['quantity']*$model['part_price'];
-                                    }
-                                ],
-                                [
-                                    'label' => 'Срок',
-                                    'attribute' => 'datetime'
+//                                    'attribute' => 'part_price'
                                 ],
                                 [
                                     'label' => 'Статус',
-                                    'attribute' => 'state.status_name',
-                                    'format' => 'raw',
-                                    'value' => function($model){
-                                        $url = '';
-                                        if(isset($model['product_id']) && $model['product_id'] != '')
-                                            $url = ['/tovar/'.$model['product_id']];
-
-                                        if(isset($model['product_article']) && $model['product_article'] != '')
-                                            $url = ['/tovar/tovar/finddetails', 'article' => $model['product_article']];
-                                        return $model['status'] === $model::DENIED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
-                                    }
+//                                    'attribute' => 'quantity'
                                 ],
-                                [
-                                    'header' => 'Заказ с сайта/<br>Референс',
-                                    'attribute' => 'reference'
-                                ],
+//                                [
+//                                    'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">Номер детали</span>',
+//                                    'format' => 'raw',
+//                                    'value' => function($model){
+//                                        return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
+//                                    }
+//                                ],
+//                                [
+//                                    'label' => 'Сумма',
+//                                    'value' => function($model){
+//                                        return $model['quantity']*$model['part_price'];
+//                                    }
+//                                ],
+//                                [
+//                                    'label' => 'Срок',
+//                                    'attribute' => 'datetime'
+//                                ],
+//                                [
+//                                    'label' => 'Статус',
+//                                    'attribute' => 'state.status_name',
+//                                    'format' => 'raw',
+//                                    'value' => function($model){
+//                                        $url = '';
+//                                        if(isset($model['product_id']) && $model['product_id'] != '')
+//                                            $url = ['/tovar/'.$model['product_id']];
+//
+//                                        if(isset($model['product_article']) && $model['product_article'] != '')
+//                                            $url = ['/tovar/tovar/finddetails', 'article' => $model['product_article']];
+//                                        return $model['status'] === $model::DENIED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
+//                                    }
+//                                ],
+//                                [
+//                                    'header' => 'Заказ с сайта/<br>Референс',
+//                                    'attribute' => 'reference'
+//                                ],
                             ]
                         ]);
 

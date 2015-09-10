@@ -9,17 +9,70 @@ use app\modules\tovar\tovarAsset;
 
 tovarAsset::register($this);
 Yii::$app->view->registerCssFile('/css/parts.css');
-
-
+//$provider->allModels = [
+//        0 => [
+//            'code' => 'HY012',
+//            'name' =>  'ШРУС ВНЕШНИЙ',
+//            'manufacture' =>  'HDK',
+//            'price' => '2038.3200',
+//            'quantity' => 26,
+//            'srokmin' => 1,
+//            'srokmax' => 5,
+//            'estimation' => '100.0',
+//            'lotquantity' => 1,
+//            'skladid' => 'MSAS',
+//            'sklad' =>  'Москва',
+//            'groupid' =>  '0',
+//            'provider' =>  '',
+//            'reference' =>  '',
+//            'srok' =>  '',
+//            'pricedate' =>  '',
+//            'pricedestination' =>  '',
+//            'flagpostav' =>  '',
+//            'storeid' =>  '',
+//            'pid' =>  '',
+//            'srokdays' =>  '',
+//            'weight' =>  '',
+//            'cross' =>  '',
+//            'ball' =>  '',
+//        ],
+//        1 => [
+//            'code' => 'HY012',
+//            'name' => 'ШРУС ВНЕШНИЙ' ,
+//            'manufacture' => 'HDK',
+//            'price' => '2364.7900',
+//            'quantity' => 9,
+//            'srokmin' => 3,
+//            'srokmax' => 11,
+//            'estimation' => '68.0',
+//            'lotquantity' => 1,
+//            'skladid' => 'NNAS',
+//            'sklad' => 'Россия' ,
+//            'groupid' => '0',
+//            'provider' => '',
+//            'reference' => '',
+//            'srok' => '',
+//            'pricedate' => '',
+//            'pricedestination' => '',
+//            'flagpostav' => '',
+//            'storeid' => '',
+//            'pid' => '',
+//            'srokdays' => '',
+//            'weight' => '',
+//            'cross' => '',
+//            'ball' => '',
+//        ]
+//];
+//var_dump($provider->allModels);die;
 if (!empty($provider->allModels)) {
     foreach ($provider->allModels as $key => $value) {
         $mas[$value['groupid']][] = $value;
 
     }
 
-
     for ($ii = 0; $ii < 3; $ii++) {
         if (!isset($mas[$ii]))continue;
+
         $tablee[$ii] = "
         <table class='table table-bordered' id = 'table$ii'  >
         <thead>
@@ -40,7 +93,6 @@ if (!empty($provider->allModels)) {
         ";
 
         for ($i = 0; $i < count($mas[$ii]); $i++) {
-
             if (!empty($mas[$ii][$i]['name'])) {
                 $tablee[$ii] .= '<tr>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['code'] . '</td>';
@@ -71,7 +123,6 @@ if (!empty($provider->allModels)) {
 
         $tablee[$ii] .= '</tbody></table>';
     }
-
     for ($i = 0; $i < 3; $i++)
     {
 

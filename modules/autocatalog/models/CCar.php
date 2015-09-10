@@ -13,10 +13,16 @@ class CCar extends BaseModel
 {
     public $prop;
     public $db;
+    public $connect;
     public $image;
     public function getDb()
     {
-        return $this->$db;  // use the "db2" application component
+//        var_dump($this->db);die;
+        if (empty($this->connect)){$this->connect=\Yii::createObject($this->db);}
+        return $this->connect;  // use the "db2" application component
+    }
+    public function searchVIN($params){
+        return false;
     }
 
 }

@@ -2,35 +2,28 @@
 
 namespace app\modules\user\models;
 
-use Faker\Provider\DateTime;
 use Yii;
 
 /**
- * This is the model class for table "orders".
+ * This is the model class for table "order".
  *
  * @property integer $id
- * @property integer $uid
- * @property string $product_id
- * @property integer $quantity
- * @property string $reference
- * @property integer $status
- * @property string $datetime
+ * @property string $number
+ * @property string $date
+ * @property integer $user_id
  *
- * @property Tovar $product
- * @property User $u
+ * @property User $user
+ * @property OrderPay[] $orderPays
+ * @property Orders[] $orders
  */
 class Order extends \yii\db\ActiveRecord
 {
-    public $normalizeDate;
-
-    const JUST_ORDERED = 1;
-    const DENIED = 2;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'orders';
+        return 'order';
     }
 
     /**
@@ -39,12 +32,9 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'quantity', 'status', 'datetime', 'part_price'], 'required', 'except' => 'update'],
-            [['uid', 'quantity', 'status', 'store_id'], 'integer'],
-            [['datetime'], 'safe'],
-            [['pay_datetime'], 'safe'],
-            [['product_id'], 'string', 'max' => 9],
-            [['reference'], 'string', 'max' => 50]
+            [['date'], 'safe'],
+            [['user_id'], 'integer'],
+            [['number'], 'string', 'max' => 15]
         ];
     }
 
@@ -54,68 +44,34 @@ class Order extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID заказа',
-            'uid' => 'Пользватель',
-            'product_id' => 'ID товара',
-            'quantity' => 'Количество',
-            'reference' => 'Reference',
-            'status' => 'Статус',
-            'datetime' => 'Дата заказа',
-            'pay_datetime' => 'Дата платежа'
+            'id' => 'ID',
+            'number' => 'Number',
+            'date' => 'Date',
+            'user_id' => 'User ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
+    public function getUser()
     {
-        return $this->hasOne(\app\modules\tovar\models\TovarSearch::className(), ['id' => 'product_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserData()
+    public function getOrderPays()
     {
-        return $this->hasOne(\app\modules\user\models\Profile::className(), ['user_id' => 'uid']);
+        return $this->hasMany(OrderPay::className(), ['order_id' => 'id']);
     }
 
-    public function getState(){
-        return $this->hasOne(OrderState::className(), ['id' => 'status']);
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Orders::className(), ['order_id' => 'id']);
     }
-
-    public function getStore(){
-        return $this->hasOne(\app\modules\autoparts\models\TStoreSearch::className(),['id' => 'store_id']);
-    }
-
-    public function getProvider(){
-        return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);
-    }
-
-    public function beforeSave($insert){
-        if($this->isNewRecord){
-            $this->status = self::JUST_ORDERED;
-            $this->datetime = new \yii\db\Expression('NOW()');
-        }
-
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('Y-m-d H:i:s');
-
-        $date = new \DateTime($this->datetime);
-        $this->datetime = $date->format('Y-m-d H:i:s');
-        return parent::beforeSave($insert);
-    }
-    public function afterSave($insert, $changedAttributes){
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('d.m.Y H:i');
-    }
-    public function afterFind(){
-        $date = new \DateTime($this->pay_datetime);
-        $this->pay_datetime = $date->format('d.m.Y H:i');
-
-        $date = new \DateTime($this->datetime);
-        $this->datetime = $date->format('d.m.Y H:i');
-    }
-
 }

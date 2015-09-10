@@ -192,6 +192,8 @@ function basketError(step){
 }
 function toggleTab(tabNum){
     tabNum = tabNum ? tabNum : null;
+    //if(checkTab() !== true)
+    //    return false;
     if(tabNum != null){
         var stepBlock = $('#step'+tabNum);
         if(stepBlock.hasClass('pulse'))
@@ -204,13 +206,14 @@ function toggleTab(tabNum){
     }
 }
 function checkTab(){
+    var tab = parseInt($('#profile-form').find('ul > li.active').attr('id'));
     var keys = $('#BasketGrid').yiiGridView('getSelectedRows');
     if(!keys.length){
-
         toggleTab(1);
         basketError(1);
         return false;
     } else if(keys.length) {
+        toggleTab(tab++);
         var errors = 0;
         $('#user .form-group').each(function () {
             if ($(this).find('input').val() == '') {
@@ -221,11 +224,11 @@ function checkTab(){
             }
         });
         if (errors) {
-
             toggleTab(2);
             basketError(2);
             return false;
         } else {
+            toggleTab(tab++);
             var deliverySlots = $('#basketDeliveryList input[type=radio]');
             if(deliverySlots.length > 0){
                 if($('#basketDeliveryList input[type=radio]:checked').length > 0)

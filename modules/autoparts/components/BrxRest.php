@@ -39,7 +39,7 @@ class BrxRest extends Component
     private function get($params){
         $request = $this->uri.'?'.$this->createRequest($params);
         $curl = new Curl();
-
+//        var_dump($request);die;
         return $curl->get($request);
     }
 

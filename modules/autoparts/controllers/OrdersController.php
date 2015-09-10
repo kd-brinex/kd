@@ -11,18 +11,18 @@ namespace app\modules\autoparts\controllers;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
-use app\modules\user\models\Order;
+use app\modules\user\models\Orders;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 
 class OrdersController extends Controller
 {
     public function actionIndex(){
-        $query = Order::find();
+        $query = Orders::find();
         $orders = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 2
+                'pageSize' => 50
             ]
         ]);
         return $this->render('orders', ['orders' => $orders]);
@@ -47,7 +47,7 @@ class OrdersController extends Controller
         $post = Yii::$app->request->post();
         $result = [];
         if(isset($post) && $post != '' && is_array($post)){
-            $model = Order::find()->with('provider')->where($post)->all();
+            $model = Orders::find()->with('provider')->where($post)->all();
             //Yii::$app->soapClient->init();
             $options = [
                 'wsdl' => 'http://ws.emex.ru/EmEx_Basket.asmx?WSDL',
@@ -57,7 +57,7 @@ class OrdersController extends Controller
             Yii::$app->soapClient->run();
 //            var_dump($soap->__getFunctions());
 
-            var_dump($soap);
+//            var_dump($soap);
 
 
 //            foreach($model as $row){
@@ -85,7 +85,7 @@ class OrdersController extends Controller
     }
 
     protected function findModel($id){
-        if(($model = Order::findOne($id)) !== null)
+        if(($model = Orders::findOne($id)) !== null)
             return $model;
         else
            throw new Exception('This not found');

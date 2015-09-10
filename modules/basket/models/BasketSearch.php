@@ -45,6 +45,7 @@ class BasketSearch extends Basket{
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => false
         ]);
         $this->load($params);
 

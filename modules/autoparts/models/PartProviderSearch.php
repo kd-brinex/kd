@@ -12,7 +12,7 @@ use yii\data\ActiveDataProvider;
  */
 class PartProviderSearch extends PartProvider
 {
-    public $flagpostav;
+//    public $flagpostav;
 
     /**
      * @inheritdoc
