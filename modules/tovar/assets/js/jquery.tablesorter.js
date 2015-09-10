@@ -364,7 +364,7 @@
                     var k='#user_list'+table.config.la;
                     var kk='#user_list'+table.config.la+table.config.la;
                     var ktr = '#user_list'+table.config.la+table.config.la+' tr';
-                    console.log(kk);
+
 
                     $(kk).html($(k).html());
                     var i,empty=[],mas = new Array(),mas1 = new Array(),test=0,k=1,u=1,rowcount=1;
@@ -373,10 +373,12 @@
                     for (i=0;i<tr.length;i++){
                         mas[i] = new Array();
                         mas1[i] = new Array();
+                        mas[i]['height'] = $(tr[i]).css('height');
                         $(tr[i]).children().each(function(j){
                             mas[i][test] = $(this).html();
                             mas1[i][test] = $(this).html();
                             test = test+1;
+
 
                         });
                         test=0;
@@ -387,7 +389,7 @@
                     {
 
 
-                        table1=table1+'<tr>';
+                        table1=table1+'<tr style="height:'+mas[i]['height']+'">';
                         for (j=0;j<mas[i].length;j++)
                         {
 

@@ -1,9 +1,12 @@
 #w0{
     margin-bottom:10px;
 }
+#table00,#table11,#table22{
+    display: none;
+}
 .table{
 
-    width:1060px !important;
+
     overflow:hidden;
     border:1px solid #d3d3d3;
     background:#fefefe;
@@ -29,18 +32,7 @@
 
 
 
-#user_list1 ,#user_list0  ,#user_list2
-{
-    opacity:0;
-    position:absolute;
-}
 
-#user_list11 ,#user_list00 ,#user_list22
-{
-
-    //position:absolute;
-
-}
 
 
 

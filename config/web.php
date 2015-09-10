@@ -129,6 +129,7 @@ $config = [
                 'admin/orders/send' => 'autoparts/orders/send',
 
                 'admin/partsload' => 'autoparts/over',
+                'admin/partsload' => 'autoparts/over',
 
                 //Пользователи
                 'admin/user' => '/user/admin/index',
@@ -335,6 +336,9 @@ $config = [
             'confirmWithin' => 21600,
             'admins' => ['marat'],
 
+        ],
+        'images' => [
+            'class' => 'app\modules\images\Images',
         ],
         // Extensions
         'gridview' => [
