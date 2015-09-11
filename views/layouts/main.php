@@ -28,9 +28,10 @@ $navbar = [
                 ['label' => 'Вход', 'url' => ['/user/security/login']],
             ]]
             : ['label' => 'Личный кабинет', 'items' => [
-            ['label' => 'Профиль пользователя', 'url' => ['/user/settings/profile']],
-            ['label' => 'Учетные данные', 'url' => ['/user/settings/account']],
-            ['label' => 'Соцсети', 'url' => ['/user/settings/networks']],
+//            ['label' => 'Профиль пользователя', 'url' => ['/user/settings/profile']],
+//            ['label' => 'Учетные данные', 'url' => ['/user/settings/account']],
+//            ['label' => 'Соцсети', 'url' => ['/user/settings/networks']],
+            ['label' => 'Заказы', 'url' => ['/user/settings/orders']],
             ['label' => 'Выход', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']]
         ]],
 //                ['label' => 'Товар', 'items' => Yii::$app->params['catalog']['items']],
