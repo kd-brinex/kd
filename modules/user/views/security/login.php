@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => [
                     'class' => 'btn btn-primary btn-block',
 //                    'style' => 'align:center'
-                ]]),yii\helpers\Url::to('user/register'))?></div>
+                ]]),yii\helpers\Url::to('register'))?></div>
     </div>
 
 </div>

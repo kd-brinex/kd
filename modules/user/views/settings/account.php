@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'enableAjaxValidation'   => true,
                     'enableClientValidation' => false,
                 ]); ?>
+                <?= $form->field($model, 'telephone') ?>
 
                 <?= $form->field($model, 'email') ?>
 
