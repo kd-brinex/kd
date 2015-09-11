@@ -74,7 +74,7 @@ if (!empty($provider->allModels)) {
         if (!isset($mas[$ii]))continue;
 
         $tablee[$ii] = "
-        <table class='table table-bordered' id = 'user_list$ii'  >
+        <table class='table table-bordered' id = 'table$ii'  >
         <thead>
         <tr>
 
@@ -130,7 +130,7 @@ if (!empty($provider->allModels)) {
 
         {
 
-            $table[$i]=$tablee[$i]."<table class='table table-bordered' id = 'user_list$i$i' class='revert-bootstrap'  ></table>";
+            $table[$i]=$tablee[$i]."<table class='table table-bordered' id = 'table$i$i' class='revert-bootstrap'  ></table>";
         }
         else
         {
@@ -148,10 +148,16 @@ if (!empty($provider->allModels)) {
             ],
             [
                 'label' => 'Оригинальная замена',
+                'headerOptions' => [
+                    'id' => 'ww2'
+                ],
                 'content' => "$table[1]",
             ],
             [
                 'label' => 'Неоригинальная замена',
+                'headerOptions' => [
+                    'id' => 'ww3'
+                ],
                 'content' => "$table[2]",
             ],
 

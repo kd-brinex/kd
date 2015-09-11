@@ -345,6 +345,7 @@
                     for (var i = 0; i < totalRows; i++) {
                         var pos = n[i][checkCell];
                         rows.push(r[pos]);
+
                         if (!table.config.appender) {
                             //var o = ;
                             var l = r[pos].length;
@@ -357,6 +358,10 @@
                     var k = '#user_list'+table.config.la,
                         kk = '#user_list'+table.config.la+table.config.la,
                         ktr = '#user_list'+table.config.la+table.config.la+' tr';
+                    var k='#user_list'+table.config.la;
+                    var kk='#user_list'+table.config.la+table.config.la;
+                    var ktr = '#user_list'+table.config.la+table.config.la+' tr';
+
 
                     $(kk).html($(k).html());
 
@@ -374,10 +379,12 @@
                         mas[i] = new Array();
                         mas1[i] = new Array();
 
+                        mas[i]['height'] = $(tr[i]).css('height');
                         $(tr[i]).children().each(function(j){
                             mas[i][test] = $(this).html();
                             mas1[i][test] = $(this).html();
                             test = test+1;
+
 
                         });
                         test=0;
@@ -391,6 +398,7 @@
 
 
                         table1=table1+'<tr id="row'+i+'" style="height:'+height[i]+'">';
+                        table1=table1+'<tr style="height:'+mas[i]['height']+'">';
                         for (j=0;j<mas[i].length;j++)
                         {
 

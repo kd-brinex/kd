@@ -354,8 +354,12 @@ $config = [
             'confirmWithin' => 21600,
             'admins' => ['marat'],
             'enableGeneratingPassword' => true,
-        ],
 
+        ],
+        'images' => [
+            'class' => 'app\modules\images\Images',
+        ],
+        // Extensions
         'gridview' => [
             'class' => '\kartik\grid\Module',
         ]
