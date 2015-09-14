@@ -22,8 +22,13 @@ class Orders extends \yii\db\ActiveRecord
 {
     public $normalizeDate;
 
-    const JUST_ORDERED = 1;
-    const DENIED = 2;
+    const ORDER_IN_WORK = 0;
+    const ORDER_ADOPTED = 1;
+    const ORDER_SHIPPED = 2;
+    const ORDER_SHIPPED_IN_SHOP = 3;
+    const ORDER_IN_SHOP = 4;
+    const ORDER_EXECUTED = 5;
+    const ORDER_CANCELED = 6;
     /**
      * @inheritdoc
      */
@@ -94,7 +99,7 @@ class Orders extends \yii\db\ActiveRecord
 
     public function beforeSave($insert){
         if($this->isNewRecord){
-            $this->status = self::JUST_ORDERED;
+            $this->status = self::ORDER_IN_WORK;
             $this->datetime = new \yii\db\Expression('NOW()');
         }
 

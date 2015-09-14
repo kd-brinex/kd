@@ -31,7 +31,6 @@ class BrxProvider extends BrxProviderConnector
 
         if(!empty($options))
             $params = BrxArrayHelper::array_replace_recursive_ncs($params, $options);
-
         Yii::configure($this, $params);
     }
 
@@ -59,6 +58,7 @@ class BrxProvider extends BrxProviderConnector
     private function runMethod($method, $options){
         $options = $this->getOptions($method, $options);
         $response = $this->getConnection($method, $options);
+//        var_dump($response);
         //ЩАС БУДЕТ КОСТЫЛЬ
         $this->method = $method;
         //ВОТ И КОНЧИЛСЯ КОСТЫЛЬ
@@ -69,7 +69,6 @@ class BrxProvider extends BrxProviderConnector
             'provider' => $this
         ];
         $data = Yii::$app->getModule('autoparts')->converter->parse($response, $this, true, $beforeParse, $afterParse);
-//        var_dump($data);die;
 
         return $data;
     }
@@ -88,7 +87,6 @@ class BrxProvider extends BrxProviderConnector
             $this->getAccessOptions($method),
             $options
         );
-
         //видоизменяем параметры по шаблону
         if(isset($this->authParamsTemplate)) {
             foreach ($this->authParamsTemplate as $param => $value) {

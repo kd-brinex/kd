@@ -6,6 +6,7 @@ use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\basket\models\BasketSearch;
 use Yii;
 use app\modules\autoparts\models\PartProvider;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "t_tovar".
@@ -137,8 +138,7 @@ class Tovar extends \yii\db\ActiveRecord
     /**
      * findDetails - описание функции
      */
-    public static function findDetails($params)                                                                                     //  здесь приходят article и provider_id из URI
-    {
+    public static function findDetails($params){                                                                                   //  здесь приходят article и provider_id из URI
         $details = [];
         $providerObj = null;
         $providers = PartProviderSearch::find()
@@ -148,14 +148,10 @@ class Tovar extends \yii\db\ActiveRecord
             if($provider->enable) {/*name == 'Berg'*/
                 $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
                 $items = $providerObj->findDetails(['code' => $params['article']]);
+                if(!is_array($items))
+                    continue;
 
                 foreach($items as $item){
-//                    if($provider->cross){
-//                        $crossDetails = $providerObj->findDetails(['code' => $item['code']]);
-//                        foreach($crossDetails as $detail){
-//                            array_push($details, $detail);
-//                        }
-//                    }
                     array_push($details, $item);
                 }
             }

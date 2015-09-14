@@ -121,7 +121,7 @@ return yii\helpers\ArrayHelper::merge([
                     'provider_name' => 'Emex',                                  // имя провайдера
                     'apiType' => 'Soap',                                        // тип подключения к провайдеру (soap, rest, http и т.д)
                     'authParams' => ['login','password'],
-                                                                                // все uri с которыми работает провайдер, ключ - это ключ значения в массиве'. По {индекс}'у определяется к какому uri обращатсья
+                    'oldParamsNames' => false,                                                 // все uri с которыми работает провайдер, ключ - это ключ значения в массиве'. По {индекс}'у определяется к какому uri обращатсья
                     'uri' => [
                         'http://ws.emex.ru/EmEx_Basket.asmx?WSDL',              // uri для работы с корзиной
                         'http://ws.emex.ru/EmExService.asmx?WSDL',              // uri для поиска деталей
@@ -178,7 +178,10 @@ return yii\helpers\ArrayHelper::merge([
                     'provider_name' => 'Iksora',
                     'apiType' => 'Soap',
                     'authParams' => ['authCode'],
-                    'authCode' => 'F4E1BC3571D43FA3F596BFE463BD6BB5',
+                    'authParamsTemplate' => [
+                        'authCode' => 'password'
+                    ],
+                    'oldParamsNames' => true,
                     'uri' => [
                         'http://ws.ixora-auto.ru/soap/ApiService.asmx?WSDL',
                     ],
@@ -207,6 +210,7 @@ return yii\helpers\ArrayHelper::merge([
                     'provider_name' => 'Partkom',
                     'apiType' => 'Soap',
                     'authParams' => ['login', 'password'],
+                    'oldParamsNames' => false,
                     'uri' => [
                         'http://www.part-kom.ru/webservice/search.php?wsdl',
                         'http://www.part-kom.ru/webservice/order.php?wsdl',
@@ -261,7 +265,8 @@ return yii\helpers\ArrayHelper::merge([
                     'provider_name' => 'Berg',
                     'apiType' => 'Rest',
                     'authParams' => ['key'],
-                    'key' => '62224996794244a125b9b3fd734f9dd75dc08d1a59b5a42268bbec9d3e8d7bc3',
+                    'authParamsTemplate' => ['key' => 'password'],
+                    'oldParamsNames' => true,
                     'uri' => [
                         'https://api.berg.ru/v0.9/ordering/get_stock.json',
                         'https://api.berg.ru/v0.9/ordering/place_order.json',
@@ -327,6 +332,7 @@ return yii\helpers\ArrayHelper::merge([
                         'l' => 'login',
                         'p' => 'password'
                     ],
+                    'oldParamsNames' => true,
                     'isParamsAsArray' => false,
                     'methods' => [
                         'findDetails' => [

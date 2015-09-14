@@ -12,23 +12,23 @@ use yii\data\ActiveDataProvider;
 
 class OrderSearch extends Order{
 
-    public function search($params = []){
-        $params = [
-            ':uid' => Yii::$app->user->id
-        ];
+    public function search($condition = '', $params = [], $with = ''){
+
         $query = self::find()
-            ->andWhere('user_id = :uid')
+            ->andWhere($condition)
             ->addParams($params);
+
+        if(!empty($with))
+            $query->with($with);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
 
-        if($this->load($params) && !$this->validate())
+        $this->load($params);
+        if(!$this->validate())
             return $dataProvider;
 
-
         return $dataProvider;
-
     }
 }

@@ -40,38 +40,36 @@ class OrdersSearch extends Orders
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($condition = '', $params = [])
     {
-        $params = [
-            ':uid' => Yii::$app->user->id
-        ];
+
         $query = self::find()
-            ->andWhere('uid = :uid')
+            ->andWhere($condition)
             ->addParams($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => false
         ]);
 
         $this->load($params);
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'uid' => $this->uid,
-            'quantity' => $this->quantity,
-            'status' => $this->status,
-            'datetime' => $this->datetime,
-            'part_name' => $this->part_name,
-        ]);
-
-        $query->andFilterWhere(['like', 'product_id', $this->product_id])
-            ->andFilterWhere(['like', 'reference', $this->reference]);
+//        $query->andFilterWhere([
+//            'id' => $this->id,
+//            'uid' => $this->uid,
+//            'quantity' => $this->quantity,
+//            'status' => $this->status,
+//            'datetime' => $this->datetime,
+//            'part_name' => $this->part_name,
+//        ]);
+//
+//        $query->andFilterWhere(['like', 'product_id', $this->product_id])
+//            ->andFilterWhere(['like', 'reference', $this->reference]);
 
         return $dataProvider;
     }
