@@ -32,12 +32,12 @@ class User extends BaseUser
             // telephone rules
             ['telephone', 'required', 'on' => ['register', 'connect', 'create', 'update']],
             ['telephone', 'match', 'pattern' => '/^[0-9+]+$/'],
-            ['telephone', 'string', 'min' => 3, 'max' => 15],
+            ['telephone', 'string', 'min' => 0, 'max' => 20],
             ['telephone', 'unique'],
             ['telephone', 'trim'],
 
             // email rules
-            ['email', 'required', 'on' => ['register', 'connect', 'create', 'update']],
+            ['email', 'required', 'on' => ['register', 'connect', 'create', 'update'],'message' => 'Необходимо заполнить поле «{attribute}».'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique'],

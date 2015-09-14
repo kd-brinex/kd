@@ -26,8 +26,8 @@ class BasketController extends MainController
         $bmodel = new BasketSearch();
         $bdataProvider = $bmodel->search([]);
 
-        $user = new User();
-        $muser = $user->findOne(['id' => (\Yii::$app->user->isGuest) ? \Yii::$app->params['nouser_id'] : \Yii::$app->user->identity->getId()]);
+//        $user = User::findOne(['id' => (\Yii::$app->user->isGuest) ? \Yii::$app->params['nouser_id'] : \Yii::$app->user->identity->getId()]);
+        $user = (\Yii::$app->user->isGuest) ?new User : User::findOne(['id' =>  Yii::$app->user->id]);
 
         if ($bdataProvider->totalCount) {
             $itogo = $this->summa($bdataProvider, ['tovar_summa']);
@@ -43,7 +43,7 @@ class BasketController extends MainController
         $user_tab_data = [
             'city' => $city,
             'profile' => $profile,
-            'user' => $muser,
+            'user' => $user,
         ];
         $delivery_tab_data = [
             'stores' => $stores

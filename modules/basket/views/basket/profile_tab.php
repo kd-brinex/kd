@@ -24,7 +24,7 @@
     ]);
 
     echo $form->field($profile, 'name')->textInput(['placeholder' => 'Ваше имя']);
-    echo $form->field($profile, 'public_email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $profile->gravatar_email]);
+    echo $form->field($user, 'email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $user->email]);
     echo '<div class="form-group field-profile-location required"><label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
     Modal::begin([
         'header' => '<img src="/img/kolesa-darom_logo.png"/>',
@@ -45,7 +45,7 @@
     echo '<div id="city_list1"></div>';
     Modal::end();
     echo '</div><div class="col-sm-offset-3 col-lg-9"><div class="help-block"></div></div></div>';
-    echo $form->field($profile, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
+    echo $form->field($user, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
 
     \yii\widgets\ActiveForm::end();
 
