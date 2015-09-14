@@ -22,7 +22,7 @@ use app\helpers\BrxArrayHelper;
 class Run extends Component{
     //TODO убрать отсюда это дело в модель
     public $cityId;
-    public $storeId = 109;
+    public $storeId;// = 109;
 
     public function provider($provider, array $options = []){
         $class = 'app\modules\autoparts\components\BrxProvider';
@@ -35,17 +35,22 @@ class Run extends Component{
 
         $provider = new $class($provider, $options);
 
-        return $provider;
+        if(is_object($provider))
+            return $provider;
+        else
+            return false;
     }
 
     //TODO убрать отсюда это дело в модель
     private function getStoreId(){
         if(!empty(($city = $this->getCityId())))
-            $this->storeId = TStore::find()
+            $store = TStore::find()
                 ->select('id')
                 ->where('city_id = :city_id', [':city_id' => $city])
-                ->one()
-                ->id;
+                ->one();
+            if($store)
+                $this->storeId = $store->id;
+
         return $this->storeId;
     }
 
@@ -63,8 +68,11 @@ class Run extends Component{
                 ->asArray()
                 ->where('store_id = :store_id AND provider_id = :provider_id', [':store_id' => $store, ':provider_id' => $provider_id])
                 ->one();
-//        var_dump($accessData);die;
-        return $accessData;
+
+        if(isset($accessData))
+            return $accessData;
+        else
+            return false;
     }
 
     private function getShippingPeriod($provider){

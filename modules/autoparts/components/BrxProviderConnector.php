@@ -60,21 +60,34 @@ class BrxProviderConnector
      */
     protected function getAccessOptions($method){
         if(isset($this->authParamsTemplate))
-            $this->getAuthParamsByTemplate($method);
+            $this->getAuthParamsByTemplate($method, $this->oldParamsNames);
 
         if(isset($this->authParams)){
             foreach($this->authParams as $param){
-                $params[$param] = $this->$param;
+                if(isset($this->$param))
+                    $params[$param] = $this->$param;
             }
         }
-        return $params;
+        if(!empty($params)){
+//            var_dump($params, $this->provider_name);
+            return $params;}
+        else
+            return false;
     }
 
 
-    private function getAuthParamsByTemplate($method){
+    private function getAuthParamsByTemplate($method, $oldParamsNames = false){
         foreach($this->authParamsTemplate as $key => $value){
-            if(($index = array_search($key, $this->authParams)) !== false)
-                $this->authParams[$index] = $value;
+            if(($index = array_search($key, $this->authParams)) !== false) {
+                if($oldParamsNames){
+                    if(isset($this->$value)){
+                        $this->$key = $this->$value;
+                        unset($this->$value);
+                    }
+                } else
+                    $this->authParams[$index] = $value;
+
+            }
 
             if(($index = array_search($key, $this->methods[$method]['params']))){
                 unset($this->methods[$method]['params'][$index]);
