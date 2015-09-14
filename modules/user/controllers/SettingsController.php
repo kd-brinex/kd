@@ -11,6 +11,7 @@ use Yii;
 use dektrium\user\controllers\SettingsController as BaseSettingsController;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\modules\user\models\SettingsForm;
 
 use app\modules\user\models\OrderSearch;
 use app\modules\user\models\OrdersSearch;
@@ -76,5 +77,19 @@ class SettingsController extends BaseSettingsController
 
             return $this->renderAjax('_order', ['orders' => $orders]);
         }
+    }
+    public function actionAccount()
+    {
+        /** @var SettingsForm $model */
+        $model = \Yii::createObject(SettingsForm::className());
+        $this->performAjaxValidation($model);
+        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->session->setFlash('success', \Yii::t('user', 'Your account details have been updated'));
+            return $this->refresh();
+        }
+
+        return $this->render('account', [
+            'model' => $model,
+        ]);
     }
 }

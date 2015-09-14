@@ -10,6 +10,19 @@ $config = [
     'name' => 'Колеса-даром',
 //    'layout' => 'main.twig',
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'user' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/user/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'user'    => 'user.php',
+                    ],
+                ],
+
+            ],
+        ],
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
@@ -197,6 +210,8 @@ $config = [
                 'pathMap' => [
                     '@dektrium/user/views/settings' => '@app/modules/user/views/settings',
                     '@dektrium/user/views/security' => '@app/modules/user/views/security',
+                    '@dektrium/user/views/registration' => '@app/modules/user/views/registration',
+                    '@dektrium/user/views/admin' => '@app/modules/user/views/admin',
 
                 ],
             ],
@@ -316,25 +331,33 @@ $config = [
         'tovar' => [
             'class' => 'app\modules\tovar\Tovar',
         ],
+
         'user' => [
             'class' => 'dektrium\user\Module',
             'layout' => '/admin',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
+                'UserSearch' => 'app\modules\user\models\UserSearch',
                 'Profile' => 'app\modules\user\models\Profile',
-
-
+                'SettingsForm' => 'app\modules\user\models\SettingsForm',
+                'LoginForm' => 'app\modules\user\models\LoginForm',
+                'RegistrationForm' => 'app\modules\user\models\RegistrationForm'
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
-//                'admin' => 'app\modules\user\controllers\AdminController'
+                'security' => 'app\modules\user\controllers\SecurityController',
+//                'register' => 'app\modules\user\controllers\RegistrationController'
+                'admin' => 'app\modules\user\controllers\AdminController'
             ],
-
 
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'admins' => ['marat'],
+            'enableGeneratingPassword' => true,
 
+        ],
+        'images' => [
+            'class' => 'app\modules\images\Images',
         ],
         // Extensions
         'gridview' => [

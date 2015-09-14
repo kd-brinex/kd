@@ -29,10 +29,7 @@ foreach ($model->regions as $key)
 
     <?= $form->field($model, 'longitude')->textInput() ?>
 
-
     <?= $form->field($model, 'enable')->checkbox() ?>
-
-
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
