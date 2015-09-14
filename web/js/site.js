@@ -289,6 +289,15 @@ function createOrder(){
             });
         }
 }
+
+function openOrder(obj){
+    $.post('/user/settings/order', {'id' : $(obj).data('id')},
+        function(data){
+            $('.modal-body').html(data);
+            $('#order-modal').modal();
+        }
+    );
+}
 function deliveryChoiceClicker(obj){
     var box = $(obj).parent();
     box.find('.store-check input[type=radio]').prop('checked',true);

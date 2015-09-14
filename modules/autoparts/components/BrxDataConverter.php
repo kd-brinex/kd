@@ -45,9 +45,12 @@ class BrxDataConverter extends Component
     }
 
     public function parse($data, $provider = null, $toTemplate = true, $beforeParse = [], $afterParse = []){
-//        var_dump($afterParse);die;
         $dataType = BrxDataInspector::getDataFormat($data);
+        if(!$dataType)
+            return false;
+
         $result = $this->{'parse'.$dataType}($data);
+
         if($toTemplate)
             $result = $this->dataToTemplate($result, $provider, $beforeParse, $afterParse);
 

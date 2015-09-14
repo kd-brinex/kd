@@ -6,7 +6,7 @@
  * Time: 12:13
  */
 use yii\helpers\Html;
-use kartik\grid\GridView;
+use yii\jui\Tabs;
 
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 $this->title = Yii::t('user', 'My orders');
@@ -14,7 +14,23 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
+<!-- Modal -->
+<div id="order-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Информация о заказе</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="display: inline-block" class="btn btn-info" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal (end) -->
 <div class="row">
 
     <div class="col-md-9">
@@ -24,70 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="panel-body">
                 <div id="orders">
-                        <?=GridView::widget([
-                            'id' => 'OrdersGrid',
-                            'hover' => true,
-                            'pjax' => true,
-//                            'rowOptions' => function($model){
-//                                return ['class' => 'gridRowStateBgColor'.$model['status']];
-//                            },
-                            'dataProvider' => $model,
-                            'columns' => [
-                                [
-                                    'label' => 'Номер заказа',
-                                    'attribute' => 'number'
-                                ],
-                                [
-                                    'label' => 'Дата заказа',
-                                    'attribute' => 'date'
-                                ],
-                                [
-                                    'label' => 'Сумма',
-//                                    'attribute' => 'part_price'
-                                ],
-                                [
-                                    'label' => 'Статус',
-//                                    'attribute' => 'quantity'
-                                ],
-//                                [
-//                                    'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">Номер детали</span>',
-//                                    'format' => 'raw',
-//                                    'value' => function($model){
-//                                        return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
-//                                    }
-//                                ],
-//                                [
-//                                    'label' => 'Сумма',
-//                                    'value' => function($model){
-//                                        return $model['quantity']*$model['part_price'];
-//                                    }
-//                                ],
-//                                [
-//                                    'label' => 'Срок',
-//                                    'attribute' => 'datetime'
-//                                ],
-//                                [
-//                                    'label' => 'Статус',
-//                                    'attribute' => 'state.status_name',
-//                                    'format' => 'raw',
-//                                    'value' => function($model){
-//                                        $url = '';
-//                                        if(isset($model['product_id']) && $model['product_id'] != '')
-//                                            $url = ['/tovar/'.$model['product_id']];
-//
-//                                        if(isset($model['product_article']) && $model['product_article'] != '')
-//                                            $url = ['/tovar/tovar/finddetails', 'article' => $model['product_article']];
-//                                        return $model['status'] === $model::DENIED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
-//                                    }
-//                                ],
-//                                [
-//                                    'header' => 'Заказ с сайта/<br>Референс',
-//                                    'attribute' => 'reference'
-//                                ],
+                    <?=Tabs::widget([
+                        'items' => [
+                            [
+                                'label' => 'Активные заказы',
+                                'content' => $this->render('_new_orders', ['orders' => $new_orders, 'model' => $model])
+                            ],
+                            [
+                                'label' => 'Архив',
+                                'content' => $this->render('_old_orders', ['orders' => $old_orders, 'model' => $model])
                             ]
-                        ]);
-
-                        ?>
+                        ]
+                    ])?>
                 </div>
             </div>
         </div>
@@ -95,15 +59,4 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-3">
         <?= $this->render('_menu') ?>
     </div>
-    <?php
-    /**
-     * Created by PhpStorm.
-     * User: marat
-     * Date: 26.02.15
-     * Time: 10:20
-     */
-
-
-    ?>
-
 </div>
