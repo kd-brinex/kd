@@ -16,7 +16,8 @@ class OrderSearch extends Order{
 
         $query = self::find()
             ->andWhere($condition)
-            ->addParams($params);
+            ->addParams($params)
+        ->orderBy('date desc');
 
         if(!empty($with))
             $query->with($with);

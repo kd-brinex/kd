@@ -18,8 +18,9 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'uid', 'quantity', 'status'], 'integer'],
+            [['id', 'quantity', 'status'], 'integer'],
             [['product_id', 'reference', 'datetime'], 'safe'],
+            [['part_name'],'string']
 
         ];
     }

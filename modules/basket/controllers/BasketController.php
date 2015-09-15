@@ -4,6 +4,7 @@ namespace app\modules\basket\controllers;
 
 use app\modules\user\models\Order;
 //use app\modules\basket\models\OrderSearch;
+use app\modules\user\models\Orders;
 use app\modules\user\models\Profile;
 use dektrium\user\models\User;
 use dektrium\user\models\UserSearch;
@@ -122,14 +123,7 @@ class BasketController extends MainController
                 // создаем новый заказ
                 $user_id = Yii::$app->user->id;
                 $number = (($user_id) ? $user_id :'N') . '-' . date("ymd_his");
-                $order_data = ['number' => $number, 'date' => date("Y-m-d H:i:s"), 'user_id' => $user_id];
-                $order = new Order();
-                $order->load($order_data, '');
-                $order->save();
-                // передаем id заказа
-                $order_id = $order->id;
 
-                $orderData = [];
                 $orders = explode(';', Yii::$app->request->post('orderData'));
                 $formData = Yii::$app->request->post('formData');
                 if (isset($formData) && $formData != '') {
@@ -137,74 +131,66 @@ class BasketController extends MainController
                     $profileData = array_values($fdata['Profile']);
                 }
                 $fdata['deliveryStore'] = isset($fdata['deliveryStore']) ? $fdata['deliveryStore'] : 0;
+
+
+                $order_data = [
+                    'number' => $number,
+                    'date' => date("Y-m-d H:i:s"),
+                    'user_id' => $user_id,
+                    'user_name'=>$fdata['Profile']['name'],
+                    'user_email' =>$fdata['User']['email'],
+                    'user_telephone' => $fdata['User']['telephone'],
+                    'user_location' => $fdata['Profile']['location'],
+                    'store_id'=> (int) $fdata['deliveryStore'],
+                ];
+                $order = new Order();
+                $order->load($order_data, '');
+                $order->save();
+                // передаем id заказа
+                $order_id = $order->id;
+
+
                 foreach ($orders as $order) {
                     $order = explode(':', $order);
                     $basket = BasketSearch::findOne(['id' => intval($order[0])]);
+//                    var_dump($basket);die;
                     if ($basket) {
                         $product = Tovar::findOne(['id' => $basket->tovar_id]);
-                        if ($basket->delete()) {
-                            if ($product) {
-                                $data = [
-                                    $product->id,
-                                    null,
-                                    $basket->manufacturer,
-                                    $product->name,
-                                    $basket->tovar_price,
-                                    $order[1],
-                                    \app\modules\user\models\Orders::ORDER_IN_WORK,
-                                    date('Y-m-d H:i:s'),
-                                    $basket->description,
-                                    $fdata['deliveryStore'],
-                                    $order_id,
-                                    $basket->provider_id,
-//                                    $basket->provider_id
-                                ];
-                                if (!Yii::$app->user->isGuest)
-                                    array_unshift($data, Yii::$app->user->id);
-                                else
-                                    $data = array_merge($data, $profileData);
-                            } else {
-                                $data = [
-                                    null,
-                                    $basket->part_number,
-                                    $basket->manufacturer,
-                                    $basket->part_name,
-                                    $basket->tovar_price,
-                                    $order[1],
-                                    \app\modules\user\models\Orders::ORDER_IN_WORK,
-                                    date('Y-m-d H:i:s'),
-                                    $basket->description,
-                                    $fdata['deliveryStore'],
-                                    $order_id,
-                                    $basket->provider_id,
-//                                    $basket->provider_id
-                                ];
-                                if (!Yii::$app->user->isGuest)
-                                    array_unshift($data, Yii::$app->user->id);
-                                else
-                                    $data = array_merge($data, $profileData);
-                            }
-//                            if(isset($fdata['deliveryStore']) && $fdata['deliveryStore'] != ''){
-//                                array_merge($data, []);
-//                            }
-//                            var_dump($data);
-                            $orderData[] = $data;
+                                $data['Orders'] = [
+                                    'product_id'=>($product)? $product->id:null,
+                                    'manufacture'=>$basket->manufacturer,
+                                    'part_name'=>($product)?$product->name:$basket->part_name,
+                                    'part_price'=>$basket->tovar_price,
+                                    'product_article'=>($product)?null:$basket->part_number,
+                                    'quantity'=>$order[1],
+                                    'reference'=>'',
+                                    'status'=>\app\modules\user\models\Orders::ORDER_IN_WORK,
+                                    'datetime'=>date('Y-m-d H:i:s'),
+                                    'description'=>$basket->description,
+                                    'order_id'=> (int)$order_id,
+                                    'provider_id'=> (int) $basket->provider_id,
+                                    ];
+
+                    $Orders = new Orders();
+                        if ($Orders->load($data)){
+                        if ($Orders->save()){$basket->delete();}
 
                         }
+//                        $Orders->save()){$basket->delete();}
                     }
                 }
-                $rows = ['product_id', 'product_article', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description', 'store_id', 'order_id','provider_id'];
+//                $rows = ['product_id', 'product_article', 'manufacture', 'part_name', 'part_price', 'quantity', 'status', 'datetime', 'description', 'store_id', 'order_id','provider_id'];
 
-                if (!Yii::$app->user->isGuest) {
-                    array_unshift($rows, 'uid');
-                    $profile = \app\modules\user\models\Profile::findOne(['user_id' => Yii::$app->user->id]);
-                    if ($profile) {
-                        $profile->attributes = $fdata['Profile'];
-                        $profile->update();
-                    }
-                } else {
-                    $rows = array_merge($rows, ['name', 'email', 'location', 'telephone']);
-                }
+//                if (!Yii::$app->user->isGuest) {
+//                    array_unshift($rows, 'uid');
+//                    $profile = \app\modules\user\models\Profile::findOne(['user_id' => Yii::$app->user->id]);
+//                    if ($profile) {
+//                        $profile->attributes = $fdata['Profile'];
+//                        $profile->update();
+//                    }
+//                } else {
+//                    $rows = array_merge($rows, ['name', 'email', 'location', 'telephone']);
+//                }
 //                if(isset($fdata['deliveryStore']) && $fdata['deliveryStore'] != ''){
 //                    array_merge($rows, ['store_id']);
 //                }
@@ -221,8 +207,11 @@ class BasketController extends MainController
 
 // записываем позиции заказа в базу
 //                Yii::$app->db->createCommand()->batchInsert('order', ['number', 'date', 'user_id'], [$number, time(), Yii::$app->user->id])->execute();
-                $request = Yii::$app->db->createCommand()->batchInsert('orders', $rows, $orderData)->execute();
-                if ($request > 0)
+//                $orders=new Orders();
+//                var_dump($orders->attributes());die;
+
+//                $request = Yii::$app->db->createCommand()->batchInsert('orders', $rows, $orderData)->execute();
+//                if ($request > 0)
                     return true;
                 break;
             case 'remove':
