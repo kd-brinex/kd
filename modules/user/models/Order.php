@@ -34,7 +34,9 @@ class Order extends \yii\db\ActiveRecord
         return [
             [['date'], 'safe'],
             [['user_id'], 'integer'],
-            [['number'], 'string', 'max' => 15]
+            [['store_id'], 'integer'],
+            [['number'], 'string', 'max' => 15],
+            [['user_name','user_email','user_telephone','user_location'], 'string', 'max'=>25],
         ];
     }
 

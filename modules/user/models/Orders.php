@@ -43,12 +43,14 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'quantity', 'status', 'datetime', 'part_price'], 'required', 'except' => 'update'],
-            [['uid', 'quantity', 'status', 'store_id'], 'integer'],
+            [['quantity', 'status', 'datetime', 'part_price'], 'required', 'except' => 'update'],
+            [['quantity', 'status',  'provider_id','order_id'], 'integer'],
             [['datetime'], 'safe'],
-//            [['pay_datetime'], 'safe'],
             [['product_id'], 'string', 'max' => 9],
-            [['reference'], 'string', 'max' => 50]
+            [['product_article'], 'string', 'max' => 32],
+            [['reference'], 'string', 'max' => 50],
+            [['part_name'], 'string', 'max' => 255],
+            [['description'], 'string', 'max' => 255],
         ];
     }
 
@@ -59,7 +61,6 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID заказа',
-            'uid' => 'Пользватель',
             'product_id' => 'ID товара',
             'quantity' => 'Количество',
             'reference' => 'Reference',
@@ -98,16 +99,16 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
-        if($this->isNewRecord){
-            $this->status = self::ORDER_IN_WORK;
-            $this->datetime = new \yii\db\Expression('NOW()');
-        }
+//        if($this->isNewRecord){
+//            $this->status = self::ORDER_IN_WORK;
+//            $this->datetime = new \yii\db\Expression('NOW()');
+//        }
 
 //        $date = new \DateTime($this->pay_datetime);
 //        $this->pay_datetime = $date->format('Y-m-d H:i:s');
 
-        $date = new \DateTime($this->datetime);
-        $this->datetime = $date->format('Y-m-d H:i:s');
+//        $date = new \DateTime($this->datetime);
+//        $this->datetime = $date->format('Y-m-d H:i:s');
         return parent::beforeSave($insert);
     }
     public function afterSave($insert, $changedAttributes){
