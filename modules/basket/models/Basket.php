@@ -39,7 +39,7 @@ class Basket extends \yii\db\ActiveRecord
     {
         return [
             [['tovar_count', 'tovar_min','id'], 'integer'],
-//            [['tovarname'], 'string'],
+            [['description'], 'string'],
             [['tovar_price', 'session_id'], 'required'],
             [['tovar_price'], 'number'],
             [['uid'], 'integer'],
