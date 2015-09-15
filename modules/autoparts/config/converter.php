@@ -186,7 +186,36 @@ return [
                         ]
                     ]
                 ]
-            ]
+            ],
+            'Over' => [
+                'method' => [
+                    'findDetails' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'code',                               // Номер
+                                2 => 'manufacture',                                // Производитель
+                            ],
+                            'out' => [
+                                0 => 'number',
+                                1 => 'name',
+                                2 => 'maker',
+                                3 => 'price',
+                                4 => 'quantity',
+                                5 => 'days',
+                                6 => 'dayswarranty',
+                                8 => 'orderrefernce',
+                                11=> 'lotquantity',
+                                12=> 'date',
+                                13=> 'pricedestination',
+                                15=> 'region',
+                                10=> 'estimation',
+                                16=> 'group',
+
+                            ]
+                        ]
+                    ]
+                ]
+            ],
         ]
     ]
 ];

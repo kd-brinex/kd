@@ -21,17 +21,15 @@ class DefaultController extends ProviderController
 
 
     public function actionIndex(){
-
-
-        function asd($d){
-            return $d;
+        function a(){
+            return false;
+        }
+        function b($d){
+            return $d+56;
         }
 
-        $sdf = function(){
-          return '123';
-        };
-
-        var_dump(asd($sdf));die;
+        $d = a() || b(5);
+        var_dump($d);die;
     /*EMEX*/
 //       var_dump($this->provider('Emex')->findDetails(['code' => '32-D88-F']));
 

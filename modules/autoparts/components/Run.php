@@ -34,11 +34,8 @@ class Run extends Component{
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $shippingPeriod);
 
         $provider = new $class($provider, $options);
-
-        if(is_object($provider))
-            return $provider;
-        else
-            return false;
+//        var_dump($provider);
+        return (!$provider instanceof BrxProvider) ?: $provider;
     }
 
     //TODO убрать отсюда это дело в модель

@@ -68,9 +68,8 @@ class BrxProvider extends BrxProviderConnector
         $afterParse = [
             'provider' => $this
         ];
-        $data = Yii::$app->getModule('autoparts')->converter->parse($response, $this, true, $beforeParse, $afterParse);
 
-        return $data;
+        return Yii::$app->getModule('autoparts')->converter->parse($response, $this, true, $beforeParse, $afterParse);
     }
 
     /**
