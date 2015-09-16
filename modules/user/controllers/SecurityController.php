@@ -12,17 +12,24 @@
 namespace app\modules\user\controllers;
 
 use dektrium\user\controllers\SecurityController as BaseController;
+use app\modules\user\models\LoginForm;
 
 class SecurityController extends BaseController
 {
-
-    public function beforeValidate()
+    public function actionLogin()
     {
-        if (parent::beforeValidate()) {
-            $this->user = $this->finder->findUserByUsernameOrEmailOrTelephone($this->login);
-            return true;
-        } else {
-            return false;
+        $model = \Yii::createObject(LoginForm::className());
+
+        $this->performAjaxValidation($model);
+
+        if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
+            return $this->goBack();
         }
+
+        return $this->render('login', [
+            'model'  => $model,
+            'module' => $this->module,
+        ]);
     }
+
 }

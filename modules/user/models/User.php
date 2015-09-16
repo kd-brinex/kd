@@ -76,4 +76,13 @@ class User extends BaseUser
                     'user_id_1c' => \Yii::t('user', 'UserId1c'),
                 ]);
     }
+    public function findUserRemote()
+    {
+        $ur=new UserRemote();
+        var_dump($ur->getRemoteUser($this->username,$this->password));die;
+    }
+    public function copyRemoteUser($params)
+    {
+
+    }
 }
