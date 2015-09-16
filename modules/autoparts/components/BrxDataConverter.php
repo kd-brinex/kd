@@ -13,6 +13,7 @@ use Yii;
 use yii\base\Component;
 
 use app\helpers\BrxDataInspector;
+use yii\db\ActiveRecord;
 
 
 class BrxDataConverter extends Component
@@ -58,7 +59,6 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
-//        var_dump($data);die;
         $config = \Yii::$app->getModule('autoparts')->params;
         $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
         $data = is_object($data) ? (array)$data : $data;
@@ -67,11 +67,15 @@ class BrxDataConverter extends Component
         foreach($config['paramsTemplate'] as $key => $value){
             // ищем параметр шаблона в возвращенных дынных
             if(isset($fromTemplate[$key])){
-
-                $values = BrxArrayHelper::array_search_values_recursive($fromTemplate[$key], $data);
+                if(isset($data[0]) && $data[0] instanceof ActiveRecord){
+                   foreach($data as $k => $model){
+                       $values[$k] = $model->$fromTemplate[$key];
+                   }
+                } else
+                    $values = BrxArrayHelper::array_search_values_recursive($fromTemplate[$key], $data);
                 // забираем его значение
                 for($i = 0; $i <= count($values)-1; $i++){
-                    // создаем массивы и забиваем их параметрами шаблона и соответсвующими данными из пришедших
+//                создаем массивы и забиваем их параметрами шаблона и соответсвующими данными из пришедших
                     $items[$i][$value] = $values[$i];
                 }
             }
@@ -82,18 +86,21 @@ class BrxDataConverter extends Component
                     $item[$value] = '';
             }
         }
+
         for($i = 0; $i <= count($items)-1; $i++){
             foreach($config['paramsTemplate'] as $key => $value){
                 if(!array_key_exists($value, $items[$i]))
                     $items[$i][$value] = '';
             }
         }
+
         if(!empty($beforeParseData))
             $items = $this->beforeParse($beforeParseData, $items);
 
+
         if(!empty($afterParseData))
             $items = $this->afterParse($afterParseData, $items);
-
+//        var_dump($items);
         return $items;
     }
 
@@ -105,7 +112,6 @@ class BrxDataConverter extends Component
     }
 
     private function afterParse($ParseData, &$data){
-//        var_dump($data);die;
         //TODO убрать костыли и поставить нормальную обработку
         $bergKastil = [];
         foreach($data as &$item){
@@ -147,7 +153,7 @@ class BrxDataConverter extends Component
                     $value = ($rval > $nval) ? $rval : $rval + 1;
                 }
                 if($field == 'storeid')
-                    $value = isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109;
+                    $value = isset($item['storeid']) ? $item['storeid'] : (isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
                 if($field == 'flagpostav')
                     $value = $ParseData['provider']->provider_data->flagpostav;
                 if($field == 'srokmin')

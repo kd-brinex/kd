@@ -44,12 +44,13 @@ class PartOverSearch extends PartOver
      */
     public function search($params)
     {
-        $query = PartOver::find();
+        $query = self::find()
+                ->andWhere('code = :code')
+                ->addParams($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {

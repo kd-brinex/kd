@@ -56,9 +56,10 @@ class BrxProvider extends BrxProviderConnector
      * @throws Exception выбрасываеюся если возникает ошибка подключения к еровайдеру (например: неверные логин, либо пароль)
      */
     private function runMethod($method, $options){
-        $options = $this->getOptions($method, $options);
+        if((!$options = $this->getOptions($method, $options)))
+            return false;
+
         $response = $this->getConnection($method, $options);
-//        var_dump($response);
         //ЩАС БУДЕТ КОСТЫЛЬ
         $this->method = $method;
         //ВОТ И КОНЧИЛСЯ КОСТЫЛЬ
@@ -68,9 +69,8 @@ class BrxProvider extends BrxProviderConnector
         $afterParse = [
             'provider' => $this
         ];
-        $data = Yii::$app->getModule('autoparts')->converter->parse($response, $this, true, $beforeParse, $afterParse);
 
-        return $data;
+        return Yii::$app->getModule('autoparts')->converter->parse($response, $this, true, $beforeParse, $afterParse);
     }
 
     /**
@@ -80,11 +80,14 @@ class BrxProvider extends BrxProviderConnector
      * TODO условие isParamsAsArray - костыль который требует уничтожения на самом глубоком уровне!!!)))
      */
     private function getOptions($method, array $options){
+        if(!($accessOptions = $this->getAccessOptions($method)))
+            return false;
+
         $options = Yii::$app->getModule('autoparts')->converter->run($this->provider_name, $method, $options);
         $options = BrxArrayHelper::array_replace_recursive_ncs(
             $this->methods[$method]['params'],
             $this->methodsOptions,
-            $this->getAccessOptions($method),
+            $accessOptions,
             $options
         );
         //видоизменяем параметры по шаблону
