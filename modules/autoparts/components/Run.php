@@ -34,8 +34,8 @@ class Run extends Component{
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $shippingPeriod);
 
         $provider = new $class($provider, $options);
-//        var_dump($provider);
-        return (!$provider instanceof BrxProvider) ?: $provider;
+
+        return ($provider instanceof BrxProvider) ? $provider : false;
     }
 
     //TODO убрать отсюда это дело в модель
@@ -66,10 +66,7 @@ class Run extends Component{
                 ->where('store_id = :store_id AND provider_id = :provider_id', [':store_id' => $store, ':provider_id' => $provider_id])
                 ->one();
 
-        if(isset($accessData))
-            return $accessData;
-        else
-            return false;
+        return isset($accessData) ? $accessData : false;
     }
 
     private function getShippingPeriod($provider){

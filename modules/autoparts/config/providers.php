@@ -350,7 +350,27 @@ return [
             'Over' => [
                 'provider_name' => 'Over',
                 'apiType' => 'Model',
+                'authParams' => ['login', 'password'],
                 'model' => 'PartOverSearch',
+                'isParamsAsArray' => false,
+                'methods' => [
+                    'findDetails' => [
+                        'name' => 'search',
+                        'uri_index' => 0,
+                        'params' => [
+                        ],
+                    ],
+                    'toBasket' => [
+                    ]
+                ],
+                'methodsOptions' => [
+                ]
+            ],
+            'Kd' => [
+                'provider_name' => 'Kd',
+                'apiType' => 'Model',
+                'authParams' => ['login', 'password'],
+                'model' => 'FindDetailsSearch',
                 'isParamsAsArray' => false,
                 'methods' => [
                     'findDetails' => [

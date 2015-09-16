@@ -17,7 +17,7 @@ class OrderSearch extends Order{
         $query = self::find()
             ->andWhere($condition)
             ->addParams($params)
-        ->orderBy('date desc');
+            ->orderBy('date DESC');
 
         if(!empty($with))
             $query->with($with);
@@ -25,7 +25,6 @@ class OrderSearch extends Order{
         $dataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-
         $this->load($params);
         if(!$this->validate())
             return $dataProvider;

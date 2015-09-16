@@ -68,8 +68,7 @@ class BrxProviderConnector
                     $params[$param] = $this->$param;
             }
         }
-//            var_dump($params, $this->provider_name);
-        return empty($params) ?: $params;
+        return !empty($params) ? $params : false;
     }
 
 
@@ -83,9 +82,7 @@ class BrxProviderConnector
                     }
                 } else
                     $this->authParams[$index] = $value;
-
             }
-
             if(($index = array_search($key, $this->methods[$method]['params']))){
                 unset($this->methods[$method]['params'][$index]);
                 $this->methods[$method]['params'][$value];

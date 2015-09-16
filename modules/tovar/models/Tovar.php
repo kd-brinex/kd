@@ -144,18 +144,70 @@ class Tovar extends \yii\db\ActiveRecord
         $providers = PartProviderSearch::find()
                     ->where('enable = :enable', [':enable' => 1])
                     ->all();
-        foreach($providers as $provider){
-            if($provider->enable) {/*name == 'Berg'*/
-                $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
-                $items = $providerObj->findDetails(['code' => $params['article']]);
-                if(!is_array($items))
-                    continue;
 
-                foreach($items as $item){
-                    array_push($details, $item);
+        foreach($providers as $provider){
+            if($provider->enable) {
+                if($provider->cross){
+                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
+                    $items = $providerObj->findDetails(['code' => $params['article']]);
+                }
+
+                if(isset($items)){
+                    if (!is_array($items))
+                        continue;
+
+                    foreach ($items as $item) {
+                        array_push($details, $item);
+                    }
                 }
             }
         }
+
+        foreach($details as $detail){
+            $crosses[$detail['code']] = $detail['groupid'];
+        }
+
+        foreach($providers as $provider){
+            if($provider->enable){
+                if(!$provider->cross){
+                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
+                    foreach($crosses as $crossCode => $crossGroup) {
+                        $items = $providerObj->findDetails(['code' => $crossCode]);
+
+                        if(isset($items)){
+                            if (!is_array($items))
+                                continue;
+
+                            foreach ($items as $item) {
+                                $item['groupid'] = $crossGroup;
+                                array_push($details, $item);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function r_usort($a, $b, $key){
+            $inta = intval($a[$key]);
+            $intb = intval($b[$key]);
+
+            if ($inta != $intb) {
+                return ($inta > $intb) ? 1 : -1;
+            }
+            return 0;
+        }
+        usort($details, function ($a, $b){
+            $r = r_usort($a,$b ,'weight');
+            if ($r == 0){
+                $r = r_usort($a, $b, 'price');
+                if ($r == 0) {
+                    $r = r_usort($a, $b, 'srokmax');
+                }
+            }
+            return $r;
+        });
+
         return $details;
     //        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
 //        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
@@ -209,27 +261,7 @@ class Tovar extends \yii\db\ActiveRecord
 //                /**Сортировка массива поп полю srokmax
 //             *
 //             * */
-//            function r_usort($a, $b, $key)
-//            {
-//                $inta = intval($a[$key]);
-//                $intb = intval($b[$key]);
-//
-//                if ($inta != $intb) {
-//                    return ($inta > $intb) ? 1 : -1;
-//                }
-//                return 0;
-//            }
-//            usort($details, function ($a, $b) {
-//                $r = r_usort($a,$b ,'weight');
-//                if ($r==0){
-//                    $r = r_usort($a, $b, 'price');
-//                    if ($r == 0) {
-//                        $r = r_usort($a, $b, 'srokmax');
-//                    }
-//                }
-//
-//                return $r;
-//            });
+
 //            return $details;
         }
 //    }
