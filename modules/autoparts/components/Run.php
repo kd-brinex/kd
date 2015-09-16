@@ -35,10 +35,7 @@ class Run extends Component{
 
         $provider = new $class($provider, $options);
 
-        if(is_object($provider))
-            return $provider;
-        else
-            return false;
+        return ($provider instanceof BrxProvider) ? $provider : false;
     }
 
     //TODO убрать отсюда это дело в модель
@@ -69,10 +66,7 @@ class Run extends Component{
                 ->where('store_id = :store_id AND provider_id = :provider_id', [':store_id' => $store, ':provider_id' => $provider_id])
                 ->one();
 
-        if(isset($accessData))
-            return $accessData;
-        else
-            return false;
+        return isset($accessData) ? $accessData : false;
     }
 
     private function getShippingPeriod($provider){

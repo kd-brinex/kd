@@ -186,7 +186,54 @@ return [
                         ]
                     ]
                 ]
-            ]
+            ],
+            'Over' => [
+                'method' => [
+                    'findDetails' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'code',                               // Номер
+                                2 => 'manufacture',                                // Производитель
+                            ],
+                            'out' => [
+                                0 => 'code',
+                                1 => 'name',
+                                2 => 'manufacture',
+                                3 => 'price',
+                                4 => 'quantity',
+                                5 => 'srokmin',
+                                6 => 'srokmax',
+                                11 => 'lotquantity',
+                                12 => 'pricedate',
+                                14 => 'skladid',
+                                15 => 'sklad',
+                                17 => 'flagpostav',
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'Kd' => [
+                'method' => [
+                    'findDetails' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'detailnumber',
+                            ],
+                            'out' => [
+                                0 => 'detailnumber',
+                                1 => 'detailname',
+                                3 => 'price',
+                                4 => 'quantity',
+                                6 => 'srokmax',
+                                10 => 'estimation',
+                                16 => 'groupid',
+                                18 => 'storeid'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
         ]
     ]
 ];

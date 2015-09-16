@@ -19,7 +19,7 @@ class BrxProviderConnector
      * @throws Exception выбрасывается если тип подключения не определен в конфигурации
      */
     private function getApiType(){
-        if(!isset($this->apiType))
+        if(empty($this->apiType))
             throw new Exception('Не указан тип подключения к провайдеру');
 
         return $this->apiType;
@@ -42,7 +42,7 @@ class BrxProviderConnector
      * @return mixed uri
      */
     protected function getMethodUri($method){
-        return $this->uri[$this->methods[$method]['uri_index']];
+        return empty($this->uri) ? $this->model : $this->uri[$this->methods[$method]['uri_index']];
     }
 
     /**
@@ -68,11 +68,7 @@ class BrxProviderConnector
                     $params[$param] = $this->$param;
             }
         }
-        if(!empty($params)){
-//            var_dump($params, $this->provider_name);
-            return $params;}
-        else
-            return false;
+        return !empty($params) ? $params : false;
     }
 
 
@@ -86,9 +82,7 @@ class BrxProviderConnector
                     }
                 } else
                     $this->authParams[$index] = $value;
-
             }
-
             if(($index = array_search($key, $this->methods[$method]['params']))){
                 unset($this->methods[$method]['params'][$index]);
                 $this->methods[$method]['params'][$value];

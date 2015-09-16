@@ -56,7 +56,7 @@ echo GridView::widget([
                     $url = ['/tovar/'.$model['product_id']];
 
                 if(isset($model['product_article']) && $model['product_article'] != '')
-                    $url = ['/finddetails', 'article' => $model['product_article']];
+                    $url = ['/autocatalog/autocatalog/details', 'article' => $model['product_article']];
                 return $model['status'] === $model::ORDER_CANCELED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
             }
         ],
