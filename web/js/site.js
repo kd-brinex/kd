@@ -141,6 +141,20 @@ function removeBasketItems(){
         }
     }
 }
+function detailCounter(obj, position){
+    if(position != null){
+        var $this = $(obj);
+        $.ajax({
+            'type' : 'POST',
+            'url' : '/basket/changeQuantity',
+            'data' : {'position' : position, 'quantity' : $this.val()},
+            'dataType' : 'JSON',
+            'success' : function(data){
+                console.log(data);
+            }
+        });
+    }
+}
 function countBasketSum(){
     var mainSum = 0;
     $('#BasketGrid').find('tr').each(function(){
