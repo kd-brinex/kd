@@ -31,18 +31,18 @@ echo GridView::widget([
             }
         ],
         [
-            'label' => 'Статус',
+            'label' => 'Выполнен на',
+            'format' => 'raw',
             'value' => function($model){
-                $states = [];
+                $executed = 0;
+                $execution_step = floor(100 / count($model['orders']));
                 foreach($model['orders'] as $value){
-                    if($value->order_id == $model['id'])
-                        $states[] = $value->status;
+                    if($value->status > 4)
+                        $executed += $execution_step;
                 }
-                return \app\modules\user\models\OrdersState::find()
-                    ->select('status_name')
-                    ->where('id = :id', [':id' => min($states)])
-                    ->one()
-                    ->status_name;
+                $progressBar = '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$executed.'" aria-valuemin="0" aria-valuemax="100" style="width:'.$executed.'%">'.$executed.'%</div></div>';
+
+                return $progressBar;
             }
         ],
     ]
