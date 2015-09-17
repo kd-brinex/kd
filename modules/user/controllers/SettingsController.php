@@ -44,25 +44,22 @@ class SettingsController extends BaseSettingsController
     }
 
     /**
-     * Поиск заказов пользователя
+     * Поиск заказов пользователя и расспределение по вкладкам "Активные заказы и архив"
      * @return string
      */
     public function actionOrders(){
         $model = new OrderSearch();
         $model = $model->search('user_id = :uid', [':uid' => Yii::$app->user->id], 'orders');
-
-        $v = [];
-        $b = [];
+        $new_orders = [];
+        $old_orders = [];
         foreach($model->getModels() as $key => $order){
+            $counter = 0;
             foreach($order->orders as $k => $position){
-                if($position->status <= 4) {
-                    $v[$order->id] = $order;
-                } else {
-                    $b[$order->id] = $order;
-                }
+                ($position->status > 4) ?: $counter++;
             }
+            $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }
-        return  $this->render('orders',['new_orders' =>$v, 'old_orders' => $b, 'model' => $model]);
+        return  $this->render('orders',['new_orders' =>$new_orders, 'old_orders' => $old_orders, 'model' => $model]);
     }
 
     /**

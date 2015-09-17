@@ -58,7 +58,6 @@ class BrxProvider extends BrxProviderConnector
     private function runMethod($method, $options){
         if((!$options = $this->getOptions($method, $options)))
             return false;
-
         $response = $this->getConnection($method, $options);
         //ЩАС БУДЕТ КОСТЫЛЬ
         $this->method = $method;
