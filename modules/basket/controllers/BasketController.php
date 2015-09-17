@@ -3,18 +3,14 @@
 namespace app\modules\basket\controllers;
 
 use app\modules\user\models\Order;
-//use app\modules\basket\models\OrderSearch;
 use app\modules\user\models\Orders;
 use app\modules\user\models\Profile;
 use dektrium\user\models\User;
-use dektrium\user\models\UserSearch;
-use Symfony\Component\Finder\Expression\Expression;
 use Yii;
 use app\controllers\MainController;
 use app\modules\basket\models\BasketSearch;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\modules\basket\models\ZakazSearch;
 use yii\helpers\Json;
 
 use app\modules\tovar\models\Tovar;
@@ -71,17 +67,21 @@ class BasketController extends MainController
         return $result;
     }
 
-    public function actionPut()
-    {
+    public function actionPut(){
         $params = Yii::$app->request->post();
         $post = array_merge(Yii::$app->request->post());
         $params = Yii::$app->request->queryParams;
-////        var_dump($post);die;
-//        $model = new BasketSearch();
-//        $result=$model->put($post);
-//        $dataProvider = $model->search([]);
-//
         switch ($params['mode']) {
+            case 'changeQuantity':
+                if(Yii::$app->request->isAjax) {
+                    if(!empty(($position = (int)$post['position'])) && !empty(($quantity = (int)$post['quantity']))) {
+                        $basket = BasketSearch::findOne($position);
+                        $basket->tovar_count = $quantity;
+
+                        return $basket->update();
+                    }
+                }
+                break;
             case 'put':
 //                $t=$model->findOne(['tovar_id'=>$post['id']]);
                 $session = new \yii\web\Session;
@@ -236,4 +236,5 @@ class BasketController extends MainController
             return $this->render('not_tovar');
         }
     }
+
 }
