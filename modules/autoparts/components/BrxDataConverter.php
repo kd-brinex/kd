@@ -100,7 +100,7 @@ class BrxDataConverter extends Component
 
         if(!empty($afterParseData))
             $items = $this->afterParse($afterParseData, $items);
-//        var_dump($items);
+
         return $items;
     }
 
@@ -113,7 +113,6 @@ class BrxDataConverter extends Component
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
-        $bergKastil = [];
         foreach($data as &$item){
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
@@ -150,7 +149,7 @@ class BrxDataConverter extends Component
                     $price = $value;
                     $nval = $price + ($price / 100 * (isset($ParseData['provider']->marga) ? $ParseData['provider']->marga : 0));
                     $rval = round($nval);
-                    $value = ($rval > $nval) ? $rval : $rval + 1;
+                    $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
                 }
                 if($field == 'storeid')
                     $value = isset($item['storeid']) ? $item['storeid'] : (isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
@@ -179,19 +178,6 @@ class BrxDataConverter extends Component
                     $q += $d;
                     $value = $q;
                 }
-
-                if($item['provider'] == 'Berg' && (count($bergKastil) != 2)){
-                        $bergKastil['code'] = $item['code'];
-                        $bergKastil['name'] = $item['name'];
-                }
-                if($item['provider'] == 'Berg' && !empty($bergKastil)){
-//                    if($field == 'code')
-                        $item['code'] = $bergKastil['code'];
-
-//                    if($field == 'name')
-                        $item['name']= $bergKastil['name'];
-                }
-
 
             }
 //           foreach($afterParseData as $field => $manipulation){
