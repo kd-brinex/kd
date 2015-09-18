@@ -29,6 +29,8 @@ class Orders extends \yii\db\ActiveRecord
     const ORDER_IN_SHOP = 4;
     const ORDER_EXECUTED = 5;
     const ORDER_CANCELED = 6;
+
+    const DEFAULT_DELIVERY_DAYS = 5;
     /**
      * @inheritdoc
      */
@@ -44,7 +46,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['quantity', 'status', 'datetime', 'part_price'], 'required', 'except' => 'update'],
-            [['quantity', 'status',  'provider_id','order_id'], 'integer'],
+            [['quantity', 'status',  'provider_id','order_id', 'delivery_days'], 'integer'],
             [['datetime'], 'safe'],
             [['product_id'], 'string', 'max' => 9],
             [['product_article'], 'string', 'max' => 32],
@@ -67,6 +69,7 @@ class Orders extends \yii\db\ActiveRecord
             'status' => 'Статус',
             'datetime' => 'Дата заказа',
 //            'pay_datetime' => 'Дата платежа'
+            'delivery_days' => 'Срок доставки'
         ];
     }
 
@@ -96,6 +99,10 @@ class Orders extends \yii\db\ActiveRecord
 
     public function getProvider(){
         return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);
+    }
+
+    public function getParentOrder(){
+        return $this->hasOne(OrderSearch::className(), ['id' => 'order_id']);
     }
 
     public function beforeSave($insert){

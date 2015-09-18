@@ -7,6 +7,7 @@
  */
 namespace app\modules\user\controllers;
 
+use app\modules\user\models\Orders;
 use Yii;
 use dektrium\user\controllers\SettingsController as BaseSettingsController;
 use yii\filters\AccessControl;
@@ -55,7 +56,7 @@ class SettingsController extends BaseSettingsController
         foreach($model->getModels() as $key => $order){
             $counter = 0;
             foreach($order->orders as $k => $position){
-                ($position->status > 4) ?: $counter++;
+                ($position->status > Orders::ORDER_EXECUTED) ?: $counter++;
             }
             $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }

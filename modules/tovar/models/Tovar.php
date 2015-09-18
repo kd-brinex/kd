@@ -162,11 +162,9 @@ class Tovar extends \yii\db\ActiveRecord
                 }
             }
         }
-
         foreach($details as $detail){
             $crosses[$detail['code']] = $detail['groupid'];
         }
-
         foreach($providers as $provider){
             if($provider->enable){
                 if(!$provider->cross){
@@ -187,14 +185,12 @@ class Tovar extends \yii\db\ActiveRecord
                         }
                         $items = array_merge($items, $crossItems);
                     }
-
-                }
-                foreach ($items as $item) {
-                    array_push($details, $item);
+                    foreach ($items as $item) {
+                        array_push($details, $item);
+                    }
                 }
             }
         }
-
         function r_usort($a, $b, $key){
             $inta = intval($a[$key]);
             $intb = intval($b[$key]);

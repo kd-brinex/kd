@@ -37,7 +37,7 @@ echo GridView::widget([
                     $executed = 0;
                     $execution_step = floor(100 / count($model['orders']));
                     foreach($model['orders'] as $value){
-                        if($value->status > 4)
+                        if($value->status > \app\modules\user\models\Orders::ORDER_EXECUTED)
                             $executed += $execution_step;
                     }
                     $progressBar = '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$executed.'" aria-valuemin="0" aria-valuemax="100" style="width:'.$executed.'%">'.$executed.'%</div></div>';
@@ -45,6 +45,20 @@ echo GridView::widget([
                     return $progressBar;
                 }
             ],
+            [
+                'label' => 'Оплата',
+                'value' => function($model) {
+                    if (empty($model['orderPays']))
+                        return 0;
+                    else {
+                        $fullSum = 0;
+                        foreach ($model['orderPays'] as $key => $orderPay) {
+                                $fullSum += $orderPay->sum;
+                        }
+                        return $fullSum;
+                    }
+                }
+            ]
         ]
     ]);
 
