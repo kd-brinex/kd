@@ -56,6 +56,7 @@ $navbar = [
 
 
 <?php
+if (!Yii::$app->user->isGuest){
 NavBar::begin([
     'brandLabel' => 'Колеса даром',
     'brandUrl' => Yii::$app->homeUrl,
@@ -65,7 +66,7 @@ NavBar::begin([
 ]);
 
 echo Nav::widget($navbar);
-NavBar::end();
+NavBar::end();}
 ?>
 
 

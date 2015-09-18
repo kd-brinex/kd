@@ -50,11 +50,11 @@ NavBar::begin([
 echo Nav::widget($navbar);
 NavBar::end();
 ?>
-git
+<div style="height:60px"></div>
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-left">
-        <?=$content ?>
-            </div>
+            <?=$content ?>
+        </div>
     </div>
 
 <?php $this->endBody() ?>

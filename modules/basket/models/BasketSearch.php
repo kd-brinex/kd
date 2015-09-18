@@ -41,11 +41,13 @@ class BasketSearch extends Basket{
         $query->andWhere('session_id = :new_session_id');
         $query->orWhere('session_id = :old_session_id');
         $query->orWhere('uid = :uid');
+        $query->orderBy('id desc');
         $query->addParams($params);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => false
+            'sort' => false,
+            'pagination' =>false,
         ]);
         $this->load($params);
 
