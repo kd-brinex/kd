@@ -12,31 +12,13 @@ use yii\bootstrap\Button;
 AppAsset::register($this);
 $city_name = Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
 $menu = app\modules\tovar\models\TovarSearch::category_menu();
-$navbar = [
-    'options' => ['class' => 'navbar-nav navbar-right'],
-    'items' => [
-        ['label' => 'Информация', 'items' => [
-            ['label' => 'Главная страница', 'url' => ['/site/index']],
-            ['label' => 'О компании', 'url' => ['/site/about']],
-            ['label' => 'Обратная связь', 'url' => ['contact']],
-            ['label' => 'Партнеры', 'url' => ['partner']],
+//var_dump(Yii::$app->params);die;
+$items=Yii::$app->params['navbar']['all'];
+if (Yii::$app->user->isGuest){$items=array_merge($items,Yii::$app->params['navbar']['quest']);}
+    else
+    {$items=array_merge($items,Yii::$app->params['navbar']['user']);}
 
-        ]],
-        Yii::$app->user->isGuest ?
-            ['label' => 'Личный кабинет', 'items' => [
-                ['label' => 'Регистрация', 'url' => ['/user/registration/register']],
-                ['label' => 'Вход', 'url' => ['/user/security/login']],
-            ]]
-            : ['label' => 'Личный кабинет', 'items' => [
-//            ['label' => 'Профиль пользователя', 'url' => ['/user/settings/profile']],
-//            ['label' => 'Учетные данные', 'url' => ['/user/settings/account']],
-//            ['label' => 'Соцсети', 'url' => ['/user/settings/networks']],
-            ['label' => 'Заказы', 'url' => ['/user/settings/orders']],
-            ['label' => 'Выход', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']]
-        ]],
-//                ['label' => 'Товар', 'items' => Yii::$app->params['catalog']['items']],
-        ['label' => 'Корзина', 'url' => ['/basket/basket']],
-    ]];
+$navbar =['options' => ['class' => 'navbar-nav navbar-right'],'items' =>$items ];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

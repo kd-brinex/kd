@@ -79,7 +79,8 @@ class User extends BaseUser
     public function findUserRemote()
     {
         $ur=new UserRemote();
-        var_dump($ur->getRemoteUser($this->username,$this->password));die;
+        $ur->getRemoteUser($this->username,$this->password);
+        return $ur;
     }
     public function copyRemoteUser($params)
     {

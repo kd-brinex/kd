@@ -232,6 +232,10 @@ $config = [
                     'clientId' => '4441364',
                     'clientSecret' => 'T5yQkhI0zcg1Dn5uamKz',
                 ],
+                'kd' => [
+                    'class' => 'app\modules\user\clients\KD',
+
+                ],
             ],
         ],
     ],
