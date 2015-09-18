@@ -26,8 +26,7 @@ class Run extends Component{
 
     public function provider($provider, array $options = []){
         $class = 'app\modules\autoparts\components\BrxProvider';
-
-        if(!empty(($access = $this->getAccess($provider))))
+        if(!empty(($access = $this->getAccess($provider, $options))))
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $access);
 
         if(!empty($shippingPeriod = $this->getShippingPeriod($provider)))
@@ -39,15 +38,18 @@ class Run extends Component{
     }
 
     //TODO убрать отсюда это дело в модель
-    private function getStoreId(){
-        if(!empty(($city = $this->getCityId())))
+    private function getStoreId($options){
+        if(!empty($options['store_id']))
+            return $this->storeId = $options['store_id'];
+
+        if(!empty(($city = $this->getCityId()))) {
             $store = TStore::find()
                 ->select('id')
                 ->where('city_id = :city_id', [':city_id' => $city])
                 ->one();
-            if($store)
+            if ($store)
                 $this->storeId = $store->id;
-
+        }
         return $this->storeId;
     }
 
@@ -58,8 +60,8 @@ class Run extends Component{
         return $this->cityId;
     }
 
-    private function getAccess($provider){
-        if(!empty(($store = $this->getStoreId())) && !empty(($provider_id = $this->getProviderId($provider))))
+    private function getAccess($provider, $options){
+        if(!empty(($store = $this->getStoreId($options))) && !empty(($provider_id = $this->getProviderId($provider))))
             $accessData = PartProviderUserSearch::find()
                 ->select('login, password, marga, store_id')
                 ->asArray()
