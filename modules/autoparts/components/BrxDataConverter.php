@@ -64,6 +64,7 @@ class BrxDataConverter extends Component
         $data = is_object($data) ? (array)$data : $data;
         $items = [];
         // перебираем все атрибуты шаблона под который идет подгонка данных
+//        var_dump($data);
         foreach($config['paramsTemplate'] as $key => $value){
             // ищем параметр шаблона в возвращенных дынных
             if(isset($fromTemplate[$key])){
@@ -80,6 +81,7 @@ class BrxDataConverter extends Component
                 }
             }
         }
+//        var_dump($items);die;
         foreach($items as $item){
             foreach($config['paramsTemplate'] as $key => $value){
                 if(!array_key_exists($value, $item))
@@ -100,7 +102,7 @@ class BrxDataConverter extends Component
 
         if(!empty($afterParseData))
             $items = $this->afterParse($afterParseData, $items);
-//        var_dump($items);
+
         return $items;
     }
 
@@ -113,7 +115,6 @@ class BrxDataConverter extends Component
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
-        $bergKastil = [];
         foreach($data as &$item){
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
@@ -150,10 +151,13 @@ class BrxDataConverter extends Component
                     $price = $value;
                     $nval = $price + ($price / 100 * (isset($ParseData['provider']->marga) ? $ParseData['provider']->marga : 0));
                     $rval = round($nval);
-                    $value = ($rval > $nval) ? $rval : $rval + 1;
+                    $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
                 }
                 if($field == 'storeid')
                     $value = isset($item['storeid']) ? $item['storeid'] : (isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
+                if($field == 'pid')
+                    $value = !empty($item['pid']) ? $item['pid'] : $ParseData['provider']->provider_data->id;
+
                 if($field == 'flagpostav')
                     $value = $ParseData['provider']->provider_data->flagpostav;
                 if($field == 'srokmin')
@@ -179,19 +183,6 @@ class BrxDataConverter extends Component
                     $q += $d;
                     $value = $q;
                 }
-
-                if($item['provider'] == 'Berg' && (count($bergKastil) != 2)){
-                        $bergKastil['code'] = $item['code'];
-                        $bergKastil['name'] = $item['name'];
-                }
-                if($item['provider'] == 'Berg' && !empty($bergKastil)){
-//                    if($field == 'code')
-                        $item['code'] = $bergKastil['code'];
-
-//                    if($field == 'name')
-                        $item['name']= $bergKastil['name'];
-                }
-
 
             }
 //           foreach($afterParseData as $field => $manipulation){

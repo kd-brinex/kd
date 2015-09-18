@@ -51,7 +51,7 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
                    'label' => 'Кол-во ед.',
                    'format' => 'raw',
                    'value' => function($model){
-                       return '<input type="number" class="form-control" onChange="countBasketSum()" value="'.$model['tovar_count'].'">';
+                       return '<input type="number" class="form-control" onChange="countBasketSum(); detailCounter(this, '.$model['id'].')" value="'.$model['tovar_count'].'">';
                    },
                    'contentOptions' => [
                        'class' => 'itemCount'

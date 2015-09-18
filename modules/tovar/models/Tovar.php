@@ -162,32 +162,35 @@ class Tovar extends \yii\db\ActiveRecord
                 }
             }
         }
-
         foreach($details as $detail){
             $crosses[$detail['code']] = $detail['groupid'];
         }
-
         foreach($providers as $provider){
             if($provider->enable){
                 if(!$provider->cross){
                     $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
-                    foreach($crosses as $crossCode => $crossGroup) {
-                        $items = $providerObj->findDetails(['code' => $crossCode]);
+                    $items = $providerObj->findDetails(['code' => $params['article']]);
+                    if(!empty($crosses)) {
+                        $crossItems = null;
+                        foreach ($crosses as $crossCode => $crossGroup) {
+                            if (isset($items)) {
+                                if (!is_array($items))
+                                    continue;
 
-                        if(isset($items)){
-                            if (!is_array($items))
-                                continue;
-
-                            foreach ($items as $item) {
-                                $item['groupid'] = $crossGroup;
-                                array_push($details, $item);
+                                $crossItems = $providerObj->findDetails(['code' => $crossCode]);
+                                foreach ($crossItems as $item) {
+                                    $item['groupid'] = $crossGroup;
+                                }
                             }
                         }
+                        $items = array_merge($items, $crossItems);
+                    }
+                    foreach ($items as $item) {
+                        array_push($details, $item);
                     }
                 }
             }
         }
-
         function r_usort($a, $b, $key){
             $inta = intval($a[$key]);
             $intb = intval($b[$key]);

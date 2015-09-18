@@ -21,15 +21,137 @@ class DefaultController extends ProviderController
 
 
     public function actionIndex(){
-        function a(){
-            return false;
-        }
-        function b($d){
-            return $d+56;
+        $arr = [
+            'resources' => [
+                0 => [
+                    'id' => 40386,
+                    'name' => 'Колодки тормозные дисковые GDB1044',
+                    'article' => 'GDB1044',
+                    'brand' => [
+                        'id' => 3,
+                        'name' => 'TRW',
+                    ],
+                    'offers' => [
+                        0 => [
+                            'price' => 1572.82,
+                            'quantity' => 0,
+                            'reliability' => 100,
+                            'multiplication_factor' => 1,
+                            'average_period' => 0,
+                            'assured_period' => 0,
+                            'warehouse' => [
+                                'id' => 46,
+                                'name' => 'BERG',
+                                'type' => 1
+                            ]
+                        ],
+                        1 => [
+                            'price' => 1572.82,
+                            'quantity' => 6,
+                            'reliability' => 100,
+                            'multiplication_factor' => 1,
+                            'average_period' => 1,
+                            'assured_period' => 1,
+                            'warehouse' => [
+                                'id' => 27820,
+                                'name' => 'BERG MSK',
+                                'type' => 2
+                              ]
+                        ]
+                    ],
+                    'source_idx' => '0',
+                ],
+                1 => [
+                    'id' => 40558,
+                    'name' => 'Колодки тормозные дисковые GDB1266',
+                    'article' => 'GDB1266',
+                    'brand' => [
+                        'id' => 3,
+                        'name' => 'TRW'
+                    ],
+                    'offers' =>[
+                        0 => [
+                            'price' => 2407.03,
+                            'quantity' => 0,
+                            'reliability' => 100,
+                            'multiplication_factor' => 1,
+                            'average_period' => 0,
+                            'assured_period' => 0,
+                            'warehouse' => [
+                                'id' => 46,
+                                'name' => 'BERG',
+                                'type' => 1
+                            ]
+                        ],
+                        1 => [
+                            'price' => 2406.03,
+                            'quantity' => 1,
+                            'reliability' => 100,
+                            'multiplication_factor' => 1,
+                            'average_period' => 1,
+                            'assured_period' => 1,
+                            'warehouse' => [
+                                'id' => 27820,
+                                'name' => 'BERG MSK',
+                                'type' => 2
+                            ]
+                        ]
+                    ],
+                    'source_idx' => '0'
+                ]
+            ]
+        ];
+
+        function array_search_values_recursive($key, &$haystack, $removeItem = false) {
+            $haystack = is_object($haystack) ? (array)$haystack : $haystack;
+            static $result = [];
+            $result = [];
+            foreach ($haystack as &$v) {
+                $v = is_object($v) ? (array)$v : $v;
+                if (is_array($v)) {
+                    if (array_key_exists($key, $v)) {
+                        $result[] = $v[$key];
+                        if ($removeItem)
+                            unset($v[$key]);
+                    } else
+                        array_search_values_recursive($key, $v, $removeItem);
+                }
+            }
+            return $result;
         }
 
-        $d = a() || b(5);
-        var_dump($d);die;
+        function array_get_path_to_key_recursive($key, &$haystack, $keyToPath = false){
+            $haystack = is_object($haystack) ? (array)$haystack : $haystack;
+            static $result = [];
+//            $result = [];
+            foreach ($haystack as $k => &$v) {
+                $v = is_object($v) ? (array)$v : $v;
+                if (is_array($v)) {
+                    if (array_key_exists($key, $v)) {
+                        $result[] = $k;
+                    }
+                    else {
+                        $result[] = $k;
+                        array_get_path_to_key_recursive($key, $v, $keyToPath);
+                    }
+                }
+
+            }
+            return $result;
+//            return $keyToPath ? array_merge($result, [$key]) : $result;
+        }
+
+//        var_dump($arr['resources'][0]['offers'][0]);
+//        $a = BrxArrayHelper::array_search_recursive(0, $arr);
+//        $b = BrxArrayHelper::array_search_recursive_value($a, $arr);
+//        $c = BrxArrayHelper::array_search_values_recursive('price', $arr);
+        $d = array_get_path_to_key_recursive('price', $arr, true);
+//        var_dump($a);
+//        var_dump($b);
+//        var_dump($c);
+        var_dump($d);
+        die;
+
     /*EMEX*/
 //       var_dump($this->provider('Emex')->findDetails(['code' => '32-D88-F']));
 
