@@ -177,15 +177,11 @@ class TovarController extends MainController
         ]);
     }
 
-    public function actionFinddetails()
-    {
-
+    public function actionFinddetails(){
         $params = \Yii::$app->request->queryParams;
         $parts = Yii::$app->params['Parts'];
 
-
         $details= (isset($params['article']))?Tovar::findDetails($params):[];
-//        var_dump($details);die;
         $provider = new ArrayDataProvider([
             'allModels' => $details,
             'sort' => $parts['sort'],

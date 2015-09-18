@@ -139,11 +139,17 @@ class Tovar extends \yii\db\ActiveRecord
      * findDetails - описание функции
      */
     public static function findDetails($params){                                                                                   //  здесь приходят article и provider_id из URI
+
+        if(!empty($params['store_id']) || !empty($params['provider_id']))
+            return self::debugDetails($params);
+
         $details = [];
         $providerObj = null;
         $providers = PartProviderSearch::find()
                     ->where('enable = :enable', [':enable' => 1])
                     ->all();
+
+
 
         foreach($providers as $provider){
             if($provider->enable) {
@@ -267,5 +273,40 @@ class Tovar extends \yii\db\ActiveRecord
 
 //            return $details;
         }
-//    }
+    private function debugDetails($params){
+        if(!empty($params['provider_id'])){
+            $provider = (int)$params['provider_id'];
+            $provider = PartProviderSearch::findOne($provider);
+
+            $provider_data = ['provider_data' => $provider];
+
+            if(!empty($params['store_id']))
+                $provider_data = array_merge($provider_data, ['store_id' => $params['store_id']]);
+
+            $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $provider_data);
+
+            $options = ['code' => $params['article']];
+
+            $items = $providerObj->findDetails($options);
+        } else {
+            $providers = PartProviderSearch::find()->all();
+           foreach($providers as $provider){
+               $provider_data = ['provider_data' => $provider];
+
+               if(!empty($params['store_id']))
+                   $provider_data = array_merge($provider_data, ['store_id' => $params['store_id']]);
+
+               if(empty(Yii::$app->getModule('autoparts')->params['providers'][$provider->name]))
+                   continue;
+
+               $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $provider_data);
+
+               $options = ['code' => $params['article']];
+
+               $items[] = $providerObj->findDetails($options);
+           }
+        }
+        var_dump($items);
+    }
+
 }

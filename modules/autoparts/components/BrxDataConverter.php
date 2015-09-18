@@ -154,7 +154,7 @@ class BrxDataConverter extends Component
                     $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
                 }
                 if($field == 'storeid')
-                    $value = isset($item['storeid']) ? $item['storeid'] : (isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
+                    $value = !empty($item['storeid']) ? $item['storeid'] : (!empty($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
                 if($field == 'pid')
                     $value = !empty($item['pid']) ? $item['pid'] : $ParseData['provider']->provider_data->id;
 
