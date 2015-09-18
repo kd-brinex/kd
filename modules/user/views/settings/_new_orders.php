@@ -45,6 +45,20 @@ echo GridView::widget([
                     return $progressBar;
                 }
             ],
+            [
+                'label' => 'Оплата',
+                'value' => function($model) {
+                    if (empty($model['orderPays']))
+                        return 0;
+                    else {
+                        $fullSum = 0;
+                        foreach ($model['orderPays'] as $key => $orderPay) {
+                                $fullSum += $orderPay->sum;
+                        }
+                        return $fullSum;
+                    }
+                }
+            ]
         ]
     ]);
 

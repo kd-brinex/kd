@@ -64,6 +64,7 @@ class BrxDataConverter extends Component
         $data = is_object($data) ? (array)$data : $data;
         $items = [];
         // перебираем все атрибуты шаблона под который идет подгонка данных
+//        var_dump($data);
         foreach($config['paramsTemplate'] as $key => $value){
             // ищем параметр шаблона в возвращенных дынных
             if(isset($fromTemplate[$key])){
@@ -80,6 +81,7 @@ class BrxDataConverter extends Component
                 }
             }
         }
+//        var_dump($items);die;
         foreach($items as $item){
             foreach($config['paramsTemplate'] as $key => $value){
                 if(!array_key_exists($value, $item))
@@ -153,6 +155,9 @@ class BrxDataConverter extends Component
                 }
                 if($field == 'storeid')
                     $value = isset($item['storeid']) ? $item['storeid'] : (isset($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
+                if($field == 'pid')
+                    $value = !empty($item['pid']) ? $item['pid'] : $ParseData['provider']->provider_data->id;
+
                 if($field == 'flagpostav')
                     $value = $ParseData['provider']->provider_data->flagpostav;
                 if($field == 'srokmin')

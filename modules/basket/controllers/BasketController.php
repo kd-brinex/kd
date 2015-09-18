@@ -168,7 +168,8 @@ class BasketController extends MainController
                                     'datetime'=>date('Y-m-d H:i:s'),
                                     'description'=>$basket->description,
                                     'order_id'=> (int)$order_id,
-                                    'provider_id'=> (int) $basket->provider_id,
+                                    'provider_id'=> (int)$basket->provider_id,
+                                    'delivery_days' => (int)$basket->period
                                     ];
 
                     $Orders = new Orders();

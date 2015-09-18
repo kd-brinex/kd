@@ -40,7 +40,14 @@ echo GridView::widget([
         ],
         [
             'header' => 'Срок доставки',
-            'attribute' => 'datetime'
+            'value' => function($model){
+                if(isset($model['parentOrder']['orderPays'][0]->date)){
+                    $payDate = strtotime($model['parentOrder']['orderPays'][0]->date);
+                    $deliveryDate = date('d.m.Y', ($payDate + (3600 * 24 * (!empty($model['delivery_days']) ? $model['delivery_days'] : \app\modules\user\models\Orders::DEFAULT_DELIVERY_DAYS))));
+                } else $deliveryDate = '-';
+
+                return $deliveryDate;
+            }
         ],
         [
             'header' => 'Комментарий',
@@ -57,6 +64,7 @@ echo GridView::widget([
 
                 if(isset($model['product_article']) && $model['product_article'] != '')
                     $url = ['/autocatalog/autocatalog/details', 'article' => $model['product_article']];
+
                 return $model['status'] === $model::ORDER_CANCELED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
             }
         ],

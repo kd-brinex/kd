@@ -91,7 +91,7 @@ class BrxArrayHelper{
     }
 
     /**
-     * Функция ищет значение по из массива по массиву ключей полученному функцией array_search_recursive
+     * Функция ищет значение из массива по массиву ключей полученному функцией array_search_recursive
      * @param $keys array|object массив|объект ключей полученный функцией array_search_recursive
      * @param $haystack array целевой массив
      * @return mixed результат
