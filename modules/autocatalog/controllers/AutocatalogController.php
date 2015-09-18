@@ -75,7 +75,7 @@ class AutocatalogController extends MainController
         $catalog = $this->module->getCatalog();
         if (isset($params['article'])) {
             $parts = \Yii::$app->params['Parts'];
-            $details = (isset($params['article'])) ? Tovar::findDetails($params) : [];
+            $details = isset($params['article']) ? Tovar::findDetails($params) : [];
             $provider = new ArrayDataProvider([
                 'allModels' => $details,
                 'sort' => $parts['sort'],

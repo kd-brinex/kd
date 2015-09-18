@@ -101,6 +101,25 @@ class DefaultController extends ProviderController
                 ]
             ]
         ];
+        function find_parent($array, $needle, $parent = null) {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $pass = $parent;
+                    if (is_string($key)) {
+                        $pass = $key;
+                    }
+                    $found = find_parent($value, $needle, $pass);
+                    if ($found !== false) {
+                        return $found;
+                    }
+                } else if ($value === $needle) {
+                    return $parent;
+                }
+            }
+
+            return false;
+        }
+        var_dump(find_parent($arr, 40386));die;
 
         function array_search_values_recursive($key, &$haystack, $removeItem = false) {
             $haystack = is_object($haystack) ? (array)$haystack : $haystack;
