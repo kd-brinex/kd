@@ -6,13 +6,12 @@
  * Time: 15:06
  */
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
-
-use yii\helpers\Url;
 use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
-
-$asset = app\modules\autocatalog\AutocatalogAsset::register($this);
+use app\assets\AppAsset;
+AppAsset::register($this);
+$asset = app\modules\user\userAsset::register($this);
+//$asset = app\modules\autocatalog\AutocatalogAsset::register($this);
 
 $items=Yii::$app->params['navbar']['all'];
 if (Yii::$app->user->isGuest){$items=array_merge($items,Yii::$app->params['navbar']['quest']);}

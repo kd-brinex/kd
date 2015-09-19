@@ -8,6 +8,8 @@
 
 namespace app\modules\autoparts\controllers;
 
+use app\modules\user\models\Order;
+use app\modules\user\models\OrdersSearch;
 use Yii;
 use yii\base\Exception;
 use yii\web\Controller;
@@ -18,23 +20,25 @@ use yii\helpers\Json;
 class OrdersController extends Controller
 {
     public function actionIndex(){
-        $query = Orders::find();
-        $orders = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 50
-            ]
-        ]);
+        $model = new OrdersSearch();
+        $orders = $model->search();
+//        [
+//            'query' => $query,
+//            'pagination' => [
+//                'pageSize' => 50
+//            ]
+//        ]);
         return $this->render('orders', ['orders' => $orders]);
     }
 
     public function actionUpdate(){
-        if (!Yii::$app->request->isAjax)
-            return;
+        if (!Yii::$app->request->isAjax){
+            return;}
         if(Yii::$app->request->post('hasEditable')) {
             $post = Yii::$app->request->post();
             $model = $this->findModel($post['editableKey']);
             $model->scenario = 'update';
+
             $data['Order'] = current($post['Order']);
             if ($model->load($data) && $model->save())
                 $data = ['output' => $model->pay_datetime];

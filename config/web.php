@@ -232,6 +232,10 @@ $config = [
                     'clientId' => '4441364',
                     'clientSecret' => 'T5yQkhI0zcg1Dn5uamKz',
                 ],
+                'kd' => [
+                    'class' => 'app\modules\user\clients\KD',
+
+                ],
             ],
         ],
     ],
@@ -334,7 +338,7 @@ $config = [
 
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/admin',
+            'layout' => '/user',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'UserSearch' => 'app\modules\user\models\UserSearch',
