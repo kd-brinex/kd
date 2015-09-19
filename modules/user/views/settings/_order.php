@@ -2,17 +2,29 @@
 
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use yii\helpers\Html;
 
 echo GridView::widget([
     'id'=> 'order-grid',
     'dataProvider' => $orders,
+//    'filterModel'=>$model,
     'responsive'=>true,
     'hover'=>true,
-//    'pjax'=>true,
+    'pjax'=>true,
+
+//    'tableOptions' =>['class' => 'table'],
+//    'options'=>['class'=>'grid-view'],
+
+    'rowOptions'=>function($model,$key, $index, $grid){
+        return ['class'=>$model->order_class];
+    },
 //    'pjaxSettings'=>[
 //        'neverTimeout'=>true,
 //    ],
     'columns' => [
+        [
+            'header'=>'№ заказа',
+            'attribute'=>'order.number'],
         [
             'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">№ детали</span>',
             'format' => 'raw',
@@ -22,10 +34,14 @@ echo GridView::widget([
         ],
         [
             'header' => 'Наименование детали',
-            'attribute' => 'part_name'
+//            'attribute' => 'part_name',
+            'format' => 'raw',
+            'value' => function($model){
+                       return Html::a($model['part_name'],$model['product_url'],['target'=>'_blank']);
+            }
         ],
         [
-            'header' => 'Количество',
+            'header' => 'Кол-во',
             'attribute' => 'quantity'
         ],
         [
@@ -56,17 +72,17 @@ echo GridView::widget([
         [
             'header' => 'Статус',
             'attribute' => 'state.status_name',
-            'format' => 'raw',
-            'value' => function($model){
-                $url = '';
-                if(isset($model['product_id']) && $model['product_id'] != '')
-                    $url = ['/tovar/'.$model['product_id']];
-
-                if(isset($model['product_article']) && $model['product_article'] != '')
-                    $url = ['/autocatalog/autocatalog/details', 'article' => $model['product_article']];
-
-                return $model['status'] === $model::ORDER_CANCELED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
-            }
+//            'format' => 'raw',
+//            'value' => function($model){
+//                $url = '';
+//                if(isset($model['product_id']) && $model['product_id'] != '')
+//                    $url = ['/tovar/'.$model['product_id']];
+//
+//                if(isset($model['product_article']) && $model['product_article'] != '')
+//                    $url = ['/autocatalog/autocatalog/details', 'article' => $model['product_article']];
+//
+//                return $model['status'] === $model::ORDER_CANCELED ? '<p>'.$model['state']['status_name'].'</p><a class="btn btn-success" target="_blank" href="'.Url::to($url).'">Перезаказать</a>' : $model['state']['status_name'];
+//            }
         ],
     ]
 ]);

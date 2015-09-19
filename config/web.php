@@ -338,7 +338,7 @@ $config = [
 
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/admin',
+            'layout' => '/user',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
                 'UserSearch' => 'app\modules\user\models\UserSearch',

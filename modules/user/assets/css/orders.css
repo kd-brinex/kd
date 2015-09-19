@@ -1,0 +1,28 @@
+.ORDER_IN_WORK {
+  background-color: #f8da4e !important;
+  color :#000000 !important;
+}
+.ORDER_ADOPTED {
+    background-color: #11FF88 !important;
+    color :#000000 !important;
+}
+.ORDER_SHIPPED {
+    background-color: #00ffff !important;
+    color :#000000 !important;
+}
+.ORDER_SHIPPED_IN_SHOP {
+    background-color: yellowgreen !important;
+    color :#000000 !important;
+}
+.ORDER_IN_SHOP {
+    background-color: #67b168 !important;
+    color :#000000 !important;
+}
+.ORDER_EXECUTED {
+    background-color: #d3d3d3 !important;
+    color :#000000 !important;
+}
+.ORDER_CANCELED {
+    background-color: #ff8888 !important;
+    color :#000000 !important;
+}

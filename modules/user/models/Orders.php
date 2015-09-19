@@ -2,7 +2,11 @@
 
 namespace app\modules\user\models;
 
+use app\modules\autoparts\models\TStore;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use app\modules\user\models\OrderSearch;
 use app\modules\user\models\OrdersState;
 /**
  * This is the model class for table "orders".
@@ -76,26 +80,71 @@ class Orders extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getProduct_url()
+    {
+        if($this->product_id != ''){
+            $url = ['/tovar/'.$this->product_id];}
+
+       else {
+            $url = ['/autocatalog/autocatalog/details', 'article' => $this->product_article];}
+        return Url::to($url);
+
+    }
+
+    public function getOrder_class()
+    {
+        return $this->orderClass[$this->status];
+    }
+    public function getOrderClass()
+    {
+        return [
+            self::ORDER_IN_WORK => 'ORDER_IN_WORK',
+            self::ORDER_ADOPTED => 'ORDER_ADOPTED',
+            self::ORDER_SHIPPED => 'ORDER_SHIPPED',
+            self::ORDER_SHIPPED_IN_SHOP => 'ORDER_SHIPPED_IN_SHOP',
+            self::ORDER_IN_SHOP =>'ORDER_IN_SHOP',
+            self::ORDER_EXECUTED => 'ORDER_EXECUTED',
+            self::ORDER_CANCELED => 'ORDER_CANCELED'
+        ];
+    }
     public function getProduct()
     {
         return $this->hasOne(\app\modules\tovar\models\TovarSearch::className(), ['id' => 'product_id']);
     }
+    public function getOrder()
+    {
+        return $this->hasOne(OrderSearch::className(),['id'=>'order_id']);
+    }
+    public function getStore_id()
+    {
+        return $this->order->store_id;
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserData()
-    {
-        return $this->hasOne(\app\modules\user\models\Profile::className(), ['user_id' => 'uid']);
-    }
+//    public function getUserData()
+//    {
+//        return $this->hasOne(\app\modules\user\models\Profile::className(), ['user_id' => 'uid']);
+//    }
 
     public function getState(){
         return $this->hasOne(OrdersState::className(), ['id' => 'status']);
     }
 
-    public function getStore(){
-        return $this->hasOne(\app\modules\autoparts\models\TStoreSearch::className(),['id' => 'store_id']);
+    public function getStateAll(){
+        $states=OrdersState::find()->asArray(true)->all();
+        return ArrayHelper::map($states, 'id', 'status_name');
     }
+    public function getStore(){
+        return $this->hasOne(TStore::className(), ['id' => 'store_id']);
+    }
+
+
+//    public function getStore(){
+//        return $this->hasOne(\app\modules\autoparts\models\TStoreSearch::className(),['id' => 'store_id']);
+//    }
 
     public function getProvider(){
         return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);

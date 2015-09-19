@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\modules\autoparts;
+namespace app\modules\user;
 
 use yii\web\AssetBundle;
 
@@ -15,27 +15,20 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class autopartsAsset extends AssetBundle
+class userAsset extends AssetBundle
 {
-    public $sourcePath = '@app/modules/autoparts/assets';
+    public $sourcePath = '@app/modules/user/assets';
     public $css = [
-        'css/style.css',
+        'css/orders.css',
 
     ];
     public $js = [
-        'http://code.jquery.com/jquery-1.8.3.js',
-       'js/base.js',
 
-
-
-    ];
-    public $publishOptions = [
-        'forceCopy' => true
     ];
     public $depends = [
-//        'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-//        'yii\bootstrap\BootstrapPluginAsset',
-//        'yii\gii\TypeAheadAsset',
+    ];
+    public $publishOptions = [
+        'forceCopy' => YII_DEBUG,
     ];
 }
