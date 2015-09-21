@@ -27,9 +27,6 @@ class BrxProvider extends BrxProviderConnector
         if(empty($provider))
             throw new Exception('Провайдер не указан');
 
-        if(empty(Yii::$app->getModule('autoparts')->params['providers'][$provider]))
-            return false;
-
         $params = Yii::$app->getModule('autoparts')->params['providers'][$provider];
 
         if(!empty($options))

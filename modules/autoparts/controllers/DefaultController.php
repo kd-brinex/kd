@@ -12,6 +12,7 @@ use Codeception\Module\SOAP;
 use yii\base\Exception;
 use app\helpers\BrxArrayHelper;
 use yii\base\Request;
+use yii\db\ActiveRecord;
 use yii\helpers\Url;
 use yii\web\UrlManager;
 use yii\widgets\ActiveForm;
@@ -21,6 +22,37 @@ class DefaultController extends ProviderController
 
 
     public function actionIndex(){
+
+        $config_1 = ['paramsTemplate' => [
+            0 => 'code',
+            1 => 'name',
+//            2 => 'manufacture',
+            3 => 'price',
+//            4 => 'quantity',
+//            5 => 'srokmin',
+//            6 => 'srokmax',
+//            7 => 'provider',
+//            8 => 'reference',
+//            9 => 'srok',
+//            10 => 'estimation',
+//            11 => 'lotquantity',
+//            12 => 'pricedate',
+//            13 => 'pricedestination',
+//            14 => 'skladid',
+//            15 => 'sklad',
+//            16 => 'groupid',
+//            17 => 'flagpostav',
+//            18 => 'storeid',
+//            19 => 'pid',
+//            20 => 'srokdays',
+//            21 => 'weight',
+//            22 => 'cross',
+//            23 => 'ball',
+        ]
+            ];
+
+
+
         $arr = [
             'resources' => [
                 0 => [
@@ -33,7 +65,7 @@ class DefaultController extends ProviderController
                     ],
                     'offers' => [
                         0 => [
-                            'price' => 1572.82,
+                            'price' => 1573.82,
                             'quantity' => 0,
                             'reliability' => 100,
                             'multiplication_factor' => 1,
@@ -119,18 +151,18 @@ class DefaultController extends ProviderController
 
             return false;
         }
-        var_dump(find_parent($arr, 40386));die;
+//        var_dump(find_parent($arr, 40386));die;
 
         function array_search_values_recursive($key, &$haystack, $removeItem = false) {
             $haystack = is_object($haystack) ? (array)$haystack : $haystack;
             static $result = [];
-            $result = [];
+//            $result = [];
             foreach ($haystack as &$v) {
                 $v = is_object($v) ? (array)$v : $v;
                 if (is_array($v)) {
                     if (array_key_exists($key, $v)) {
-                        $result[] = $v[$key];
-                        if ($removeItem)
+                        $result[$key][] = $v[$key];
+                        if($removeItem)
                             unset($v[$key]);
                     } else
                         array_search_values_recursive($key, $v, $removeItem);
@@ -138,6 +170,13 @@ class DefaultController extends ProviderController
             }
             return $result;
         }
+
+
+
+//        $value = array_search_values_recursive('article', $arr);
+//        $value = array_search_values_recursive('name', $arr);
+//        var_dump($value);die;
+
 
         function array_get_path_to_key_recursive($key, &$haystack, $keyToPath = false){
             $haystack = is_object($haystack) ? (array)$haystack : $haystack;
@@ -163,13 +202,62 @@ class DefaultController extends ProviderController
 //        var_dump($arr['resources'][0]['offers'][0]);
 //        $a = BrxArrayHelper::array_search_recursive(0, $arr);
 //        $b = BrxArrayHelper::array_search_recursive_value($a, $arr);
-//        $c = BrxArrayHelper::array_search_values_recursive('price', $arr);
-        $d = array_get_path_to_key_recursive('price', $arr, true);
+//        $c = array_search_values_recursive('price', $arr);
+//        $d = array_get_path_to_key_recursive('price', $arr, true);
 //        var_dump($a);
 //        var_dump($b);
 //        var_dump($c);
-        var_dump($d);
+//        var_dump($d);
+//        die;
+        $config = \Yii::$app->getModule('autoparts')->params;
+        $fromTemplate = $config['providersFieldsParams']['Berg']['method']['findDetails']['params']['out'];
+        $data = is_object($arr) ? (array)$arr : $arr;
+        $items = [];
+        foreach($config_1['paramsTemplate'] as $key => $value){
+            if(isset($fromTemplate[$key])){
+//                if(isset($data[0]) && $data[0] instanceof ActiveRecord){
+//                    foreach($data as $k => $model){
+//                        $values[$k] = $model->$fromTemplate[$key];
+//                    }
+//                } else
+                    $values = array_search_values_recursive($fromTemplate[$key], $data);
+                var_dump($values);
+                for($i = 0; $i <= count($values[$fromTemplate[$key]])-1; $i++){
+                    $items[$i][$value] = $values[$fromTemplate[$key]][$i];
+                }
+            }
+        }
+        var_dump($items);die;
+        foreach($items as $item){
+            foreach($config['paramsTemplate'] as $key => $value){
+                if(!array_key_exists($value, $item))
+                    $item[$value] = '';
+            }
+        }
+
+        for($i = 0; $i <= count($items)-1; $i++){
+            foreach($config['paramsTemplate'] as $key => $value){
+                if(!array_key_exists($value, $items[$i]))
+                    $items[$i][$value] = '';
+            }
+        }
         die;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*EMEX*/
 //       var_dump($this->provider('Emex')->findDetails(['code' => '32-D88-F']));
