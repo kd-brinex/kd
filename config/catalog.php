@@ -8,7 +8,7 @@ return [
     'items' => [
         ['label' => 'ЗАПЧАСТИ',
             'items'=>  [
-                ['label'=>'Поиск','url' => 'finddetails',],
+                ['label'=>'Поиск','url' => '/finddetails',],
                 ['label'=>'Запчасти ВАЗ','url' => '/tovars/zapchasti_VAZ',],
             ]
         ],

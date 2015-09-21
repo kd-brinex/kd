@@ -15,6 +15,7 @@ class OrdersSearch extends Orders
     /**
      * @inheritdoc
      */
+
     public function rules()
     {
         return [
@@ -50,15 +51,16 @@ class OrdersSearch extends Orders
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => false
+            'sort' => false,
+
         ]);
 
-        $this->load($params);
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+//        $this->load($params);
+//        if (!$this->validate()) {
+//            // uncomment the following line if you do not want to return any records when validation fails
+//            // $query->where('0=1');
+//            return $dataProvider;
+//        }
 
 //        $query->andFilterWhere([
 //            'id' => $this->id,
@@ -74,4 +76,26 @@ class OrdersSearch extends Orders
 
         return $dataProvider;
     }
+public function searchOrdersUser($user_id)
+{
+    $query = self::find()
+//        ->select('orders.*,os.name status_name')
+        ->leftJoin('order','order.id=orders.order_id')
+//        ->leftJoin('order_state os','orders.status=os.id')
+        ->orderBy('id desc')
+        ->andWhere('order.user_id=:user_id',[':user_id'=>$user_id]);
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+        'pagination' =>false
+    ]);
+//    $query->andFilterWhere([
+////            'id' => $this->id,
+////            'uid' => $this->uid,
+//            'part_name' => $this->part_name,
+//            'manufacture' => $this->manufacture,
+//            'description' => $this->description,
+//            'status' => $this->status,
+//        ]);
+    return $dataProvider;
+}
 }

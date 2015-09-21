@@ -2,6 +2,9 @@
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use kartik\growl\Growl;
+
+$asset = app\modules\autoparts\autopartsAsset::register($this);
+$asset = app\modules\user\userAsset::register($this);
 $this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -9,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-xs-12">
     <?php
+//    var_dump($orders);die;
    ?>
     <?=GridView::widget([
         'id'=> 'orders-manage-grid',
@@ -16,6 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'responsive'=>true,
         'hover'=>true,
         'pjax'=>true,
+        'rowOptions'=>function($model,$key, $index, $grid){
+            return ['class'=>$model->order_class];
+        },
         'pjaxSettings'=>[
             'neverTimeout'=>true,
         ],
@@ -27,15 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'expandAllTitle' => 'Покупатель',
-                'expandIcon' => '<span class="123 glyphicon glyphicon-user"></span>',
-                'collapseIcon' => '<span class="1123 glyphicon glyphicon-minus"></span>',
+                'expandIcon' => '<span class="glyphicon glyphicon-user"></span>',
+                'collapseIcon' => '<span class="glyphicon glyphicon-minus"></span>',
                 'expandOneOnly' => true,
                 'detail' => function($model){
+//                    var_dump($model);die;
                     return '<div class="orders-user-block col-sm-10 col-sm-offset-1">
-                                <div class="col-sm-3"><span class="label">Имя</span>'.($model['name'] != '' ? $model['name'] : ($model['userData']['name'] != '' ? $model['userData']['name'] : 'Не задано' )).'</div>
-                                <div class="col-sm-3"><span class="label">E-mail</span>'.($model['email'] != '' ? $model['email'] : ($model['userData']['public_email'] != '' ? $model['userData']['public_email'] : 'Не задано' )).'</div>
-                                <div class="col-sm-2"><span class="label">Телефон</span>'.($model['telephone'] != '' ? $model['telephone'] : ($model['userData']['telephone'] != '' ? $model['userData']['telephone'] : 'Не задано' )).'</div>
-                                <div class="col-sm-2"><span class="label">Город</span>'.($model['location'] != '' ? $model['location'] : ($model['userData']['location'] != '' ? $model['userData']['location'] : 'Не задано' )).'</div>
+                                <div class="col-sm-3"><span class="label">Имя</span>'.$model->order->user_name.'</div>
+                                <div class="col-sm-3"><span class="label">E-mail</span>'.$model->order->user_email.'</div>
+                                <div class="col-sm-2"><span class="label">Телефон</span>'.$model->order->user_telephone.'</div>
+                                <div class="col-sm-2"><span class="label">Город</span>'.$model->order->user_location.'</div>
                             </div>';
                 },
                 'detailAnimationDuration' => 'fast',
@@ -44,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return GridView::ROW_COLLAPSED;
                 },
                 'contentOptions' => [
-                    'class' => ' user',
+                    'class' => 'user',
 
                 ]
             ],
@@ -85,11 +93,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'header'=>'статус',
                         'size'=>'md',
                         'inputType' => 'dropDownList',
-                        'data' => [
-                            '1' => 'Отказано',
-                            '2' => 'В работе'
-                        ],
-                        'submitOnEnter' => true
+                        'data' => $model->stateAll,
+                        'submitOnEnter' => true,
+//                        'asPopover' => true,
+//                        'options' => ['class'=>'form-control', 'prompt'=>'Select province...'],
+//                        'editableValueOptions'=>['class'=>'text-danger']
+
                     ];
                 }
 
@@ -134,17 +143,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'expandOneOnly' => true,
                 'detail' => function($model){
                     return '<div class="orders-user-block col-sm-10 col-sm-offset-1">
-                                <div class="col-sm-3"><span class="label">Название</span>'.($model['store']['name'] != '' ? $model['store']['name'] : 'Не задано').'</div>
-                                <div class="col-sm-3"><span class="label">Адрес</span>'.($model['store']['addr'] != '' ? $model['store']['addr'] : 'Не задано').'</div>
-                                <div class="col-sm-2"><span class="label">Телефон</span>'.($model['store']['tel'] != '' ? $model['store']['tel'] : 'Не задано').'</div>
-                                <div class="col-sm-2"><span class="label">Город</span>'.($model['location'] != '' ? $model['location'] : ($model['userData']['location'] != '' ? $model['userData']['location'] : 'Не задано' )).'</div>
+                                <div class="col-sm-3"><span class="label"Магазин</span>'.($model->store->name).'</div>
+                                <div class="col-sm-3"><span class="label">Адрес доставки</span>'.($model->store->addr).'</div>
+                                <div class="col-sm-2"><span class="label">Телефон</span>'.($model->store->tel).'</div>
+                                <div class="col-sm-2"><span class="label">Город</span>'.($model->order->user_location).'</div>
                             </div>';
                 },
                 'detailAnimationDuration' => 'fast',
                 'value' => function() {
                     return GridView::ROW_COLLAPSED;
-                }
-            ],
+                },
+                    ],
             [
                 'label' => 'Описание',
                 'value' => 'description'

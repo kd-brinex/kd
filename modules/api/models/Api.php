@@ -40,6 +40,7 @@ class Api extends Model
 <pid>'.$d['pid'].'</pid>
 <storeid>'.$d['storeid'].'</storeid>
 <FlagPostav>'.$d['flagpostav'].'</FlagPostav>
+<srok>'.$d['srok'].'</srok>
 </DetailInfo>';
 }
         $xml.='

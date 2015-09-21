@@ -11,6 +11,7 @@
 
 namespace app\modules\user;
 
+
 use dektrium\user\Finder as BaseObject;
 use yii\db\ActiveQuery;
 

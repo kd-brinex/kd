@@ -11,6 +11,8 @@ use yii\jui\Tabs;
 Yii::$app->view->registerCssFile('/css/style-offer.css');
 $this->title = Yii::t('user', 'My orders');
 $this->params['breadcrumbs'][] = $this->title;
+
+//var_dump($orders);die;
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
@@ -33,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- Modal (end) -->
 <div class="row">
 
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <?= Html::encode($this->title) ?>
@@ -49,6 +51,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'label' => 'Архив',
                                 'content' => $this->render('_old_orders', ['orders' => $old_orders, 'model' => $model])
+                            ],
+                            [
+                                'label' => 'Позиции',
+                                'content' => $this->render('_order', ['orders' => $orders, 'model' => $morders])
                             ]
                         ]
                     ])?>
@@ -56,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <?= $this->render('_menu') ?>
-    </div>
+<!--    <div class="col-md-3">-->
+<?php //echo $this->render('_menu') ?>
+<!--    </div>-->
 </div>

@@ -11,18 +11,34 @@
 
 namespace app\modules\user\controllers;
 
+use app\modules\user\models\UserRemote;
+
 use dektrium\user\controllers\SecurityController as BaseController;
+use app\modules\user\models\LoginForm;
 
 class SecurityController extends BaseController
 {
-
-    public function beforeValidate()
+    public function actionLogin()
     {
-        if (parent::beforeValidate()) {
-            $this->user = $this->finder->findUserByUsernameOrEmailOrTelephone($this->login);
-            return true;
-        } else {
-            return false;
+        $model = \Yii::createObject(LoginForm::className());
+
+        $this->performAjaxValidation($model);
+//        $user_remote= new UserRemote();
+//        $params=\Yii::$app->getRequest()->post();
+//        var_dump($params);die;
+//        if (isset($params['login-form'])){
+//            var_dump($params['login-form']['login'],$params['login-form']['password']);die;
+//        $ruser=$user_remote->getRemoteUser($params['login-form']['login'],$params['login-form']['password']);
+
+//        }
+        if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
+            return $this->goBack();
         }
+
+        return $this->render('login', [
+            'model'  => $model,
+            'module' => $this->module,
+        ]);
     }
+
 }
