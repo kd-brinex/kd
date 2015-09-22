@@ -81,7 +81,7 @@ class SettingsController extends BaseSettingsController
             $model = new OrdersSearch();
             $orders = $model->search('order_id = :order_id', [':order_id' => Yii::$app->request->post('id')]);
 
-            return $this->renderAjax('_order', ['orders' => $orders]);
+            return $this->renderAjax('_order', ['orders' => $orders, 'model'=>$model]);
         }
     }
     public function actionAccount()

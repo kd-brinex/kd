@@ -54,9 +54,7 @@ echo GridView::widget([
         ],
         [
             'label' => 'Сумма',
-            'value' => function($model){
-                return $model['quantity']*$model['part_price'];
-            }
+            'attribute' =>'cost',
         ],
         [
             'label' => 'Срок доставки',

@@ -3,6 +3,7 @@
 namespace app\modules\autocatalog\controllers;
 
 use app\controllers\MainController;
+
 use yii\data\ArrayDataProvider;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -55,7 +56,9 @@ class AutocatalogController extends MainController
 
         return $this->render('index', [
             'catalog' => $catalog,
-            'params' =>$params
+            'params' =>$params,
+
+
         ]);
     }
     public function actionVin()
@@ -71,10 +74,12 @@ class AutocatalogController extends MainController
     }
     public function actionDetails()
     {
+
         $params = \Yii::$app->request->queryParams;
         $catalog = $this->module->getCatalog();
         if (isset($params['article'])) {
             $parts = \Yii::$app->params['Parts'];
+
             $details = isset($params['article']) ? Tovar::findDetails($params) : [];
             $provider = new ArrayDataProvider([
                 'allModels' => $details,
