@@ -5,6 +5,7 @@ namespace app\modules\user\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use app\modules\user\models\Order;
 
 /**
  * OrderSearch represents the model behind the search form about `app\modules\basket\models\Order`.
@@ -24,6 +25,7 @@ class OrdersSearch extends Orders
 
         ];
     }
+
     /**
      * @inheritdoc
      */
@@ -69,7 +71,6 @@ class OrdersSearch extends Orders
             'part_name' => $this->part_name,
 
         ]);
-        var_dump(11);die;
         $query->andFilterWhere(['like', 'product_id', $this->product_id])
             ->andFilterWhere(['like', 'reference', $this->reference]);
 
