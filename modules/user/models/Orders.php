@@ -154,9 +154,9 @@ class Orders extends \yii\db\ActiveRecord
         return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);
     }
 
-    public function getParentOrder(){
-        return $this->hasOne(OrderSearch::className(), ['id' => 'order_id']);
-    }
+//    public function getParentOrder(){
+//        return $this->hasOne(OrderSearch::className(), ['id' => 'order_id']);
+//    }
 
 
 

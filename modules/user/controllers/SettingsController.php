@@ -49,27 +49,28 @@ class SettingsController extends BaseSettingsController
      * Поиск заказов пользователя и расспределение по вкладкам "Активные заказы и архив"
      * @return string
      */
-    public function actionOrders(){
+    public function actionOrders()
+    {
         //TODO разобраться с фильтрацией по order.number в таблице
         $model = new OrderSearch();
         $model = $model->search('user_id = :uid', [':uid' => Yii::$app->user->id], 'orders');
         $morders = new OrdersSearch();
 
-        if(!empty($params = Yii::$app->request->queryParams))
+        if (!empty($params = Yii::$app->request->queryParams))
             $morders->load($params);
 
-        $orders = $morders->searchOrdersUser(Yii::$app->user->id);
-        $new_orders = [];
-        $old_orders = [];
-        foreach($model->getModels() as $key => $order){
-            $counter = 0;
-            foreach($order->orders as $k => $position){
-                ($position->status > Orders::ORDER_IN_SHOP) ?: $counter++;
+            $orders = $morders->searchOrdersUser(Yii::$app->user->id);
+            $new_orders = [];
+            $old_orders = [];
+            foreach ($model->getModels() as $key => $order) {
+                $counter = 0;
+                foreach ($order->orders as $k => $position) {
+                    ($position->status >= Orders::ORDER_EXECUTED) ?: $counter++;
+                }
+                $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
             }
-            $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
+            return $this->render('orders', ['new_orders' => $new_orders, 'old_orders' => $old_orders, 'searchModel' => $model, 'orders' => $orders, 'morders' => $morders]);
         }
-        return  $this->render('orders',['new_orders' => $new_orders, 'old_orders' => $old_orders, 'model' => $model, 'orders' => $orders, 'morders' => $morders]);
-    }
 
     /**
      * Поиск всех позиций определенного заказа
@@ -81,7 +82,7 @@ class SettingsController extends BaseSettingsController
             $model = new OrdersSearch();
             $orders = $model->search('order_id = :order_id', [':order_id' => Yii::$app->request->post('id')]);
 
-            return $this->renderAjax('_order', ['orders' => $orders, 'model'=>$model]);
+            return $this->renderAjax('_order', ['orders' => $orders, 'searchModel' => $model]);
         }
     }
     public function actionAccount()

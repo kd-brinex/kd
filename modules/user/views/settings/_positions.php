@@ -2,12 +2,15 @@
 
 use kartik\grid\GridView;
 use yii\helpers\Html;
+
+//var_dump($searchModel);
 echo GridView::widget([
-    'id'=> 'positions-grid',
+    'id'=> 'order-grid',
     'dataProvider' => $orders,
+    'filterModel' => $searchModel,
     'responsive'=>true,
-    'hover' => true,
-    'pjax' => true,
+    'hover'=>true,
+    'pjax'=> true,
 
 //    'tableOptions' =>['class' => 'table'],
 //    'options'=>['class'=>'grid-view'],
@@ -15,46 +18,48 @@ echo GridView::widget([
     'rowOptions'=>function($model,$key, $index, $grid){
         return ['class'=>$model->order_class];
     },
-//    'pjaxSettings'=>[
-//        'neverTimeout'=>true,
-//    ],
+    'pjaxSettings'=>[
+        'neverTimeout'=>true,
+    ],
     'columns' => [
         [
-            'header'=>'№ заказа',
+            'label'=>'№ заказа',
             'attribute'=>'order.number',
 //            'filter' => Html::activeTextInput($model, 'order'),
         ],
         [
-            'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">№ детали</span>',
+            'label' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">№ детали</span>',
             'encodeLabel' => false,
             'attribute' => 'product_id',
             'format' => 'raw',
             'value' => function($model){
-                return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
+                           return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
             }
         ],
         [
-            'header' => 'Наименование детали',
+            'label' => 'Наименование детали',
             'attribute' => 'part_name',
             'format' => 'raw',
             'value' => function($model){
-                return Html::a($model['part_name'],$model['product_url'],['target'=>'_blank']);
+                       return Html::a($model['part_name'],$model['product_url'],['target'=>'_blank']);
             }
         ],
         [
-            'header' => 'Кол-во',
+            'label' => 'Кол-во',
             'attribute' => 'quantity'
         ],
         [
-            'header' => 'Цена',
+            'label' => 'Цена',
             'attribute' => 'part_price'
         ],
         [
             'label' => 'Сумма',
-            'attribute' =>'cost',
+            'value' => function($model){
+                return $model['quantity']*$model['part_price'];
+            }
         ],
         [
-            'header' => 'Срок доставки',
+            'label' => 'Срок доставки',
             'value' => function($model){
                 if(isset($model['order']['orderPays'][0]->date)){
                     $payDate = strtotime($model['order']['orderPays'][0]->date);
@@ -65,12 +70,13 @@ echo GridView::widget([
             }
         ],
         [
-            'header' => 'Комментарий',
+            'label' => 'Комментарий',
             'attribute' => 'description'
         ],
         [
-            'header' => 'Статус',
+            'label' => 'Статус',
             'attribute' => 'state.status_name',
+            'filter' => Html::activeDropDownList($searchModel, 'status', \yii\helpers\ArrayHelper::map(\app\modules\user\models\OrdersState::find()->all(), 'id', 'status_name'), ['prompt' => 'ЛЮБОЙ', 'class' => 'form-control']),
 //            'format' => 'raw',
 //            'value' => function($model){
 //                $url = '';

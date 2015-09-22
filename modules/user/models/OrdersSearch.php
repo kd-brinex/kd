@@ -52,7 +52,6 @@ class OrdersSearch extends Orders
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 //            'sort' => false,
-
         ]);
 
         $this->load($params);
