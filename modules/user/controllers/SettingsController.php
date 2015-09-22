@@ -49,11 +49,15 @@ class SettingsController extends BaseSettingsController
      * @return string
      */
     public function actionOrders(){
+        //TODO разобраться с фильтрацией по order.number в таблице
         $model = new OrderSearch();
         $model = $model->search('user_id = :uid', [':uid' => Yii::$app->user->id], 'orders');
         $morders = new OrdersSearch();
-        $orders=$morders->searchOrdersUser(Yii::$app->user->id);
-//        $orders->search();
+
+        if(!empty($params = Yii::$app->request->queryParams))
+            $morders->load($params);
+
+        $orders = $morders->searchOrdersUser(Yii::$app->user->id);
         $new_orders = [];
         $old_orders = [];
         foreach($model->getModels() as $key => $order){
@@ -63,7 +67,7 @@ class SettingsController extends BaseSettingsController
             }
             $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }
-        return  $this->render('orders',['new_orders' =>$new_orders, 'old_orders' => $old_orders, 'model' => $model,'orders'=>$orders, 'morders'=>$morders]);
+        return  $this->render('orders',['new_orders' => $new_orders, 'old_orders' => $old_orders, 'model' => $model, 'orders' => $orders, 'morders' => $morders]);
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
-use yii\helpers\Url;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 
+//var_dump($model);die;
 echo GridView::widget([
     'id'=> 'order-grid',
     'dataProvider' => $orders,
-//    'filterModel'=>$model,
+    'filterModel'=>$model,
     'responsive'=>true,
     'hover'=>true,
     'pjax'=>true,
@@ -23,39 +23,43 @@ echo GridView::widget([
 //    ],
     'columns' => [
         [
-            'header'=>'№ заказа',
-            'attribute'=>'order.number'],
+            'label'=>'№ заказа',
+            'attribute'=>'order.number'
+//            'filter' => Html::activeTextInput($models, 'orderNumber'),
+        ],
         [
-            'header' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">№ детали</span>',
+            'label' => '<span style="color:#43b2ff">Производитель</span> /<br><span style="font-weight: normal">№ детали</span>',
+            'encodeLabel' => false,
+            'attribute' => 'product_id',
             'format' => 'raw',
             'value' => function($model){
                            return '<strong style="color: #43b2ff">' .$model['manufacture'].'</strong><br> '.$model['product_id'];
-                       }
+            }
         ],
         [
-            'header' => 'Наименование детали',
-//            'attribute' => 'part_name',
+            'label' => 'Наименование детали',
+            'attribute' => 'part_name',
             'format' => 'raw',
             'value' => function($model){
                        return Html::a($model['part_name'],$model['product_url'],['target'=>'_blank']);
             }
         ],
         [
-            'header' => 'Кол-во',
+            'label' => 'Кол-во',
             'attribute' => 'quantity'
         ],
         [
-            'header' => 'Цена',
+            'label' => 'Цена',
             'attribute' => 'part_price'
         ],
         [
-            'header' => 'Сумма',
+            'label' => 'Сумма',
             'value' => function($model){
                 return $model['quantity']*$model['part_price'];
             }
         ],
         [
-            'header' => 'Срок доставки',
+            'label' => 'Срок доставки',
             'value' => function($model){
                 if(isset($model['parentOrder']['orderPays'][0]->date)){
                     $payDate = strtotime($model['parentOrder']['orderPays'][0]->date);
@@ -66,12 +70,13 @@ echo GridView::widget([
             }
         ],
         [
-            'header' => 'Комментарий',
+            'label' => 'Комментарий',
             'attribute' => 'description'
         ],
         [
-            'header' => 'Статус',
+            'label' => 'Статус',
             'attribute' => 'state.status_name',
+            'filter' => Html::activeDropDownList($model, 'status', \yii\helpers\ArrayHelper::map(\app\modules\user\models\OrdersState::find()->all(), 'id', 'status_name'), ['prompt' => 'ЛЮБОЙ', 'class' => 'form-control'])
 //            'format' => 'raw',
 //            'value' => function($model){
 //                $url = '';
