@@ -115,6 +115,10 @@ class Orders extends \yii\db\ActiveRecord
     {
         return $this->hasOne(OrderSearch::className(),['id'=>'order_id']);
     }
+    public function getOrderNumber()
+    {
+        return $this->order->number;
+    }
     public function getStore_id()
     {
         return $this->order->store_id;
@@ -153,6 +157,8 @@ class Orders extends \yii\db\ActiveRecord
     public function getParentOrder(){
         return $this->hasOne(OrderSearch::className(), ['id' => 'order_id']);
     }
+
+
 
     public function beforeSave($insert){
 //        if($this->isNewRecord){

@@ -21,7 +21,7 @@ class OrdersSearch extends Orders
         return [
             [['id', 'quantity', 'status'], 'integer'],
             [['product_id', 'reference', 'datetime'], 'safe'],
-            [['part_name'],'string']
+            [['part_name', 'description'],'string']
 
         ];
     }
@@ -51,51 +51,61 @@ class OrdersSearch extends Orders
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => false,
+//            'sort' => false,
 
         ]);
 
-//        $this->load($params);
-//        if (!$this->validate()) {
-//            // uncomment the following line if you do not want to return any records when validation fails
-//            // $query->where('0=1');
-//            return $dataProvider;
-//        }
+        $this->load($params);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
 
-//        $query->andFilterWhere([
-//            'id' => $this->id,
+        $query->andFilterWhere([
+            'id' => $this->id,
 //            'uid' => $this->uid,
-//            'quantity' => $this->quantity,
-//            'status' => $this->status,
-//            'datetime' => $this->datetime,
-//            'part_name' => $this->part_name,
-//        ]);
-//
-//        $query->andFilterWhere(['like', 'product_id', $this->product_id])
-//            ->andFilterWhere(['like', 'reference', $this->reference]);
+            'quantity' => $this->quantity,
+            'status' => $this->status,
+            'datetime' => $this->datetime,
+            'part_name' => $this->part_name,
+
+        ]);
+        $query->andFilterWhere(['like', 'product_id', $this->product_id])
+            ->andFilterWhere(['like', 'reference', $this->reference]);
 
         return $dataProvider;
     }
-public function searchOrdersUser($user_id)
-{
-    $query = self::find()
-//        ->select('orders.*,os.name status_name')
-        ->leftJoin('order','order.id=orders.order_id')
-//        ->leftJoin('order_state os','orders.status=os.id')
-        ->orderBy('id desc')
-        ->andWhere('order.user_id=:user_id',[':user_id'=>$user_id]);
-    $dataProvider = new ActiveDataProvider([
-        'query' => $query,
-        'pagination' =>false
-    ]);
-//    $query->andFilterWhere([
-////            'id' => $this->id,
-////            'uid' => $this->uid,
-//            'part_name' => $this->part_name,
-//            'manufacture' => $this->manufacture,
-//            'description' => $this->description,
-//            'status' => $this->status,
-//        ]);
-    return $dataProvider;
-}
+    public function searchOrdersUser($user_id)
+    {
+        $query = self::find()
+            ->leftJoin('order', 'order.id = orders.order_id')
+            ->andWhere('order.user_id = :user_id', [':user_id' => $user_id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => [
+                'defaultOrder' => [ 'order.number'=> SORT_DESC ],
+                'attributes' => [
+                    'order.number',
+                    'quantity',
+                    'part_price',
+                    'description',
+                ]
+            ]
+        ]);
+        $query->andFilterWhere([
+                'quantity' => $this->quantity,
+                'part_price' => $this->part_price,
+                'manufacture' => $this->manufacture,
+                'status' => $this->status,
+        ]);
+
+        $query->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'part_name', $this->part_name])
+            ->andFilterWhere(['like', 'product_id', $this->product_id]);
+
+        return $dataProvider;
+    }
 }
