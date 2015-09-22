@@ -21,14 +21,7 @@ echo GridView::widget([
             ],
             [
                 'label' => 'Сумма',
-                'value' => function($model){
-                    $orderSum = 0;
-                    foreach($model['orders'] as $order){
-                        if($order->order_id == $model['id'])
-                            $orderSum += ($order->part_price * $order->quantity);
-                    }
-                    return $orderSum;
-                }
+                'attribute'=>'orderSumma'
             ],
             [
                 'label' => 'Выполнен на',

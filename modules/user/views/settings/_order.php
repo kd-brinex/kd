@@ -50,10 +50,8 @@ echo GridView::widget([
             'attribute' => 'part_price'
         ],
         [
-            'header' => 'Сумма',
-            'value' => function($model){
-                return $model['quantity']*$model['part_price'];
-            }
+            'label' => 'Сумма',
+            'attribute' =>'cost',
         ],
         [
             'header' => 'Срок доставки',
