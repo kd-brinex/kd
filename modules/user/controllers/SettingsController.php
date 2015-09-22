@@ -7,6 +7,7 @@
  */
 namespace app\modules\user\controllers;
 
+use app\modules\user\models\Order;
 use app\modules\user\models\Orders;
 use Yii;
 use dektrium\user\controllers\SettingsController as BaseSettingsController;
@@ -33,7 +34,7 @@ class SettingsController extends BaseSettingsController
                 'rules' => [
                     [
                         'allow'   => true,
-                        'actions' => ['profile', 'account', 'confirm', 'networks', 'connect', 'disconnect', 'cars', 'orders', 'order'],
+                        'actions' => ['profile', 'account', 'confirm', 'networks', 'connect', 'disconnect', 'cars', 'orders', 'order','pay'],
                         'roles'   => ['@']
                     ],
                 ]
@@ -92,5 +93,10 @@ class SettingsController extends BaseSettingsController
         return $this->render('account', [
             'model' => $model,
         ]);
+    }
+    public function actionPay()
+    {
+    $order=Order::findOne(['id'=>$_GET['id']]);
+        return $this->render('pay',['order'=>$order]);
     }
 }

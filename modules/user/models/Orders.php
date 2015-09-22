@@ -178,5 +178,8 @@ class Orders extends \yii\db\ActiveRecord
         $date = new \DateTime($this->datetime);
         $this->datetime = $date->format('d.m.Y H:i');
     }
-
+    public function getCost()
+    {
+        return $this->quantity*$this->part_price;
+    }
 }
