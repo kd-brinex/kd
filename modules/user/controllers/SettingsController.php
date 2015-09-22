@@ -54,8 +54,13 @@ class SettingsController extends BaseSettingsController
         $model = $model->search('user_id = :uid', [':uid' => Yii::$app->user->id], 'orders');
         $morders = new OrdersSearch();
 
-        if(!empty($params = Yii::$app->request->queryParams))
+        if(!empty($params = Yii::$app->request->queryParams)) {
             $morders->load($params);
+//            if(!$morders->validate())
+//                return false;
+//            else var_dump($morders->getErrors());
+        }
+
 
         $orders = $morders->searchOrdersUser(Yii::$app->user->id);
         $new_orders = [];
@@ -63,11 +68,11 @@ class SettingsController extends BaseSettingsController
         foreach($model->getModels() as $key => $order){
             $counter = 0;
             foreach($order->orders as $k => $position){
-                ($position->status > Orders::ORDER_IN_SHOP) ?: $counter++;
+                ($position->status >= Orders::ORDER_EXECUTED) ?: $counter++;
             }
             $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }
-        return  $this->render('orders',['new_orders' => $new_orders, 'old_orders' => $old_orders, 'model' => $model, 'orders' => $orders, 'morders' => $morders]);
+        return  $this->render('orders',['new_orders' => $new_orders, 'old_orders' => $old_orders, 'searchModel' => $model, 'orders' => $orders, 'morders' => $morders]);
     }
 
     /**
@@ -80,7 +85,7 @@ class SettingsController extends BaseSettingsController
             $model = new OrdersSearch();
             $orders = $model->search('order_id = :order_id', [':order_id' => Yii::$app->request->post('id')]);
 
-            return $this->renderAjax('_order', ['orders' => $orders]);
+            return $this->renderAjax('_order', ['orders' => $orders, 'searchModel' => $model]);
         }
     }
     public function actionAccount()

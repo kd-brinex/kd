@@ -11,17 +11,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1>Заказы</h1>
 
 <div class="col-xs-12">
-    <?php
-//    var_dump($orders);die;
-   ?>
     <?=GridView::widget([
         'id'=> 'orders-manage-grid',
         'dataProvider' => $orders,
         'responsive'=>true,
         'hover'=>true,
         'pjax'=>true,
-        'rowOptions'=>function($model,$key, $index, $grid){
-            return ['class'=>$model->order_class];
+        'rowOptions'=>function($model){
+            return ['class' => $model->order_class];
         },
         'pjaxSettings'=>[
             'neverTimeout'=>true,
@@ -38,7 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'collapseIcon' => '<span class="glyphicon glyphicon-minus"></span>',
                 'expandOneOnly' => true,
                 'detail' => function($model){
-//                    var_dump($model);die;
                     return '<div class="orders-user-block col-sm-10 col-sm-offset-1">
                                 <div class="col-sm-3"><span class="label">Имя</span>'.$model->order->user_name.'</div>
                                 <div class="col-sm-3"><span class="label">E-mail</span>'.$model->order->user_email.'</div>

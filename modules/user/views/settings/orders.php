@@ -46,15 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'items' => [
                             [
                                 'label' => 'Активные заказы',
-                                'content' => $this->render('_new_orders', ['orders' => $new_orders, 'model' => $model])
+                                'content' => $this->render('_new_orders', ['orders' => $new_orders, 'model' => $searchModel])
                             ],
                             [
                                 'label' => 'Архив',
-                                'content' => $this->render('_old_orders', ['orders' => $old_orders, 'model' => $model])
+                                'content' => $this->render('_old_orders', ['orders' => $old_orders, 'model' => $searchModel])
                             ],
                             [
                                 'label' => 'Позиции',
-                                'content' => $this->render('_order', ['orders' => $orders, 'model' => $morders])
+                                'content' => $this->render('_positions', ['orders' => $orders, 'searchModel' => $morders])
                             ]
                         ]
                     ])?>
