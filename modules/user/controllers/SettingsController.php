@@ -56,11 +56,7 @@ class SettingsController extends BaseSettingsController
 
         if(!empty($params = Yii::$app->request->queryParams)) {
             $morders->load($params);
-//            if(!$morders->validate())
-//                return false;
-//            else var_dump($morders->getErrors());
         }
-
 
         $orders = $morders->searchOrdersUser(Yii::$app->user->id);
         $new_orders = [];
