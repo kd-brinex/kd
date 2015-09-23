@@ -16,7 +16,6 @@ class Api extends Model
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDetailInfo>';
-        var_dump($details);
         foreach($details as $d){
             $xml.='<DetailInfo>
 <detailnumber>'.$d['code'].'</detailnumber>
