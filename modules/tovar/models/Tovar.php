@@ -196,7 +196,6 @@ class Tovar extends \yii\db\ActiveRecord
                     }
                 }
         }
-//        var_dump($details);die;
         function r_usort($a, $b, $key){
             $inta = intval($a[$key]);
             $intb = intval($b[$key]);
@@ -273,50 +272,5 @@ class Tovar extends \yii\db\ActiveRecord
 
 //            return $details;
         }
-    private function debugDetails($params){
-        $items = '';
-        $details = [];
-        if(!empty($params['provider_id'])){
-            $provider = (int)$params['provider_id'];
-            $provider = PartProviderSearch::findOne($provider);
-            if($provider->enable) {
-                $provider_data = ['provider_data' => $provider];
-                if (!empty($params['store_id']))
-                    $provider_data = array_merge($provider_data, ['store_id' => $params['store_id']]);
-
-                $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $provider_data);
-
-                $options = ['code' => $params['article']];
-
-                $details = $providerObj->findDetails($options);
-            }
-        } else {
-           $providers = PartProviderSearch::find()->all();
-           foreach($providers as $provider){
-               if($provider->enable) {
-                   $provider_data = ['provider_data' => $provider];
-
-                   if (!empty($params['store_id']))
-                       $provider_data = array_merge($provider_data, ['store_id' => $params['store_id']]);
-
-                   if (empty(Yii::$app->getModule('autoparts')->params['providers'][$provider->name]))
-                       continue;
-
-                   $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $provider_data);
-
-                   $options = ['code' => $params['article']];
-
-                   $items = $providerObj->findDetails($options);
-                   if (!empty($items) && is_array($items)) {
-                       foreach ($items as $item) {
-                           array_push($details, $item);
-                       }
-                   } else continue;
-               }
-           }
-        }
-        var_dump($details);
-        return $details;
-    }
 
 }
