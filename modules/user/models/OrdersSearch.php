@@ -58,16 +58,16 @@ class OrdersSearch extends Orders
 
         if(isset($with)) {
             $dataProvider->sort->attributes['order'] = [
-                'asc' => ['order.date' => SORT_ASC],
                 'desc' => ['order.date' => SORT_DESC],
+                'asc' => ['order.date' => SORT_ASC],
             ];
             $dataProvider->sort->attributes['store'] = [
-                'asc' => ['t_store.name' => SORT_ASC],
                 'desc' => ['t_store.name' => SORT_DESC],
+                'asc' => ['t_store.name' => SORT_ASC],
             ];
             $dataProvider->sort->attributes['order_name'] = [
-                'asc' => ['order.user_name' => SORT_ASC],
                 'desc' => ['order.user_name' => SORT_DESC],
+                'asc' => ['order.user_name' => SORT_ASC],
             ];
         }
 

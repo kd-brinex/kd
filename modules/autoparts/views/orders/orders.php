@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Дата',
                 'attribute' => 'order',
+//                'filter' => Html::activeInput('date', $model, []),
                 'value' => 'order.date'
             ],
             [
