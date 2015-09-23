@@ -53,7 +53,7 @@ if (!empty($provider->allModels)) {
                 if ($mas[$ii][$i]['estimation'] >= 90) $cl = 'fine';
                 elseif ($mas[$ii][$i]['estimation'] < 90) $cl = 'good';
                 else $cl = 'bad';
-                $tablee[$ii] .= '<td><div title="Надежность поставщика (склад ' . $mas[$ii][$i]['provider'] . ')' . $mas[$ii][$i]['estimation'] . '% " class="' . $cl . '">' . $mas[$ii][$i]['srokmax'] . '</div></td>';
+                $tablee[$ii] .= '<td><div title="Надежность поставщика (KD' . $mas[$ii][$i]['pid'] .'-'.$mas[$ii][$i]['storeid']. ')' . $mas[$ii][$i]['estimation'] . '% " class="' . $cl . '">' . $mas[$ii][$i]['srokmax'] . '</div></td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['ball'] . '</td>';
                 $key = $ii . '-' . $i;
                 $tablee[$ii] .= '<td>' . Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [

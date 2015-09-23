@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 $cat='';
 $to='';
+
 foreach($catalog as $key=>$marka)
 {
     $cat .= Html::tag('div',Html::a($marka->prop['marka'],Url::toRoute($key)),['class'=>'autocatalog_marka']);
@@ -38,6 +39,15 @@ $items=[
     [
         'label' => 'Каталог ТО',
         'content' => $to,
+        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
+
+    ],
+    [
+        'label' => 'Parts',
+
+        'content'=>'<iframe src="http://aparts.kolesa-darom.ru/catalog/type/1?kat=1" width="100%" height="600px" id="partsFrame"></iframe>',
+
+
         'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
 
     ],

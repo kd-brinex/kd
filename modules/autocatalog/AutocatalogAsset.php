@@ -24,6 +24,7 @@ class AutocatalogAsset extends AssetBundle
 
     ];
     public $js = [
+        'js/iframe.js'
 //        'js/page.js'
     ];
     public $depends = [

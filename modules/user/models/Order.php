@@ -2,6 +2,8 @@
 
 namespace app\modules\user\models;
 
+use app\modules\autoparts\models\TStore;
+use app\modules\city\City;
 use Yii;
 
 /**
@@ -76,4 +78,21 @@ class Order extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Orders::className(), ['order_id' => 'id']);
     }
+    public function getOrderSumma()
+    {
+        $sum=0;
+        $orders=$this->orders;
+        foreach ($orders as $o){
+            $sum+=$o->cost;
+        }
+        return $sum;
+    }
+    public function getDescriptionPay()
+    {
+        return $this->user_name;
+    }
+    public function getStore(){
+        return $this->hasOne(TStore::className(), ['id' => 'store_id']);
+    }
+
 }
