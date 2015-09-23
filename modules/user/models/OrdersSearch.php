@@ -11,7 +11,6 @@ use yii\data\ActiveDataProvider;
  */
 class OrdersSearch extends Orders
 {
-    public $store;
     /**
      * @inheritdoc
      */
@@ -20,7 +19,7 @@ class OrdersSearch extends Orders
     {
         return [
             [['id', 'quantity', 'status'], 'integer'],
-            [['product_id', 'reference', 'datetime', 'store'], 'safe'],
+            [['product_id', 'reference', 'datetime'], 'safe'],
             [['part_name', 'description'],'string']
 
         ];
@@ -43,33 +42,20 @@ class OrdersSearch extends Orders
      */
     public function search($condition = '', $params = [], $with = [])
     {
-        $query = self::find()
-            ->andWhere($condition)
-            ->addParams($params);
+        $query = self::find();
 
-        if(isset($with)){
-            $query->joinWith(['order'])
-                  ->joinWith(['store']);
-        }
-//        var_dump($query->createCommand()->getRawSql());die;
+        if(!empty($condition))
+            $query->andWhere($condition);
+        if(!empty($params))
+            $query->addParams($params);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        if(isset($with)) {
-            $dataProvider->sort->attributes['order'] = [
-                'desc' => ['order.date' => SORT_DESC],
-                'asc' => ['order.date' => SORT_ASC],
-            ];
-            $dataProvider->sort->attributes['store'] = [
-                'desc' => ['t_store.name' => SORT_DESC],
-                'asc' => ['t_store.name' => SORT_ASC],
-            ];
-            $dataProvider->sort->attributes['order_name'] = [
-                'desc' => ['order.user_name' => SORT_DESC],
-                'asc' => ['order.user_name' => SORT_ASC],
-            ];
-        }
+        $this->load($params);
+        if(!$this->validate())
+            return $dataProvider;
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -79,10 +65,8 @@ class OrdersSearch extends Orders
             'part_name' => $this->part_name,
 
         ]);
-
         $query->andFilterWhere(['like', 'product_id', $this->product_id])
-            ->andFilterWhere(['like', 'reference', $this->reference])
-            ->andFilterWhere(['like', 't_store.name', $this->store]);
+            ->andFilterWhere(['like', 'reference', $this->reference]);
 
         return $dataProvider;
     }

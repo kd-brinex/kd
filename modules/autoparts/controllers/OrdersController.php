@@ -15,20 +15,15 @@ use yii\web\Controller;
 use yii\base\Exception;
 
 use app\modules\user\models\Orders;
-use app\modules\user\models\OrdersSearch;
+use app\modules\user\models\OrderSearch;
 
 class OrdersController extends Controller
 {
     public function actionIndex(){
-        $model = new OrdersSearch();
+        $model = new OrderSearch();
+        $params = Yii::$app->request->queryParams;
 
-        if(!empty($params = Yii::$app->request->queryParams)) {
-            $model->load($params);
-            if(!$model->validate())
-                return false;
-        }
-
-        $orders = $model->search();
+        $orders = $model->search('', $params);
 
         return $this->render('orders', ['orders' => $orders, 'model' => $model]);
     }

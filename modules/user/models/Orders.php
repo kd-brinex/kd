@@ -138,7 +138,7 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     public function getStore(){
-        return $this->hasOne(TStore::className(), ['id' => 'store_id'])->via('order');
+        return $this->hasOne(TStore::className(), ['id' => 'store_id']);
     }
 
     public function getProvider(){
