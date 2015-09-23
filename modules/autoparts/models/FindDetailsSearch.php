@@ -44,13 +44,14 @@ class FindDetailsSearch extends FindDetails{
                 ->where('city_id = :city_id', [':city_id' => $city])
                 ->all();
 
-        return !empty($store) ? $store : false;
+        return !empty($store) ? $store : 109;
     }
 
     private function getCityId(){
         if (!empty(($cookie = \Yii::$app->request->cookies['city'])))
-            $cityId = (int)$cookie->value;
-
+        {$cityId = (int)$cookie->value;}
+        else
+        {$cityId = 1751;}
         return $cityId;
     }
     //////////////////////////

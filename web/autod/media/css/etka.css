@@ -1,0 +1,43 @@
+.ETKADetailPosition{
+    width: 50px;
+}
+.ETKADetailNumber{
+    width: 180px;
+    text-align: right;
+}
+.ETKADetailQuantity{
+    width: 40px;
+}
+.ETKAName{
+    width: 300px;
+}
+.ETKAOther{
+    width: 150px;
+}
+.ETKAInfo{
+    width: 100px;
+}
+.ETKAPrice{
+
+}
+#ETKASubGroups a{
+    height: 310px;
+}
+#ETKASubGroups .name{
+    display: inline-block;
+    line-height: 16px;
+}
+#ETKASubGroups .options{
+    /*inlineBlock bgGrey50 cWhite absolute left bottom w100p*/
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 53px;
+    line-height: 16px;
+    padding: 5px;
+    text-align: left;
+    color: white;
+    background-color: hsl(0,0%,50%);
+
+}
