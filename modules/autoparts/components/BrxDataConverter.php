@@ -115,7 +115,11 @@ class BrxDataConverter extends Component
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
-        foreach($data as &$item){
+        foreach($data as &$item) {
+            if (!$item['quantity']){
+                unset($item);
+                continue;
+            }
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
                     switch($value){
@@ -139,6 +143,8 @@ class BrxDataConverter extends Component
                             break;
                     }
                 }
+                if($field == 'name')
+                    $value = !empty($item['name']) ? $item['name'] : $item['code'];
                 if($field == 'provider')
                     $value = $ParseData['provider']->provider_name;
                 if($field == 'sklad')
@@ -168,20 +174,21 @@ class BrxDataConverter extends Component
                     $value = $item['srokmin'] . (($item['srokmin'] < $item['srokmax']) ? '-' . $item['srokmax'] : '');
 
                 if($field == 'quantity'){
-                    $q = '';
-                    $d = 0;
-                    $avalue = str_split($value);
-                    foreach ($avalue as $n) {
-                        $q .= (is_numeric($n)) ? $n : '';
-                        if ($n == '>') {
-                            $d = 1;
-                        }
-                        if ($n == '<') {
-                            $d = -1;
-                        }
-                    }
-                    $q += $d;
-                    $value = $q;
+                    $value = (int)preg_replace('~[^0-9]+~','',$item['quantity']);
+//                    $q = '';
+//                    $d = 0;
+//                    $avalue = str_split($value);
+//                    foreach ($avalue as $n) {
+//                        $q .= (is_numeric($n)) ? $n : '';
+//                        if ($n == '>') {
+//                            $d = 1;
+//                        }
+//                        if ($n == '<') {
+//                            $d = -1;
+//                        }
+//                    }
+//                    $q += $d;
+//                    $value = $q;
                 }
 
             }
@@ -191,6 +198,8 @@ class BrxDataConverter extends Component
 //               else continue;
 //           }
         }
+//        var_dump($data);
+
         return $data;
     }
     /* ФУНКЦИИ ШАБЛОНА */
