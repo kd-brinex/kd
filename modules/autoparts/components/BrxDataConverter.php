@@ -115,16 +115,20 @@ class BrxDataConverter extends Component
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
-        foreach($data as &$item) {
+        $b = 0;
+        foreach($data as $key => &$item) {
+//            var_dump('---------------------------'.$b++);
             if (!$item['quantity']){
-                unset($item);
+                unset($data[$key]);
                 continue;
             }
             if(!isset($ParseData['provider']->days)){
                 unset($item);
                 continue;
             }
+            $i = 1;
             foreach($item as $field => &$value){
+//                var_dump($i++,$field);
                 if($field == 'groupid'){
                     switch($value){
                         case 'Original':
@@ -190,7 +194,6 @@ class BrxDataConverter extends Component
 //               else continue;
 //           }
         }
-//        var_dump($data);
 
         return $data;
     }

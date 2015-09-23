@@ -39,10 +39,10 @@ class Run extends Component{
 
     //TODO убрать отсюда это дело в модель
     private function getStoreId($options){
-        if(!empty($options['store_id']))
-            return $this->storeId = $options['store_id'];
-
-        if(!empty(($city = $this->getCityId()))) {
+        if(!empty($options['store_id'])){
+            $this->storeId = $options['store_id'];
+            unset($options['store_id']);
+        } else if(!empty(($city = $this->getCityId()))) {
             $store = TStore::find()
                 ->select('id')
                 ->where('city_id = :city_id', [':city_id' => $city])
