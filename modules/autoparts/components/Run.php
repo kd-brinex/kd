@@ -56,6 +56,8 @@ class Run extends Component{
     private function getCityId(){
         if (!empty(($cookie = Yii::$app->request->cookies['city'])))
             $this->cityId = (int)$cookie->value;
+        else
+            $this->cityId = 1751;
 
         return $this->cityId;
     }
