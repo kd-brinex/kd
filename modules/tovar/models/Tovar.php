@@ -140,8 +140,6 @@ class Tovar extends \yii\db\ActiveRecord
      */
     public static function findDetails($params){                                                                                   //  здесь приходят article и provider_id из URI
 
-        if(!empty($params['store_id']) || !empty($params['provider_id']))
-            return self::debugDetails($params);
 
         $details = [];
         $providerObj = null;
@@ -150,9 +148,11 @@ class Tovar extends \yii\db\ActiveRecord
                     ->all();
 
         foreach($providers as $provider){
-            if($provider->enable) {
                 if($provider->cross){
-                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
+                    $options = ['provider_data' => $provider];
+                    if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
+
                     $items = $providerObj->findDetails(['code' => $params['article']]);
                     if(!empty($items) && is_array($items)){
                         foreach($items as $item){
@@ -160,15 +160,18 @@ class Tovar extends \yii\db\ActiveRecord
                         }
                     } else continue;
                 }
-            }
         }
         foreach($details as $detail){
             $crosses[$detail['code']] = $detail['groupid'];
         }
         foreach($providers as $provider){
-            if($provider->enable){
                 if(!$provider->cross){
-                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
+                    $options = ['provider_data' => $provider];
+                    if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
+
+                    if(!empty($params['store_id'])) $providerObj->store_id = (int)$params['store_id'];
+
                     $items = $providerObj->findDetails(['code' => $params['article']]);
                     if(!empty($crosses)) {
                         $crossItems = null;
@@ -186,11 +189,12 @@ class Tovar extends \yii\db\ActiveRecord
                         if(!empty($items))
                             $items = array_merge($items, $crossItems);
                     }
-                    foreach ($items as $item) {
-                        array_push($details, $item);
+                    if(!empty($items)) {
+                        foreach ($items as $item) {
+                            array_push($details, $item);
+                        }
                     }
                 }
-            }
         }
 //        var_dump($details);die;
         function r_usort($a, $b, $key){
@@ -277,7 +281,6 @@ class Tovar extends \yii\db\ActiveRecord
             $provider = PartProviderSearch::findOne($provider);
             if($provider->enable) {
                 $provider_data = ['provider_data' => $provider];
-
                 if (!empty($params['store_id']))
                     $provider_data = array_merge($provider_data, ['store_id' => $params['store_id']]);
 
@@ -312,6 +315,7 @@ class Tovar extends \yii\db\ActiveRecord
                }
            }
         }
+        var_dump($details);
         return $details;
     }
 
