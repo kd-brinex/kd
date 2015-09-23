@@ -37,7 +37,7 @@ class BrxSoap extends Component{
     /**
      * @var string
      */
-    public $wsdl_dir = "/tmp";
+    public $wsdl_dir = "tmp";
 
     /**
      * @var int

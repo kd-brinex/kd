@@ -1,7 +1,6 @@
 <?php
 use kartik\grid\GridView;
 use yii\helpers\Html;
-use kartik\growl\Growl;
 
 $asset = app\modules\autoparts\autopartsAsset::register($this);
 $asset = app\modules\user\userAsset::register($this);
@@ -28,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Дата',
                 'attribute' => 'order',
+//                'filter' => Html::activeInput('date', $model, []),
                 'value' => 'order.date'
             ],
             [

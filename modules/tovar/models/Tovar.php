@@ -270,6 +270,7 @@ class Tovar extends \yii\db\ActiveRecord
 //            return $details;
         }
     private function debugDetails($params){
+        $items = '';
         if(!empty($params['provider_id'])){
             $provider = (int)$params['provider_id'];
             $provider = PartProviderSearch::findOne($provider);
@@ -302,7 +303,7 @@ class Tovar extends \yii\db\ActiveRecord
                $items[] = $providerObj->findDetails($options);
            }
         }
-        var_dump($items);
+        return $items;
     }
 
 }

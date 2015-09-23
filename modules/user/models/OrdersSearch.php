@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
  */
 class OrdersSearch extends Orders
 {
+    public $store;
     /**
      * @inheritdoc
      */
@@ -30,7 +31,6 @@ class OrdersSearch extends Orders
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -43,7 +43,6 @@ class OrdersSearch extends Orders
      */
     public function search($condition = '', $params = [], $with = [])
     {
-
         $query = self::find()
             ->andWhere($condition)
             ->addParams($params);
@@ -59,26 +58,19 @@ class OrdersSearch extends Orders
 
         if(isset($with)) {
             $dataProvider->sort->attributes['order'] = [
-                'asc' => ['order.date' => SORT_ASC],
                 'desc' => ['order.date' => SORT_DESC],
+                'asc' => ['order.date' => SORT_ASC],
             ];
             $dataProvider->sort->attributes['store'] = [
-                'asc' => ['t_store.name' => SORT_ASC],
                 'desc' => ['t_store.name' => SORT_DESC],
+                'asc' => ['t_store.name' => SORT_ASC],
             ];
             $dataProvider->sort->attributes['order_name'] = [
-                'asc' => ['order.user_name' => SORT_ASC],
                 'desc' => ['order.user_name' => SORT_DESC],
+                'asc' => ['order.user_name' => SORT_ASC],
             ];
         }
 
-
-        if ($this->load($params)) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-//        var_dump($this);die;
         $query->andFilterWhere([
             'id' => $this->id,
             'quantity' => $this->quantity,
@@ -87,6 +79,7 @@ class OrdersSearch extends Orders
             'part_name' => $this->part_name,
 
         ]);
+
         $query->andFilterWhere(['like', 'product_id', $this->product_id])
             ->andFilterWhere(['like', 'reference', $this->reference])
             ->andFilterWhere(['like', 't_store.name', $this->store]);

@@ -19,7 +19,6 @@ use app\modules\autoparts\models\TStore;
  * @property integer $status
  * @property string $datetime
  *
- * @property Tovar $product
  * @property User $u
  */
 class Orders extends \yii\db\ActiveRecord
@@ -141,10 +140,6 @@ class Orders extends \yii\db\ActiveRecord
     public function getStore(){
         return $this->hasOne(TStore::className(), ['id' => 'store_id'])->via('order');
     }
-
-//    public function getStore(){
-//        return $this->hasOne(\app\modules\autoparts\models\TStoreSearch::className(),['id' => 'store_id']);
-//    }
 
     public function getProvider(){
         return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);
