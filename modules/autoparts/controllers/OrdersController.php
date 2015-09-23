@@ -8,32 +8,27 @@
 
 namespace app\modules\autoparts\controllers;
 
-use app\modules\user\models\Order;
-use app\modules\user\models\OrdersSearch;
 use Yii;
-use yii\base\Exception;
-use yii\web\Controller;
-use app\modules\user\models\Orders;
-use yii\data\ActiveDataProvider;
+
 use yii\helpers\Json;
+use yii\web\Controller;
+use yii\base\Exception;
+
+use app\modules\user\models\Orders;
+use app\modules\user\models\OrdersSearch;
 
 class OrdersController extends Controller
 {
     public function actionIndex(){
         $model = new OrdersSearch();
-        $orders = $model->search();
-//        [
-//            'query' => $query,
-//            'pagination' => [
-//                'pageSize' => 50
-//            ]
-//        ]);
-        return $this->render('orders', ['orders' => $orders]);
+        $orders = $model->search(null, null, ['order']);
+
+        return $this->render('orders', ['orders' => $orders, 'model' => $model]);
     }
 
     public function actionUpdate(){
-        if (!Yii::$app->request->isAjax){
-            return;}
+        if (!Yii::$app->request->isAjax)
+            return false;
         if(Yii::$app->request->post('hasEditable')) {
             $post = Yii::$app->request->post();
             $model = $this->findModel($post['editableKey']);

@@ -3,12 +3,11 @@
 namespace app\modules\user\models;
 
 use Yii;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\user\models\Order;
-
 /**
- * OrderSearch represents the model behind the search form about `app\modules\basket\models\Order`.
+ * Ordersyntax error, unexpected 'public'Search represents the model behind the search form about `app\modules\basket\models\Order`.
  */
 class OrdersSearch extends Orders
 {
@@ -20,7 +19,7 @@ class OrdersSearch extends Orders
     {
         return [
             [['id', 'quantity', 'status'], 'integer'],
-            [['product_id', 'reference', 'datetime'], 'safe'],
+            [['product_id', 'reference', 'datetime', 'store'], 'safe'],
             [['part_name', 'description'],'string']
 
         ];
@@ -42,28 +41,46 @@ class OrdersSearch extends Orders
      *
      * @return ActiveDataProvider
      */
-    public function search($condition = '', $params = [])
+    public function search($condition = '', $params = [], $with = [])
     {
 
         $query = self::find()
             ->andWhere($condition)
             ->addParams($params);
 
+        if(isset($with)){
+            $query->joinWith(['order'])
+                  ->joinWith(['store']);
+        }
+//        var_dump($query->createCommand()->getRawSql());die;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-//            'sort' => false,
         ]);
 
-        $this->load($params);
-        if (!$this->validate()) {
+        if(isset($with)) {
+            $dataProvider->sort->attributes['order'] = [
+                'asc' => ['order.date' => SORT_ASC],
+                'desc' => ['order.date' => SORT_DESC],
+            ];
+            $dataProvider->sort->attributes['store'] = [
+                'asc' => ['t_store.name' => SORT_ASC],
+                'desc' => ['t_store.name' => SORT_DESC],
+            ];
+            $dataProvider->sort->attributes['order_name'] = [
+                'asc' => ['order.user_name' => SORT_ASC],
+                'desc' => ['order.user_name' => SORT_DESC],
+            ];
+        }
+
+
+        if ($this->load($params)) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
-
+//        var_dump($this);die;
         $query->andFilterWhere([
             'id' => $this->id,
-//            'uid' => $this->uid,
             'quantity' => $this->quantity,
             'status' => $this->status,
             'datetime' => $this->datetime,
@@ -71,7 +88,8 @@ class OrdersSearch extends Orders
 
         ]);
         $query->andFilterWhere(['like', 'product_id', $this->product_id])
-            ->andFilterWhere(['like', 'reference', $this->reference]);
+            ->andFilterWhere(['like', 'reference', $this->reference])
+            ->andFilterWhere(['like', 't_store.name', $this->store]);
 
         return $dataProvider;
     }

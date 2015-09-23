@@ -3,7 +3,6 @@
 use kartik\grid\GridView;
 use yii\helpers\Html;
 
-//var_dump($searchModel);
 echo GridView::widget([
     'id'=> 'order-grid',
     'dataProvider' => $orders,

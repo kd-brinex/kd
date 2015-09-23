@@ -2,12 +2,12 @@
 
 namespace app\modules\user\models;
 
-use app\modules\autoparts\models\TStore;
 use Yii;
-use yii\helpers\ArrayHelper;
+
 use yii\helpers\Url;
-use app\modules\user\models\OrderSearch;
-use app\modules\user\models\OrdersState;
+use yii\helpers\ArrayHelper;
+
+use app\modules\autoparts\models\TStore;
 /**
  * This is the model class for table "orders".
  *
@@ -115,15 +115,11 @@ class Orders extends \yii\db\ActiveRecord
     {
         return $this->hasOne(OrderSearch::className(),['id'=>'order_id']);
     }
-    public function getOrderNumber()
-    {
-        return $this->order->number;
-    }
+
     public function getStore_id()
     {
         return $this->order->store_id;
     }
-
 
     /**
      * @return \yii\db\ActiveQuery
@@ -138,13 +134,13 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     public function getStateAll(){
-        $states=OrdersState::find()->asArray(true)->all();
+        $states = OrdersState::find()->asArray(true)->all();
         return ArrayHelper::map($states, 'id', 'status_name');
     }
-    public function getStore(){
-        return $this->hasOne(TStore::className(), ['id' => 'store_id']);
-    }
 
+    public function getStore(){
+        return $this->hasOne(TStore::className(), ['id' => 'store_id'])->via('order');
+    }
 
 //    public function getStore(){
 //        return $this->hasOne(\app\modules\autoparts\models\TStoreSearch::className(),['id' => 'store_id']);
@@ -153,12 +149,6 @@ class Orders extends \yii\db\ActiveRecord
     public function getProvider(){
         return $this->hasOne(\app\modules\autoparts\models\PartProviderSearch::className(), ['id' => 'provider_id']);
     }
-
-//    public function getParentOrder(){
-//        return $this->hasOne(OrderSearch::className(), ['id' => 'order_id']);
-//    }
-
-
 
     public function beforeSave($insert){
 //        if($this->isNewRecord){

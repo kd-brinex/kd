@@ -149,22 +149,16 @@ class Tovar extends \yii\db\ActiveRecord
                     ->where('enable = :enable', [':enable' => 1])
                     ->all();
 
-
-
         foreach($providers as $provider){
             if($provider->enable) {
                 if($provider->cross){
                     $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, ['provider_data' => $provider]);
                     $items = $providerObj->findDetails(['code' => $params['article']]);
-                }
-
-                if(isset($items)){
-                    if (!is_array($items))
-                        continue;
-
-                    foreach ($items as $item) {
-                        array_push($details, $item);
-                    }
+                    if(!empty($items) && is_array($items)){
+                        foreach($items as $item){
+                            array_push($details, $item);
+                        }
+                    } else continue;
                 }
             }
         }
@@ -189,7 +183,8 @@ class Tovar extends \yii\db\ActiveRecord
                                 }
                             }
                         }
-                        $items = array_merge($items, $crossItems);
+                        if(!empty($items))
+                            $items = array_merge($items, $crossItems);
                     }
                     foreach ($items as $item) {
                         array_push($details, $item);
@@ -197,6 +192,7 @@ class Tovar extends \yii\db\ActiveRecord
                 }
             }
         }
+//        var_dump($details);die;
         function r_usort($a, $b, $key){
             $inta = intval($a[$key]);
             $intb = intval($b[$key]);
