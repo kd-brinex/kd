@@ -176,20 +176,6 @@ class BrxDataConverter extends Component
 
                 if($field == 'quantity'){
                     $value = (int)preg_replace('~[^0-9]+~','',$item['quantity']);
-//                    $q = '';
-//                    $d = 0;
-//                    $avalue = str_split($value);
-//                    foreach ($avalue as $n) {
-//                        $q .= (is_numeric($n)) ? $n : '';
-//                        if ($n == '>') {
-//                            $d = 1;
-//                        }
-//                        if ($n == '<') {
-//                            $d = -1;
-//                        }
-//                    }
-//                    $q += $d;
-//                    $value = $q;
                 }
 
             }
