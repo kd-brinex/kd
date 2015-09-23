@@ -12,7 +12,6 @@ Yii::$app->view->registerCssFile('/css/style-offer.css');
 $this->title = Yii::t('user', 'My orders');
 $this->params['breadcrumbs'][] = $this->title;
 
-//var_dump($orders);die;
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>

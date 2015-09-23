@@ -21,7 +21,14 @@ class OrdersController extends Controller
 {
     public function actionIndex(){
         $model = new OrdersSearch();
-        $orders = $model->search(null, null, ['order']);
+
+        if(!empty($params = Yii::$app->request->queryParams)) {
+            $model->load($params);
+            if(!$model->validate())
+                return false;
+        }
+
+        $orders = $model->search();
 
         return $this->render('orders', ['orders' => $orders, 'model' => $model]);
     }

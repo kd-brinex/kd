@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
  */
 class OrdersSearch extends Orders
 {
+    public $store;
     /**
      * @inheritdoc
      */
@@ -30,7 +31,6 @@ class OrdersSearch extends Orders
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -43,7 +43,6 @@ class OrdersSearch extends Orders
      */
     public function search($condition = '', $params = [], $with = [])
     {
-
         $query = self::find()
             ->andWhere($condition)
             ->addParams($params);
@@ -72,13 +71,6 @@ class OrdersSearch extends Orders
             ];
         }
 
-
-        if ($this->load($params)) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-//        var_dump($this);die;
         $query->andFilterWhere([
             'id' => $this->id,
             'quantity' => $this->quantity,
@@ -87,6 +79,7 @@ class OrdersSearch extends Orders
             'part_name' => $this->part_name,
 
         ]);
+
         $query->andFilterWhere(['like', 'product_id', $this->product_id])
             ->andFilterWhere(['like', 'reference', $this->reference])
             ->andFilterWhere(['like', 't_store.name', $this->store]);
