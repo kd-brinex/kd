@@ -120,6 +120,10 @@ class BrxDataConverter extends Component
                 unset($item);
                 continue;
             }
+            if(!isset($ParseData['provider']->days)){
+                unset($item);
+                continue;
+            }
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
                     switch($value){
@@ -146,7 +150,7 @@ class BrxDataConverter extends Component
                 if($field == 'name')
                     $value = !empty($item['name']) ? $item['name'] : $item['code'];
                 if($field == 'provider')
-                    $value = $ParseData['provider']->provider_name;
+                    $value = 'KD'.$ParseData['provider']->provider_data->id.'-'.$ParseData['provider']->store_id;
                 if($field == 'sklad')
                     $value = $item['sklad'].'-'.$item['skladid'];
                 if($field == 'ball')
@@ -155,10 +159,10 @@ class BrxDataConverter extends Component
                     $value = $ParseData['provider']->provider_data->weight;
                 if($field == 'price'){
                     $price = $value;
-                    $nval = $price + ($price / 100 * (isset($ParseData['provider']->marga) ? $ParseData['provider']->marga : 0));
-                    $rval = round($nval);
-                    $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
-                    $value = round($value, 2);
+                    $nval = $price + ($price / 100 * $ParseData['provider']->marga);
+//                    $rval = round($nval);
+//                    $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
+                    $value = ceil($nval);
                 }
                 if($field == 'storeid')
                     $value = !empty($item['storeid']) ? $item['storeid'] : (!empty($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);
@@ -168,9 +172,9 @@ class BrxDataConverter extends Component
                 if($field == 'flagpostav')
                     $value = $ParseData['provider']->provider_data->flagpostav;
                 if($field == 'srokmin')
-                    $value += isset($ParseData['provider']->days) ? $ParseData['provider']->days : 0;
+                    $value += $ParseData['provider']->days;
                 if($field == 'srokmax')
-                    $value += isset($ParseData['provider']->days) ? $ParseData['provider']->days : 0;
+                    $value += $ParseData['provider']->days;
                 if($field == 'srok')
                     $value = $item['srokmin'] . (($item['srokmin'] < $item['srokmax']) ? '-' . $item['srokmax'] : '');
 
@@ -179,6 +183,7 @@ class BrxDataConverter extends Component
                 }
 
             }
+//            var_dump($data);
 //           foreach($afterParseData as $field => $manipulation){
 //               if(isset($item[$field]))
 //                   $item[$field] = $this->manipulate($manipulation, $item);
