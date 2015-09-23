@@ -115,9 +115,7 @@ class BrxDataConverter extends Component
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
-        $b = 0;
         foreach($data as $key => &$item) {
-//            var_dump('---------------------------'.$b++);
             if (!$item['quantity']){
                 unset($data[$key]);
                 continue;
@@ -126,9 +124,7 @@ class BrxDataConverter extends Component
                 unset($item);
                 continue;
             }
-            $i = 1;
             foreach($item as $field => &$value){
-//                var_dump($i++,$field);
                 if($field == 'groupid'){
                     switch($value){
                         case 'Original':
@@ -164,8 +160,6 @@ class BrxDataConverter extends Component
                 if($field == 'price'){
                     $price = $value;
                     $nval = $price + ($price / 100 * $ParseData['provider']->marga);
-//                    $rval = round($nval);
-//                    $value = ((($rval > $nval) ? $rval : $rval + 1) == 1 || (($rval > $nval) ? $rval : $rval + 1) <= 0) ? '-' : $value;
                     $value = ceil($nval);
                 }
                 if($field == 'storeid')
@@ -179,6 +173,36 @@ class BrxDataConverter extends Component
                     $value += $ParseData['provider']->days;
                 if($field == 'srokmax')
                     $value += $ParseData['provider']->days;
+
+                if($field == 'estimation'){
+                    switch($ParseData['provider']->provider_data->name){
+                        case 'Iksora':
+                            $summa = 0;
+                            $count = 0;
+                            $nval = trim($value);
+                            $n = strlen($nval);
+                            for($с = 0; $с < $n; $с++){
+                                $b = is_numeric($nval[$с]);
+                                $summa += ($b) ? $nval[$с] : 0;
+                                $count += ($b) ? 1 : 0;
+                            }
+
+                            $value = round(($count>0)?($summa/$count)*20:0,0);
+                            break;
+                        case 'Partkom':
+                            $value = 50;
+                            break;
+                        case 'Emex':
+                            $value = round($value);
+                            break;
+                        case 'Kd':
+                            $value = round($value);
+                            break;
+                        case 'Over':
+                            $value = ($value > 0) ? $value : 90;
+                            break;
+                    }
+                }
                 if($field == 'srok')
                     $value = $item['srokmin'] . (($item['srokmin'] < $item['srokmax']) ? '-' . $item['srokmax'] : '');
 
@@ -194,7 +218,6 @@ class BrxDataConverter extends Component
 //               else continue;
 //           }
         }
-
         return $data;
     }
     /* ФУНКЦИИ ШАБЛОНА */
