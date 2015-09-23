@@ -20,6 +20,7 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+    public $store_name;
     /**
      * @inheritdoc
      */
@@ -39,6 +40,7 @@ class Order extends \yii\db\ActiveRecord
             [['store_id'], 'integer'],
             [['number'], 'string', 'max' => 15],
             [['user_name','user_email','user_telephone','user_location'], 'string', 'max'=>25],
+            [['store_name'], 'string'],
         ];
     }
 

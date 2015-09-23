@@ -21,24 +21,38 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout'=>true,
         ],
         'rowOptions'=>function($model){
-            return ['class' => $model->order_class];
+//            return ['class' => $model->order_class];
         },
         'columns' => [
             [
                 'label' => 'Дата',
-                'attribute' => 'order',
-//                'filter' => Html::activeInput('date', $model, []),
-                'value' => 'order.date'
+                'attribute' => 'date',
+                'filter' => Html::activeInput('date', $model, 'date', ['class' => 'form-control']),
+                'value' => 'date'
             ],
             [
                 'label' => 'Магазин',
-                'attribute' => 'store',
+                'attribute' => 'store_name',
                 'value' => 'store.name'
             ],
             [
                 'label' => 'Покупатель',
-                'attribute' => 'order_name',
-                'value' => 'order.user_name'
+                'attribute' => 'user_name',
+                'value' => 'user_name'
+            ],
+            [
+                'label' => 'Сумма заказа',
+                'value' => function($model){
+                    var_dump($model['orders']);
+                    foreach($model['orders'] as $order){
+
+                    }
+//                    $sum = 0;
+//                    foreach($model as $key => $position){
+//                        $sum += $model['orders'][0]->part_price;
+//                    }
+//                    return $sum;
+                }
             ]
 
         ],
