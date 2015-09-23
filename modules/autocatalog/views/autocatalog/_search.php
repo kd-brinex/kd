@@ -44,8 +44,10 @@ $items=[
     ],
     [
         'label' => 'Parts',
-
-        'content'=>'<iframe src="http://aparts.kolesa-darom.ru/catalog/type/1?kat=1" width="100%" height="600px" id="partsFrame"></iframe>',
+//        'content' =>$this->render('autod/types'),
+//        'format'=>'raw',
+        'content'=>'<iframe src="/autod/types.php" width="100%" height="600px"></iframe>',
+//        'content'=>'<iframe href="'.Url::to('/autod/index.php',true).'" width="100%" height="600px"></iframe>',
 
 
         'options'=>['class'=>'acatalog-tabs','tag' => 'div'],

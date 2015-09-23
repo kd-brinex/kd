@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://georgeosddev.github.io/markdown-edit/view.html -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Markdown Edit</title>
+  <link rel="stylesheet" href="http://georgeosddev.github.io/markdown-edit/vendor/html5-boilerplate-4.0.0/css/normalize.css">
+  <link rel="stylesheet" href="http://georgeosddev.github.io/markdown-edit/css/github-style.css">
+  <link rel="stylesheet" href="http://georgeosddev.github.io/markdown-edit/vendor/highlight.js/styles/github.css">
+  <style type="text/css">
+    body {
+      margin:20px 30px;
+    }
+  </style>
+<link id="htmlStyle" rel="stylesheet" href="http://georgeosddev.github.io/markdown-edit/css/empty.css"></head>
+<body>
+<script>
+  document.body.onload = function(){
+    var style = opener.document.getElementById("htmlStyle");
+    var clone = style.cloneNode(true);
+    document.head.appendChild(clone);
+
+    var src = opener.document.getElementById("out");
+    var clonenode = src.cloneNode(true);
+    document.body.appendChild(clonenode);
+  };
+</script>
+
+<div id="out" class="markdown-body display-none" style="display: block;"><h1 id="-">Каталог от компании АвтоДилер</h1>
+<h4 id="-">Принимаемые параметры:</h4>
+<pre><code class=" hljs 1c">getTypeList  - вернет список типов (легковые, грузовые, ..) автомобилей, исходя из доступных <span class="hljs-keyword">для</span> пользователя <span class="hljs-keyword">и</span> включенных панели управления. 
+
+getMarkList  - вернет список марок <span class="hljs-keyword">по</span> переданному в функцию ID типа автомобиля.  
+
+getModelList - <span class="hljs-keyword">по</span> ID типа <span class="hljs-keyword">и</span> ID марки вернет список моделей, учитывая пользовательские настройки.  
+
+getTreeList  - <span class="hljs-keyword">по</span> ID модели вернет дерево деталей.  
+При передачи второго произвольного значения вернет мильти-архив с вложенными зависимостями.  
+<span class="hljs-keyword">Если</span> второй параметр <span class="hljs-keyword">не</span> передать, то возвращает просто выборку в виде одноуровнего массива. 
+<span class="hljs-keyword">Для</span> нашего примера - это наилучший выбор (пример в adc/tree.php) 
+
+getDetails   - <span class="hljs-keyword">по</span> ID модели <span class="hljs-keyword">и</span> ID детали (treeID) вернет саму деталь:  
+               <span class="hljs-number">1</span>. Иллюстрацию с метками расположениями
+               <span class="hljs-number">2</span>. Список номенклатуры, связанные с метками на иллюстрации
+
+searchModels - вернет все варианты имен моделей <span class="hljs-keyword">по</span> введенным данным
+
+searchDetail - <span class="hljs-keyword">Если</span> известна марка, то передаем номер детали <span class="hljs-keyword">или</span> примерное имя (вводится в поле) <span class="hljs-keyword">и</span> ID марки =&gt; дерево как от getTreeList() <span class="hljs-keyword">по</span> возможным вариантам
+
+searchNumber - номер детали (вводится в поле) =&gt; дерево как от getTreeList() <span class="hljs-keyword">по</span> возможным вариантам
+
+typeID  - идентификатор типа
+markID  - идентификатор марки
+modelID - идентификатор модели
+
+multiArray - необязательный параметр. Используется в четвертом запросе.
+</code></pre><hr>
+<h4 id="-">ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ</h4>
+<h5 id="-1-">№1. Получить список всех типов автомобилей, относительно Ваших настроек:</h5>
+<pre><code class=" hljs avrasm"><span class="hljs-label">http:</span>//auto2d<span class="hljs-preprocessor">.com</span>/api/<span class="hljs-keyword">in</span><span class="hljs-preprocessor">.php</span>?f=getTypeList&amp;u=%s&amp;p=%s
+</code></pre><h6 id="-types-php-">В скрипте пользователя (types.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;         <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;      <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> создаем объект для работы
+
+<span class="hljs-variable">$aTypeList</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getTypeList(); <span class="hljs-subst">-</span> запрашиваем список типов автомобилей
+
+<span class="hljs-variable">$aErrors</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$aTypeList</span>,<span class="hljs-string">'errors'</span>);      <span class="hljs-subst">-</span> отлавливаем ошибку(и) из ответа
+<span class="hljs-keyword">if</span>(count(<span class="hljs-variable">$aErrors</span>)<span class="hljs-subst">&gt;</span><span class="hljs-number">0</span>){ <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>error(<span class="hljs-variable">$aErrors</span>,<span class="hljs-number">404</span>); } <span class="hljs-subst">-</span> если есть, то печатаем
+                                                    <span class="hljs-subst">-</span> обработка ошибок идентична для всех запросов
+                                                    <span class="hljs-subst">-</span> далее момент обработки ошибок нет смысла дублировать
+</code></pre><h6 id="-">Под капотом:</h6>
+<pre><code class=" hljs lasso"><span class="hljs-subst">---</span>так функция выглядит в adc/api<span class="hljs-built_in">.</span>php
+
+<span class="hljs-keyword">public</span> function getTypeList(){
+    <span class="hljs-variable">$body</span> <span class="hljs-subst">=</span> <span class="hljs-string">"f="</span><span class="hljs-built_in">.</span>__FUNCTION__<span class="hljs-built_in">.</span><span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>_auth;
+    <span class="hljs-variable">$answer</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>getAnswer(<span class="hljs-variable">$body</span>);
+    <span class="hljs-variable">$r</span> <span class="hljs-subst">=</span> json_decode(<span class="hljs-variable">$answer</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$r</span>;
+}
+
+<span class="hljs-variable">$body</span> <span class="hljs-subst">=</span> <span class="hljs-string">"f="</span><span class="hljs-built_in">.</span>__FUNCTION__<span class="hljs-built_in">.</span><span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>_auth; <span class="hljs-subst">-</span> формируем строку запроса
+
+    __FUNCTION__ принимает значение getTypeList<span class="hljs-built_in">.</span> По данному параметру на сервере решается какая функция будет отрабатывать
+    в <span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>_auth находятся ваши логин<span class="hljs-subst">/</span>пароль от сервиса auto2d<span class="hljs-built_in">.</span>com
+
+<span class="hljs-variable">$answer</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>getAnswer(<span class="hljs-variable">$body</span>); <span class="hljs-subst">-</span> отправляем запрос и получаем ответ в виде строки
+
+   функция <span class="hljs-variable">$this</span><span class="hljs-subst">-&gt;</span>getAnswer(<span class="hljs-variable">$body</span>) использует cURL для отправки запроса
+
+<span class="hljs-variable">$r</span> <span class="hljs-subst">=</span> json_decode(<span class="hljs-variable">$answer</span>); <span class="hljs-subst">-</span> декодирует json строку
+    на выходе получаем массив объектов
+    каждый объект имеет следующие свойства:
+        type_id   <span class="hljs-subst">-</span> идентификатор типа
+        type_name <span class="hljs-subst">-</span> текстовое наименование типа
+        type_url  <span class="hljs-subst">-</span> адрес картинки для типа, размещенной на сервере<span class="hljs-built_in">.</span> Можно использовать что<span class="hljs-subst">-</span>то свое
+</code></pre><h6 id="-">Обработка данных:</h6>
+<pre><code class=" hljs r"><span class="hljs-keyword">...</span> кусок из types.php <span class="hljs-keyword">...</span>
+
+&lt;?php foreach($aTypeList as $aType){?&gt; - пробегаемся по массиву
+    &lt;tr&gt;
+        &lt;td align=<span class="hljs-string">"center"</span> valign=<span class="hljs-string">"middle"</span> width=<span class="hljs-string">"100"</span>&gt;
+            <span class="hljs-keyword">...</span> изображение марки <span class="hljs-keyword">...</span>
+            &lt;a href=<span class="hljs-string">"marks.php?typeID=&lt;?=$aType-&gt;type_id?&gt;"</span>&gt; - ссылка при клике
+                &lt;img src=<span class="hljs-string">"&lt;?=$aType-&gt;type_url?&gt;"</span> width=<span class="hljs-string">"80"</span> height=<span class="hljs-string">"50"</span> alt=<span class="hljs-string">"&lt;?=$aType-&gt;type_name?&gt;"</span> border=<span class="hljs-string">"0"</span>&gt; - само изображение
+            &lt;/a&gt;
+            <span class="hljs-keyword">...</span> / изображение марки <span class="hljs-keyword">...</span>
+        &lt;/td&gt;
+        &lt;td align=<span class="hljs-string">"left"</span> valign=<span class="hljs-string">"middle"</span> class=<span class="hljs-string">"rbrd"</span>&gt;
+            <span class="hljs-keyword">...</span> название марки <span class="hljs-keyword">...</span>
+            &lt;a href=<span class="hljs-string">"marks.php?typeID=&lt;?=$aType-&gt;type_id?&gt;"</span> style=<span class="hljs-string">"font-size: 14pt"</span>&gt; - ссылка при клике
+                &lt;?=$aType-&gt;type_name?&gt; - названия типа
+            &lt;/a&gt;
+            <span class="hljs-keyword">...</span> / название марки <span class="hljs-keyword">...</span>
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;?php }?&gt;
+
+<span class="hljs-keyword">...</span> / кусок из types.php <span class="hljs-keyword">...</span>
+</code></pre><hr>
+<h5 id="-2-">№2. Получить список марок</h5>
+<pre><code class=" hljs avrasm"><span class="hljs-label">http:</span>//auto2d<span class="hljs-preprocessor">.com</span>/api/<span class="hljs-keyword">in</span><span class="hljs-preprocessor">.php</span>?f=getMarkList&amp;u=%s&amp;p=%s&amp;typeID=%s
+</code></pre><h6 id="-marks-php-">В скрипте пользователя (marks.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;         <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;      <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> Создаем объект для работы
+
+<span class="hljs-variable">$sTypeID</span>   <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'typeID'</span>);         <span class="hljs-subst">-</span> Получаем идентификатор типа
+<span class="hljs-variable">$aMarkList</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getMarkList(<span class="hljs-variable">$sTypeID</span>); <span class="hljs-subst">-</span> Запрашиваем список моделей по выбранному типу
+                                            Если не передать параметр, то вернет все модели относительно пользовательских настроек<span class="hljs-built_in">.</span>
+                                            Возвращается объект с данными<span class="hljs-built_in">.</span>
+<span class="hljs-variable">$aMarkList</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oMarkList</span>,<span class="hljs-string">'marks'</span>);    <span class="hljs-subst">-</span> Список всех марок в виде объекта
+<span class="hljs-variable">$sTypeName</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oMarkList</span>,<span class="hljs-string">'typeName'</span>); <span class="hljs-subst">-</span> Наименование типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+                                                     Если не передали ID типа, возвращается <span class="hljs-literal">FALSE</span>
+</code></pre><h6 id="-">Под капотом:</h6>
+<pre><code class=" hljs php">---так функция выглядит в adc/api.php
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMarkList</span><span class="hljs-params">(<span class="hljs-variable">$type</span>)</span>{</span>
+    <span class="hljs-variable">$body</span> = <span class="hljs-string">"f="</span>.<span class="hljs-keyword">__FUNCTION__</span>.<span class="hljs-variable">$this</span>-&gt;_auth.<span class="hljs-string">"&amp;typeID=$type"</span>;
+    <span class="hljs-variable">$answer</span> = <span class="hljs-variable">$this</span>-&gt;getAnswer(<span class="hljs-variable">$body</span>);
+    <span class="hljs-variable">$r</span> = json_decode(<span class="hljs-variable">$answer</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$r</span>;
+}
+
+<span class="hljs-variable">$body</span> = <span class="hljs-string">"f="</span>.<span class="hljs-keyword">__FUNCTION__</span>.<span class="hljs-variable">$this</span>-&gt;_auth.<span class="hljs-string">"&amp;typeID=$type"</span>; - формируем строку запроса
+
+    <span class="hljs-keyword">__FUNCTION__</span> принимает значение getMarkList. По данному параметру на сервере решается какая функция будет отрабатывать
+    в <span class="hljs-variable">$this</span>-&gt;_auth находятся ваши логин/пароль от сервиса auto2d.com
+    переменная typeID принимает передаваемое значение идентификатора типа <span class="hljs-variable">$type</span>
+
+<span class="hljs-variable">$answer</span> = <span class="hljs-variable">$this</span>-&gt;getAnswer(<span class="hljs-variable">$body</span>); - отправляем запрос и получаем ответ в виде строки
+
+    функция <span class="hljs-variable">$this</span>-&gt;getAnswer(<span class="hljs-variable">$body</span>) использует cURL для отправки запроса
+
+<span class="hljs-variable">$r</span> = json_decode(<span class="hljs-variable">$answer</span>); - декодирует json строку
+    на выходе получаем объект с двумя свойствами:
+        marks - массив марок в виде объектов со следующими свойствами:
+            type_id        - идентификатор типа
+            mark_id        - идентификатор марки
+            mark_img_url   - адрес картинки для марки, размещенной на сервере. Можно использовать что-то свое
+            mark_name]     - краткое название марки
+            mark_name_full - полное название марки
+            mark_url       - официальный сайт производителя
+        typeName - Наименование типа автомобиля. Используется в <span class="hljs-string">"хлебных крошках"</span>.
+</code></pre><h6 id="-">Обработка данных:</h6>
+<pre><code class=" hljs scss">Пример обработки полученных данных можно посмотреть в <span class="hljs-attribute">marks</span><span class="hljs-class">.php</span>
+</code></pre><hr>
+<h5 id="-3-">№3. Получить список моделей</h5>
+<pre><code class=" hljs perl">http:<span class="hljs-regexp">//auto</span>2d.com/api/in.php?f=getModelListt&amp;u=<span class="hljs-variable">%s</span>&amp;p=<span class="hljs-variable">%s</span>&amp;typeID=<span class="hljs-variable">%s</span>&amp;markID=<span class="hljs-variable">%s</span>
+</code></pre><h6 id="-adc-models-php-">В скрипте пользователя (adc/models.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;               <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;            <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>();        <span class="hljs-subst">-</span> создаем объект для работы
+<span class="hljs-variable">$sTypeID</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'typeID'</span>);   <span class="hljs-subst">-</span> получаем идентификатор типа
+<span class="hljs-variable">$sMarkID</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'markID'</span>);   <span class="hljs-subst">-</span> получаем идентификатор марки
+
+<span class="hljs-variable">$oModelList</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getModelList(<span class="hljs-variable">$sTypeID</span>,<span class="hljs-variable">$sMarkID</span>); <span class="hljs-subst">-</span> возвращается объект с данными
+<span class="hljs-variable">$aModelList</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oModelList</span>,<span class="hljs-string">'models'</span>);   <span class="hljs-subst">-</span> Массив всех моделей в виде объектов
+                             Каждый объект обладает следующими свойствами:
+                                 mark_id            <span class="hljs-subst">-</span> Идентификатор марки
+                                 model_id           <span class="hljs-subst">-</span> Идентификатор модели
+                                 model_url          <span class="hljs-subst">-</span> Путь до изображения модели
+                                 model_name         <span class="hljs-subst">-</span> Имя модели
+                                 model_modification <span class="hljs-subst">-</span> Модификации
+                                 model_actual       <span class="hljs-subst">-</span> Актуальность каталога
+                                 model_years        <span class="hljs-subst">-</span> Период выпуска модели
+                                 model_archival     <span class="hljs-subst">-</span> Признак архивного каталога (информация могла устареть): <span class="hljs-number">1</span> <span class="hljs-subst">-</span> архивный, <span class="hljs-number">0</span> <span class="hljs-subst">-</span> не архивный
+<span class="hljs-variable">$sTypeName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oModelList</span>,<span class="hljs-string">'typeName'</span>); <span class="hljs-subst">-</span> Наименование типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMarkName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oModelList</span>,<span class="hljs-string">'markName'</span>); <span class="hljs-subst">-</span> Наименование марки автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span> и заголовке<span class="hljs-built_in">.</span>
+
+<span class="hljs-variable">$bMultiArray</span> <span class="hljs-subst">=</span> <span class="hljs-number">1</span>; <span class="hljs-subst">-</span> параметр может принимать любое значение <span class="hljs-subst">-</span> это <span class="hljs-literal">TRUE</span>, отсутсвие значения <span class="hljs-subst">-</span> это <span class="hljs-literal">FALSE</span>
+                  <span class="hljs-subst">-</span> сервер может возвращать два вида массивов для моделей
+                    <span class="hljs-number">1.</span> Линейный <span class="hljs-subst">-</span> очень хорошо подходит для php<span class="hljs-built_in">.</span> Удобно строить DOM<span class="hljs-built_in">.</span>
+                    <span class="hljs-number">2.</span> Мульти<span class="hljs-subst">-</span>архив <span class="hljs-subst">-</span> если нужно распарсить еще<span class="hljs-built_in">.</span> В таком виде явно видно потомков и предков<span class="hljs-built_in">.</span>
+</code></pre><h6 id="-">Под капотом:</h6>
+<pre><code class=" hljs livecodeserver">По первым двум примерам можно легко увидеть, что эта часть незначительно отличается.
+Саму функцию можно посмотерть в <span class="hljs-title">_lib</span>.php
+Посмотерть возвращаемые данные можно просто раскомментировав строку:<span class="hljs-comment">
+//$oA2D-&gt;e($oModelList);</span>
+<span class="hljs-comment">---далее эта часть будет опускаться</span>
+</code></pre><h6 id="-">Обработка данных:</h6>
+<pre><code class=" hljs avrasm">Пример обработки полученных данных можно посмотреть в <span class="hljs-keyword">adc</span>/models<span class="hljs-preprocessor">.php</span>
+---далее эта часть будет опускаться
+</code></pre><hr>
+<h5 id="-4-">№4. Получить список всех деталей для текущей марки</h5>
+<pre><code class=" hljs avrasm"><span class="hljs-label">http:</span>//auto2d<span class="hljs-preprocessor">.com</span>/api/<span class="hljs-keyword">in</span><span class="hljs-preprocessor">.php</span>?f=getTreeList&amp;u=%s&amp;p=%s&amp;multiArray=<span class="hljs-number">1</span>&amp;modelID=%s
+</code></pre><h6 id="-tree-php-">В скрипте пользователя (tree.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;        <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;     <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> создаем объект для работа
+
+<span class="hljs-variable">$sModelID</span>    <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'modelID'</span>);              <span class="hljs-subst">-</span> получаем идентификатор модели
+<span class="hljs-variable">$bMultiArray</span> <span class="hljs-subst">=</span> (boolean) <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'multiArray'</span>); <span class="hljs-subst">-</span> какой тип массива запрашивать с сервера
+
+<span class="hljs-variable">$oTreelList</span>  <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getTreeList(<span class="hljs-variable">$sModelID</span>,<span class="hljs-variable">$bMultiArray</span>); <span class="hljs-subst">-</span> Вернет объект данных для текущий модели
+<span class="hljs-variable">$aTreelList</span>  <span class="hljs-subst">=</span> AD<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span> ,<span class="hljs-string">'details'</span>);      <span class="hljs-subst">-</span> Список деталей ввиде объекта
+                                                            Если существуют multiArray, то вернется объект мульти<span class="hljs-subst">-</span>архива
+                                                            В противоположном случае <span class="hljs-subst">-</span> объект, полученный из линейного массива
+<span class="hljs-variable">$sModelName</span>  <span class="hljs-subst">=</span> AD<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span> ,<span class="hljs-string">'modelName'</span>);    <span class="hljs-subst">-</span> Имя модели
+
+<span class="hljs-variable">$sTypeID</span>     <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span>,<span class="hljs-string">'typeID'</span>);      <span class="hljs-subst">-</span> Идентификатор типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sTypeName</span>   <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span>,<span class="hljs-string">'typeName'</span>);    <span class="hljs-subst">-</span> Наименование типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMarkID</span>     <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span>,<span class="hljs-string">'markID'</span>);      <span class="hljs-subst">-</span> Идентификатор марки автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMarkName</span>   <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span>,<span class="hljs-string">'markName'</span>);    <span class="hljs-subst">-</span> Наименование марки автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sModelName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$oTreelList</span>,<span class="hljs-string">'modelName'</span>);   <span class="hljs-subst">-</span> Наименование модели автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span> и заголовке<span class="hljs-built_in">.</span>
+</code></pre><hr>
+<h5 id="-5-">№5. Получить изображение выбранной детали</h5>
+<pre><code class=" hljs perl">http:<span class="hljs-regexp">//auto</span>2d.com/api/in.php?f=getDetails&amp;u=<span class="hljs-variable">%s</span>&amp;p=<span class="hljs-variable">%s</span>&amp;modelID=<span class="hljs-variable">%s</span>&amp;treeID=<span class="hljs-variable">%s</span>&amp;jumpPic=<span class="hljs-variable">%s</span>
+</code></pre><h6 id="-map-php-">В скрипте пользователя (map.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;        <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;     <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> создаем объект для работы
+
+<span class="hljs-variable">$sTreeID</span>  <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'treeID'</span>);  <span class="hljs-subst">-</span> получаем идентификатор типа
+<span class="hljs-variable">$sModelID</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'modelID'</span>); <span class="hljs-subst">-</span> получаем идентификатор модели
+<span class="hljs-variable">$sJumpPic</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'jumpPic'</span>); <span class="hljs-subst">-</span> если есть, то это идентификатор части изображения в более подробном виде со своим списком номенклатуры
+
+<span class="hljs-variable">$vMapImg</span>  <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getDetails(<span class="hljs-variable">$sModelID</span>,<span class="hljs-variable">$sTreeID</span>); <span class="hljs-subst">-</span> отправляем запрос
+
+<span class="hljs-variable">$sTypeID</span>    <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'typeID'</span>);      <span class="hljs-subst">-</span> Идентификатор типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sTypeName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'typeName'</span>);    <span class="hljs-subst">-</span> Наименование типа автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMarkID</span>    <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'markID'</span>);      <span class="hljs-subst">-</span> Идентификатор марки автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMarkName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'markName'</span>);    <span class="hljs-subst">-</span> Наименование марки автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span><span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sModelName</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'modelName'</span>);   <span class="hljs-subst">-</span> Наименование модели автомобиля<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span> и заголовке<span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sTreeName</span>  <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'treeName'</span>);    <span class="hljs-subst">-</span> Наименование ветки дерева для детали<span class="hljs-built_in">.</span> Используется в <span class="hljs-string">"хлебных крошках"</span> и заголовке<span class="hljs-built_in">.</span>
+<span class="hljs-variable">$sMapName</span>   <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'mapName'</span>);
+<span class="hljs-variable">$sMapNameTree</span> <span class="hljs-subst">=</span> ((strlen(<span class="hljs-variable">$sMapName</span>)<span class="hljs-subst">&gt;</span><span class="hljs-number">43</span>)<span class="hljs-subst">?</span>substr(<span class="hljs-variable">$sMapName</span>, <span class="hljs-number">0</span>, <span class="hljs-number">40</span>)<span class="hljs-built_in">.</span><span class="hljs-string">"..."</span>:<span class="hljs-variable">$sMapName</span>);
+
+<span class="hljs-variable">$sMapName</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'mapName'</span>); <span class="hljs-subst">-</span> название детали<span class="hljs-subst">/</span>представления<span class="hljs-subst">/</span>фрейма (далее Карта)
+<span class="hljs-variable">$mapImg</span>   <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'mapImg'</span>);  <span class="hljs-subst">-</span> изображением с метками
+<span class="hljs-variable">$aDetails</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'detail'</span>);  <span class="hljs-subst">-</span> список номенклатуры
+<span class="hljs-variable">$aNav</span>     <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$vMapImg</span>,<span class="hljs-string">'nav'</span>);     <span class="hljs-subst">-</span> предыдущая и следующая деталь, относительно дерева
+<span class="hljs-variable">$_prev</span>    <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$aNav</span>,<span class="hljs-string">'prev'</span>);       <span class="hljs-subst">-</span> предыдущая
+<span class="hljs-variable">$_next</span>    <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$aNav</span>,<span class="hljs-string">'next'</span>);       <span class="hljs-subst">-</span> следующая
+<span class="hljs-variable">$imgPath</span>  <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>getImgPath();                 <span class="hljs-subst">-</span> путь иллюстрации на сервере
+                                                  запрос внутри библиотеки на стороне клиента возвращает путь из имеющихся данных
+                                                  картинки можно выкачать и не бегать за ними каждый раз
+                                                  или использовать свои, если есть желание изменить интерфейс
+</code></pre><p>Можно влиять на поведение js скриптов:</p>
+<ol>
+<li>При клике по номенклатуре, чтобы подсветить номер детали используется скрипт функция td, что можно посмотреть в скрипте пользователя <strong>adc/map.php</strong>
+Тут все просто - пишем свое решение и используем.</li>
+<li>При клике по номеру детали на самой картинки используется внутренний скрипт, поведение которого можно переопределить или дополнить!
+Чтобы дополнить функционал, добавтье в конец вашего <strong>adc/map.php</strong> следующий скрипт:</li>
+</ol>
+<pre><code class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    exLightsTR = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span>{</span>
+        alert(id);
+    };
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre><p>Для полной изоляции нужно добавить еще <em>return false;</em> :</p>
+<pre><code class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    exLightsTR = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span>{</span>
+        alert(id);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    };
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre><p>Загрузка изображения происходит через <strong>iframe.js</strong><br>В данном скрипте используется <strong>window.onload</strong><br>Это зачастую не дает отработать другим скриптам, рассчитанных на это событие<br>Для этих целей была придумана функция <strong>apiReady()</strong>, которыя вызывается внутри фрейма<br>Данная функция вызывается, когда все другие функции отработали<br>Если у вас есть необходимость, то просто реализуйте со своей стороны данную функцию<br>Объявить функцию нужно до загрузки <strong>iframe.js</strong>  </p>
+<hr>
+<h5 id="-6-">№6. Получение детальной информации по выбранной детали</h5>
+<pre><code class=" hljs perl">http:<span class="hljs-regexp">//auto</span>2d.com/api/in.php?f=getDetailInfo&amp;u=<span class="hljs-variable">%s</span>&amp;p=<span class="hljs-variable">%s</span>&amp;modelID=<span class="hljs-variable">%s</span>&amp;treeID=<span class="hljs-variable">%s</span>
+</code></pre><h6 id="-adc-getdetailinfo-php-">В скрипте пользователя (adc/getDetailInfo.php):</h6>
+<pre><code class=" hljs php"><span class="hljs-keyword">include</span> <span class="hljs-string">"_lib.php"</span>;        - подключаем общую библиотеку
+<span class="hljs-keyword">include</span> <span class="hljs-string">"adc/api.php"</span>;     - подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> = A2DAPI::instance(); - создаем объект для работы
+
+<span class="hljs-variable">$sTreeID</span>  = <span class="hljs-variable">$oA2D</span>-&gt;rcv(<span class="hljs-string">'treeID'</span>);  - получаем идентификатор типа
+<span class="hljs-variable">$sModelID</span> = <span class="hljs-variable">$oA2D</span>-&gt;rcv(<span class="hljs-string">'modelID'</span>); - получаем идентификатор модели
+
+<span class="hljs-variable">$aInfo</span>    = <span class="hljs-variable">$oA2D</span>-&gt;getDetailInfo(<span class="hljs-variable">$sModelID</span>,<span class="hljs-variable">$sTreeID</span>); - функция запроса
+
+<span class="hljs-variable">$aErrors</span> = A2D::property(<span class="hljs-variable">$aInfo</span>,<span class="hljs-string">'errors'</span>);          - ловим ошибки
+<span class="hljs-keyword">if</span>(count(<span class="hljs-variable">$aErrors</span>)&gt;<span class="hljs-number">0</span>){ <span class="hljs-variable">$oA2D</span>-&gt;error(<span class="hljs-variable">$aErrors</span>,<span class="hljs-number">404</span>); } - обрабатываем ошибки, если есть
+
+С сервера возвращается объект. К примеру, с таким содержанием:
+
+[auto]         =&gt; Shaanxi Fast Gear RT                     - Модель, к которой принадлежит детать
+[detail_name]  =&gt; Шестерня <span class="hljs-number">3</span>-ей передачи второго вала      - Наименование детали
+[detail_no]    =&gt; JS119-<span class="hljs-number">1701113</span>                            - Номер детали в каталогах
+[modification] =&gt; RT-<span class="hljs-number">11509</span>C,  RTO-<span class="hljs-number">11509</span>F                   - Модификации модели
+[actual]       =&gt;                                          - Актуальность каталога
+[count]        =&gt; stdClass Object                          - объект
+    (
+        [<span class="hljs-number">8</span>] =&gt; <span class="hljs-number">1</span> - для Shaanxi Fast Gear <span class="hljs-number">9</span>JS119            - Сколько раз встречается и в какой модификации
+    )
+</code></pre><hr>
+<h5 id="-7-">№7. Поиск модели</h5>
+<pre><code class=" hljs avrasm"><span class="hljs-label">http:</span>//auto2d<span class="hljs-preprocessor">.com</span>/api/<span class="hljs-keyword">in</span><span class="hljs-preprocessor">.php</span>?f=searchModels&amp;u=%s&amp;p=%s&amp;model=%s
+</code></pre><blockquote>
+<p>В переменной model должно находиться примерное имя или номер модели (например: 211<em>, ВА</em>), иначе вернется пустой ответ.</p>
+</blockquote>
+<h6 id="-adc-search-models-php-">В скрипте пользователя (adc/search/models.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;        <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;     <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> создаем объект для работы
+
+<span class="hljs-variable">$sModel</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'searchModels'</span>);        <span class="hljs-subst">-</span> обрабатываем строку поиска из types<span class="hljs-built_in">.</span>php
+<span class="hljs-variable">$aModelsList</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>searchModels(<span class="hljs-variable">$sModel</span>); <span class="hljs-subst">-</span> отправляем запрос
+
+<span class="hljs-variable">$aErrors</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$aModelsList</span>,<span class="hljs-string">'errors'</span>);      <span class="hljs-subst">-</span> ловим ошибки
+<span class="hljs-keyword">if</span>( count(<span class="hljs-variable">$aErrors</span>)<span class="hljs-subst">&gt;</span><span class="hljs-number">0</span> ){ <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>error(<span class="hljs-variable">$aErrors</span>,<span class="hljs-number">404</span>); } <span class="hljs-subst">-</span> обрабатываем ошибки, если есть
+
+<span class="hljs-variable">$multiArray</span><span class="hljs-subst">=</span><span class="hljs-string">''</span>; <span class="hljs-subst">-</span> так как переход идет на дерево деталей, то указываем какой массив получаем
+                  если существуют multiArray, то вернется объект мульти<span class="hljs-subst">-</span>архива<span class="hljs-built_in">.</span> По умолчанию пользовательские скрипты настроены на простой массив
+</code></pre><h6 id="-">Пример ответа от сервера:</h6>
+<pre><code class=" hljs 1c">    actual         : <span class="hljs-string">"08.2012"</span>                                                         - Актуальность каталога
+    archival       : <span class="hljs-string">"0"</span>                                                               - Признак архивного каталога (информация могла устареть): <span class="hljs-number">1</span> - архивный, <span class="hljs-number">0</span> - <span class="hljs-keyword">не</span> архивный
+    mark_id        : <span class="hljs-string">"40"</span>                                                              - Идентификатор марки
+    mark_name      : <span class="hljs-string">"ВАЗ"</span>                                                             - Имя марки
+    mark_name_full : <span class="hljs-string">"Волжский автомобильный завод (Российская Федерация, г.Тольятти)"</span> - Полное имя марки
+    model_id       : <span class="hljs-string">"37534"</span>                                                           - Идентификатор модели
+    model_name     : <span class="hljs-string">"Largus"</span>                                                          - Имя модели
+    model_url      : <span class="hljs-string">"http://auto2d.com/img/Models/37534.jpg"</span>                          - Изображение модели. <span class="hljs-keyword">Если</span> пусто, то изображение отсутствует
+    modification   : <span class="hljs-string">"FS015-40 (5-дверный 2-местный фургон)"</span>                           - Модификации модели
+    type_id        : <span class="hljs-string">"1"</span>                                                               - Идентификатор типа <span class="hljs-keyword">для</span> модели
+    years          : <span class="hljs-string">""</span>                                                                - Период выпуска модели
+</code></pre><blockquote>
+<p>На сервере стоит ограничение на отдаваемый результат, чтобы снизить нагрузку на сервер.<br>Да и ответ с более 100 позициями зачастую бессмыслен.<br>Поэтому, если в ответе более 100 позиций, то с сервера возвращается первых 100 актуальных.<br>Совет: рекомендуем считать кол-во элементов и если <code>count(el)=&gt;100</code>, выводить пользователю просьбу <code>уточнить запрос</code></p>
+</blockquote>
+<hr>
+<h5 id="-8-">№8. Поиск детали</h5>
+<pre><code class=" hljs perl">http:<span class="hljs-regexp">//auto</span>2d.com/api/in.php?f=searchNumber&amp;u=<span class="hljs-variable">%s</span>&amp;p=<span class="hljs-variable">%s</span>&amp;modelID=<span class="hljs-variable">%s</span>&amp;search=<span class="hljs-variable">%s</span>
+</code></pre><blockquote>
+<p>search  - строка поиска/номер детали<br>modelID - идентификатор модели (необязательный параметр)
+Если указать modelID, искать будет в рамках текущей модели и на вхождение<br>Если не указывать modelID, то поиск пойдет по точному совпадению номера  </p>
+</blockquote>
+<h6 id="-adc-search-detail-php-">В скрипте пользователя (adc/search/detail.php):</h6>
+<pre><code class=" hljs lasso">include <span class="hljs-string">"_lib.php"</span>;        <span class="hljs-subst">-</span> подключаем общую библиотеку
+include <span class="hljs-string">"adc/api.php"</span>;     <span class="hljs-subst">-</span> подключаем API для текущего каталога
+<span class="hljs-variable">$oA2D</span> <span class="hljs-subst">=</span> A2DAPI<span class="hljs-tag">::instance</span>(); <span class="hljs-subst">-</span> создаем объект для работы
+
+<span class="hljs-variable">$detail</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>rcv(<span class="hljs-string">'detail'</span>);
+
+<span class="hljs-keyword">if</span>( <span class="hljs-variable">$detail</span> ){
+
+    <span class="hljs-variable">$aDetails</span> <span class="hljs-subst">=</span> <span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>searchNumber(<span class="hljs-variable">$detail</span>); <span class="hljs-comment">///$oA2D-&gt;e($aDetails);</span>
+
+    <span class="hljs-variable">$aErrors</span> <span class="hljs-subst">=</span> A2D<span class="hljs-tag">::property</span>(<span class="hljs-variable">$aDetails</span>,<span class="hljs-string">'errors'</span>);
+    <span class="hljs-keyword">if</span>( count(<span class="hljs-variable">$aErrors</span>)<span class="hljs-subst">&gt;</span><span class="hljs-number">0</span> )<span class="hljs-variable">$oA2D</span><span class="hljs-subst">-&gt;</span>error(<span class="hljs-variable">$aErrors</span>,<span class="hljs-number">404</span>);
+}
+</code></pre><h6 id="-">С сервера отдает массив объектов со следующими свойствами:</h6>
+<pre><code class=" hljs coffeescript">[model_id]<span class="hljs-function">     =&gt;</span> <span class="hljs-number">15407</span>                                             - Идентификатор модели
+[model_name]<span class="hljs-function">   =&gt;</span> <span class="hljs-number">318</span>i                                              - Имя модели
+[modification]<span class="hljs-function"> =&gt;</span> Двигатель: M43  Кузов: E46 седан                  - Модификации
+[mark_id]<span class="hljs-function">      =&gt;</span> <span class="hljs-number">3</span>                                                 - Идентификатор марки
+[tree_id1]<span class="hljs-function">     =&gt;</span> <span class="hljs-number">871809</span>                                            - Идентификатор узла
+[tree_id2]<span class="hljs-function">     =&gt;</span> <span class="hljs-number">871813</span>                                            - Идентификатор узла
+[tree_id3]<span class="hljs-function">     =&gt;</span> <span class="hljs-number">871825</span>                                            - Идентификатор узла
+[detail_id]<span class="hljs-function">    =&gt;</span> <span class="hljs-number">10014743</span>                                          - Идентификатор детали в базе
+[mark_name]<span class="hljs-function">    =&gt;</span> BMW                                               - Имя марки
+[t1]<span class="hljs-function">           =&gt;</span> Трансмиссия                                       - Имя узла
+[t2]<span class="hljs-function">           =&gt;</span> Коробка передач                                   - Имя узла
+[t3]<span class="hljs-function">           =&gt;</span> A4S200R Сальник вх.вала/датчик частоты вращения   - Имя узла
+[detail_name]<span class="hljs-function">  =&gt;</span> Болт TORX                                         - Наименование детали
+[detail_no]<span class="hljs-function">    =&gt;</span> <span class="hljs-number">24</span> <span class="hljs-number">12</span> <span class="hljs-number">1</span> <span class="hljs-number">218</span> <span class="hljs-number">892</span>                                   - Номер детали
+[actual]<span class="hljs-function">       =&gt;</span> <span class="hljs-number">2006</span>                                              - Актуальность каталога
+</code></pre><blockquote>
+<p>на примере одного объекта
+в массиве все необходимы данные для построения дерева.
+Пример в adc/search/detail.php</p>
+</blockquote>
+</div></body></html>

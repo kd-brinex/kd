@@ -1,0 +1,77 @@
+/**********************************************************************************************************************/
+/**  Переопределяем  **/
+#catalogLayout{}
+/**********************************************************************************************************************/
+
+
+#BMWCatalog #mainBreads .layout{ width: 100%; }
+#BMWCatalog #mainBreads section{ padding: 0 }
+#BMWCatalog #mainBreads{ padding-left: 0; margin-bottom: 40px; }
+
+#BMWCatalog .cardLink{
+    width:25%;height:120px;font-size:18px
+}
+
+
+/**********************************************************************************************************************/
+/**  ???  **/
+#BMWModels h1,#detailsG1 h1{
+    margin-top: 0;
+}
+#detailsG2 a{
+    width: 28%;
+    height: 230px;
+    margin: 5px;
+    padding: 10px;
+    border-width: 2px;
+    text-align: center;
+}
+#detailsG2 a img{max-width:90%}
+#detailsG2 a span{
+    display: inline-block;
+    margin-top: 10px;
+}
+#BMWProduction .yearsTD{
+    padding: 5px 10px;
+}
+#BMWProduction table td{ padding:2px }
+#toOptions:hover{
+    color:#1b6cad;
+}
+
+#detailsList .BMWDetailPosition{
+    width:40px
+}
+#detailsList .BMWDetailNumber{
+    width:160px
+}
+#detailsList .BMWDetailOptions{
+    width:170px
+}
+#detailsList .BMWDetailQuantity{
+    width:80px
+}
+#detailsList .BMWDetailProduction{
+    width:170px
+}
+/**********************************************************************************************************************/
+
+
+
+/**********************************************************************************************************************/
+/**  Bttn for Models  **/
+.markBMW .bttnGB{
+    width: 150px;
+}
+.markMoto .bttnGB{
+    width: 160px;
+}
+.markMini .bttnGB{
+    width: 162px;
+}
+/**********************************************************************************************************************/
+
+
+/**********************************************************************************************************************/
+/**  ||  **/
+/**********************************************************************************************************************/
