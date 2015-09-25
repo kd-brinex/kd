@@ -21,6 +21,7 @@ use Yii;
 class Order extends \yii\db\ActiveRecord
 {
     public $store_name;
+//    public $managerOrderStatus;
     /**
      * @inheritdoc
      */
@@ -35,12 +36,13 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date'], 'safe'],
+            [['date', 'store_name'], 'safe'],
             [['id','user_id'], 'integer'],
             [['store_id'], 'integer'],
             [['number'], 'string', 'max' => 15],
+            [['1c_order_id', 'comment'], 'string'],
             [['user_name','user_email','user_telephone','user_location'], 'string', 'max'=>25],
-            [['store_name'], 'string'],
+
         ];
     }
 
@@ -54,6 +56,7 @@ class Order extends \yii\db\ActiveRecord
             'number' => 'Number',
             'date' => 'Date',
             'user_id' => 'User ID',
+            'managerOrderStatus' => 'Статус'
         ];
     }
 
@@ -73,6 +76,19 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasMany(OrderPay::className(), ['order_id' => 'id']);
     }
 
+    public function getOrderPaysSum(){
+        return $this->hasMany(OrderPay::className(), ['order_id' => 'id'])->sum('sum');
+    }
+
+    public function getManagerOrderStatus(){
+        $executed = 0;
+        $execution_step = floor(100 / count($this->orders));
+        foreach($this->orders as $order){
+            if($order->status > \app\modules\user\models\Orders::ORDER_ADOPTED)
+                $executed += $execution_step;
+        }
+        return $executed;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -80,19 +96,17 @@ class Order extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Orders::className(), ['order_id' => 'id']);
     }
+
     public function getOrderSumma()
     {
-        $sum=0;
-        $orders=$this->orders;
-        foreach ($orders as $o){
-            $sum+=$o->cost;
-        }
-        return $sum;
+        return $this->hasMany(Orders::className(), ['order_id' => 'id'])->sum('part_price * quantity');
     }
+
     public function getDescriptionPay()
     {
         return $this->user_name;
     }
+
     public function getStore(){
         return $this->hasOne(TStore::className(), ['id' => 'store_id']);
     }
