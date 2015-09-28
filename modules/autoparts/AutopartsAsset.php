@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class autopartsAsset extends AssetBundle
+class AutopartsAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/autoparts/assets';
     public $css = [
