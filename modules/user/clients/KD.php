@@ -18,7 +18,7 @@ class KD extends  OAuth2
     /**
      * @inheritdoc
      */
-    public $authUrl = 'http://4.kolesa-darom.ru/oauth/';
+    public $authUrl = 'http://kolesa-darom.ru/oauth/';
     /**
      * @inheritdoc
      */

@@ -1,1 +1,0 @@
-<?php include "types.php"; /// Entry Point
