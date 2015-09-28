@@ -38,7 +38,8 @@ class PartProviderUser extends \yii\db\ActiveRecord
             [['store_id', 'provider_id'], 'integer'],
             [['marga'], 'number'],
             [['name'], 'string', 'max' => 200],
-            [['login', 'password'], 'string', 'max' => 64]
+            [['login'], 'string', 'max' => 15],
+            [['password'], 'string', 'max' => 64]
         ];
     }
 
