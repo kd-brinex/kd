@@ -103,7 +103,9 @@ class KD extends  OAuth2
     protected function defaultNormalizeUserAttributeMap()
     {
         return [
-            'id' => 'User_ID'
+            'id' => 'User_ID',
+            'email' => 'Email',
+            'username' => 'Login',
             ];
     }
 }
