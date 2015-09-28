@@ -23,9 +23,13 @@ class OrdersController extends Controller
 
         $params = Yii::$app->request->queryParams;
 
-        $orders = $model->search('', $params);
+        $orders = $model->search('', '', '', $params);
 
         return $this->render('orders', ['orders' => $orders, 'model' => $model]);
+    }
+
+    public function actionManagerorder(){
+//        $order_id = $
     }
 
     public function actionUpdate(){
