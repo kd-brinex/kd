@@ -171,6 +171,6 @@ class Orders extends \yii\db\ActiveRecord
     }
     public function getCost()
     {
-        return $this->quantity*$this->part_price;
+        return $this->quantity * $this->part_price;
     }
 }
