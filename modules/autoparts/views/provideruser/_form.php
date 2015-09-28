@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'login')->textInput(['maxlength' => 15]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 15]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 64]) ?>
 
     <?= $form->field($model, 'store_id')->dropDownList($model->getStorelist(),[]) ?>
 
