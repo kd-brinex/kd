@@ -42,17 +42,39 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Сумма заказа',
+                'attribute' => 'orderSumma',
+                'value' => 'orderSumma',
+            ],
+            [
+                'label' => 'Оплачено',
+                'attribute' => 'orderPaysSum',
+                'value' => 'orderPaysSum'
+            ],
+            [
+                'label' => '№ заказа в 1C',
+                'attribute' => '1c_order_id',
+                'value' => '1c_order_id'
+            ],
+            [
+                'label' => 'Комментарий',
+                'class' => 'kartik\grid\EditableColumn',
+                'attribute' => 'comment',
+                'editableOptions' => [
+                    'header' => 'комментарий',
+                    'inputType' => \kartik\editable\Editable::INPUT_TEXTAREA,
+                    'size' => 'md',
+                    'ajaxSettings' => [
+                        'url' => '/autoparts/orders/update'
+                    ]
+                ]
+            ],
+            [
+                'label' => 'Статус',
+                'format' => 'raw',
+                'attribute' => 'managerOrderStatus',
                 'value' => function($model){
-                    var_dump($model['orders']);
-                    foreach($model['orders'] as $order){
-
-                    }
-//                    $sum = 0;
-//                    foreach($model as $key => $position){
-//                        $sum += $model['orders'][0]->part_price;
-//                    }
-//                    return $sum;
-                }
+                    return '<div class="progress" style="min-width: 150px"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$model['managerOrderStatus'].'" aria-valuemin="0" aria-valuemax="100" style="width:'.$model['managerOrderStatus'].'%">'.$model['managerOrderStatus'].'%</div></div>';
+                },
             ]
 
         ],
