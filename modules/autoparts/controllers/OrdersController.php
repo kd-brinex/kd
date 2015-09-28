@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\base\Exception;
 
 use app\modules\user\models\OrderSearch;
+use app\modules\user\models\OrdersSearch;
 
 class OrdersController extends Controller
 {
@@ -29,7 +30,15 @@ class OrdersController extends Controller
     }
 
     public function actionManagerorder(){
-//        $order_id = $
+        if(!empty($id = (int)Yii::$app->request->post('id'))){
+            $model = new OrdersSearch;
+            $model = $model->search('order_id = :order_id', [':order_id' => $id]);
+
+            $order = $this->findModel($id);
+            if($order != null && $model !== null)
+                return $this->renderAjax('_managerOrder',['order' => $order,'model' => $model]);
+        }
+        return false;
     }
 
     public function actionUpdate(){
@@ -46,6 +55,33 @@ class OrdersController extends Controller
             return Json::encode($data);
         }
     }
+
+    public function actionOrdersupdate(){
+        if (!Yii::$app->request->isAjax || empty($id = (int)Yii::$app->request->post('id')))
+            return false;
+
+        $model = OrdersSearch::findOne($id);
+        $model->is_paid = !$model->is_paid ?: false;
+
+        return $model->save();
+    }
+
+    public function actionOrdersstateupdate(){
+        $status = (int)Yii::$app->request->post('status');
+        if (!Yii::$app->request->isAjax
+            || empty($id = (int)Yii::$app->request->post('id'))
+            || !isset($status))
+            return false;
+
+        $model = OrdersSearch::findOne($id);
+        $old_status = $model->status;
+        $model->status = $status;
+
+        if($model->save()){
+            return Json::encode(['status' => $model->status, 'id' => $model->order_id, 'old_status' => $old_status]);
+        }
+    }
+
 
     protected function findModel($id){
         if(($model = OrderSearch::findOne($id)) !== null)
