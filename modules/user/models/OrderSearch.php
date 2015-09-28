@@ -12,17 +12,20 @@ use yii\data\ActiveDataProvider;
 
 class OrderSearch extends Order{
 
-    public function search($condition = '', $params = [], $with = ''){
+    public function search($condition = '', $params = [], $with = '', $mparams = ''){
 
         $query = self::find();
-//            ->andWhere($condition)
-//            ->addParams($params)
-//            ->orderBy('date DESC');
+
+        if($condition)
+            $query->andWhere($condition);
+
+        if($params)
+            $query->addParams($params)->orderBy('date DESC');
+
+        if($with)
+            $query->with($with);
 
         $query->joinWith(['store', 'orders']);
-
-        if(!empty($with))
-            $query->with($with);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query
@@ -39,9 +42,10 @@ class OrderSearch extends Order{
             'desc' => ['orders.status' => SORT_DESC]
         ];
 
-        $this->load($params);
+        $this->load($mparams);
         if(!$this->validate())
             return $dataProvider;
+
 
         $query->andFilterWhere(['like', 'date', $this->date])
               ->andFilterWhere(['like', 't_store.name', $this->store_name])

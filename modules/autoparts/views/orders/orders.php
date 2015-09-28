@@ -1,12 +1,24 @@
 <?php
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use \yii\bootstrap\Modal;
 
-$asset = app\modules\autoparts\autopartsAsset::register($this);
+$asset = app\modules\autoparts\AutopartsAsset::register($this);
 $asset = app\modules\user\userAsset::register($this);
 $this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
+
+Modal::begin([
+    'options' => [
+        'id' => 'order-modal'
+    ],
+    'size' => 'modal-md',
+    'header' => '<h3>Детализация заказа</h3>'
+]);
+Modal::end();
+
 ?>
+
 <h1>Заказы</h1>
 
 <div class="col-xs-12">
@@ -20,14 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'pjaxSettings'=>[
             'neverTimeout'=>true,
         ],
-        'rowOptions'=>function($model){
-//            return ['class' => $model->order_class];
-        },
+
         'columns' => [
             [
                 'label' => 'Дата',
                 'attribute' => 'date',
-                'filter' => Html::activeInput('date', $model, 'date', ['class' => 'form-control']),
+//                'filter' => Html::activeInput('date', $model, 'date', ['class' => 'form-control']),
                 'value' => 'date'
             ],
             [
@@ -61,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'comment',
                 'editableOptions' => [
                     'header' => 'комментарий',
-                    'inputType' => \kartik\editable\Editable::INPUT_TEXTAREA,
+//                    'inputType' => \kartik\editable\Editable::INPUT_TEXTAREA,
                     'size' => 'md',
                     'ajaxSettings' => [
                         'url' => '/autoparts/orders/update'
@@ -72,9 +82,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Статус',
                 'format' => 'raw',
                 'attribute' => 'managerOrderStatus',
-                'value' => function($model){
-                    return '<div class="progress" style="min-width: 150px"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$model['managerOrderStatus'].'" aria-valuemin="0" aria-valuemax="100" style="width:'.$model['managerOrderStatus'].'%">'.$model['managerOrderStatus'].'%</div></div>';
-                },
+//                'value' => function($model){
+//                    return '<div class="progress" style="min-width: 150px"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$model['managerOrderStatus'].'" aria-valuemin="0" aria-valuemax="100" style="width:'.$model['managerOrderStatus'].'%">'.$model['managerOrderStatus'].'%</div></div>';
+//                },
+            ],
+            [
+                'label' => 'Действия',
+                'format' => 'raw',
+//                'value' => function(){
+//                    return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
+//                }
             ]
 
         ],
@@ -95,10 +112,10 @@ $this->params['breadcrumbs'][] = $this->title;
 //            '{toggleData}'
 //        ],
         'panel' => [
-            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
-            'type'=>'success',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Отправить заказ', ['create'], ['class' => 'btn btn-success', 'onClick' => 'sendAllToProvider(this); return false']),
-            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['index'], ['class' => 'btn btn-info']),
+//            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
+//            'type'=>'success',
+//            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Отправить заказ', ['create'], ['class' => 'btn btn-success', 'onClick' => 'sendAllToProvider(this); return false']),
+//            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['index'], ['class' => 'btn btn-info']),
         ],
 
     ]);
