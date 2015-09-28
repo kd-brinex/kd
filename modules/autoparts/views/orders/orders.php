@@ -12,7 +12,7 @@ Modal::begin([
     'options' => [
         'id' => 'order-modal'
     ],
-    'size' => 'modal-md',
+    'size' => 'modal-lg',
     'header' => '<h3>Детализация заказа</h3>'
 ]);
 Modal::end();
@@ -37,7 +37,7 @@ Modal::end();
             [
                 'label' => 'Дата',
                 'attribute' => 'date',
-//                'filter' => Html::activeInput('date', $model, 'date', ['class' => 'form-control']),
+                'filter' => Html::activeInput('date', $model, 'date', ['class' => 'form-control']),
                 'value' => 'date'
             ],
             [
@@ -71,7 +71,7 @@ Modal::end();
                 'attribute' => 'comment',
                 'editableOptions' => [
                     'header' => 'комментарий',
-//                    'inputType' => \kartik\editable\Editable::INPUT_TEXTAREA,
+                    'inputType' => \kartik\editable\Editable::INPUT_TEXTAREA,
                     'size' => 'md',
                     'ajaxSettings' => [
                         'url' => '/autoparts/orders/update'
@@ -82,16 +82,16 @@ Modal::end();
                 'label' => 'Статус',
                 'format' => 'raw',
                 'attribute' => 'managerOrderStatus',
-//                'value' => function($model){
-//                    return '<div class="progress" style="min-width: 150px"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$model['managerOrderStatus'].'" aria-valuemin="0" aria-valuemax="100" style="width:'.$model['managerOrderStatus'].'%">'.$model['managerOrderStatus'].'%</div></div>';
-//                },
+                'value' => function($model){
+                    return '<div class="progress" style="min-width: 150px"><div class="progress-bar progress-bar-striped active" role="progressbar"aria-valuenow="'.$model['managerOrderStatus'].'" aria-valuemin="0" aria-valuemax="100" style="width:'.$model['managerOrderStatus'].'%">'.$model['managerOrderStatus'].'%</div></div>';
+                },
             ],
             [
                 'label' => 'Действия',
                 'format' => 'raw',
-//                'value' => function(){
-//                    return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
-//                }
+                'value' => function(){
+                    return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
+                }
             ]
 
         ],
@@ -112,10 +112,10 @@ Modal::end();
 //            '{toggleData}'
 //        ],
         'panel' => [
-//            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
-//            'type'=>'success',
+            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
+            'type'=>'success',
 //            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Отправить заказ', ['create'], ['class' => 'btn btn-success', 'onClick' => 'sendAllToProvider(this); return false']),
-//            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['index'], ['class' => 'btn btn-info']),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['index'], ['class' => 'btn btn-info']),
         ],
 
     ]);
