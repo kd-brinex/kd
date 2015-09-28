@@ -57,7 +57,7 @@ class AdminController extends BaseController
         $user->scenario = 'update';
 
         $this->performAjaxValidation($user);
-//var_dump(Yii::$app->request->post());die;
+
         if ($user->load(Yii::$app->request->post()) && $user->save()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Account details have been updated'));
             return $this->refresh();
