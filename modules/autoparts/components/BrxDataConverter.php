@@ -161,6 +161,8 @@ class BrxDataConverter extends Component
                     $price = $value;
                     $nval = $price + ($price / 100 * $ParseData['provider']->marga);
                     $value = ceil($nval);
+                    var_dump($ParseData['provider'],$value,$price);
+
                 }
                 if($field == 'storeid')
                     $value = !empty($item['storeid']) ? $item['storeid'] : (!empty($ParseData['provider']->store_id) ? $ParseData['provider']->store_id : 109);

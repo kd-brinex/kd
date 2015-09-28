@@ -18,15 +18,15 @@ class KD extends  OAuth2
     /**
      * @inheritdoc
      */
-    public $authUrl = 'http://4.kolesa-darom.ru/oauth/';
+    public $authUrl = 'http://www.kolesa-darom.ru/oauth/';
     /**
      * @inheritdoc
      */
-    public $tokenUrl = 'http://kolesa-darom.ru/netcat/m_admin/auth/token.php';
+    public $tokenUrl = 'http://www.kolesa-darom.ru/netcat/m_admin/auth/token.php';
     /**
      * @inheritdoc
      */
-    public $apiBaseUrl = 'http://kolesa-darom.ru/netcat/m_admin/auth';
+    public $apiBaseUrl = 'http://www.kolesa-darom.ru/netcat/m_admin/auth/index.php';
     /**
      * @var array list of attribute names, which should be requested from API to initialize user attributes.
      * @since 2.0.4
@@ -54,13 +54,16 @@ class KD extends  OAuth2
         $response = $this->api('', 'GET', [
             'fields' => implode(',', $this->attributeNames),
         ]);
-        $attributes = array_shift($response['response']);
-
+        //var_dump($response);die;
+        $attributes = $response;
+	
         $accessToken = $this->getAccessToken();
+        //var_dump($accessToken);die;
         if (is_object($accessToken)) {
             $accessTokenParams = $accessToken->getParams();
             unset($accessTokenParams['access_token']);
             unset($accessTokenParams['expires_in']);
+            //var_dump($accessTokenParams,$attributes);die;
             $attributes = array_merge($accessTokenParams, $attributes);
         }
 
@@ -74,6 +77,7 @@ class KD extends  OAuth2
     {
         $params['uids'] = $accessToken->getParam('user_id');
         $params['access_token'] = $accessToken->getToken();
+        //var_dump($method, $url, $params, $headers);die;
         return $this->sendRequest($method, $url, $params, $headers);
     }
 
@@ -99,7 +103,9 @@ class KD extends  OAuth2
     protected function defaultNormalizeUserAttributeMap()
     {
         return [
-            'id' => 'uid'
-        ];
+            'id' => 'User_ID',
+            'email' => 'Email',
+            'username' => 'Login',
+            ];
     }
 }

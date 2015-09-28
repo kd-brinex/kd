@@ -44,7 +44,7 @@ class FindDetailsSearch extends FindDetails{
                 ->where('city_id = :city_id', [':city_id' => $city])
                 ->all();
 
-        return !empty($store) ? $store : 109;
+        return !empty($store) ? $store : false;
     }
 
     private function getCityId(){
