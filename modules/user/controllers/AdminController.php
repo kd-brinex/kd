@@ -29,12 +29,27 @@ class AdminController extends BaseController
     /** @var Finder */
     protected $finder;
 
-    /**
-     * @param string $id
-     * @param Module2 $module
-     * @param Finder $finder
-     * @param array $config
-     */
+    public function behaviors()
+    {
+        $this->layout = "/admin.php";
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['Parts', 'Admin'],
+                    ]
+                ]
+            ],
+        ];
+    }
     public function actionUpdate($id)
     {
         Url::remember('', 'actions-redirect');
