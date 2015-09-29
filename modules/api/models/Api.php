@@ -15,7 +15,7 @@ class Api extends Model
 {
 
     public static function finddetails($params){
-        $p = Yii::$app->request->queryParams;
+        $p = array_merge(Yii::$app->request->post(),Yii::$app->request->get());
         $params['store_id']=(!empty($p['store_id']))?$p['store_id']:109;
         $tstore=new TStore();
         $store=$tstore->findOne(['id'=> $params['store_id']]);
