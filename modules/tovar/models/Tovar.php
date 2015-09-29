@@ -151,6 +151,7 @@ class Tovar extends \yii\db\ActiveRecord
                 if($provider->cross){
                     $options = ['provider_data' => $provider];
                     if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                    if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
                     $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
                     $items = $providerObj->findDetails(['code' => $params['article']]);
@@ -168,6 +169,8 @@ class Tovar extends \yii\db\ActiveRecord
                 if(!$provider->cross){
                     $options = ['provider_data' => $provider];
                     if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                    if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
+
                     $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
                     if(!empty($params['store_id'])) $providerObj->store_id = (int)$params['store_id'];

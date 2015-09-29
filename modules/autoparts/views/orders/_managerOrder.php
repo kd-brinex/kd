@@ -19,27 +19,28 @@ use yii\helpers\Html;
     'columns' => [
         [
             'label' => 'Акртикул',
-            'attribute' => 'product_id'
+            'value' => 'product_id',
+            'contentOptions' => ['class' => 'part_article']
         ],
         [
             'label' => 'Производитель',
-            'attribute' => 'manufacture'
+            'value' => 'manufacture'
         ],
         [
             'label' => 'Название',
-            'attribute' => 'part_name'
+            'value' => 'part_name'
         ],
         [
             'label' => 'Цена',
-            'attribute' => 'part_price'
+            'value' => 'part_price'
         ],
         [
             'label' => 'Количество',
-            'attribute' => 'quantity'
+            'value' => 'quantity'
         ],
         [
             'label' => 'Сумма',
-            'attribute' => 'cost'
+            'value' => 'cost'
         ],
         [
             'header' => 'Олата',
@@ -51,13 +52,12 @@ use yii\helpers\Html;
         ],
         [
             'label' => 'Поставщик',
-            'attribute' => 'provider',
             'value' => 'provider.name'
 
         ],
         [
             'label' => 'Срок',
-            'attribute' => 'delivery_days'
+            'value' => 'delivery_days'
         ],
         [
             'label' => 'Статус',
@@ -69,9 +69,29 @@ use yii\helpers\Html;
         ],
         [
             'label' => 'Комментарий',
-            'attribute' => 'description'
-        ]
+            'value' => 'description'
+        ],
+    ],
+    'toolbar' => [
+        [
+            'content' => Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
+                    'title'=>'Проценка',
+                    'class'=>'btn btn-success',
+                    'onClick' => 'pricing(this); return false'
 
-    ]
+                ]),
+            'options' => ['class' => 'btn-group-sm']
+        ],
+        'export' => [
+
+        ],
+    ],
+    'panel' => [
+        'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Позиции</h3>',
+        'before'=> Html::a('<i class="glyphicon glyphicon-triangle-right"></i> К проценке', ['#'], ['id' => 'tableToggler', 'class' => 'btn btn-primary', 'onClick' => 'goTo(2); return false;', 'style' => 'display:none']),
+        'beforeOptions' => ['class' => 'btn-group-sm'],
+        'footer' => false
+    ],
+
 ]);
 ?>
