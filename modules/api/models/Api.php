@@ -16,12 +16,10 @@ class Api extends Model
 
     public static function finddetails($params){
         $p = Yii::$app->request->queryParams;
-//        var_dump($params['store_id']);die;
-//        $params['cityid']=(!empty(Yii::$app->request->cookies['city']))?Yii::$app->request->cookies['city']:1751;
-        $params['storeid']=(!empty(Yii::$app->request->cookies['StoryID']))?Yii::$app->request->cookies['StoryID']:(isset($p['store_id']))?$p['store_id']:109;
+        $params['storeid']=(!empty($p['store_id']))?$p['store_id']:109;
         $tstore=new TStore();
         $store=$tstore->findOne(['id'=> $params['storeid']]);
-        $params['cityid']=$store->city_id;
+        $params['city']=$store->city_id;
 //        var_dump($params);die;
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
