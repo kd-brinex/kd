@@ -94,7 +94,7 @@ class KD extends  OAuth2
      */
     protected function defaultTitle()
     {
-        return 'Kolesa-Darom';
+        return 'KD';
     }
 
     /**
