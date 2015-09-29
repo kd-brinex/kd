@@ -52,6 +52,34 @@ function updateStatus(obj){
     });
 }
 
+function pricing(obj){
+    var content = $('.modal-body'),
+        header = $('.modal-header');
+        articles = $('.part_article').text();
+    content.attr('id','modal-body-1').css('display','none');
+    header.after('<div class="loader"></div>');
+
+    var s = articles.split(' ');
+    alert(s[1]);
+    //$.ajax({
+    //    url : "/autoparts/orders/pricing",
+    //    type : "POST",
+    //    //data : {'articles' : },
+    //    success : function(data){
+    //        $('#tableToggler').show();
+    //        $('.loader').remove();
+    //        header.after('<div class="modal-body" id="modal-body-2"></div>');
+    //        $('#modal-body-2').html(data);
+    //    }
+    //});
+}
+
+function goTo(idx){
+    $('.modal-body').hide();
+    $('#modal-body-'+idx).show();
+
+}
+
 $(document).ready(function() {
 
     $('#w0').submit(function(){

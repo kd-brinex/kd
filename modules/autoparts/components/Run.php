@@ -29,11 +29,10 @@ class Run extends Component{
         if(!empty(($access = $this->getAccess($provider, $options))))
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $access);
 
-        if(!empty($shippingPeriod = $this->getShippingPeriod($provider)))
+        if(!empty($shippingPeriod = $this->getShippingPeriod($provider, $options)))
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $shippingPeriod);
 
         $provider = new $class($provider, $options);
-
         return ($provider instanceof BrxProvider) ? $provider : false;
     }
 
@@ -42,7 +41,7 @@ class Run extends Component{
         if(!empty($options['store_id'])){
             $this->storeId = $options['store_id'];
             unset($options['store_id']);
-        } else if(!empty(($city = $this->getCityId()))) {
+        } else if(!empty(($city = $this->getCityId($options)))) {
             $store = TStore::find()
                 ->select('id')
                 ->where('city_id = :city_id', [':city_id' => $city])
@@ -53,11 +52,12 @@ class Run extends Component{
         return $this->storeId;
     }
 
-    private function getCityId(){
-        if (!empty(($cookie = Yii::$app->request->cookies['city'])))
+    private function getCityId($options){
+        if(!empty($options['city_id'])){
+            $this->cityId = $options['city_id'];
+            unset($options['city_id']);
+        } else if (!empty(($cookie = Yii::$app->request->cookies['city'])))
             $this->cityId = (int)$cookie->value;
-        else
-            $this->cityId = 1751;
 
         return $this->cityId;
     }
@@ -73,8 +73,8 @@ class Run extends Component{
         return isset($accessData) ? $accessData : false;
     }
 
-    private function getShippingPeriod($provider){
-        $shippingPeriod = PartProviderSrok::find()->select('days')->asArray()->where(['city_id' => $this->getCityId(),'provider_id'=>$this->getProviderId($provider)])->one();
+    private function getShippingPeriod($provider, $options){
+        $shippingPeriod = PartProviderSrok::find()->select('days')->asArray()->where(['city_id' => $this->getCityId($options),'provider_id'=>$this->getProviderId($provider)])->one();
         return $shippingPeriod;
     }
 

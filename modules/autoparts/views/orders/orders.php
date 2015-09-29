@@ -87,7 +87,6 @@ Modal::end();
                 },
             ],
             [
-                'label' => 'Действия',
                 'format' => 'raw',
                 'value' => function(){
                     return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
@@ -114,8 +113,7 @@ Modal::end();
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
             'type'=>'success',
-//            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Отправить заказ', ['create'], ['class' => 'btn btn-success', 'onClick' => 'sendAllToProvider(this); return false']),
-            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['index'], ['class' => 'btn btn-info']),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Сбросить', ['.'], ['class' => 'btn btn-info']),
         ],
 
     ]);

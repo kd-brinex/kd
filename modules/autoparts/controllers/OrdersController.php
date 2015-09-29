@@ -8,8 +8,10 @@
 
 namespace app\modules\autoparts\controllers;
 
+use app\modules\tovar\models\Tovar;
 use Yii;
 
+use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\base\Exception;
@@ -61,7 +63,7 @@ class OrdersController extends Controller
             return false;
 
         $model = OrdersSearch::findOne($id);
-        $model->is_paid = !$model->is_paid ?: false;
+        $model->is_paid = !$model->is_paid ? 1 : 0 ;
 
         return $model->save();
     }
@@ -82,6 +84,13 @@ class OrdersController extends Controller
         }
     }
 
+    public function actionPricing(){
+       $details = Tovar::findDetails(['article' => 'hy012']);
+       $dataProvider = new ArrayDataProvider([
+           'allModels' => $details,
+       ]);
+       return $this->renderAjax('_pricing',['model' => $dataProvider]);
+    }
 
     protected function findModel($id){
         if(($model = OrderSearch::findOne($id)) !== null)
