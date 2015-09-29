@@ -82,12 +82,16 @@ class Order extends \yii\db\ActiveRecord
 
     public function getManagerOrderStatus(){
         $executed = 0;
-        $execution_step = floor(100 / count($this->orders));
+        $counter = 0;
+        $orders_quantity = count($this->orders);
+        $execution_step = floor(100 / $orders_quantity);
         foreach($this->orders as $order){
-            if($order->status > \app\modules\user\models\Orders::ORDER_ADOPTED)
+            if($order->status > \app\modules\user\models\Orders::ORDER_ADOPTED) {
                 $executed += $execution_step;
+                $counter++;
+            }
         }
-        return $executed;
+        return $counter == $orders_quantity ? 100 : $executed;
     }
     /**
      * @return \yii\db\ActiveQuery

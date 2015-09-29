@@ -300,5 +300,10 @@ td.itemDescription textarea{
         transform: rotate(360deg);
     }
 }
-
+.mini-loader{
+    margin: 0px!important;
+    font-size: 3px !important;
+    border-radius: 50% !important;
+    background-color: #fff !important;
+}
 /*---------------------- Прелоадер-------------------------------*/
