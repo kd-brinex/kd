@@ -169,8 +169,10 @@ class BrxDataConverter extends Component
 
                 if($field == 'flagpostav')
                     $value = $ParseData['provider']->provider_data->flagpostav;
-                if($field == 'srokmin')
+                if($field == 'srokmin'){
                     $value += $ParseData['provider']->days;
+//                var_dump($value,$ParseData['provider']->days);die;
+                }
                 if($field == 'srokmax')
                     $value += $ParseData['provider']->days;
 
