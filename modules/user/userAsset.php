@@ -20,6 +20,7 @@ class userAsset extends AssetBundle
     public $sourcePath = '@app/modules/user/assets';
     public $css = [
         'css/orders.css',
+        'css/client.css',
 
     ];
     public $js = [

@@ -219,14 +219,14 @@ $config = [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
-                'google' => [
-                    'class' => 'yii\authclient\clients\GoogleOpenId',
-                ],
-                'facebook' => [
-                    'class' => 'yii\authclient\clients\Facebook',
-                    'clientId' => '1459039357681938',
-                    'clientSecret' => '9eb99520dea4dc08049c94ddf014cfdd',
-                ],
+//                'google' => [
+//                    'class' => 'yii\authclient\clients\GoogleOpenId',
+//                ],
+//                'facebook' => [
+//                    'class' => 'yii\authclient\clients\Facebook',
+//                    'clientId' => '1459039357681938',
+//                    'clientSecret' => '9eb99520dea4dc08049c94ddf014cfdd',
+//                ],
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
                     'clientId' => '4441364',

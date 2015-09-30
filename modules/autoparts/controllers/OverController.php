@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
 
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\TStoreSearch;
@@ -148,8 +149,8 @@ class OverController extends Controller
 
     public function actionUpload()
     {
-        $cities = new TStoreSearch();
-        $citylist = $cities->getCityList();
+//        $cities = new TStoreSearch();
+//        $citylist = $cities->getCityList();
         $flagpostav = new PartProviderSearch();
         $flag_postav_list = $flagpostav->get_flag_postav();
 
@@ -164,18 +165,12 @@ class OverController extends Controller
 
             $model->file = UploadedFile::getInstance($model, 'file');
 
-
             if ($model->file && $model->validate()) {
-                $model->file->saveAs('../uploads/' . $model->file->baseName . '.' . $model->file->extension);
-                $text['f'] = file('../uploads/' . $model->file);
-
-
-
+                $runtime=\Yii::getAlias('@runtime').'/';
+                $model->file->saveAs($runtime . $model->file->baseName . '.' . $model->file->extension);
+                $text['f'] = file($runtime . $model->file);
                 $model->insertData($text);
-
                 $this->redirect('index');
-
-
             }
         }
 

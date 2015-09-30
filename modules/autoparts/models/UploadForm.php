@@ -29,7 +29,9 @@ class UploadForm extends Model
     {
         return [
             [['file'], 'required'],
-            [['file'], 'file','maxSize'=>20000000],
+            [['file'], 'file','maxSize'=>20000000,],
+            [['file'], 'file','skipOnEmpty' => false,],
+//            [['file'], 'file', 'checkExtensionByMimeType' => false, 'extensions' => 'csv', 'mimeTypes' => 'text/plain'],
             [['flagpostav'], 'string'],
 
         ];
