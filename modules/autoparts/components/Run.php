@@ -56,6 +56,12 @@ class Run extends Component{
         if(!empty($options['city_id'])){
             $this->cityId = $options['city_id'];
             unset($options['city_id']);
+        } else if(!empty($options['store_id'])){
+            $this->cityId = TStore::find()
+                ->select('city_id')
+                ->where('id = :id', [':id' => $options['store_id']])
+                ->one()
+                ->city_id;
         } else if (!empty(($cookie = Yii::$app->request->cookies['city'])))
             $this->cityId = (int)$cookie->value;
 
@@ -69,7 +75,6 @@ class Run extends Component{
                 ->asArray()
                 ->where('store_id = :store_id AND provider_id = :provider_id', [':store_id' => $store, ':provider_id' => $provider_id])
                 ->one();
-
         return isset($accessData) ? $accessData : false;
     }
 
