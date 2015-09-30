@@ -31,7 +31,7 @@ class UploadForm extends Model
             [['file'], 'required'],
             [['file'], 'file','maxSize'=>20000000,],
             [['file'], 'file','skipOnEmpty' => false,],
-            [['file'], 'file', 'checkExtensionByMimeType' => false, 'extensions' => 'csv', 'mimeTypes' => 'text/plain'],
+//            [['file'], 'file', 'checkExtensionByMimeType' => false, 'extensions' => 'csv', 'mimeTypes' => 'text/plain'],
             [['flagpostav'], 'string'],
 
         ];
