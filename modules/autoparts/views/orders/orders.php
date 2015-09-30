@@ -21,7 +21,7 @@ Modal::end();
 
 <h1>Заказы</h1>
 
-<div class="col-xs-12">
+<div class="col-xs-12" style="padding: 0px !important;">
     <?=GridView::widget([
         'id'=> 'orders-manage-grid',
         'dataProvider' => $orders,

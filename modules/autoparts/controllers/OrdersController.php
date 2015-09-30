@@ -112,7 +112,7 @@ class OrdersController extends Controller
                 }
             }
         };
-        var_dump($this->findMinPrice($offers));
+//        var_dump($this->findMinPrice($offers));
        $dataProvider = new ArrayDataProvider([
            'allModels' => $details,
            'pagination' => false,
