@@ -5,8 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\web\UploadedFile;
 use yii\grid\GridView;
 use yii\widgets\ListView;
-use app\modules\autoparts\autopartsAsset;
-autopartsAsset::register($this);
+use app\modules\autoparts\AutopartsAsset;
+AutopartsAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\autoparts\models\PartOver */
