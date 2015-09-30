@@ -148,8 +148,8 @@ class OverController extends Controller
 
     public function actionUpload()
     {
-        $cities = new TStoreSearch();
-        $citylist = $cities->getCityList();
+//        $cities = new TStoreSearch();
+//        $citylist = $cities->getCityList();
         $flagpostav = new PartProviderSearch();
         $flag_postav_list = $flagpostav->get_flag_postav();
 
@@ -166,16 +166,10 @@ class OverController extends Controller
 
 
             if ($model->file && $model->validate()) {
-                $model->file->saveAs('../uploads/' . $model->file->baseName . '.' . $model->file->extension);
-                $text['f'] = file('../uploads/' . $model->file);
-
-
-
+                $model->file->saveAs('../runtime/price/' . $model->file->baseName . '.' . $model->file->extension);
+                $text['f'] = file('../runtime/price/' . $model->file);
                 $model->insertData($text);
-
                 $this->redirect('index');
-
-
             }
         }
 
