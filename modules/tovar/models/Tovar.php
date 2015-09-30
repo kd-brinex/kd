@@ -146,7 +146,6 @@ class Tovar extends \yii\db\ActiveRecord
         $providers = PartProviderSearch::find()
                     ->where('enable = :enable', [':enable' => 1])
                     ->all();
-
         foreach($providers as $provider){
                 if($provider->cross){
                     $options = ['provider_data' => $provider];
@@ -199,25 +198,19 @@ class Tovar extends \yii\db\ActiveRecord
                     }
                 }
         }
-        function r_usort($a, $b, $key){
-            $inta = intval($a[$key]);
-            $intb = intval($b[$key]);
+//        var_dump($details);die;
 
-            if ($inta != $intb) {
-                return ($inta > $intb) ? 1 : -1;
-            }
-            return 0;
-        }
         usort($details, function ($a, $b){
-            $r = r_usort($a,$b ,'weight');
+            $r = self::r_usort($a,$b ,'weight');
             if ($r == 0){
-                $r = r_usort($a, $b, 'price');
+                $r = self::r_usort($a, $b, 'price');
                 if ($r == 0) {
-                    $r = r_usort($a, $b, 'srokmax');
+                    $r = self::r_usort($a, $b, 'srokmax');
                 }
             }
             return $r;
         });
+
 
         return $details;
     //        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
@@ -275,5 +268,14 @@ class Tovar extends \yii\db\ActiveRecord
 
 //            return $details;
         }
+    private function r_usort($a, $b, $key){
+        $inta = intval($a[$key]);
+        $intb = intval($b[$key]);
+
+        if ($inta != $intb) {
+            return ($inta > $intb) ? 1 : -1;
+        }
+        return 0;
+    }
 
 }

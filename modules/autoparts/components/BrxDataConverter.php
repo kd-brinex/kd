@@ -211,7 +211,6 @@ class BrxDataConverter extends Component
                 }
 
             }
-//            var_dump($data);
 //           foreach($afterParseData as $field => $manipulation){
 //               if(isset($item[$field]))
 //                   $item[$field] = $this->manipulate($manipulation, $item);

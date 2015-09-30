@@ -85,13 +85,56 @@ class OrdersController extends Controller
     }
 
     public function actionPricing(){
-       $details = Tovar::findDetails(['article' => 'hy012']);
+        $id = (int)Yii::$app->request->post('order');
+        if(empty($id)) return false;
+
+        $allDetails = [];
+        $details = OrdersSearch::find()
+                    ->where('order_id = :order_id', [':order_id' => $id])
+                    ->all();
+
+        foreach($details as $detail){
+            $article = !empty($detail->product_id) ? $detail->product_id : $detail->product_article;
+            $details = Tovar::findDetails(['article' => $article, 'store_id' => $detail->order->store_id]);
+            $allDetails[$article]['offers'] = $details;
+            $allDetails[$article]['price'] = $detail->part_price;
+            $allDetails[$article]['shipping_period'] = $detail->delivery_days;
+        }
+        $offers = [];
+        foreach ($allDetails as $key => $detail_offers) {
+            if(is_array($detail_offers) && !empty($detail_offers)){
+                $offers[$key] = [];
+                $offers[$key]['price'] = $detail_offers['price'];
+                $offers[$key]['shipping_period'] = $detail_offers['shipping_period'];
+                foreach($detail_offers['offers'] as $offer){
+                    if($offer['code'] == $key)
+                        $offers[$key]['offers'][] = $offer;
+                }
+            }
+        };
+        var_dump($this->findMinPrice($offers));
        $dataProvider = new ArrayDataProvider([
            'allModels' => $details,
+           'pagination' => false,
        ]);
        return $this->renderAjax('_pricing',['model' => $dataProvider]);
     }
 
+    private function findMinPrice($offers)
+    {
+        foreach ($offers as $detail => $detail_offer) {
+            $cheapOffers = [$detail];
+            $cheapOffers['price'] = $detail_offer['price'];
+            $cheapOffers['shipping_period'] = $detail_offer['shipping_period'];
+            $expensiveOffers = [$detail];
+            foreach ($detail_offer['offers'] as $k => $v) {
+                if ($v['price'] <= $detail_offer['price'] && $v['srokmax'] <= $detail_offer['shipping_period']) {
+                    $cheapOffers[$detail][$k] = $v;
+                }
+            }
+        }
+        return $cheapOffers;
+    }
     protected function findModel($id){
         if(($model = OrderSearch::findOne($id)) !== null)
             return $model;

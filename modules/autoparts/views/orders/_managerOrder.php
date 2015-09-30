@@ -18,8 +18,10 @@ use yii\helpers\Html;
     'hover' => true,
     'columns' => [
         [
-            'label' => 'Акртикул',
-            'value' => 'product_id',
+            'label' => 'Артикул',
+            'value' => function($model){
+                return !empty($model['product_id']) ? $model['product_id'] : $model['product_article'];
+            },
             'contentOptions' => ['class' => 'part_article']
         ],
         [
@@ -74,12 +76,11 @@ use yii\helpers\Html;
     ],
     'toolbar' => [
         [
-            'content' => Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
+            'content' =>  Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
                     'title'=>'Проценка',
                     'class'=>'btn btn-success',
-                    'onClick' => 'pricing(this); return false'
-
-                ]),
+                    'onClick' => 'pricing('.$order->id.'); return false'
+            ]),
             'options' => ['class' => 'btn-group-sm']
         ],
         'export' => [

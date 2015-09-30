@@ -31,6 +31,7 @@ class BrxProvider extends BrxProviderConnector
 
         if(!empty($options))
             $params = BrxArrayHelper::array_replace_recursive_ncs($params, $options);
+//var_dump($options);
         Yii::configure($this, $params);
     }
 
