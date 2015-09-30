@@ -37,18 +37,19 @@ class Run extends Component{
     }
 
     //TODO убрать отсюда это дело в модель
-    private function getStoreId($options){
+    private function getStoreId($options, $provider_id = ''){
         if(!empty($options['store_id'])){
             $this->storeId = $options['store_id'];
             unset($options['store_id']);
         } else if(!empty(($city = $this->getCityId($options)))) {
             $store = TStore::find()
-                ->select('id')
-                ->where('city_id = :city_id', [':city_id' => $city])
+                ->joinWith('partProviderUsers')
+                ->where('city_id = :city_id AND part_provider_user.provider_id = :provider_id' , [':city_id' => $city, ':provider_id' => $provider_id])
                 ->one();
             if ($store)
                 $this->storeId = $store->id;
         }
+
         return $this->storeId;
     }
 
@@ -69,7 +70,10 @@ class Run extends Component{
     }
 
     private function getAccess($provider, $options){
-        if(!empty(($store = $this->getStoreId($options))) && !empty(($provider_id = $this->getProviderId($provider))))
+        if(empty(($provider_id = $this->getProviderId($provider))))
+           return false;
+
+        if(!empty(($store = $this->getStoreId($options, $provider_id))))
             $accessData = PartProviderUserSearch::find()
                 ->select('login, password, marga, store_id')
                 ->asArray()
