@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
 
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\TStoreSearch;
@@ -164,10 +165,10 @@ class OverController extends Controller
 
             $model->file = UploadedFile::getInstance($model, 'file');
 
-
             if ($model->file && $model->validate()) {
-                $model->file->saveAs('../runtime/price/' . $model->file->baseName . '.' . $model->file->extension);
-                $text['f'] = file('../runtime/price/' . $model->file);
+                $runtime=\Yii::getAlias('@runtime').'/';
+                $model->file->saveAs($runtime . $model->file->baseName . '.' . $model->file->extension);
+                $text['f'] = file($runtime . $model->file);
                 $model->insertData($text);
                 $this->redirect('index');
             }
