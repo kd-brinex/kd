@@ -69,7 +69,6 @@ function pricing(id){
             $('.loader').remove();
             header.after('<div class="modal-body" id="modal-body-2"></div>');
             $('#modal-body-2').html(data);
-            //$(obj).hide();
         }
     });
 }
