@@ -49,7 +49,6 @@ class Run extends Component{
             if ($store)
                 $this->storeId = $store->id;
         }
-
         return $this->storeId;
     }
 

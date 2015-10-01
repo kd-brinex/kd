@@ -154,7 +154,7 @@ class BrxDataConverter extends Component
                 if($field == 'sklad')
                     $value = $item['sklad'].'-'.$item['skladid'];
                 if($field == 'ball')
-                    $value = floor($item['price']*0.05);
+                    $value = round($item['price']*0.005)*10;
                 if($field == 'weight')
                     $value = $ParseData['provider']->provider_data->weight;
                 if($field == 'price'){
