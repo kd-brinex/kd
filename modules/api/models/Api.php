@@ -49,6 +49,7 @@ class Api extends Model
 <storeid>'.$d['storeid'].'</storeid>
 <FlagPostav>'.$d['flagpostav'].'</FlagPostav>
 <srok>'.$d['srok'].'</srok>
+<ball>'.$d['ball'].'</ball>
 </DetailInfo>';
 }
         $xml.='
