@@ -35,7 +35,7 @@ class AutocatalogController extends MainController
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'model', 'vin', 'frame','details'],
+                        'actions' => ['index', 'model', 'vin', 'frame','details','cars','models','catalogs'],
                         'roles' => ['?', '@']
                     ],
                     [
@@ -51,8 +51,8 @@ class AutocatalogController extends MainController
     public function actionIndex()
     {
         $params = \Yii::$app->request->queryParams;
-        $catalog = $this->module->getCatalog();
-
+        $catalog = $this->module->getModel();
+//        $provider=$catalog->getCars();
 
         return $this->render('index', [
             'catalog' => $catalog,
@@ -60,6 +60,37 @@ class AutocatalogController extends MainController
 
 
         ]);
+    }
+    public function actionCars()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $provider = new ArrayDataProvider(['allModels' => $this->module->getCars($params)]);
+        $provider->pagination=false;
+        return $this->render('cars', [
+            'provider' => $provider,
+            'params' =>$params
+        ]);
+    }
+    public function actionModels()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $provider = new ArrayDataProvider(['allModels' => $this->module->getModels($params)]);
+
+        $provider->pagination=false;
+        return $this->render('models', [
+            'provider' => $provider,
+            'params' =>$params
+        ]);
+    }
+    public function actionCatalogs()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $provider = new ArrayDataProvider(['allModels' => $this->module->getCatalogs($params)]);
+        return $this->render('catalogs', [
+            'provider' => $provider,
+            'params' =>$params
+        ]);
+
     }
     public function actionVin()
     {

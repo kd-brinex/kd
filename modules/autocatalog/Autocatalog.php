@@ -15,35 +15,39 @@ use yii;
 
 class Autocatalog extends Module
 {
-    public $models;
-    public $catalog;
+    public $model;
     public function init()
     {
         parent::init();
-        foreach ($this->models as $key=>$model)
-        {
-            $this->catalog[$key]=\Yii::createObject($model);
-        }
-
     }
-public function getCatalog()
+public function getModel()
 {
-   return $this->catalog;
+  return $this->model;
 }
-    public function getModelList($prm)
+    public function getCatalog($prm)
     {
-        return $this->catalog[$prm['marka']]->__FUNCTION__;
+            return Yii::createObject($this->model[$prm['marka']]);
+    }
+
+    public function getCars($prm)
+    {
+        $catalog=$this->getCatalog($prm);
+        return $catalog->getCars($prm);
+    }
+
+    public function getModels($prm)
+    {
+        $catalog=$this->getCatalog($prm);
+        return $catalog->getModels($prm);
+    }
+    public function getCatalogs($prm)
+    {
+        $catalog=$this->getCatalog($prm);
+        return $catalog->getCatalogs($prm);
     }
     public function searchVIN($prm)
     {
-        $modelList=$this->getCatalog();
-        $res=false;
-        foreach ($modelList as $model)
-        {
-            $res=$model->searchVIN($prm);
-            if($res){return $res;}
-        }
-        return $res;
+
     }
 
 }

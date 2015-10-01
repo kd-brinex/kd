@@ -154,10 +154,11 @@ $config = [
                 'toyota/album' => 'toyota/catalog/album',
                 'toyota/page' => 'toyota/catalog/page',
 
-                'autocatalog' => 'autocatalog/autocatalog',
-
-
-                'kia' => 'kia/autocatalog',
+                'autocatalog' => '/autocatalog/autocatalog',
+                '/autocatalog/<marka:\w+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+//                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
 
@@ -272,7 +273,7 @@ $config = [
             'class' => 'app\modules\autocatalog\Autocatalog',
             'layout' => 'autocatalog',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
-            'models' => [
+            'model' => [
                 'hyundai' => [
                     'class' => 'app\modules\autocatalog\models\Hyundai',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
