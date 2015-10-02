@@ -17,9 +17,9 @@ $_IMG_DATA = "/project_result/Hyundai_MicroCat/Imgs/"; // путь к рисун
 $mysql_сonnection = array(
 	'host' => '127.0.0.1',
 	'port' => '1111',
-	'username' => 'root',
+	'username' => 'brinexdev',
 //	'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
-	'passwd' => '',
+	'passwd' => 'QwFGHythju8',
 	'dbname' => 'hyundai',
 	'charset' => 'utf8',
 );
