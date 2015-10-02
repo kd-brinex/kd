@@ -16,38 +16,45 @@ use yii;
 class Autocatalog extends Module
 {
     public $model;
+    public $catalog;
+    public $db;
     public function init()
     {
         parent::init();
+        $params = Yii::$app->request->queryParams;
+        if (!empty($params['marka'])){
+        $this->catalog=$this->model[$params['marka']];
+        $this->db=$this->getDb();}
     }
 public function getModel()
 {
   return $this->model;
 }
-    public function getCatalog($prm)
+    public function getDb()
     {
-            return Yii::createObject($this->model[$prm['marka']]);
-    }
+       return Yii::createObject($this->catalog['db']);
 
-    public function getCars($prm)
-    {
-        $catalog=$this->getCatalog($prm);
-        return $catalog->getCars($prm);
     }
+//    public function getCars($prm)
+//    {
+//        $catalog=$this->getCatalog($prm);
+//        return $catalog->getCars($prm);
+//    }
 
-    public function getModels($prm)
-    {
-        $catalog=$this->getCatalog($prm);
-        return $catalog->getModels($prm);
-    }
-    public function getCatalogs($prm)
-    {
-        $catalog=$this->getCatalog($prm);
-        return $catalog->getCatalogs($prm);
-    }
+//    public function getModels($prm)
+//    {
+//        $catalog=$this->getCatalog($prm);
+//        return $catalog->getModels($prm);
+//    }
+//    public function getCatalogs($prm)
+//    {
+//        $catalog=$this->getCatalog($prm);
+//        return $catalog->getCatalogs($prm);
+//    }
     public function searchVIN($prm)
     {
 
     }
+
 
 }

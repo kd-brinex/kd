@@ -4,7 +4,13 @@ namespace app\modules\autocatalog\controllers;
 
 use app\controllers\MainController;
 
+use app\modules\autocatalog\models\FilterModel;
+use app\modules\autocatalog\models\ModelsSearch;
+use app\modules\autocatalog\models\CarsSearch;
+use app\modules\autocatalog\models\CatalogsSearch;
+use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
+use yii\db\ActiveRecord;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\modules\autocatalog\models\Car;
@@ -64,7 +70,12 @@ class AutocatalogController extends MainController
     public function actionCars()
     {
         $params = \Yii::$app->request->queryParams;
-        $provider = new ArrayDataProvider(['allModels' => $this->module->getCars($params)]);
+        $models = new CarsSearch();
+        $provider = new ActiveDataProvider([
+            'query' => $models->find(),
+//            'sort' => ['attributes' => ['name']],
+            'id' => 'cat_code',
+        ]);
         $provider->pagination=false;
         return $this->render('cars', [
             'provider' => $provider,
@@ -74,20 +85,24 @@ class AutocatalogController extends MainController
     public function actionModels()
     {
         $params = \Yii::$app->request->queryParams;
-        $provider = new ArrayDataProvider(['allModels' => $this->module->getModels($params)]);
+        $models = new ModelsSearch();
+        $provider= $models->search($params);
 
-        $provider->pagination=false;
         return $this->render('models', [
             'provider' => $provider,
+            'filterModel' => $models,
             'params' =>$params
         ]);
     }
     public function actionCatalogs()
     {
         $params = \Yii::$app->request->queryParams;
-        $provider = new ArrayDataProvider(['allModels' => $this->module->getCatalogs($params)]);
+        $models = new CatalogsSearch();
+        $provider= $models->search($params);
+
         return $this->render('catalogs', [
             'provider' => $provider,
+//            'filterModel' => $models,
             'params' =>$params
         ]);
 

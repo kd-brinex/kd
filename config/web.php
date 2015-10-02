@@ -275,7 +275,7 @@ $config = [
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
             'model' => [
                 'hyundai' => [
-                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'class' => 'app\modules\autocatalog\models\CCar',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',

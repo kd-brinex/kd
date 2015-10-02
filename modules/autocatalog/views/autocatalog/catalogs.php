@@ -34,11 +34,7 @@ use \yii\helpers\Html;
                 'label'=>'Варианты',
                 'value'=>function ($model, $key, $index, $widget) {
                     $a_value=explode(';',$model['value']);
-                    $html='';
-//                    foreach ($a_value as $v){
                         $html=Html::radioList($model['type_code'],null,$a_value,[]);
-//                        $html.=Html::label($v,$v);
-//                    }
                     return $html;
                 },],
 
