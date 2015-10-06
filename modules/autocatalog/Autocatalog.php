@@ -30,6 +30,7 @@ public function getModel()
 {
   return $this->model;
 }
+
     public function getDb()
     {
        return Yii::createObject($this->catalog['db']);

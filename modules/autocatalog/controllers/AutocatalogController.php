@@ -156,7 +156,7 @@ class AutocatalogController extends MainController
     {
 
         $params = \Yii::$app->request->queryParams;
-        $catalog = $this->module->getCatalog();
+        $catalog = $this->module->getModel();
         if (isset($params['article'])) {
             $parts = \Yii::$app->params['Parts'];
 
