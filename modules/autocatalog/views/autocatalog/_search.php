@@ -14,7 +14,7 @@ $to='';
 foreach($catalog as $key=>$marka)
 {
 //    var_dump($marka);die;
-    $cat .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('/autocatalog/'.$key)),['class'=>'autocatalog_marka']);
+    $cat .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('/autocatalogs/'.$key)),['class'=>'autocatalog_marka']);
     $to .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('to/'.$key)),['class'=>'autocatalog_marka']);
 }
 $items=[
