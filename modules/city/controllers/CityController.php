@@ -7,7 +7,7 @@ use Yii;
 use app\modules\city\models\City;
 use app\modules\city\models\CityList;
 use app\modules\city\models\CitySearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -15,7 +15,7 @@ use yii\filters\AccessControl;
 /**
  * CityController implements the CRUD actions for City model.
  */
-class CityController extends Controller
+class CityController extends MainController
 {
     public function behaviors()
     {
@@ -41,7 +41,7 @@ class CityController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['list'],
+                        'actions' => ['list','list_region'],
                         'roles' => ['@','?']
                     ],
                 ]
@@ -55,7 +55,9 @@ class CityController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new CitySearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -84,12 +86,13 @@ class CityController extends Controller
     public function actionCreate()
     {
         $model = new City();
+        $model->regions = $model->all_regions();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model
             ]);
         }
     }
@@ -103,7 +106,7 @@ class CityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->regions = $model->all_regions();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -131,20 +134,31 @@ class CityController extends Controller
         $this->layout = false;
         $params['id']=(isset(Yii::$app->request->cookies['city']))?
             Yii::$app->request->cookies['city']:1331;
+
         $searchModel = new CitySearch();
         $data = $searchModel->find_list($params);
-        $chars=[];
-        foreach ($data as $d){
-            $char=mb_substr($d['name'],0,1,'utf-8');
-            $chars[$char]=['char'=>$char,'onclick'=>'hideButton(\''.$char.'\',\'city_button\',\'city_butsel\')'];
 
-        }
-        ksort($chars);
-        $options=[];
+
         return $this->render('city_list', [
-            'data' => $data,'chars'=>$chars,'options'=>$options,
+            'data' => $data,
         ]);
     }
+    public function actionList_region()
+    {
+        $this->layout = false;
+        $params['id']=(isset(Yii::$app->request->cookies['region']))?
+            Yii::$app->request->cookies['region']:1331;
+
+        $searchModel = new CitySearch();
+        $data = $searchModel->find_list_region($params);
+
+
+        return $this->render('region_list', [
+            'data' => $data,
+        ]);
+    }
+
+
     /**
      * Finds the City model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

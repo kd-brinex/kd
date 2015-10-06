@@ -2,28 +2,27 @@
 
 namespace app\modules\autoparts\controllers;
 
-use app\modules\autoparts\models\PartProvider;
+use Yii;
+
+use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\web\NotFoundHttpException;
+
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
+
 use app\modules\autoparts\models\PartProviderSearch;
 use app\modules\autoparts\models\TStoreSearch;
-use dektrium\rbac\models\Search;
-use Yii;
 use app\modules\autoparts\models\PartOver;
 use app\modules\autoparts\models\PartOverSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\modules\autoparts\models\UploadForm;
-use app\modules\autoparts\models\TStore;
-use yii\web\UploadedFile;
-
-
 
 /**
  * OverController implements the CRUD actions for PartOver model.
  */
 class OverController extends Controller
 {
-
 
     public function behaviors()
     {
@@ -33,7 +32,17 @@ class OverController extends Controller
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['Parts', 'Admin'],
+                        ]
+                    ]
+                ],
+
         ];
     }
 
@@ -71,7 +80,6 @@ class OverController extends Controller
      */
     public function actionCreate()
     {
-
         $flagpostav = new PartProviderSearch();
         $flag_postav_list = $flagpostav->get_flag_postav();
 
@@ -97,13 +105,15 @@ class OverController extends Controller
      */
     public function actionUpdate($id)
     {
+        $flagpostav = new PartProviderSearch();
+        $flag_postav_list = $flagpostav->get_flag_postav();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model,'flag_postav_list'=>$flag_postav_list
             ]);
         }
     }
@@ -139,8 +149,8 @@ class OverController extends Controller
 
     public function actionUpload()
     {
-        $cities = new TStoreSearch();
-        $citylist = $cities->getCityList();
+//        $cities = new TStoreSearch();
+//        $citylist = $cities->getCityList();
         $flagpostav = new PartProviderSearch();
         $flag_postav_list = $flagpostav->get_flag_postav();
 
@@ -155,16 +165,12 @@ class OverController extends Controller
 
             $model->file = UploadedFile::getInstance($model, 'file');
 
-
             if ($model->file && $model->validate()) {
-                $model->file->saveAs('/var/www/kolesa-darom.dev/uploads/' . $model->file->baseName . '.' . $model->file->extension);
-                $text['f'] = file('/var/www/kolesa-darom.dev/uploads/' . $model->file);
-
+                $runtime=\Yii::getAlias('@runtime').'/';
+                $model->file->saveAs($runtime . $model->file->baseName . '.' . $model->file->extension);
+                $text['f'] = file($runtime . $model->file);
                 $model->insertData($text);
-
                 $this->redirect('index');
-
-
             }
         }
 

@@ -15,17 +15,22 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="row">
 
-    <p>
+        <div class="container">
+<div class="col-xs-12 col-md-4">
+    <div class="row form-vin">
+    <?= Html::tag('h3','Поиск по названию модели')?>
+    <?= html::input('text','find_model',null,['placeholder'=>'Введите название. Например:Corolla','class'=>'form-control','id'=>'find_model'])?>
+
+        </div>
+</div>
         <?= $this->render('_search_vin', ['params'=>$params]) ?>
-    </p>
-    <p>
         <?= $this->render('_search_frame', ['params'=>$params]) ?>
-    </p>
-<p>
-    <?= html::input('text','find_model',null,['placeholder'=>'Поиск по модели','class'=>'form-control','id'=>'find_model'])?>
-</p>
+        </div>
+<div class="container">
     <?= Tabs::widget([
+
         'items' => [
             ['label' => 'Европа',
                 'content' => $this->render('_index_group_model',['dataProvider'=>$dataProviderEU,'params'=>$params]),
@@ -49,7 +54,8 @@ $this->params['breadcrumbs']= $params['breadcrumbs'];
             ],
         ]
     ]); ?>
-
+</div>
+        </div>
     <?php
 //    GridView::widget([
 //        'dataProvider' => $dataProvider,

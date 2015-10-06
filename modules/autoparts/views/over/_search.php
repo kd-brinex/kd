@@ -39,7 +39,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'sklad') ?>
 
-    <?php // echo $form->field($model, 'flagpostav') ?>
+    <?php  echo $form->field($model, 'flagpostav') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

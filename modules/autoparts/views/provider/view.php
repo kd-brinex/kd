@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'enable',
             'weight',
             'flagpostav',
+            'cross',
         ],
     ]) ?>
 

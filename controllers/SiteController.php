@@ -5,20 +5,19 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\AccessRule;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\PartnerForm;
 use app\modules\city\ipgeobase;
 use app\modules\city\models\CitySearch;
-use app\models\UploadForm;
-use yii\web\UploadedFile;
+use yii\web\Session;
 
-class SiteController extends Controller
+use \app\modules\basket\models\BasketSearch;
+
+class SiteController extends MainController
 {
-
-
 public function behaviors()
     {
 //        $this->layout = "/main.twig";

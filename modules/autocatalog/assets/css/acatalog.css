@@ -1,0 +1,185 @@
+.acatalog-block {
+    border-color: #c6c6c6;
+    border-style: solid;
+    border-width: 1px;
+    height: 200px;
+    text-align: center;
+    border-radius: 5px;
+    /*margin-right: 5px;*/
+    margin-bottom: 30px;
+    padding: 5%;
+    width:100%;
+
+
+}
+.acatalog-block img {
+    width: 100%;
+    height: 100%;
+    /*top:5px;*/
+    /*border: 0;*/
+
+
+}
+.acatalog-block a {
+    position: relative;
+    top: -50%;
+    font-weight: bold;
+    /*color :#000;*/
+    background-color: #fff;
+}
+.acatalog-tabs {
+    margin: 10px;
+}
+tr.hide {
+    display: none;
+}
+.album-block{
+    border-color: #c6c6c6;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+table.submodel{
+    font-size: 12pt;
+
+}
+.page_label {
+    position: absolute;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    z-index: 999;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border-color: #327E04;
+    border-style: solid;
+    border-width: 2px;
+    text-align: center;
+}
+.page_image {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    font-size: 10px;
+}
+.part-active {
+    background-color: #299520 !important;
+    color:#fff;
+
+}
+.part-active a {
+    color:#f8da4e;
+}
+.part-open {
+    background-color: #299520 !important;
+    color:#fff;
+
+}
+.panel-heading {
+    background-color: transparent !important;
+}
+.page-scroll{
+    margin-top: 30px;
+    height: 600px;
+    overflow: auto;
+}
+.model-hide {
+    opacity: 0.5;
+    pointer-events: none;
+
+}
+.form-vin{
+    border-color: #c6c6c6;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+    min-height:160px ;
+}
+.form-vin button{
+    margin-top: 10px;
+}
+
+.autocatalog_marka{
+    padding: 10px 10px 10px 10px;
+    color: #fff;
+
+}
+.btn-primary {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #985f0d;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #d58512;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #d58512;
+}
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.open > .dropdown-toggle.btn-primary:hover,
+.btn-primary:active:focus,
+.btn-primary.active:focus,
+.open > .dropdown-toggle.btn-primary:focus,
+.btn-primary:active.focus,
+.btn-primary.active.focus,
+.open > .dropdown-toggle.btn-primary.focus {
+    color: #fff;
+    background-color: #d58512;
+    border-color: #985f0d;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    background-image: none;
+}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+.btn-primary .badge {
+    color: #f0ad4e;
+    background-color: #fff;
+}
+/*Страница выбора каталога catalogs*/
+.upper
+{
+    text-transform: uppercase;
+}

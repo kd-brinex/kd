@@ -1,6 +1,6 @@
 <?php
 $params = require(__DIR__ . '/params.php');
-$db_connect= require(__DIR__ . '/db.php');
+$db_connect = require(__DIR__ . '/db.php');
 //$db_connect = $db_config['components'][YII_ENV];
 $config = [
     'id' => 'basic',
@@ -10,6 +10,27 @@ $config = [
     'name' => 'Колеса-даром',
 //    'layout' => 'main.twig',
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'user' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/user/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'user'    => 'user.php',
+                    ],
+                ],
+                'autocatalog' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/autocatalog/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'autocatalog' => 'autocatalog.php',
+                    ],
+                ],
+
+            ],
+        ],
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
             'appendTimestamp' => true,
@@ -33,15 +54,15 @@ $config = [
         ],
 
         'session' => [
-            'class' => 'yii\web\Session',
+            'class' => 'app\components\BrxSession',
 //            'timeout'=>28800,
 //            'cookieParams' => array (
 //                'lifetime' =>86400,
 //                'path' => '/',
 //                'httponly' => 'on',
 //            ),
-            // 'db' => 'mydb',
-//             'sessionTable' => 'session',
+//             'db' => 'db',
+//             'sessionTable' => '{{%sessions}}',
 
         ],
         'city' => [
@@ -98,7 +119,8 @@ $config = [
                 'auto/models/<typeid:\w+>_<markid:\w+>' => 'auto/auto/models',
                 'auto/tree/<modelid:\w+>' => 'auto/auto/tree',
 //                'auto/map/<modelid:\w+>/<treeid:\w+>' => 'auto/auto/map',
-                'finddetails' => 'tovar/tovar/finddetails',
+                'finddetails' => 'autocatalog/autocatalog',
+                'finddetailstest' => 'tovar/tovar/finddetailstest',
                 'tovar/<id:\w+>' => 'tovar/tovar/view',
                 'tovars/<tip_id:\w+>' => 'tovar/tovar/category',
 
@@ -122,18 +144,32 @@ $config = [
                 'admin/partssrok/create' => 'autoparts/providersrok/create',
                 'admin/partssrok/update' => 'autoparts/providersrok/update',
                 'admin/partssrok/delete' => 'autoparts/providersrok/delete',
+
+                'admin/orders' => 'autoparts/orders',
+                'admin/orders/update' => 'autoparts/orders/update',
+                'admin/orders/send' => 'autoparts/orders/send',
+
+                'admin/partsload' => 'autoparts/over',
+
                 //Пользователи
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
                 'admin/permissions' => '/rbac/permissions/index',
                 // Автокаталоги
-                'toyota'=>'toyota/catalog',
-                'toyota/model/<name:\w+>'=>'toyota/catalog/model',
-                'toyota/catalog'=>'toyota/catalog/catalog',
-                'toyota/album'=>'toyota/catalog/album',
-                'toyota/page'=>'toyota/catalog/page',
+                'toyota' => 'toyota/catalog',
+                'toyota/model/<name:\w+>' => 'toyota/catalog/model',
+                'toyota/catalog' => 'toyota/catalog/catalog',
+                'toyota/album' => 'toyota/catalog/album',
+                'toyota/page' => 'toyota/catalog/page',
 
-
+                'autocatalog' => '/autocatalog/autocatalog',
+                '/autocatalog/<marka:\w+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog' => '/autocatalog/autocatalog/catalog',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+//                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
 
@@ -186,6 +222,8 @@ $config = [
                 'pathMap' => [
                     '@dektrium/user/views/settings' => '@app/modules/user/views/settings',
                     '@dektrium/user/views/security' => '@app/modules/user/views/security',
+                    '@dektrium/user/views/registration' => '@app/modules/user/views/registration',
+                    '@dektrium/user/views/admin' => '@app/modules/user/views/admin',
 
                 ],
             ],
@@ -193,18 +231,22 @@ $config = [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
-                'google' => [
-                    'class' => 'yii\authclient\clients\GoogleOpenId',
-                ],
-                'facebook' => [
-                    'class' => 'yii\authclient\clients\Facebook',
-                    'clientId' => '1459039357681938',
-                    'clientSecret' => '9eb99520dea4dc08049c94ddf014cfdd',
-                ],
+//                'google' => [
+//                    'class' => 'yii\authclient\clients\GoogleOpenId',
+//                ],
+//                'facebook' => [
+//                    'class' => 'yii\authclient\clients\Facebook',
+//                    'clientId' => '1459039357681938',
+//                    'clientSecret' => '9eb99520dea4dc08049c94ddf014cfdd',
+//                ],
                 'vkontakte' => [
                     'class' => 'yii\authclient\clients\VKontakte',
                     'clientId' => '4441364',
                     'clientSecret' => 'T5yQkhI0zcg1Dn5uamKz',
+                ],
+                'kd' => [
+                    'class' => 'app\modules\user\clients\KD',
+
                 ],
             ],
         ],
@@ -223,16 +265,73 @@ $config = [
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
+            'layout'=> '/admin.php',
         ],
         'toyota' => [
             'class' => 'app\modules\catalog\Catalog',
             'db' => [
                 'class' => 'yii\db\Connection',
-                'dsn' => (YII_ENV=='dev')?'mysql:host=127.0.0.1;dbname=toyota;port=1111':'mysql:host=localhost;dbname=toyota',
+                'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=toyota;port=1111' : 'mysql:host=localhost;dbname=toyota',
                 'username' => 'brinexdev',
                 'password' => 'QwFGHythju8',
                 'charset' => 'utf8'],
-            'image'=>'http://new.kolesa-darom.ru:8080/image/toyota/',
+            'image' => 'http://3.kolesa-darom.ru:8080/image/toyota/',
+            'layout' => 'avtocatalog',
+            'controllerNamespace' => 'app\modules\catalog\controllers',
+
+        ],
+        'autocatalog' => [
+            'class' => 'app\modules\autocatalog\Autocatalog',
+            'layout' => 'autocatalog',
+            'controllerNamespace' => 'app\modules\autocatalog\controllers',
+            'model' => [
+                'hyundai' => [
+                    'class' => 'app\modules\autocatalog\models\CCar',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
+                    'prop' => [
+                        'marka' => 'Hyundai',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+//: 'mysql:host=localhost;dbname=hyundai',
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
+                'kia' => [
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
+                    'prop' => [
+                        'marka' => 'Kia',
+                        'model' => '',
+                        'year' => 0,
+                        'region' => '',
+                        'body_type' => '',
+                        'grade' => '',
+                        'engine_capacity' => '',
+                        'fuel_type' => '',
+                        'transmission' => '',
+                        'drive_type' => ''
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+//: 'mysql:host=localhost;dbname=hyundai',
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+                        'charset' => 'utf8'],
+                ],
+            ],
 
         ],
         'auto' => [
@@ -248,25 +347,37 @@ $config = [
         'tovar' => [
             'class' => 'app\modules\tovar\Tovar',
         ],
+
         'user' => [
             'class' => 'dektrium\user\Module',
-            'layout' => '/blank',
+            'layout' => '/user',
             'modelMap' => [
                 'User' => 'app\modules\user\models\User',
+                'UserSearch' => 'app\modules\user\models\UserSearch',
                 'Profile' => 'app\modules\user\models\Profile',
-
-
+                'SettingsForm' => 'app\modules\user\models\SettingsForm',
+                'LoginForm' => 'app\modules\user\models\LoginForm',
+                'RegistrationForm' => 'app\modules\user\models\RegistrationForm'
             ],
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
-//                'admin' => 'app\modules\user\controllers\AdminController'
+                'security' => 'app\modules\user\controllers\SecurityController',
+//                'register' => 'app\modules\user\controllers\RegistrationController'
+                'admin' => 'app\modules\user\controllers\AdminController'
             ],
-
 
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'admins' => ['marat'],
+            'enableGeneratingPassword' => true,
 
+        ],
+        'images' => [
+            'class' => 'app\modules\images\Images',
+        ],
+        // Extensions
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
         ]
     ]
 ];

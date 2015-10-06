@@ -1,4 +1,3 @@
-# phpstorm project files
 .idea
 
 # netbeans project files
@@ -27,3 +26,5 @@ phpunit.phar
 /phpunit.xml
 # файлы с примерами автокаталогов
 tests/_output/*
+/uploads
+/web/catalog/*

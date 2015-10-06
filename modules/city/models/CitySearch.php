@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\city\models\City;
+use app\modules\city\models\Region;
 use yii\db\ActiveRecord;
 
 /**
@@ -53,6 +54,7 @@ class CitySearch extends City
      *
      * @return ActiveDataProvider
      */
+
     public function search($params)
     {
         $query = City::find();
@@ -60,11 +62,10 @@ class CitySearch extends City
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
+            // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
@@ -75,34 +76,40 @@ class CitySearch extends City
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'enable' => $this->enable,
+
 //            'point'=>$this->point,
-            'regionName'=>$this->regionName,
 
         ]);
 
-//        $query->andFilterWhere(['like', 'name', $this->name]);
 
-        return $query;
+
+        return $dataProvider;
     }
-    public function find_list($param){
-    $city = City::findOne(['id'=>$param['id']]);
-        $param[':lat']=$city->attributes['latitude'];
-        $param[':long']=$city->attributes['longitude'];
-        $query=Yii::$app->db->createCommand('select
-  c.id as id,
-  c.name as name,
- (  6371 * acos(
-    cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:long))
-    +
-    sin(radians(:lat)) * sin(radians(c.latitude))
-  )
-) AS dist
-from geobase_city as c
-  left join geobase_region as r on r.id=c.region_id
-  where c.enable=true
-  order by dist ')->bindValues($param)->queryAll();
+    public function find_list($params){
+    $query['stories'] = City::find()->select('geobase_city.name,geobase_city.id')
+        ->leftJoin('t_store','t_store.city_id=geobase_city.id')
+            ->where('t_store.id IS NOT NULL')->orderBy('geobase_city.name')->asArray()->all();
+    $query['stories_all'] = City::find()->leftJoin('t_store','t_store.city_id=geobase_city.id')
+        ->where('t_store.id IS NULL')->orderBy('geobase_city.name')->asArray()->all();
+        //echo '<pre>';print_r($query['stories_all']);echo '</pre>';die;
+  $query['regions'] = Region::find()->asArray()->orderBy('geobase_region.name')->all();
 
         return $query;
+
+
+
+    }
+    public function find_list_region($params){
+
+
+        $query['stories'] = City::find()->leftJoin('t_store','geobase_city.id=t_store.city_id')->where(['region_id'=>$params['id']])->andwhere('t_store.id IS NOT NULL')->asArray()->all();
+        $query['delivery'] = City::find()->leftJoin('t_store','geobase_city.id=t_store.city_id')->where(['region_id'=>$params['id']])->andwhere(['geobase_city.enable'=>'1'])->andwhere('t_store.id IS  NULL')->asArray()->all();
+
+
+        return $query;
+
+
+
     }
 
 

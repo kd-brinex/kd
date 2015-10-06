@@ -2,14 +2,14 @@
 
 namespace app\modules\catalog\controllers;
 
-use yii\web\Controller;
+use app\controllers\MainController;
 
 use app\modules\catalog\models;
 use yii\filters\VerbFilter;
-use app\modules\netcat\Netcat;
+//use app\modules\netcat\Netcat;
 use yii\filters\AccessControl;
 
-class CatalogController extends Controller
+class CatalogController extends MainController
 {
     public function behaviors()
     {
@@ -49,18 +49,18 @@ class CatalogController extends Controller
     public function actionIndex()
     {
         $params = \Yii::$app->request->queryParams;
-        $user_id = (isset($params['user_id'])) ? $params['user_id'] : '0';
+        $params['user_id'] = (isset($params['user_id'])) ? $params['user_id'] : '0';
         $searchModel = new models\Toyota();
 //        var_dump(\Yii::$app->request->cookies);die;
         $params['breadcrumbs'] = $searchModel->getBreadcrumbs($params);
-        $dataProviderEU = $searchModel->search(['catalog' => 'EU', 'user_id' => $user_id]);
+        $dataProviderEU = $searchModel->search(['catalog' => 'EU', 'user_id' => $params['user_id']]);
 //        var_dump($dataProviderEU);die;
 //        $dataProviderEU->pagination=false;
-        $dataProviderGR = $searchModel->search(['catalog' => 'GR', 'user_id' => $user_id]);
+        $dataProviderGR = $searchModel->search(['catalog' => 'GR', 'user_id' => $params['user_id']]);
 //        $dataProviderGR->pagination=false;
-        $dataProviderJP = $searchModel->search(['catalog' => 'JP', 'user_id' => $user_id]);
+        $dataProviderJP = $searchModel->search(['catalog' => 'JP', 'user_id' => $params['user_id']]);
 //        $dataProviderJP->pagination=false;
-        $dataProviderUS = $searchModel->search(['catalog' => 'US', 'user_id' => $user_id]);
+        $dataProviderUS = $searchModel->search(['catalog' => 'US', 'user_id' => $params['user_id']]);
 //        $dataProviderUS->pagination=false;
 //        var_dump($dataProviderEU->query->getUrlParams('action'));die;
 //        Крошки

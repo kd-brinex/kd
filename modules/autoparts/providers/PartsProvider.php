@@ -33,6 +33,9 @@ class PartsProvider
     public $id = 1;//id провайдера в таблице part_provider
     public $row_count = 100; // количество строк выдаваемых методом Finddetails
     public $srokdays = 0;
+    public $weight=0;
+    public $ePrices = [];
+    public $ball;
     public $fields = [
         "code" => "code",//Номер
         "name" => "name", //Информация
@@ -55,6 +58,9 @@ class PartsProvider
         "storeid" => "storeid",//код магазина
         "pid" => "pid",//код магазина
         "srokdays" => "srokdays",//Доставка от скалада до магазина
+        "weight" => "weight",
+        "cross"=> "cross",
+        "ball"=>"ball",
     ];
 
 
@@ -82,7 +88,8 @@ class PartsProvider
                 }
             }
         }
-
+//        var_dump($this->ePrices);die;
+        $this->_wsdl_uri = isset($params['method']) ? $params[$params['method'].'_wsdl_uri'] : $this->_wsdl_uri;
         $puser = new PartProviderUserSearch();
 
         $p = $puser->getUserProvider(['store_id' => $params['store_id'], 'provider_id' => $this->id]);
@@ -92,7 +99,7 @@ class PartsProvider
             $this->store_id = $p->models[0]->attributes['store_id'];
             $this->password = $p->models[0]->attributes['password'];
             $this->marga = $p->models[0]->attributes['marga'] / 100 + 1;
-            $this->srokdays= $p->models[0]->srok;
+            $this->srokdays = $p->models[0]->srok;
             $this->find = true;
 
         } else {
@@ -163,7 +170,7 @@ class PartsProvider
             $result = new SimpleXMLElement($this->getResultXML($result, $method));
 //            var_dump($result);die;
         } catch (Exception $e) {
-            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. '.$result;
+            $this->errors[] = 'Ошибка сервиса ' . $this->name . ': полученные данные не являются корректным XML. ' . $result;
 //var_dump($this->errors);die;
             return false;
         }
@@ -183,7 +190,7 @@ class PartsProvider
     {
 
         $result = $this->soap($method);
-        $this->close();
+        //  $this->close();
         return $result;
     }
 
@@ -210,14 +217,9 @@ class PartsProvider
             return [];
         }
         $xml = $this->query($this->methods['FindDetails'], $errors);
-
         $data = $this->parseSearchResponseXML($xml);
-
         $ret = $this->formatSearchResponse($data);
-
-        /**Сортировка массива поп полю srokmax
-         *
-         * */
+        /**       Сортировка массива поп полю srokmax      **/
 //        function r_usort($a,$b,$key)
 //        {
 //            $inta = intval($a[$key]);
@@ -234,12 +236,17 @@ class PartsProvider
 //            if($r==0){$r=r_usort($a,$b,'price');}
 //            return $r;
 //        });
-        if ($this->row_count>0){$ret=array_slice($ret,0,$this->row_count);}
-
+        if ($this->row_count>0){
+            $ret = array_slice($ret,0,$this->row_count);
+        }
 //var_dump($ret);die;
 
         return $ret;
+    }
 
+    public function toBasket(){
+        $xml = $this->query($this->methods['toBasket']);
+        var_dump($xml);
     }
 
     public function generateRandom($maxlen = 32)
@@ -281,19 +288,21 @@ class PartsProvider
 
         foreach ($data as $key => $row) {
 //            if ($this->validate($row)) {
-                foreach ($fields as $field => $value) {
-                    if (isset($row[$value])) {
-                        $ret[$key][$field] = $row[$value];
-                    } else {
-                        $ret[$key][$field] = "";
-                    }
-                    $method = "update_" . $field;
-                    $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
-
-
+            foreach ($fields as $field => $value) {
+                if (isset($row[$value])) {
+                    $ret[$key][$field] = $row[$value];
+                } else {
+                    $ret[$key][$field] = "";
                 }
+                $method = "update_" . $field;
+                $ret[$key][$field] = method_exists($this, $method) ? $this->$method($ret[$key]) : $ret[$key][$field];
 
-            if (!$this->validate($ret[$key])){unset($ret[$key]);}
+
+            }
+
+            if (!$this->validate($ret[$key])) {
+                unset($ret[$key]);
+            }
 //            }
 
         }
@@ -325,7 +334,7 @@ class PartsProvider
 
     public function update_provider($value)
     {
-        return $this->name;
+        return 'KD' . $this->id . '-' . $this->store_id;
     }
 
     public function update_storeid($value)
@@ -355,7 +364,8 @@ class PartsProvider
         return htmlspecialchars($value['name']);
     }
 
-    public function update_srokdays($value){
+    public function update_srokdays($value)
+    {
         return $this->srokdays;
     }
 
@@ -385,9 +395,20 @@ class PartsProvider
         return $value['srokmin'] . (($value['srokmin'] < $value['srokmax']) ? '-' . $value['srokmax'] : '');
     }
 
+    public function update_weight($value)
+    {
+
+        return $this->weight;
+    }
+
     public function update_pid($value)
     {
         return $this->id;
+    }
+    public function  update_ball($value)
+    {
+
+        return floor($value["price"]*0.05);
     }
 
     public function validate($value)
@@ -404,10 +425,10 @@ class PartsProvider
             return false;
         }
 
-    //проверка по цене
-    if ($value['price'] <= 0) {
-        return false;
-    }
+        //проверка по цене
+        if ($value['price'] <= 0) {
+            return false;
+        }
 
         return true;
     }

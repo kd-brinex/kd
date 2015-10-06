@@ -33,11 +33,12 @@ foreach($dataProvider as $name=>$model)
     ]);}
 }
 else{
+
     echo Alert::widget([
         'options' => [
             'class' => 'alert-danger'
         ],
-        'body' => '<b>'.$params['vin'].'</b> Это VIN не найден в нашей базе.'
+        'body' => 'Информация о модели не найдена.'
     ]);
  }
 

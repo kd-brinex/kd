@@ -1,0 +1,28 @@
+.catalog {
+    /*background:#C5DFF0;*/
+    color:#000;
+    margin:20px auto;
+    padding:20px;
+    position:relative;
+    width:800px;
+    height:600px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+
+    /*box-shadow:1px 1px 5px #111111;*/
+
+    column-count: 4;
+    /*column-gap: 2em;*/
+    /*column-rule: 1px dashed black;*/
+    -moz-column-count: 4;
+    /*-moz-column-gap: 2em;*/
+    /*-moz-column-rule: 1px dashed black;*/
+    -webkit-column-count: 4;
+    /*-webkit-column-gap: 2em;*/
+    /*-webkit-column-rule: 1px dashed black;*/
+}
+
+.models {
+
+}

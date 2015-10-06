@@ -9,7 +9,7 @@ use yii\Helpers\Url;
  */
 //var_dump($model);die;
 
-echo '<ul class="table table-striped row">';
+echo '<ul class="table table-striped">';
     foreach($model as $row) {
 //        var_dump($row);die;
         $text= substr($row['prod_start'],-2).'/'.substr($row['prod_start'],0,4).' - '.substr($row['prod_end'],-2).'/'.substr($row['prod_end'],0,4) .'_'.$row['models_codes'] ;

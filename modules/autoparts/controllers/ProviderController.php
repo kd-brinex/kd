@@ -1,20 +1,27 @@
 <?php
+/**
+ * @author: Eugene Brx
+ * @email: compuniti@mail.ru
+ * @date: 13.08.15
+ * @time: 11:09
+ */
 
 namespace app\modules\autoparts\controllers;
-
-use Yii;
 use app\modules\autoparts\models\PartProvider;
 use app\modules\autoparts\models\PartProviderSearch;
+use Yii;
+use yii\base\Exception;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+
+use app\modules\autoparts\models\TStore;
+use app\modules\autoparts\models\PartProviderUserSearch;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use app\helpers\BrxArrayHelper;
 
-/**
- * ProviderController implements the CRUD actions for PartProvider model.
- */
 class ProviderController extends Controller
 {
+
     public function behaviors()
     {
         $this->layout = "/admin.php";
@@ -73,7 +80,7 @@ class ProviderController extends Controller
     public function actionCreate()
     {
         $model = new PartProvider();
-//var_dump(Yii::$app->request->post());die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -92,7 +99,7 @@ class ProviderController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-//var_dump(Yii::$app->request->post());die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -130,5 +137,4 @@ class ProviderController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }

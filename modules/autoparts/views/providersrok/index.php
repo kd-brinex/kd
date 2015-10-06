@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Срок доставки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="row">
 <div class="part-provider-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -26,8 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
+            'provider_id',
             'providerName',
-//            'city_id',
+            'city_id',
             'cityName',
             'days',
 
@@ -36,3 +38,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 </div>
+    </div>

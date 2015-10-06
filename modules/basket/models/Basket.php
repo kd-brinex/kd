@@ -39,9 +39,10 @@ class Basket extends \yii\db\ActiveRecord
     {
         return [
             [['tovar_count', 'tovar_min','id'], 'integer'],
-//            [['tovarname'], 'string'],
+            [['description'], 'string'],
             [['tovar_price', 'session_id'], 'required'],
             [['tovar_price'], 'number'],
+            [['uid'], 'integer'],
             [['tovar_id'], 'string', 'max' => 9],
             [['session_id'], 'string', 'max' => 45]
         ];
@@ -107,20 +108,20 @@ class Basket extends \yii\db\ActiveRecord
         . 'values(:tovar_id,:tovar_count,:tovar_min,:tovar_price,:session_id)'
         .' ON DUPLICATE KEY UPDATE `tovar_count`=:tovar_count')->bindValues($params)->execute();
         }
-    else
+            else
         {
 //            var_dump($params);die;
-            $p = ['session_id' => $params['session_id'], 'tovar_id' => $params['tovar_id']];
+           $p = ['session_id' => $params['session_id'], 'tovar_id' => $params['tovar_id']];
            return $basket->createCommand('delete from `basket` where `session_id`=:session_id and `tovar_id`=:tovar_id')->bindValues($p)->execute();
         }
     }
-    public static function find(){
-        $c=Yii::$app->session;
-        $params['session_id']=$c->id;
-        $query = parent::find();
-        $query->andWhere('session_id=:session_id');
-        $query->addParams($params);
-        return $query;
-    }
+//    public static function find(){
+//        $c=Yii::$app->session;
+//        $params['session_id']=$c->id;
+//        $query = parent::find();
+//        $query->andWhere('session_id=:session_id');
+//        $query->addParams($params);
+//        return $query;
+//    }
 
 }

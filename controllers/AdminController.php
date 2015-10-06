@@ -5,11 +5,11 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\AccessRule;
-use yii\web\Controller;
+use app\controllers\MainController;;
 use yii\filters\VerbFilter;
 
 
-class AdminController extends Controller
+class AdminController extends MainController
 {
 public function behaviors()
     {
@@ -30,7 +30,7 @@ public function behaviors()
                     [
 //                        'actions' => ['view', 'search', ''],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['Parts','Admin'],
                     ],
                 ],
             ],
@@ -61,6 +61,10 @@ public function behaviors()
     public function actionIndex()
     {
         return $this->render('index',[]);
+    }
+
+    public function actionOrders(){
+        return $this->render('orders',[]);
     }
 
 }

@@ -38,7 +38,8 @@ class PartProviderUser extends \yii\db\ActiveRecord
             [['store_id', 'provider_id'], 'integer'],
             [['marga'], 'number'],
             [['name'], 'string', 'max' => 200],
-            [['login', 'password'], 'string', 'max' => 15]
+            [['login'], 'string', 'max' => 15],
+            [['password'], 'string', 'max' => 64]
         ];
     }
 
@@ -91,8 +92,7 @@ class PartProviderUser extends \yii\db\ActiveRecord
 
     public function getSrok()
     {
-//        var_dump($this->getCitySrok());
-        return $this->citySrok->days;
+        return ($this->citySrok)?$this->citySrok->days:'99';
     }
     public function getProviderDD(){
         $d=new PartProvider();

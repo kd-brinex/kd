@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -11,30 +12,13 @@ use yii\bootstrap\Button;
 AppAsset::register($this);
 $city_name = Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
 $menu = app\modules\tovar\models\TovarSearch::category_menu();
-$navbar = [
-    'options' => ['class' => 'navbar-nav navbar-right'],
-    'items' => [
-        ['label' => 'Информация', 'items' => [
-            ['label' => 'Главная страница', 'url' => ['/site/index']],
-            ['label' => 'О компании', 'url' => ['/site/about']],
-            ['label' => 'Обратная связь', 'url' => ['contact']],
-            ['label' => 'Партнеры', 'url' => ['partner']],
+//var_dump(Yii::$app->params);die;
+$items=Yii::$app->params['navbar']['all'];
+if (Yii::$app->user->isGuest){$items=array_merge($items,Yii::$app->params['navbar']['quest']);}
+    else
+    {$items=array_merge($items,Yii::$app->params['navbar']['user']);}
 
-        ]],
-        Yii::$app->user->isGuest ?
-            ['label' => 'Личный кабинет', 'items' => [
-                ['label' => 'Регистрация', 'url' => ['/user/registration/register']],
-                ['label' => 'Вход', 'url' => ['/user/security/login']],
-            ]]
-            : ['label' => 'Личный кабинет', 'items' => [
-            ['label' => 'Профиль пользователя', 'url' => ['/user/settings/profile']],
-            ['label' => 'Учетные данные', 'url' => ['/user/settings/account']],
-            ['label' => 'Соцсети', 'url' => ['/user/settings/networks']],
-            ['label' => 'Выход', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']]
-        ]],
-//                ['label' => 'Товар', 'items' => Yii::$app->params['catalog']['items']],
-        ['label' => 'Корзина', 'url' => ['/basket/basket']],
-    ]];
+$navbar =['options' => ['class' => 'navbar-nav navbar-right'],'items' =>$items ];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -82,28 +66,29 @@ NavBar::end();
 
 
         <?php
+
         Modal::begin([
-            'header' => '<h2>' . 'Города' . '</h2>',
+            'header' => '<div class="header_img"><img src="/img/kolesa-darom_logo.png"/></div><div class="cities pull-right"><input id="city_select" type="text" placeholder="Выберите город">
+
+            <ul class="cities_select pull-right invisible">
+            </ul>
+
+            </div>
+            <div class="clearfix"></div>
+            ',
             'toggleButton' => [
                 'tag' => 'button',
                 'class' => 'btn btn-lg btn-block btn-info',
                 'label' => $city_name,
                 'id' => 'button_city_list',
-
-            ]
-        ]);
-        echo Button::widget([
-            'label' => 'Выбрать город',
-            'options' => [
-                'class' => 'btn-lg btn-default',
-                'style' => 'margin:5px',
-                'onclick' => 'load_city_list()',
+                'onclick'=>'load_city_list()',
             ],
-            'tagName' => 'div'
         ]);
+
 
         echo '<div id="city_list"></div>';
         Modal::end(); ?>
+
         <footer class="footer">
             <div class="container">
                 <p class="pull-left">&copy; My Company <?= date('Y') ?></p>

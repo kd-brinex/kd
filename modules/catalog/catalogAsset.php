@@ -28,4 +28,7 @@ class catalogAsset extends AssetBundle
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
     ];
+    public $publishOptions = [
+        'forceCopy' => YII_DEBUG,
+    ];
 }

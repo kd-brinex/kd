@@ -16,7 +16,6 @@ class BasketSearch extends Basket{
     /**
      * @return mixed
      */
-    public $phpsessid;
     public function rules()
     {
         return [
@@ -35,17 +34,23 @@ class BasketSearch extends Basket{
     }
     public function search($params)
     {
-//        $c=Yii::$app->session;
-//        $c->open();
-//        $params['session_id']=$c->id;
+        $params[':new_session_id'] = Yii::$app->session->id;
+        $params[':old_session_id'] = Yii::$app->session->oldSessId;
+        $params[':uid'] = Yii::$app->user->id;
         $query = Basket::find();
-//        $query->andWhere('session_id=:session_id');
-//        $query->addParams($params);
-//        $query->andFilterWhere(['=', 'session_id', $c->id]);
+        $query->andWhere('session_id = :new_session_id');
+        $query->orWhere('session_id = :old_session_id');
+        $query->orWhere('uid = :uid');
+        $query->orderBy('id desc');
+        $query->addParams($params);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => false,
+            'pagination' =>false,
         ]);
         $this->load($params);
+
         return $dataProvider;
     }
 }

@@ -4,8 +4,8 @@ use yii\helpers\Html;
 $catalog = require(__DIR__ . '/catalog.php');
 
 return [
-    'Api'=>[
-        'tovar_tip'=>['tip_id',"category_id","name","store_id","price","count","ball","description",'image']
+    'Api' => [
+        'tovar_tip' => ['tip_id', "category_id", "name", "store_id", "price", "count", "ball", "description", 'image']
     ],
     /**
      * Настройки для модуля autoparts
@@ -16,13 +16,13 @@ return [
         'columns' => [
             'sklad',
             [
-                'attribute'=>'code',
-                'label'=>'Артикул',
+                'attribute' => 'code',
+                'label' => 'Артикул',
             ],
             [
                 'attribute' => 'name',
                 'label' => 'Название',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function ($model, $index, $widget) {
                     return $model['code'] . ' ' . $model['name'] . ' ' . $model['manufacture'];
                 },
@@ -48,26 +48,27 @@ return [
 //                    return $model['srokmin'] . (($model['srokmin'] < $model['srokmax']) ? '-' . $model['srokmax'] : '');
 //                },
             ],
-             [
-                 'attribute'=>'provider',
-                 'label'=>'Провайдер',
-             ],
             [
-                'attribute'=>'flagpostav',
-                'label'=>'Поставщик',
+                'attribute' => 'provider',
+                'label' => 'Провайдер',
             ],
             [
-                'attribute'=>'estimation',
-                'label'=>'Надежность',
+                'attribute' => 'flagpostav',
+                'label' => 'Поставщик',
+            ],
+            [
+                'attribute' => 'estimation',
+                'label' => 'Надежность',
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{basket}',
                 'buttons' => [
-                    'basket' => function ($url, $model) {
-                        return Html::a('<i class="icon-shopping-cart icon-white"></i>Заказать', $url, [
+                    'basket' => function ($url, $model, $key) {
+                        return Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [
                             'title' => 'Заказать',
-                            'class' => 'btn btn-primary btn-xs',
+                            'class' => 'btn btn-primary btn-xs orderbud' . $key . '',
+                            'onClick' => '$.ajax({ type :"POST", "data" : ' . \yii\helpers\JSON::encode($model) . ', url : "' . \yii\helpers\Url::to(['tovar/basket']) . '", success : function(d) { $(".orderBud' . $key . '").parent().html(d) } });return false;'
                         ]);
                     },
                 ],
@@ -78,12 +79,12 @@ return [
                 'class' => 'app\modules\autoparts\providers\Kd',
 //                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
                 'fields' => [
-                    'code'=>'code',
-                    "name" => "name", //Информация
+                    'code' => 'detailnumber',
+                    "name" => "detailname", //Информация
                     "manufacture" => "maker_name", //Производитель
                     "srokmin" => "srokmin", //Доставка
                     "srokmax" => "srokmax", //Доставка
-                    "sklad"=>"storeid",
+                    "sklad" => "storeid",
 
 
                 ],
@@ -95,17 +96,17 @@ return [
             ],
             'Over' => [
                 'class' => 'app\modules\autoparts\providers\Over',
-                'internal_day'=>4,
+                'internal_day' => 4,
 //                '_wsdl_uri' => 'http://new.kolesa-darom.ru/api/api/search',   //Ссылка на WSDL-документ сервиса
                 'fields' => [
                     'code' => 'code',
                     'name' => 'name',
-                    'manufacture' => 'maker_name',
+                    'manufacture' => 'manufacture',
                     'price' => 'price',
                     'quantity' => 'quantity',
                     'srokmin' => 'srokmin',
                     'srokmax' => 'srokmax',
-                    'estimation' =>'0',
+                    'estimation' => '0',
                     'lotquantity' => 'lotquantity',
                     'pricedate' => 'pricedate',
                     'skladid' => 'skladid',
@@ -155,7 +156,7 @@ return [
                     "manufacture" => "maker_name", //Производитель
                     "srokmin" => "days", //Доставка
                     "srokmax" => "dayswarranty", //Доставка
-                    "sklad"=>"regionname",
+                    "sklad" => "regionname",
 
                 ],
                 'marga' => 1.15,
@@ -168,6 +169,7 @@ return [
             'Emex' => [
                 'class' => 'app\modules\autoparts\providers\Emex',
                 '_wsdl_uri' => 'http://ws.emex.ru/EmExService.asmx?WSDL',   //Ссылка на WSDL-документ сервиса
+                'toBasket_wsdl_uri' => 'http://ws.emex.ru/EmEx_Basket.asmx?WSDL',
                 'fields' => [
                     "code" => "DetailNum",//Номер
                     "name" => "DetailNameRus", //Информация
@@ -177,17 +179,20 @@ return [
                     "price" => "ResultPrice",
                     "lotquantity" => "LotQuantity",
                     "quantity" => "Quantity",
-                    "skladid"=>"PriceLogo",
-                    "sklad"=>"PriceCountry",
-                    "groupid"=>"PriceGroup",
-                    "estimation"=>"DDPercent",
+                    "skladid" => "PriceLogo",
+                    "sklad" => "PriceCountry",
+                    "groupid" => "PriceGroup",
+                    "estimation" => "DDPercent",
                 ],
                 'marga' => 1.15,
                 'id' => 4,
                 'name' => 'Emex',
-                'methods' => ['FindDetails' => 'FindDetailAdv3'],
-
+                'methods' => [
+                    'FindDetails' => 'FindDetailAdv3',
+                    'toBasket' => 'InsertToBasket2'
                 ],
+
+            ],
             'Partkom' => [
                 'class' => 'app\modules\autoparts\providers\Partkom',
                 '_wsdl_uri' => 'http://www.part-kom.ru/webservice/search.php?wsdl',   //Ссылка на WSDL-документ сервиса
@@ -198,14 +203,14 @@ return [
                     "srokmin" => "minDeliveryDays", //Доставка
                     "srokmax" => "maxDeliveryDays", //Доставка
                     "lotquantity" => "minQuantity",
-                    "pricedate" =>"lastUpdateDate",
-                    "pricedestination"=>"PriceDestination",
-                    "statSuccessCount"=>"statSuccessCount",
-                    "statRefusalCount"=>"statRefusalCount",
-                    "statTotalOrderCount"=>"statTotalOrderCount",
-                    "skladid"=>"providerId",
-                    "sklad"=>"providerDescription",
-                    "groupid"=>"detailGroup",
+                    "pricedate" => "lastUpdateDate",
+                    "pricedestination" => "PriceDestination",
+                    "statSuccessCount" => "statSuccessCount",
+                    "statRefusalCount" => "statRefusalCount",
+                    "statTotalOrderCount" => "statTotalOrderCount",
+                    "skladid" => "providerId",
+                    "sklad" => "providerDescription",
+                    "groupid" => "detailGroup",
                 ],
                 'marga' => 1.15,
                 'id' => 2,
@@ -332,4 +337,31 @@ return [
             'name' => 'category_id',
         ],
     ],
+    'navbar' => [
+        'all' => [
+            ['label' => 'Корзина', 'url' => ['/basket/basket']],
+            ['label' => 'Информация', 'items' => [
+                ['label' => 'Главная страница', 'url' => ['/site/index']],
+                ['label' => 'О компании', 'url' => ['/site/about']],
+                ['label' => 'Обратная связь', 'url' => ['contact']],
+                ['label' => 'Партнеры', 'url' => ['partner']],
+
+            ]],
+           ],
+            'quest' => [
+                ['label' => 'Личный кабинет', 'items' => [
+                    ['label' => 'Регистрация', 'url' => ['/user/registration/register']],
+                    ['label' => 'Вход', 'url' => ['/user/security/login']],
+                ]]],
+            'user' => [
+                ['label' => 'Личный кабинет', 'items' => [
+//            ['label' => 'Профиль пользователя', 'url' => ['/user/settings/profile']],
+//            ['label' => 'Учетные данные', 'url' => ['/user/settings/account']],
+//            ['label' => 'Соцсети', 'url' => ['/user/settings/networks']],
+                    ['label' => 'Заказы', 'url' => ['/user/settings/orders']],
+                    ['label' => 'Выход', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']]
+                ]]],
+//                ['label' => 'Товар', 'items' => Yii::$app->params['catalog']['items']],
+
+        ],
 ];

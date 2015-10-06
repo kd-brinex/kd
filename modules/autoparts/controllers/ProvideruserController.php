@@ -5,7 +5,7 @@ namespace app\modules\autoparts\controllers;
 use Yii;
 use app\modules\autoparts\models\PartProviderUser;
 use app\modules\autoparts\models\PartProviderUserSearch;
-use yii\web\Controller;
+use app\controllers\MainController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -14,7 +14,7 @@ use yii\filters\AccessRule;
 /**
  * ProviderUserController implements the CRUD actions for PartProviderUser model.
  */
-class ProvideruserController extends Controller
+class ProvideruserController extends MainController
 {
     public function behaviors()
     {

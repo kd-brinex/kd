@@ -2,6 +2,7 @@
 
 namespace app\modules\api\models;
 
+use app\modules\autoparts\models\TStore;
 use app\modules\tovar\models\TovarSearch;
 use Yii;
 use yii\base\Model;
@@ -12,7 +13,14 @@ use yii\helpers\Url;
 
 class Api extends Model
 {
+
     public static function finddetails($params){
+        $p = array_merge(Yii::$app->request->post(),Yii::$app->request->get());
+        $params['store_id']=(!empty($p['store_id']))?$p['store_id']:109;
+        $tstore=new TStore();
+        $store=$tstore->findOne(['id'=> $params['store_id']]);
+        $params['city_id']=$store->city_id;
+//        var_dump($params);die;
         $details=Tovar::findDetails($params);
         $xml='<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDetailInfo>';
@@ -40,6 +48,8 @@ class Api extends Model
 <pid>'.$d['pid'].'</pid>
 <storeid>'.$d['storeid'].'</storeid>
 <FlagPostav>'.$d['flagpostav'].'</FlagPostav>
+<srok>'.$d['srok'].'</srok>
+<ball>'.$d['ball'].'</ball>
 </DetailInfo>';
 }
         $xml.='

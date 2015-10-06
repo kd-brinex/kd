@@ -22,7 +22,7 @@ class PartOverSearch extends PartOver
             [['id', 'quantity', 'srokmin', 'srokmax', 'lotquantity', 'skladid'], 'integer'],
             [['name', 'manufacture', 'pricedate', 'sklad', 'date_update'], 'safe'],
             [['price'], 'number'],
-            [['code'], 'string'],
+            [['code','flagpostav'], 'string'],
         ];
     }
 
@@ -44,12 +44,15 @@ class PartOverSearch extends PartOver
      */
     public function search($params)
     {
-        $query = PartOver::find();
+        $query = self::find();
+        if(!empty($params[':code'])){
+            $query ->andWhere('code = :code')
+                    ->addParams([':code'=>$params[':code']]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {

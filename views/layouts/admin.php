@@ -27,6 +27,8 @@ $navbar = [
             ['label' => 'Поставщики', 'url' => ['/admin/partsprovider']],
             ['label' => 'Учетные записи', 'url' => ['/admin/partsuser']],
             ['label' => 'Сроки', 'url' => ['/admin/partssrok']],
+            ['label' => 'Загрузка прайсов', 'url' => ['/admin/partsload']],
+            ['label' => 'Заказы', 'url' => ['/admin/orders']]
 
         ]],
         [    'label' => 'Пользователи', 'items' => [
@@ -54,6 +56,7 @@ $navbar = [
 
 
 <?php
+if (!Yii::$app->user->isGuest){
 NavBar::begin([
     'brandLabel' => 'Колеса даром',
     'brandUrl' => Yii::$app->homeUrl,
@@ -63,7 +66,7 @@ NavBar::begin([
 ]);
 
 echo Nav::widget($navbar);
-NavBar::end();
+NavBar::end();}
 ?>
 
 
@@ -71,7 +74,7 @@ NavBar::end();
 
     <div class="row row-offcanvas row-offcanvas-left">
 
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-xs-12 col-sm-12">
             <p class="pull-right visible-xs col-xs-12">
                 <button type="button" class="btn btn-toolbar btn-group-xs" data-toggle="offcanvas">Товары</button>
             </p>
