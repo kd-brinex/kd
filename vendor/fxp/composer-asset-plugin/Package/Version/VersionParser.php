@@ -21,10 +21,9 @@ use Composer\Package\Version\VersionParser as BaseVersionParser;
 class VersionParser extends BaseVersionParser
 {
     /**
-     * Returns the stability of a version.
+     * Returns the stability of a version
      *
-     * @param string $version
-     *
+     * @param  string $version
      * @return string
      */
     public static function parseStability($version)

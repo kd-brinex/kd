@@ -396,7 +396,6 @@ class VcsPackageFilterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getDataProvider
-     *
      * @param string $packageName
      * @param string $version
      * @param string $minimumStability

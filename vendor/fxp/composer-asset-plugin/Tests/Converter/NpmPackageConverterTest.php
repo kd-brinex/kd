@@ -61,16 +61,16 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
 
         $this->assertArrayHasKey('require', $composer);
         $this->assertSame(array(
-            'ASSET/library1' => '>= 1.0.0',
-            'ASSET/library2' => '>= 1.0.0',
+            'ASSET/library1'  => '>= 1.0.0',
+            'ASSET/library2'  => '>= 1.0.0',
             'ASSET/library2-0.9.0' => '0.9.0',
-            'ASSET/library3' => '*',
-            'ASSET/library4' => '1.2.3',
-            'ASSET/library5' => 'dev-default#0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
-            'ASSET/library6' => 'dev-branch',
-            'ASSET/library7' => 'dev-1.2.* || 1.2.*',
-            'ASSET/library8' => 'dev-1.2.x || 1.2.x',
-            'ASSET/library9' => 'dev-master',
+            'ASSET/library3'  => '*',
+            'ASSET/library4'  => '1.2.3',
+            'ASSET/library5'  => 'dev-default#0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+            'ASSET/library6'  => 'dev-branch',
+            'ASSET/library7'  => 'dev-1.2.* || 1.2.*',
+            'ASSET/library8'  => 'dev-1.2.x || 1.2.x',
+            'ASSET/library9'  => 'dev-master',
             'ASSET/library10' => '1.0.0',
             'ASSET/library11' => '*',
             'ASSET/library12' => '>=1 <2',
@@ -81,17 +81,14 @@ class NpmPackageConverterTest extends AbstractPackageConverterTest
             'ASSET/test-library17-file' => '*',
             'ASSET/test-library18-file' => '1.2.3',
             'ASSET/test-library19-file' => '*',
-            'ASSET/library20' => '1 || 2',
         ), $composer['require']);
 
         $this->assertArrayHasKey('require-dev', $composer);
-        $validDevRequires = $composer['require-dev'];
-        unset($validDevRequires['ASSET/library3']);
         $this->assertSame(array(
             'ASSET/dev-library1' => '>= 1.0.0',
             'ASSET/dev-library2' => '>= 1.0.0',
             'ASSET/dev-library2-0.9.0' => '0.9.0',
-        ), $validDevRequires);
+        ), $composer['require-dev']);
 
         $this->assertArrayHasKey('bin', $composer);
         $this->assertTrue(is_array($composer['bin']));
