@@ -20,6 +20,14 @@ $config = [
                         'user'    => 'user.php',
                     ],
                 ],
+                'autocatalog' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/autocatalog/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'autocatalog' => 'autocatalog.php',
+                    ],
+                ],
 
             ],
         ],
@@ -158,6 +166,9 @@ $config = [
                 '/autocatalog/<marka:\w+>' => '/autocatalog/autocatalog/cars',
                 '/autocatalog/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
                 '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog' => '/autocatalog/autocatalog/catalog',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalog/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
 //                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],

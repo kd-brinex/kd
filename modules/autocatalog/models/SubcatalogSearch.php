@@ -8,32 +8,33 @@ use yii\data\ActiveDataProvider;
  * Date: 02.10.15
  * Time: 16:02
  */
-class CatalogsSearch extends ActiveRecord
+class SubcatalogSearch extends ActiveRecord
 {
-//    public function rules()
-//    {
-//        return [
-////            [['type_code','lang_code','name','cat_code','value'], 'safe'],
-//        ];
-//    }
-//
-//    public function attributeLabels()
-//    {
-//        return [
-////            '' => 'Регион',
-//        ];
-//    }
+    public function rules()
+    {
+        return [
+            [['cat_folder','name','cat_code','img'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+//            '' => 'Регион',
+        ];
+    }
 
     public static function tableName()
     {
-        return 'v_catalogs';
+        return 'v_subcatalog';
     }
 
     public function search($params=[])
     {
+//        var_dump($params);die;
         $query =parent::find()
             ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere("value<>''");
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,

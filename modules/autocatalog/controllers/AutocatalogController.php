@@ -4,10 +4,14 @@ namespace app\modules\autocatalog\controllers;
 
 use app\controllers\MainController;
 
+use app\modules\autocatalog\models\CatalogSearch;
+use app\modules\autocatalog\models\PartsSearch;
 use app\modules\autocatalog\models\FilterModel;
+use app\modules\autocatalog\models\InfoSearch;
 use app\modules\autocatalog\models\ModelsSearch;
 use app\modules\autocatalog\models\CarsSearch;
 use app\modules\autocatalog\models\CatalogsSearch;
+use app\modules\autocatalog\models\SubcatalogSearch;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\db\ActiveRecord;
@@ -41,7 +45,7 @@ class AutocatalogController extends MainController
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'model', 'vin', 'frame','details','cars','models','catalogs'],
+                        'actions' => ['index', 'model', 'vin', 'frame','details','cars','models','catalogs','subcatalog','catalog','parts'],
                         'roles' => ['?', '@']
                     ],
                     [
@@ -98,14 +102,44 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $models = new CatalogsSearch();
-        $provider= $models->search($params);
+        $info = new InfoSearch();
 
         return $this->render('catalogs', [
-            'provider' => $provider,
-//            'filterModel' => $models,
+            'provider' => $models->search($params),
+            'info'=>$info->search($params),
             'params' =>$params
         ]);
 
+    }
+    public function actionCatalog()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $post = \Yii::$app->request->post();
+        $allparams=array_merge($params,$post);
+        $models= new CatalogSearch();
+        return $this->render('catalog', [
+            'provider' => $models->search($allparams),
+            'params' =>$allparams,
+        ]);
+    }
+    public function actionSubcatalog()
+    {
+        $params = \Yii::$app->request->queryParams;
+        $models = new SubcatalogSearch();
+        return $this->render('subcatalog', [
+            'provider' => $models->search($params),
+            'params' =>$params,
+        ]);
+    }
+    public function actionParts()
+    {
+
+        $params = \Yii::$app->request->queryParams;
+        $models = new PartsSearch();
+        return $this->render('parts', [
+            'models' => $models->search($params),
+            'params' =>$params,
+        ]);
     }
     public function actionVin()
     {
