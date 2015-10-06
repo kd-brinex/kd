@@ -7,7 +7,9 @@
  */
 
 use kartik\grid\GridView;
+use yii\widgets\DetailView;
 use \yii\helpers\Html;
+
 /**
  * Created by PhpStorm.
  * User: marat
@@ -15,31 +17,62 @@ use \yii\helpers\Html;
  * Time: 11:22
  */
 
-//var_dump($provider);die;
+//var_dump($info->models);die;
 ?>
+<div class="auto-info">
+    <?= DetailView::widget([
+            'model' => $info->models[0],
+            'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
+            'attributes' => [
+                'cat_code',
+                'marka',
+                'family',
+                'cat_name',
+
+                [
+                    'attribute' => 'vehicle_type',
+                    'format'=>'raw',
+                    'value' => Html::tag('span',Yii::t('autocatalog', $info->models[0]->vehicle_type),['class'=>'upper']),
+
+                ],
+
+            ],
+        ]
+    ); ?>
+</div>
 <div class="models">
+    <?= Html::beginForm($info->models[0]->cat_code.'/catalog','post',['name'=>'catalog']);?>
     <?= GridView::widget([
-        'dataProvider'=>$provider,
+        'dataProvider' => $provider,
 //        'showHeader' => false,
-        'layout' =>"{items}\n{pager}",
-        'panelTemplate'=>'<div class="panel {type}">{sort}</div>',
+        'layout' => "{items}\n{pager}",
+        'panelTemplate' => '<div class="panel {type}">{sort}</div>',
 //        'bootstrap' =>false,
-        'columns' =>[
-            ['attribute'=>'name',
+        'columns' => [
+            ['attribute' => 'name',
                 'label' => 'Характеристики',
+                'value' => function ($model, $key, $index, $widget) {
+                    return Yii::t('autocatalog', $model['name']);
+
+                }
             ],
             [
-                'attribute'=>'value',
-                'format'=>'raw',
-                'label'=>'Варианты',
-                'value'=>function ($model, $key, $index, $widget) {
-                    $a_value=explode(';',$model['value']);
-                        $html=Html::radioList($model['type_code'],null,$a_value,[]);
+                'attribute' => 'value',
+                'format' => 'raw',
+                'label' => 'Варианты',
+                'value' => function ($model, $key, $index, $widget) {
+//                    var_dump($model);die;
+                    $a_value = explode(';', $model['value']);
+                    foreach($a_value as $v){$val[$v]=$v;}
+//                    \yii\helpers\ArrayHelper::index($a_value,);
+                    $html = Html::radioList($model['type_code'], [], $val, []);
                     return $html;
                 },],
 
 
         ],
 
-    ]);?>
+    ]); ?>
 </div>
+<?= Html::submitButton('Загрузить');?>
+<?= Html::endForm();?>

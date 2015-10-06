@@ -50,8 +50,8 @@ function find_model(ftext) {
 
 function scroll(e) {
     h = $('page-scroll').height();
-    $('.page-scroll').scrollTop(0);
+    $('.page-scroll').scrollTop(100);
     $('.page-scroll').animate({
-        scrollTop: e.offset().top - 40
+        scrollTop: e.offset().top
     }, 500);
 }
