@@ -53,7 +53,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 
 }
 .part-bonus {
-    background-image: url(/img2/goods-bonuspoint.png);
+    background-image: url(/img/goods-bonuspoint.png);
     background-repeat: no-repeat;
     text-align:center;
 }
@@ -83,8 +83,9 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 }
 
 .square {
-    width: 12px;
-    height: 12px;
+    height: 20px;
+    margin: 0 auto;
+    width: 40px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;

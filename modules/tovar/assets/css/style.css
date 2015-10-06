@@ -1,9 +1,7 @@
 #w0{
     margin-bottom:10px;
 }
-#table00,#table11,#table22{
-    display: none;
-}
+
 .table{
 
 
@@ -26,14 +24,7 @@
     background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
     background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
     padding:0;
-
-
 }
-
-
-
-
-
 
 
 tbody>tr>td
@@ -48,38 +39,32 @@ tbody>tr>td
 
 
 }
-.table>thead>tr>th:hover{
+.table .thd:hover{
     cursor:pointer;
 }
 
 .fine {
     background: #28d228 none repeat scroll 0 0;
-    width: 20px;
+    /*width: 20px;
     height:20px;
     margin:0 auto;
-    border-radius:3px;
-}
-.finee {
-    background: #28d228 none repeat scroll 0 0;
-    width: 20px;
-    height:20px;
-    margin:0 auto;
-    border-radius:3px;
+    border-radius:3px;*/
 }
 .good {
     background: #f99b17 none repeat scroll 0 0;
-    width: 20px;
+    /*width: 20px;
     height:20px;
     margin:0 auto;
-    border-radius:3px;
+    border-radius:3px;*/
 }
 .bad {
     background: #ff0000 none repeat scroll 0 0;
-    width: 20px;
+    /*width: 20px;
     height:20px;
     margin:0 auto;
-    border-radius:3px;
+    border-radius:3px;*/
 }
 .red{
     color:red !important;
 }
+
