@@ -59,6 +59,7 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
+//        var_dump($data);
         $config = \Yii::$app->getModule('autoparts')->params;
         $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
         $data = is_object($data) ? (array)$data : $data;
