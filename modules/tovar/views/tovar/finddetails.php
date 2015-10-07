@@ -16,22 +16,20 @@ if (!empty($provider->allModels)) {
 
     for ($ii = 0; $ii < 3; $ii++) {
         if (!isset($mas[$ii]))continue;
-        /*echo "<pre>";
-print_r($mas[$ii]);
-        echo "</pre>";*/
 
         $tablee[$ii] = "
         <table class='table table-bordered' id = 'table$ii'  >
         <thead>
         <tr>
-        <th class='thd'>Производитель</th>
-        <th class='thd'>Номер детали</th>
-        <th class='thd'>Наименование</th>
-        <th class='thd'>Наличие (шт.)</th>
-        <th class='thd'>Заказ от(шт.)</th>
-        <th class='thd dual'>Срок ожид.-гарант.</th>
-        <th class='thd'>Цена</th>
-        <th class='thd'>Баллы</th>
+
+        <th>Артикул</th>
+        <th>Производитель</th>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Заказ от(шт.)</th>
+        <th>Доставка</th>
+        <th>Баллы</th>
         <th></th>
         </tr>
         </thead>
@@ -41,19 +39,22 @@ print_r($mas[$ii]);
         for ($i = 0; $i < count($mas[$ii]); $i++) {
             if (!empty($mas[$ii][$i]['name'])) {
                 $tablee[$ii] .= '<tr>';
-                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['manufacture'] . '</td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['code'] . '</td>';
+                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['manufacture'] . '</td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['name'] . '</td>';
-
-                if ($mas[$ii][$i]['estimation'] >= 85) $cl = 'fine';
-                elseif ($mas[$ii][$i]['estimation'] < 25) $cl = 'bad';
-                else $cl = 'good';
-
-                $tablee[$ii] .= '<td><div title="Надежность поставщика (KD' . $mas[$ii][$i]['pid'] .'-'.$mas[$ii][$i]['storeid']. ')' . $mas[$ii][$i]['estimation'] . '% " class="square ' . $cl . '">' . $mas[$ii][$i]['quantity'] . '</div></td>';
-                $tablee[$ii] .= '<td title="Минимальная партия заказа по которой действует цена на товар" '.($mas[$ii][$i]['lotquantity'] > 1 ? 'class="red"' : '').'>' . $mas[$ii][$i]['lotquantity'] . '</td>';
-                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['srok'] . '</td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['price'] . '</td>';
-                $tablee[$ii] .= '<td title="Количество начисляемых баллов. Баллы начисляются при покупке товара через сайт! Начисленные баллы становятся активными по истечении 14 дней с момента покупки.">' . $mas[$ii][$i]['ball'] . '<img src="/img/goods-bonuspoint.png" /></td>';
+                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['quantity'] . '</td>';
+//                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['provider'] . '</td>';
+                if ($mas[$ii][$i]['lotquantity'] > 1) {
+                    $tablee[$ii] .= '<td><div class="red">' . $mas[$ii][$i]['lotquantity'] . '</div></td>';
+                } else {
+                    $tablee[$ii] .= '<td>' . $mas[$ii][$i]['lotquantity'] . '</td>';
+                }
+                if ($mas[$ii][$i]['estimation'] >= 90) $cl = 'fine';
+                elseif ($mas[$ii][$i]['estimation'] < 90) $cl = 'good';
+                else $cl = 'bad';
+                $tablee[$ii] .= '<td><div title="Надежность поставщика (KD' . $mas[$ii][$i]['pid'] .'-'.$mas[$ii][$i]['storeid']. ')' . $mas[$ii][$i]['estimation'] . '% " class="' . $cl . '">' . $mas[$ii][$i]['srokmax'] . '</div></td>';
+                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['ball'] . '</td>';
                 $key = $ii . '-' . $i;
                 $tablee[$ii] .= '<td>' . Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [
                         'title' => 'Заказать',
