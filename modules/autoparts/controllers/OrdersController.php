@@ -9,6 +9,7 @@
 namespace app\modules\autoparts\controllers;
 
 use app\modules\tovar\models\Tovar;
+use app\modules\user\models\Orders;
 use Yii;
 
 use yii\base\Model;
@@ -60,9 +61,18 @@ class OrdersController extends Controller
     }
 
     public function actionDelete($id){
-        if(($model = OrdersSearch::findOne($id)) !== null)
-            return $model->delete() ? $id : false;
-
+        if(($model = OrdersSearch::findOne($id)) !== null) {
+            if($model->delete()) {
+                $relatedDetail = OrdersSearch::findOne($model->related_detail);
+                $relatedDetail->status = (int)$model->minState;
+                $result = Json::encode([
+                        'id' => $model->id,
+                        'rel_det' => $model->related_detail,
+                        'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_IN_WORK]
+                ]);
+                return $relatedDetail->save() ? $result : false;
+            }
+        }
         return false;
     }
 

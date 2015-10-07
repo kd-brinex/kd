@@ -98,7 +98,7 @@ class Orders extends \yii\db\ActiveRecord
     public function getOrderClass()
     {
         return [
-            self::ORDER_IN_WORK => 'ORDER_IN_WORK',
+            self::ORDER_IN_WORK => 'ORDER_IN_W  ORK',
             self::ORDER_ADOPTED => 'ORDER_ADOPTED',
             self::ORDER_SHIPPED => 'ORDER_SHIPPED',
             self::ORDER_SHIPPED_IN_SHOP => 'ORDER_SHIPPED_IN_SHOP',
@@ -139,12 +139,15 @@ class Orders extends \yii\db\ActiveRecord
     }
 
     public function getMinState(){
+        $states = [];
         $positions = $this->find()->asArray()->select('status')->where('order_id = :order_id AND related_detail > 0', [':order_id' => $this->order->id])->all();
         foreach($positions as $position){
             $states[] = $position['status'];
         }
+        if(!empty($states))
+            $minStatus = min($states);
 
-        return min($states);
+        return !empty($minStatus) ? $minStatus : false;
     }
 
     public function getStore(){

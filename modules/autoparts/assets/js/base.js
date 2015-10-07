@@ -62,15 +62,36 @@ function pricing(id, but){
     header.after('<div class="loader"></div>');
 
     $.ajax({
+
         url : "/autoparts/orders/pricing",
         type : "POST",
         data : {'order' : id},
+        //beforeSend: function(XMLHttpRequest)
+        //{
+        //    //Upload progress
+        //    //XMLHttpRequest.upload.addEventListener("progress", function(evt){
+        //    //    if (evt.lengthComputable) {
+        //    //        var percentComplete = evt.loaded / evt.total;
+        //    //        //Do something with upload progress
+        //    //        console.log(percentComplete);
+        //    //    }
+        //    //}, false);
+        //    //Download progress
+        //    XMLHttpRequest.addEventListener("progress", function(evt){
+        //        if (evt.lengthComputable) {
+        //            var percentComplete = evt.loaded / evt.total;
+        //            //Do something with download progress
+        //            console.log(percentComplete);
+        //        }
+        //    }, false);
+        //},
         error: function(XHR, status, errorThrown){
             var error_text = 'Ошибка сервера('+status+'): <strong style="color:#ff5244">'+errorThrown+'.</strong>';
             $('.loader').remove();
             header.after('<div class="modal-body" id="modal-body-2"></div>');
             $('#modal-body-2').html(error_text);
         },
+
         success : function(data){
             $('#tableToggler').show();
             $('.loader').remove();
@@ -140,8 +161,12 @@ function inOrder(obj, url, data){
 function deleteDetail(url){
     $.ajax({
         url : url,
+        dataType : 'JSON',
         success : function(data){
-            $('#manager-order-grid-container').find('table').find('tr[data-key='+parseInt(data)+']').remove();
+            var table = $('#manager-order-grid-container').find('table');
+            table.find('tr[data-key='+parseInt(data.id)+']').remove();
+            table.find('tr[data-key='+parseInt(data.rel_det)+']').find('td.detailStatus').text(data.status_text);
+
         }
     });
 }

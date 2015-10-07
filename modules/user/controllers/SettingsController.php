@@ -80,7 +80,7 @@ class SettingsController extends BaseSettingsController
     public function actionOrder(){
         if(Yii::$app->request->isAjax) {
             $model = new OrdersSearch();
-            $orders = $model->search('order_id = :order_id', [':order_id' => Yii::$app->request->post('id')]);
+            $orders = $model->search('order_id = :order_id AND related_detail IS NULL', [':order_id' => Yii::$app->request->post('id')]);
 
             return $this->renderAjax('_order', ['orders' => $orders, 'searchModel' => $model]);
         }
