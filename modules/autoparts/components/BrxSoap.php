@@ -37,7 +37,7 @@ class BrxSoap extends Component{
     /**
      * @var string
      */
-    public $wsdl_dir = "tmp";
+    public $wsdl_dir = "/runtime/cache/wsdl_tmp";
 
     /**
      * @var int
@@ -52,7 +52,7 @@ class BrxSoap extends Component{
     /**
      * @var int
      */
-    public $wsdl_cache_limit = 5;
+    public $wsdl_cache_limit = 15;
 
     /**
      * Массив преднастроек SoapClient
