@@ -757,10 +757,11 @@ FROM
     if(!empty($prms['sector_format_arr'])){ //array
       $where[] = "sector_format IN ('".implode("','", $prms['sector_format_arr'])."')";
     }
-    
+
     $res = $this->mysqli->query_prepare_exec($sql, $where);
+
     $res = $this::cat_map_minor_section_unpack_compatibility($res);
-    
+//    var_dump($res);die;
     // применяемость
     if(!empty($prms['ucc']) or !empty($prms['vin'])){
       foreach($res as $k=>$row){

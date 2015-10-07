@@ -31,6 +31,7 @@ class CatalogSearch extends ActiveRecord
 
     public function search($params=[])
     {
+//        var_dump($params);die;
         $query =parent::find()
             ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']]);
 
