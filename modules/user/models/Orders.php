@@ -56,6 +56,7 @@ class Orders extends \yii\db\ActiveRecord
             [['reference'], 'string', 'max' => 50],
             [['part_name'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 255],
+            [['manufacture'],'string','max'=>45],
         ];
     }
 

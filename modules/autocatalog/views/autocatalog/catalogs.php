@@ -62,8 +62,13 @@ use \yii\helpers\Html;
                 'label' => 'Варианты',
                 'value' => function ($model, $key, $index, $widget) {
 //                    var_dump($model);die;
-                    $a_value = explode(';', $model['value']);
-                    foreach($a_value as $v){$val[$v]=$v;}
+
+                    $key=explode(';', $model['key']);
+                    $value=explode(';', $model['value']);
+//                    var_dump(array_combine($key,$value));die;
+                    $val=array_combine($key,$value);
+
+//                    foreach($a_value as $v){$val[$v]=$v;}
 //                    \yii\helpers\ArrayHelper::index($a_value,);
                     $html = Html::radioList($model['type_code'], [], $val, []);
                     return $html;
