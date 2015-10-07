@@ -90,12 +90,3 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
     -webkit-border-radius: 3px;
     border-radius: 3px;
 }
-.fine{
-    background: #28d228;
-}
-.good{
-    background: #f99b17;
-}
-.bad{
-    background: #ff0000;
-}

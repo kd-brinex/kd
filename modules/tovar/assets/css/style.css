@@ -45,24 +45,12 @@ tbody>tr>td
 
 .fine {
     background: #28d228 none repeat scroll 0 0;
-    /*width: 20px;
-    height:20px;
-    margin:0 auto;
-    border-radius:3px;*/
 }
 .good {
     background: #f99b17 none repeat scroll 0 0;
-    /*width: 20px;
-    height:20px;
-    margin:0 auto;
-    border-radius:3px;*/
 }
 .bad {
     background: #ff0000 none repeat scroll 0 0;
-    /*width: 20px;
-    height:20px;
-    margin:0 auto;
-    border-radius:3px;*/
 }
 .red{
     color:red !important;
