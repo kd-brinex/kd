@@ -16,6 +16,10 @@ use yii\helpers\Html;
     'dataProvider' => $model,
     'responsive' => true,
     'hover' => true,
+    'resizableColumns' => false,
+    'rowOptions' => function($model){
+        return ['class' => empty($model->related_detail) ? GridView::TYPE_SUCCESS : GridView::TYPE_WARNING];
+    },
     'columns' => [
         [
             'label' => 'Артикул',
@@ -37,7 +41,7 @@ use yii\helpers\Html;
             'value' => 'part_price'
         ],
         [
-            'label' => 'Количество',
+            'label' => 'Кол-во',
             'value' => 'quantity'
         ],
         [
@@ -64,22 +68,38 @@ use yii\helpers\Html;
         [
             'label' => 'Статус',
             'attribute' => 'state',
+            'contentOptions' => ['class' => 'detailStatus'],
             'format' => 'raw',
             'value' => function($model){
-                return Html::activeDropDownList($model, 'status', \yii\helpers\ArrayHelper::map(\app\modules\user\models\OrdersState::find()->all(), 'id', 'status_name'), ['class' => 'form-control', 'style'=> 'min-width:125px', 'onChange' => 'updateStatus(this)']);
+                return !isset($model['related_detail']) ? $model['state']['status_name'] : Html::activeDropDownList($model, 'status', \yii\helpers\ArrayHelper::map(\app\modules\user\models\OrdersState::find()->all(), 'id', 'status_name'), ['class' => 'form-control', 'style'=> 'min-width:125px', 'onChange' => 'updateStatus(this)']);
             },
+            'vAlign' => 'middle'
         ],
         [
             'label' => 'Комментарий',
             'value' => 'description'
         ],
+        [
+            'class' => '\kartik\grid\ActionColumn',
+            'header' => '',
+            'template' => '{delete}',
+            'contentOptions' => ['class' => 'btn-group-sm'],
+            'buttons' => [
+                'delete' => function($url, $model){
+                    return isset($model['related_detail']) ? Html::button('<span class="glyphicon glyphicon-remove"></span>', [
+                        'class' => 'btn btn-danger',
+                        'onClick' => 'deleteDetail("'.$url.'")'
+                    ]) : '';
+                }
+            ]
+        ]
     ],
     'toolbar' => [
         [
             'content' =>  Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
                     'title'=>'Проценка',
                     'class'=>'btn btn-success',
-                    'onClick' => 'pricing('.$order->id.'); return false'
+                    'onClick' => 'pricing('.$order->id.', this); return false'
             ]),
             'options' => ['class' => 'btn-group-sm']
         ],

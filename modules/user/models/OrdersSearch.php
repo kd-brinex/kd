@@ -9,7 +9,7 @@ use yii\data\ActiveDataProvider;
 /**
  * Ordersyntax error, unexpected 'public'Search represents the model behind the search form about `app\modules\basket\models\Order`.
  */
-class OrdersSearch extends Orders
+class   OrdersSearch extends Orders
 {
     /**
      * @inheritdoc
