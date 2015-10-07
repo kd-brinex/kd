@@ -2,59 +2,39 @@
 /**
  * @author: Eugene Brx
  * @email: compuniti@mail.ru
- * @date: 29.09.15
- * @time: 10:25
+ * @date: 02.10.15
+ * @time: 14:31
  */
+
 use \kartik\grid\GridView;
 use yii\helpers\Html;
 ?>
 
 <?=GridView::widget([
-    'id' => 'pricing-order-grid',
-    'dataProvider' => $model,
+    'id' => 'collapse-order-detail-grid-'.rand(5,10),
+    'dataProvider' => $offers,
     'responsive' => true,
     'hover' => true,
-    'showPageSummary' => true,
+    'striped' => true,
     'resizableColumns' => false,
-
     'toolbar' => [
         [
             'options' => ['class' => 'btn-group-sm']
         ],
     ],
     'panel' => [
-        'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Позиции</h3>',
-        'before' => Html::a('<i class="glyphicon glyphicon-triangle-left"></i> К позициям', ['#'], ['class' => 'btn btn-primary', 'onClick' => 'goTo(1); return false']),
+        'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Другие предложения</h3>',
         'beforeOptions' => ['class' => 'btn-group-sm'],
         'footer' => false,
     ],
     'columns' => [
-
-        [
-            'class' => 'kartik\grid\ExpandRowColumn',
-            'expandIcon' => '<i class="glyphicon glyphicon-chevron-down"></i>',
-            'collapseIcon' => '<i class="glyphicon glyphicon-chevron-up"></i>',
-            'detailAnimationDuration' => 'fast',
-            'value' => function () {
-                return GridView::ROW_COLLAPSED;
-            },
-            'detail' => function ($model) use ($offersData, $orderedDetails){
-                $model['code'] = strpos($model['code'], '|r') ? explode('|',$model['code'])[0] : $model['code'];
-                return Yii::$app->controller->renderPartial('_pricingCollapse', ['offers' => $offersData[$model['code']], 'orderedDetail' => $orderedDetails[0]]);
-            },
-            'detailOptions'=>[
-                'class'=> 'expanded-row',
-            ],
-        ],
         [
             'label' => 'Артикул',
             'attribute' => 'code',
-            'contentOptions' => function($model){
-                return strpos($model['code'], '|r') ? ['style' => 'background-color:#FF5252 !important'] : [];
-            },
             'value' => function($model){
-                return strpos($model['code'], '|r') ? explode('|',$model['code'])[0] : $model['code'];
-            }
+                return strpos($model['code'], '|r') ? explode('|', $model['code'])[0] : $model['code'];
+            },
+            'group' => true,
         ],
         [
             'label' => 'Производитель',
@@ -65,7 +45,9 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return $model['manufacture'] == '|r' || strpos($model['manufacture'], '|r') ? explode('|',$model['manufacture'])[0] : $model['manufacture'];
-            }
+            },
+            'group' => true,
+            'subGroupOf' => 0
         ],
         [
             'label' => 'Название',
@@ -76,6 +58,8 @@ use yii\helpers\Html;
             'value' => function($model){
                 return strpos($model['name'], '|r') ? explode('|',$model['name'])[0] : $model['name'];
             },
+            'group' => true,
+            'subGroupOf' => 0
         ],
         [
             'label' => 'Кол-во',
@@ -88,7 +72,9 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['quantity'];
-            }
+            },
+            'group' => true,
+            'subGroupOf' => 0,
         ],
         [
             'label' => 'Кол-во в заказ',
@@ -113,7 +99,9 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['price'];
-            }
+            },
+            'group' => true,
+            'subGroupOf' => 0
         ],
         [
             'label' => 'Срок',
@@ -127,7 +115,9 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['srokmax'];
-            }
+            },
+            'group' => true,
+            'subGroupOf' => 0
         ],
         [
             'label' => 'Поставщик',
@@ -138,6 +128,8 @@ use yii\helpers\Html;
             'value' => function($model){
                 return strpos($model['provider'], '|r') ? explode('|',$model['provider'])[0] : $model['provider'];
             },
+            'group' => true,
+            'subGroupOf' => 0
         ],
         [
             'label' => 'Поставщик',
@@ -169,14 +161,14 @@ use yii\helpers\Html;
             'template' => '{in-order}',
             'contentOptions' => ['class' => 'btn-group-sm'],
             'buttons' => [
-                'in-order' => function($url, $model) use ($orderedDetails){
+                'in-order' => function($url, $model) use ($orderedDetail){
                     $order = [
-                        'order_id' => $orderedDetails[0]->order_id,
-                        'detail_id' => $orderedDetails[0]->id
+                        'order_id' => $orderedDetail->order_id,
+                        'detail_id' => $orderedDetail->id
                     ];
                     return Html::button('<span class="glyphicon glyphicon-plus"></span> В ЗАКАЗ', [
-                        'class' => 'btn btn-primary',
-                        'onClick' => 'inOrder(this, "'.$url.'", '.\yii\helpers\Json::encode(array_merge($model, $order)).')'
+                                    'class' => 'btn btn-primary',
+                                    'onClick' => 'inOrder(this, "'.$url.'", '.\yii\helpers\Json::encode(array_merge($model, $order)).')'
                     ]);
                 }
             ]
