@@ -10,11 +10,12 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 $cat='';
 $to='';
-
+//var_dump($catalog);die;
 foreach($catalog as $key=>$marka)
 {
-    $cat .= Html::tag('div',Html::a($marka->prop['marka'],Url::toRoute($key)),['class'=>'autocatalog_marka']);
-    $to .= Html::tag('div',Html::a($marka->prop['marka'],Url::toRoute('to/'.$key)),['class'=>'autocatalog_marka']);
+//    var_dump($marka);die;
+    $cat .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('/autocatalogs/'.$key)),['class'=>'autocatalog_marka']);
+    $to .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('to/'.$key)),['class'=>'autocatalog_marka']);
 }
 $items=[
     [

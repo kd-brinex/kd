@@ -20,6 +20,14 @@ $config = [
                         'user'    => 'user.php',
                     ],
                 ],
+                'autocatalog' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/autocatalog/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'autocatalog' => 'autocatalog.php',
+                    ],
+                ],
 
             ],
         ],
@@ -154,10 +162,14 @@ $config = [
                 'toyota/album' => 'toyota/catalog/album',
                 'toyota/page' => 'toyota/catalog/page',
 
-                'autocatalog' => 'autocatalog/autocatalog',
-
-
-                'kia' => 'kia/autocatalog',
+                'autocatalogs' => '/autocatalog/autocatalog',
+                '/autocatalogs/<marka:\w+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog' => '/autocatalog/autocatalog/catalog',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+//                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
 
@@ -272,9 +284,9 @@ $config = [
             'class' => 'app\modules\autocatalog\Autocatalog',
             'layout' => 'autocatalog',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
-            'models' => [
+            'model' => [
                 'hyundai' => [
-                    'class' => 'app\modules\autocatalog\models\Hyundai',
+                    'class' => 'app\modules\autocatalog\models\CCar',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',

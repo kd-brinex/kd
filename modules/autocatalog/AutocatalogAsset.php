@@ -21,11 +21,12 @@ class AutocatalogAsset extends AssetBundle
     public $sourcePath = '@app/modules/autocatalog/assets';
     public $css = [
         'css/acatalog.css',
+        'css/cars.css',
 
     ];
     public $js = [
-        'js/iframe.js'
-//        'js/page.js'
+        'js/iframe.js',
+        'js/page.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',

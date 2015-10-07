@@ -7,8 +7,25 @@
     border-radius: 5px;
     /*margin-right: 5px;*/
     margin-bottom: 30px;
+    padding: 5%;
     width:100%;
 
+
+}
+.acatalog-block img {
+    width: 100%;
+    height: 100%;
+    /*top:5px;*/
+    /*border: 0;*/
+
+
+}
+.acatalog-block a {
+    position: relative;
+    top: -50%;
+    font-weight: bold;
+    /*color :#000;*/
+    background-color: #fff;
 }
 .acatalog-tabs {
     margin: 10px;
@@ -32,8 +49,8 @@ table.submodel{
 }
 .page_label {
     position: absolute;
-    font-size: 17px;
-    line-height: 17px;
+    font-size: 12px;
+    line-height: 12px;
     text-align: center;
     z-index: 999;
     background-color: #ffffff;
@@ -41,6 +58,7 @@ table.submodel{
     border-color: #327E04;
     border-style: solid;
     border-width: 2px;
+    text-align: center;
 }
 .page_image {
     left: 0px;
@@ -159,4 +177,9 @@ fieldset[disabled] .btn-primary.active {
 .btn-primary .badge {
     color: #f0ad4e;
     background-color: #fff;
+}
+/*Страница выбора каталога catalogs*/
+.upper
+{
+    text-transform: uppercase;
 }
