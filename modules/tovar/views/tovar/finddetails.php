@@ -94,7 +94,7 @@ if (!empty($provider->allModels)) {
                 'content' => "$table[1]",
             ],
             [
-                'label' => 'Неоригинальная замена ('.(isset($mas[3])? count($mas[3]) : 0).')',
+                'label' => 'Неоригинальная замена ('.(isset($mas[2])? count($mas[2]) : 0).')',
                 'headerOptions' => [
                     'id' => 'ww3'
                 ],
