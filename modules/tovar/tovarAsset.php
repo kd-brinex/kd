@@ -19,7 +19,8 @@ class tovarAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
-        'css/style.css'
+        'css/style.css',
+        'css/style-offer.css',
     ];
     public $js = [
         'js/jquery.tablesorter.js',
