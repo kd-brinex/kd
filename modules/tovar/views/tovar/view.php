@@ -2,7 +2,8 @@
 use yii\bootstrap\Collapse;
 use \yii\grid\GridView;
 use yii\widgets\ListView;
-Yii::$app->view->registerCssFile('/css/style-offer.css');
+//Yii::$app->view->registerCssFile('/css/style-offer.css');
+\app\modules\tovar\tovarAsset::register($this);
 /**
  * Created by PhpStorm.
  * User: marat
