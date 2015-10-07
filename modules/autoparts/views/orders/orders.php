@@ -88,7 +88,7 @@ Modal::end();
             ],
             [
                 'format' => 'raw',
-                'value' => function(){
+                'value' => function($model){
                     return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
                 }
             ]

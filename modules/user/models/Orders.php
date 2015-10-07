@@ -137,6 +137,15 @@ class Orders extends \yii\db\ActiveRecord
         return ArrayHelper::map($states, 'id', 'status_name');
     }
 
+    public function getMinState(){
+        $positions = $this->find()->asArray()->select('status')->where('order_id = :order_id AND related_detail > 0', [':order_id' => $this->order->id])->all();
+        foreach($positions as $position){
+            $states[] = $position['status'];
+        }
+
+        return min($states);
+    }
+
     public function getStore(){
         return $this->hasOne(TStore::className(), ['id' => 'store_id']);
     }
