@@ -115,7 +115,7 @@ class OrdersController extends Controller
 
         $allDetails = [];
         $details = OrdersSearch::find()
-                    ->where('order_id = :order_id', [':order_id' => $id])
+                    ->where('order_id = :order_id AND status <= :status', [':order_id' => $id, ':status' => Orders::ORDER_ADOPTED])
                     ->all();
 
         foreach($details as $detail){
