@@ -29,7 +29,7 @@ class tovarAsset extends AssetBundle
         'forceCopy' => YII_DEBUG
     ];
     public $depends = [
-//        'yii\web\YiiAsset',
+        'yii\web\YiiAsset',
 
 //        'yii\bootstrap\BootstrapPluginAsset',
 //        'yii\gii\TypeAheadAsset',
