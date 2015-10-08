@@ -11,6 +11,7 @@ use yii\helpers\Html;
 </div>
 
 
+
 <?=GridView::widget([
     'id' => 'manager-order-grid',
     'dataProvider' => $model,
@@ -96,11 +97,18 @@ use yii\helpers\Html;
     ],
     'toolbar' => [
         [
-            'content' =>  Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
-                    'title'=>'Проценка',
-                    'class'=>'btn btn-success',
-                    'onClick' => 'pricing('.$order->id.', this); return false'
-            ]),
+            'content' =>  Html::a('<i class="glyphicon glyphicon-share-alt"></i> Отправить в <strong>1С</strong>', ['#'], [
+                                  'title'=>'Проценка',
+                                  'class'=>'btn '.($order->isIn1C === null ? '' : 'btn-default disabled'),
+                                  'onClick' => 'sendTo1C('.$order->id.', this); return false',
+                                  'style' => $order->isIn1C === null ? 'background-color:#FFDC0E; color:#EC1421' : ''
+                          ]).
+                          Html::a('<i class="glyphicon glyphicon-rub"></i> Проценка', ['#'], [
+                                  'title'=>'Проценка',
+                                  'class'=>'btn btn-success',
+                                  'onClick' => 'pricing('.$order->id.', this); return false'
+                          ]),
+
             'options' => ['class' => 'btn-group-sm']
         ],
         'export' => [

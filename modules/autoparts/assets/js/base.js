@@ -54,6 +54,20 @@ function updateStatus(obj){
     });
 }
 
+function sendTo1C(id, but){
+    var button = $(but);
+    $.ajax({
+        url: "/autoparts/orders/send-to1c",
+        data: {'id': id},
+        error: function(){
+            button.removeAttr('style').addClass('btn-danger').html('<span class="glyphicon glyphicon-alert"></span> ОШИБКА');
+        },
+        success : function(data){
+            button.removeAttr('style').addClass('btn-default disabled');
+        }
+    });
+}
+
 function pricing(id, but){
     var content = $('.modal-body'),
         header = $('.modal-header');
@@ -62,29 +76,9 @@ function pricing(id, but){
     header.after('<div class="loader"></div>');
 
     $.ajax({
-
         url : "/autoparts/orders/pricing",
         type : "POST",
         data : {'order' : id},
-        //beforeSend: function(XMLHttpRequest)
-        //{
-        //    //Upload progress
-        //    //XMLHttpRequest.upload.addEventListener("progress", function(evt){
-        //    //    if (evt.lengthComputable) {
-        //    //        var percentComplete = evt.loaded / evt.total;
-        //    //        //Do something with upload progress
-        //    //        console.log(percentComplete);
-        //    //    }
-        //    //}, false);
-        //    //Download progress
-        //    XMLHttpRequest.addEventListener("progress", function(evt){
-        //        if (evt.lengthComputable) {
-        //            var percentComplete = evt.loaded / evt.total;
-        //            //Do something with download progress
-        //            console.log(percentComplete);
-        //        }
-        //    }, false);
-        //},
         error: function(XHR, status, errorThrown){
             var error_text = 'Ошибка сервера('+status+'): <strong style="color:#ff5244">'+errorThrown+'.</strong>';
             $('.loader').remove();

@@ -8,6 +8,7 @@
 
 namespace app\modules\autoparts\controllers;
 
+use app\modules\autoparts\models\OrderUpdate1c;
 use app\modules\tovar\models\Tovar;
 use app\modules\user\models\Orders;
 use Yii;
@@ -108,7 +109,11 @@ class OrdersController extends Controller
             return Json::encode($data);
         }
     }
-
+    public function actionSendTo1c($id){
+        $order = new OrderUpdate1c;
+        $order->order_id = (int)$id;
+        return $order->save() ?: false;
+    }
     public function actionPricing(){
         $id = (int)Yii::$app->request->post('order');
         if(empty($id)) return false;

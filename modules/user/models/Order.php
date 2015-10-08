@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models;
 
+use app\modules\autoparts\models\OrderUpdate1c;
 use app\modules\autoparts\models\TStore;
 use app\modules\city\City;
 use Yii;
@@ -113,6 +114,10 @@ class Order extends \yii\db\ActiveRecord
 
     public function getStore(){
         return $this->hasOne(TStore::className(), ['id' => 'store_id']);
+    }
+
+    public function getIsIn1C(){
+        return $this->hasOne(\app\modules\autoparts\models\OrderUpdate1c::className(), ['order_id' => 'id']);
     }
 
 }
