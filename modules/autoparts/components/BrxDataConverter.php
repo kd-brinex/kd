@@ -204,6 +204,9 @@ class BrxDataConverter extends Component
                         case 'Over':
                             $value = ($value > 0) ? $value : 90;
                             break;
+                        case 'Moskvorechie':
+                            $value += 87;
+                            break;
                     }
                 }
                 if($field == 'srok')
