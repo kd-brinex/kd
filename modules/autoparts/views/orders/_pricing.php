@@ -40,7 +40,8 @@ use yii\helpers\Html;
             },
             'detail' => function ($model) use ($offersData, $orderedDetails){
                 $model['code'] = strpos($model['code'], '|r') ? explode('|',$model['code'])[0] : $model['code'];
-                return Yii::$app->controller->renderPartial('_pricingCollapse', ['offers' => $offersData[$model['code']], 'orderedDetail' => $orderedDetails[0]]);
+                $offersData = !empty($offersData[$model['code']]) ? $offersData[$model['code']] : [];
+                return Yii::$app->controller->renderPartial('_pricingCollapse', ['offers' => $offersData, 'orderedDetail' => $orderedDetails[0]]);
             },
             'detailOptions'=>[
                 'class'=> 'expanded-row',

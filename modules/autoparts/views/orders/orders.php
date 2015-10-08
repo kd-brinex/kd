@@ -13,6 +13,7 @@ Modal::begin([
         'id' => 'order-modal'
     ],
     'size' => 'modal-lg',
+
     'header' => '<h3>Детализация заказа</h3>'
 ]);
 Modal::end();
