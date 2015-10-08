@@ -115,11 +115,15 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $post = \Yii::$app->request->post();
+//        var_dump($post);
+        $option=implode('|',$post);
+//        var_dump($option);die;
         $allparams=array_merge($params,$post);
         $models= new CatalogSearch();
         return $this->render('catalog', [
             'provider' => $models->search($allparams),
             'params' =>$allparams,
+            'option' => $option,
         ]);
     }
     public function actionSubcatalog()
