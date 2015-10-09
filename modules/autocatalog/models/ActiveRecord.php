@@ -1,5 +1,6 @@
 <?php
 namespace app\modules\autocatalog\models;
+
 /**
  * Created by PhpStorm.
  * User: marat

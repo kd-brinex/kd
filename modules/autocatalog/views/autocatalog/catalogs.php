@@ -41,7 +41,7 @@ use \yii\helpers\Html;
     ); ?>
 </div>
 <div class="models">
-    <?= Html::beginForm($info->models[0]->cat_code.'/catalog','post',['name'=>'catalog']);?>
+    <?= Html::beginForm($info->models[0]->cat_code.'/'.$info->models[0]->cat_folder,'post',['name'=>'catalog']);?>
     <?= GridView::widget([
         'dataProvider' => $provider,
 //        'showHeader' => false,
