@@ -75,12 +75,7 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $models = $car::CarsSearch($params);
-        $provider = new ActiveDataProvider([
-            'query' => $models->find(),
-            'id' => 'cat_code',
-        ]);
-        $provider->pagination=false;
+        $provider=$car::Cars($params);
         return $this->render('cars', [
             'provider' => $provider,
             'params' =>$params
@@ -90,12 +85,12 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $models = $car::ModelsSearch($params);
-        $provider= $models->search($params);
+        $model=$car::ModelsSearch($params);
+        $provider=$car::Models($params);
 
         return $this->render('models', [
             'provider' => $provider,
-            'filterModel' => $models,
+            'filterModel' => $model,
             'params' =>$params
         ]);
     }
@@ -103,12 +98,12 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $models = $car::CatalogsSearch($params);
-        $info = $car::InfoSearch($params);
+        $provider=$car::Catalogs($params);
+        $info=$car::Info($params);
 
         return $this->render('catalogs', [
-            'provider' => $models->search($params),
-            'info'=>$info->search($params),
+            'provider' => $provider,
+            'info'=>$info,
             'params' =>$params
         ]);
 
@@ -119,24 +114,22 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
         $post = \Yii::$app->request->post();
-        $option=implode('|',$post);
-        $allparams=array_merge($params,$post);
-//        $models= new CatalogSearch();
-        $models = $car::CatalogSearch($allparams);
-//        var_dump($models->attributes);die;
+        $params['post']=$post;
+
+        $provider = $car::Catalog($params);
+
         return $this->render('catalog', [
-            'provider' => $models->search($allparams),
-            'params' =>$allparams,
-            'option' => $option,
+            'provider' => $provider,
+            'params' =>$params,
         ]);
     }
     public function actionSubcatalog()
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $models = $car::SubcatalogSearch($params);
+        $provider = $car::SubCatalog($params);
         return $this->render('subcatalog', [
-            'provider' => $models->search($params),
+            'provider' => $provider,
             'params' =>$params,
         ]);
     }
@@ -145,9 +138,15 @@ class AutocatalogController extends MainController
 
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $models = $car::PartsSearch($params);
+        $provider = $car::Parts($params);
+        $model = $provider->models;
+        $arr = [];
+        foreach ($model as $item) {
+            $arr['models'][$item['number']][] = $item;
+            $arr['labels'][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
+        }
         return $this->render('parts', [
-            'models' => $models->search($params),
+            'models' => $arr,
             'params' =>$params,
         ]);
     }

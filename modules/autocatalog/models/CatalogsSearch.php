@@ -32,15 +32,10 @@ class CatalogsSearch extends ActiveRecord
     public function search($params=[])
     {
         $query =parent::find()
+            ->distinct()
             ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
         ->andWhere("value<>''");
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' =>false,
-        ]);
 
-//        $this->load($params);
-
-        return $dataProvider;
+        return $query;
     }
 }

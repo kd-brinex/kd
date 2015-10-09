@@ -70,7 +70,8 @@ use \yii\helpers\Html;
 
 //                    foreach($a_value as $v){$val[$v]=$v;}
 //                    \yii\helpers\ArrayHelper::index($a_value,);
-                    $html = Html::radioList($model['type_code'], [], $val, []);
+
+                    $html = Html::radioList($model['type_code'], $key[0], $val, []);
                     return $html;
                 },],
 

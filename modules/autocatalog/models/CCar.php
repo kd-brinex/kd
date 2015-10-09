@@ -29,13 +29,13 @@ class CCar extends BaseModel
 
     public static function CarsSearch($params)
     {
-        $models = new CarsSearch($params);
+        $models = new CarsSearch();
         return $models;
     }
 
     public static function ModelsSearch($params)
     {
-        $models = new ModelsSearch($params);
+        $models = new ModelsSearch();
         return $models;
     }
 
@@ -51,9 +51,9 @@ class CCar extends BaseModel
         return $models;
     }
 
-    public static function SubcatalogSearch($params)
+    public static function SubCatalogSearch($params)
     {
-        $models = new SubcatalogSearch();
+        $models = new SubCatalogSearch();
         return $models;
     }
 
@@ -65,13 +65,13 @@ class CCar extends BaseModel
 
     public static function InfoSearch($params)
     {
-        $models = new InfoSearch($params);
+        $models = new InfoSearch();
         return $models;
     }
 
     public static function VinSearch($params)
     {
-        $models = new VinSearch($params);
+        $models = new VinSearch();
         return $models;
     }
 
