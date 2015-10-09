@@ -36,6 +36,10 @@ public function getModel()
        return Yii::createObject($this->catalog['db']);
 
     }
+    public function getClass()
+    {
+        return Yii::createObject($this->catalog['class']);
+    }
 //    public function getCars($prm)
 //    {
 //        $catalog=$this->getCatalog($prm);

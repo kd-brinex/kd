@@ -13,7 +13,7 @@ class CatalogsSearch extends ActiveRecord
 //    public function rules()
 //    {
 //        return [
-////            [['type_code','lang_code','name','cat_code','value'], 'safe'],
+//            [['marka'], 'safe'],
 //        ];
 //    }
 //

@@ -31,8 +31,8 @@ class CarsSearch extends ActiveRecord
         return 'v_cars';
     }
 
-//    public static function find()
-//    {
-//        return parent::find();
-//    }
+    public static function search()
+    {
+        return self::find();
+    }
 }

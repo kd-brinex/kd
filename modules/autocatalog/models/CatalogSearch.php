@@ -13,7 +13,7 @@ class CatalogSearch extends ActiveRecord
     public function rules()
     {
         return [
-            [['cat_folder','name','cat_code','img'], 'safe'],
+            [['cat_folder','name','cat_code','img','compatibility'], 'safe'],
         ];
     }
 
@@ -31,17 +31,14 @@ class CatalogSearch extends ActiveRecord
 
     public function search($params=[])
     {
-//        var_dump($params);die;
         $query =parent::find()
-            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']]);
+            ->where('cat_code=:cat_code',
+                [':cat_code'=>$params['cat_code']]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,
         ]);
-
-//        $this->load($params);
-
         return $dataProvider;
     }
 }
