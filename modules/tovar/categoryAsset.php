@@ -15,12 +15,11 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class tovarAsset extends AssetBundle
+class categoryAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
         'css/style-offer.css',
-        'css/style-uni.css'
     ];
 
     public $publishOptions = [

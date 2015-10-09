@@ -8,20 +8,18 @@
 
 namespace app\modules\autoparts\controllers;
 
-use app\modules\tovar\models\Tovar;
-use app\modules\user\models\Orders;
 use Yii;
 
-use yii\base\Model;
-use yii\bootstrap\Modal;
 use yii\data\ArrayDataProvider;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\base\Exception;
 
+use app\modules\tovar\models\Tovar;
+use app\modules\user\models\Orders;
 use app\modules\user\models\OrderSearch;
 use app\modules\user\models\OrdersSearch;
+use app\modules\autoparts\models\OrderUpdate1c;
 
 class OrdersController extends Controller
 {
@@ -108,18 +106,26 @@ class OrdersController extends Controller
             return Json::encode($data);
         }
     }
-
+    public function actionSendTo1c($id){
+        $order = new OrderUpdate1c;
+        $order->order_id = (int)$id;
+        return $order->save() ?: false;
+    }
     public function actionPricing(){
         $id = (int)Yii::$app->request->post('order');
         if(empty($id)) return false;
 
         $allDetails = [];
         $details = OrdersSearch::find()
-                    ->where('order_id = :order_id AND status <= :status', [':order_id' => $id, ':status' => Orders::ORDER_ADOPTED])
+                    ->where('order_id = :order_id', [':order_id' => $id])
+                    ->andWhere('status <= :status', [':status' => Orders::ORDER_ADOPTED])
+                    ->andWhere('provider_id > 0')
+                    ->andWhere('provider_id <> 5')
+                    ->andWhere('related_detail IS NULL')
                     ->all();
 
         foreach($details as $detail){
-            $article = !empty($detail->product_id) ? $detail->product_id : (!empty($detail->product_article) ? $detail->product_article : null);
+            $article = !empty($detail->product_article) ? $detail->product_article : (!empty($detail->product_id) ? $detail->product_id : null);
             $compareDetails = Tovar::findDetails(['article' => $article, 'store_id' => $detail->order->store_id]);
             $allDetails[$article]['manufacture'] = $detail->manufacture;
             $allDetails[$article]['offers'] = $compareDetails;
@@ -127,7 +133,6 @@ class OrdersController extends Controller
         $offers = [];
         foreach ($allDetails as $key => $detail_offers) {
             if(is_array($detail_offers) && !empty($detail_offers)){
-                $offers[$key] = [];
                 foreach($detail_offers['offers'] as $offer){
                     if($offer['code'] == $key) {
                         $offers[$key]['offers'][] = $offer;
@@ -153,7 +158,7 @@ class OrdersController extends Controller
                 'pagination' => false
             ]);
         }
-        return !empty($dataProviders) ? $dataProviders : false;
+        return $dataProviders;
     }
 
     private function firstOffers($orderDetails, &$offers){

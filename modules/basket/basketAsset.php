@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\modules\tovar;
+namespace app\modules\basket;
 
 use yii\web\AssetBundle;
 
@@ -15,12 +15,11 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class tovarAsset extends AssetBundle
+class basketAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
         'css/style-offer.css',
-        'css/style-uni.css'
     ];
 
     public $publishOptions = [

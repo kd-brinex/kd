@@ -85,6 +85,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 .square {
     width: 40px;
     height: 20px;
+    margin: 0 auto;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;

@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\modules\tovar;
+namespace app\modules\user;
 
 use yii\web\AssetBundle;
 
@@ -15,21 +15,20 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class tovarAsset extends AssetBundle
+class userordersAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
         'css/style-offer.css',
-        'css/style-uni.css'
-    ];
 
-    public $publishOptions = [
-        'forceCopy' => YII_DEBUG
+    ];
+    public $js = [
+
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-
-//        'yii\bootstrap\BootstrapPluginAsset',
-//        'yii\gii\TypeAheadAsset',
+        'yii\bootstrap\BootstrapAsset',
+    ];
+    public $publishOptions = [
+        'forceCopy' => YII_DEBUG,
     ];
 }
