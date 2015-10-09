@@ -162,7 +162,7 @@ class AutocatalogController extends MainController
             'params' =>$params,
             'model' => $model
         ]);
-    }
+    }*/
     public function actionDetails()
     {
 
@@ -189,6 +189,6 @@ class AutocatalogController extends MainController
             'params' =>$params
         ]);
     }
-*/
+
 
 }
