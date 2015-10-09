@@ -151,18 +151,20 @@ class AutocatalogController extends MainController
             'params' =>$params,
         ]);
     }
-    /*
+
     public function actionVin()
     {
         $params = \Yii::$app->request->queryParams;
-        $catalog = $this->module->getCatalog();
-        $model = $this->module->searchVIN($params);
-        return $this->render('vin', [
+        $catalog = $this->module->getModel();
+//        $provider=$catalog->getCars();
+
+        return $this->render('index', [
             'catalog' => $catalog,
             'params' =>$params,
-            'model' => $model
+
+
         ]);
-    }*/
+    }
     public function actionDetails()
     {
 

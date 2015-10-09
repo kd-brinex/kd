@@ -69,5 +69,11 @@ class CCar extends BaseModel
         return $models;
     }
 
+    public static function VinSearch($params)
+    {
+        $models = new VinSearch($params);
+        return $models;
+    }
+
 
 }
