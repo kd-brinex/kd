@@ -7,7 +7,7 @@
  */
 use yii\helpers\Html;
 use yii\jui\Tabs;
-use app\modules\basket\userordersAsset;
+use app\modules\user\userordersAsset;
 
 userordersAsset::register($this);
 
