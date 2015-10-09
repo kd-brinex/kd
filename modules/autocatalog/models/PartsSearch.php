@@ -31,30 +31,7 @@ class PartsSearch extends ActiveRecord
 
     public function search($params=[])
     {
-//        var_dump($params);die;
-        $query =parent::find()
-            ->distinct()
-            ->where('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
-            ->andWhere('sect=:sect',[':sect'=>$params['sect']])
-            ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
-    ;
-
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' =>false,
-        ]);
-        $model = $dataProvider->models;
-        $arr = [];
-//        $arr['params'] = $page->url_params;
-//var_dump($model);die;
-        foreach ($model as $item) {
-            $arr['models'][$item['number']][] = $item;
-            $arr['labels'][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
-        }
-        return $arr;
-//        $this->load($params);
-
-        return $models;
+    $query =parent::find();
+    return $query;
     }
 }

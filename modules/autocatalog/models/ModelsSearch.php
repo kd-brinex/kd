@@ -34,18 +34,6 @@ class ModelsSearch extends ActiveRecord
     public function search($params=[])
     {
         $query =parent::find()->where('family=:family',[':family'=>$params['family']]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' =>false,
-        ]);
-
-        $this->load($params);
-
-
-        $query->andFilterWhere(['like', 'region', $this->region])
-        ->andFilterWhere(['like', 'family', $this->family])
-        ->andFilterWhere(['like', 'from', $this->from])
-        ;
-        return $dataProvider;
+        return $query;
     }
 }
