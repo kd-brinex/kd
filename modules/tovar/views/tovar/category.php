@@ -1,12 +1,15 @@
 <?php
-use yii\widgets\ListView;?>
+use yii\widgets\ListView;
+use app\modules\tovar\categoryAsset;
+
+categoryAsset::register($this);
+?>
 <div class="btn-group">
         <a class="btn" href="?viewType=1">&nbsp;<i class="icon-th icon-black"></i>&nbsp;</a>
         <a class="btn hidden-xs" href="?viewType=2">&nbsp;<i class="icon-th-list icon-black"></i>&nbsp;</a>
         <a class="btn" href="?viewType=3">&nbsp;<i class="icon-align-justify icon-black"></i>&nbsp;</a>
     </div>
 <?php
-Yii::$app->view->registerCssFile('/css/style-offer.css');
 
 $this->title=$params['tip_id'];
 $this->params['breadcrumbs'][]=$this->title;
