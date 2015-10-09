@@ -5,7 +5,7 @@ use app\modules\basket\basketAsset;
 
 basketAsset::register($this);
 //use yii\helpers\Html5;
-
+?>
 <tr id="<?=$model->tovar_id?>_offer">
     <td class="offer-v3-name">
         <div class="offer-v3-code"><?=$model->tovar_id?></div>
