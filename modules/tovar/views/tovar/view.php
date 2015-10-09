@@ -2,7 +2,7 @@
 use yii\bootstrap\Collapse;
 use \yii\grid\GridView;
 use yii\widgets\ListView;
-//Yii::$app->view->registerCssFile('/css/style-offer.css');
+
 \app\modules\tovar\tovarAsset::register($this);
 /**
  * Created by PhpStorm.
@@ -26,7 +26,7 @@ $this->title=$tovarProvider->models[0]['name'];
 $category=$tovarProvider->models[0]['tip_id'];
 $this->params['breadcrumbs'][] = ['label'=>$category,'url'=>['/tovar/tovar/category','tip_id'=>$category]];
 $this->params['breadcrumbs'][] = $this->title;
-Yii::$app->view->registerCssFile('/css/style-uni.css');
+
 echo ListView::widget([
 
     'dataProvider' => $tovarProvider,

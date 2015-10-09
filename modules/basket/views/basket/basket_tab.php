@@ -7,7 +7,9 @@
  */
 use yii\grid\GridView;
 use yii\helpers\Html;
-Yii::$app->view->registerCssFile('/css/style-offer.css');
+use app\modules\basket\basketAsset;
+
+basketAsset::register($this);
 
 ?>
 <div class="basketStepsBlock col-xs-12">
