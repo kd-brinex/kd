@@ -45,6 +45,12 @@ class CCar extends BaseModel
         return $models;
     }
 
+    public static function PodborSearch($params)
+    {
+        $models = new PodborSearch();
+        return $models;
+    }
+
     public static function CatalogSearch($params)
     {
         $models = new CatalogSearch();
@@ -74,6 +80,8 @@ class CCar extends BaseModel
         $models = new VinSearch();
         return $models;
     }
+
+
 
 
 }

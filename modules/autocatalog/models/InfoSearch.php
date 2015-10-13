@@ -20,7 +20,7 @@ class InfoSearch extends ActiveRecord
     {
         return [
             'cat_code'=>'Код каталога',
-            'cat_name'=>'Название автомобиля',
+            'cat_name'=>'Автокаталог',
             'family'=>'Модельный ряд',
             'vehicle_type'=>'Тип автомобиля',
             'marka' => 'Марка автомобиля'

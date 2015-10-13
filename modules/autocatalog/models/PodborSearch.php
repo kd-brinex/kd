@@ -8,15 +8,15 @@ use yii\data\ActiveDataProvider;
  * Date: 02.10.15
  * Time: 16:02
  */
-class VinSearch extends ActiveRecord
+class PodborSearch extends ActiveRecord
 {
 //    public function rules()
 //    {
 //        return [
-//            [['cat_folder','name','cat_code','img'], 'safe'],
+//            [['marka'], 'safe'],
 //        ];
 //    }
-
+//
 //    public function attributeLabels()
 //    {
 //        return [
@@ -26,12 +26,15 @@ class VinSearch extends ActiveRecord
 
     public static function tableName()
     {
-        return 'v_vin';
+        return 'v_catalogs';
     }
 
     public function search($params=[])
     {
-        $query =parent::find();
+        $query =parent::find()
+            ->distinct();
+//            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
+//        ->andWhere("value<>''");
 
         return $query;
     }

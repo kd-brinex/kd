@@ -33,7 +33,8 @@ class SubCatalogSearch extends ActiveRecord
     {
         $query =parent::find()
             ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']])
+        ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']]);
 
 
         return $query;
