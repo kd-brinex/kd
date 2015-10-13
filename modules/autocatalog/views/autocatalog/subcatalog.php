@@ -10,6 +10,6 @@ use yii\bootstrap\Tabs;
 
 ?>
 <div class="models">
-    <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block'])?>
+    <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block','params'=>$params])?>
 
 </div>

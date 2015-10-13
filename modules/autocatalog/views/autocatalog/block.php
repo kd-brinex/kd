@@ -8,12 +8,16 @@ use yii\helpers\Html;
  * Date: 10.01.15
  * Time: 15:39
  **/
-//var_dump($params);die;
+
+
 ?>
 
 <div class="acatalog-block">
         <?= Html::img( $model['img'] ); ?>
-        <?= Html::a(Html::encode(Yii::t('autocatalog',$model['name'])).'<br>'.$model['compatibility'],Url::to($model['url']));?>
+        <?= Html::a(Html::encode(Yii::t('autocatalog',$model['name']))
+//            .(!empty($model->compatibility)?$model->compatibility:'')
+            ,Url::to($model['url'].'/'.$params['option']));?>
+
 </div>
 
 

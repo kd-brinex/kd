@@ -13,7 +13,7 @@ class CatalogSearch extends ActiveRecord
     public function rules()
     {
         return [
-            [['cat_folder','name','cat_code','img','compatibility'], 'safe'],
+            [['cat_folder','name','cat_code','img','params'], 'safe'],
         ];
     }
 
@@ -32,7 +32,6 @@ class CatalogSearch extends ActiveRecord
     public function search($params=[])
     {
         $query =parent::find()
-            ->distinct()
             ->where('cat_code=:cat_code',
                 [':cat_code'=>$params['cat_code']]);
         return $query;

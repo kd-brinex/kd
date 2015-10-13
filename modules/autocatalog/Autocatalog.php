@@ -58,7 +58,16 @@ public function getModel()
 //    }
     public function searchVIN($prm)
     {
-
+//        var_dump($this->model);die;
+        foreach($this->model as $catalog)
+        {
+//            $db=Yii::createObject($catalog['db']);
+            $this->catalog=$catalog;
+            $car=Yii::createObject($catalog['class']);
+            $this->db=$this->getDb();
+            $res=$car->vin($prm);
+            if (!empty($res->models)){return $res;}
+        }
     }
 
 

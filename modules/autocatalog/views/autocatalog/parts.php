@@ -16,6 +16,7 @@ use yii\helpers\Url;
 ?>
 
 
+
 <div class="page-scroll col-md-5 col-xs-12">
 
     <?php
@@ -48,7 +49,7 @@ if (empty($img)){$img=$m[0]['image'];}
     foreach($models['labels'] as $labels){
 //    var_dump($m[0]);die;
         foreach($labels as $m) {
-            $label = '<div id="' . $m['number'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height']<20?'20':$m['height']) . 'px; ">' . $m['pnc'] . '</div>';
+            $label = '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height']<20?'20':$m['height']) . 'px; ">' . $m['pnc'] . '</div>';
             echo $label;
         }
 

@@ -20,6 +20,8 @@ $column=[
 //    'x1'=>'x1',
 //    'y1'=>'y1',
     'Название'=>'name',
+    'Описание'=>'description',
+//    'kod'=>'compatibility',
 //    'ipic_code'=>'ipic_code',
 ];
 $head = '<tr><th>Артикул</th>';
