@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\bootstrap\Tabs;
 use yii\helpers\Json;
 
-use app\modules\tovar\tovarAsset;
+use app\modules\tovar\finddetailsAsset;
 
-tovarAsset::register($this);
-Yii::$app->view->registerCssFile('/css/parts.css');
+finddetailsAsset::register($this);
+//Yii::$app->view->registerCssFile('/css/parts.css');
 if (!empty($provider->allModels)) {
     foreach ($provider->allModels as $key => $value) {
         $mas[$value['groupid']][] = $value;

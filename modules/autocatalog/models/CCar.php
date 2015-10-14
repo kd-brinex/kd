@@ -10,7 +10,7 @@ namespace app\modules\autocatalog\models;
  */
 use yii\base\Model as BaseModel;
 use Yii;
-use app\modules\autocatalog\models\ModelsSearch;
+
 
 class CCar extends BaseModel
 {
@@ -19,38 +19,69 @@ class CCar extends BaseModel
     public $connect;
     public $image;
 
-
-    public function getData($name,$where='',$params=[])
+    public static function Search($find_class, $params = [])
     {
-        $name='app\modules\autocatalog\models\\'.$name;
-        $a_record =new $name;
-        $a_record->where($where,$params);
-       return $a_record;
-    }
 
-    public function getCars()
-    {
-        return $this->getData('CarsSearch');
+        $class = __NAMESPACE__ . '\\' . $find_class;
+        $models = new $class;
+        return $models;
     }
 
-    public function getModels($params)
+    public static function CarsSearch($params)
     {
-        $w_params = [':family'=>$params['family']];
-        return $this->getData('ModelsSearch','family=:family',$w_params);
-    }
-    public function getCatalogs($params)
-    {
-        $w_params = [':cat_code'=>$params['cat_code']];
-        return $this->getData('CatalogsSearch','cat_code=:cat_code',$w_params);
+        $models = new CarsSearch();
+        return $models;
     }
 
-    public function searchVIN($params)
+    public static function ModelsSearch($params)
     {
-        return false;
+        $models = new ModelsSearch();
+        return $models;
     }
-    public function search($params)
+
+    public static function CatalogsSearch($params)
     {
-        return $this->getModels($params);
+        $models = new CatalogsSearch();
+        return $models;
     }
+
+    public static function PodborSearch($params)
+    {
+        $models = new PodborSearch();
+        return $models;
+    }
+
+    public static function CatalogSearch($params)
+    {
+        $models = new CatalogSearch();
+        return $models;
+    }
+
+    public static function SubCatalogSearch($params)
+    {
+        $models = new SubCatalogSearch();
+        return $models;
+    }
+
+    public static function PartsSearch($params)
+    {
+        $models = new PartsSearch();
+        return $models;
+    }
+
+    public static function InfoSearch($params)
+    {
+        $models = new InfoSearch();
+        return $models;
+    }
+
+    public static function VinSearch($params)
+    {
+        $models = new VinSearch();
+        return $models;
+    }
+
+
+
 
 }

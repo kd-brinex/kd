@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
  * Date: 02.10.15
  * Time: 16:02
  */
-class CatalogsSearch extends ActiveRecord
+class PodborSearch extends ActiveRecord
 {
 //    public function rules()
 //    {
@@ -32,9 +32,9 @@ class CatalogsSearch extends ActiveRecord
     public function search($params=[])
     {
         $query =parent::find()
-            ->distinct()
-            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere("value<>''");
+            ->distinct();
+//            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
+//        ->andWhere("value<>''");
 
         return $query;
     }

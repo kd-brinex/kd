@@ -162,12 +162,13 @@ $config = [
                 'toyota/page' => 'toyota/catalog/page',
 
                 'autocatalogs' => '/autocatalog/autocatalog',
+                '/autocatalogs/<marka:\w+>/podbor'=>'/autocatalog/autocatalog/podbor',
                 '/autocatalogs/<marka:\w+>' => '/autocatalog/autocatalog/cars',
                 '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
                 '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog' => '/autocatalog/autocatalog/catalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/catalog/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
 //                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
@@ -285,24 +286,14 @@ $config = [
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
             'model' => [
                 'hyundai' => [
-                    'class' => 'app\modules\autocatalog\models\CCar',
+                    'class' => 'app\modules\autocatalog\models\Hyundai',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',
-                        'model' => '',
-                        'year' => 0,
-                        'region' => '',
-                        'body_type' => '',
-                        'grade' => '',
-                        'engine_capacity' => '',
-                        'fuel_type' => '',
-                        'transmission' => '',
-                        'drive_type' => ''
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
                         'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
-//: 'mysql:host=localhost;dbname=hyundai',
                         'username' => 'brinexdev',
                         'password' => 'QwFGHythju8',
                         'charset' => 'utf8'],

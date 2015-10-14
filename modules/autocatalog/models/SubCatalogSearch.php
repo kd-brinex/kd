@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
  * Date: 02.10.15
  * Time: 16:02
  */
-class SubcatalogSearch extends ActiveRecord
+class SubCatalogSearch extends ActiveRecord
 {
     public function rules()
     {
@@ -31,17 +31,12 @@ class SubcatalogSearch extends ActiveRecord
 
     public function search($params=[])
     {
-//        var_dump($params);die;
         $query =parent::find()
             ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' =>false,
-        ]);
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']])
+        ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']]);
 
-//        $this->load($params);
 
-        return $dataProvider;
+        return $query;
     }
 }

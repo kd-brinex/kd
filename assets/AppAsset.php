@@ -15,8 +15,9 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+//    public $basePath = '@webroot';
+//    public $baseUrl = '@web';
+    public $sourcePath = '@app/assets/files';
     public $css = [
         'css/site.css','css/style.css','css/offcanvas.css','css/animate.css',
     ];
@@ -28,5 +29,4 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
-
 }

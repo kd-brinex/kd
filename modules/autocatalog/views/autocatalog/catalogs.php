@@ -41,7 +41,7 @@ use \yii\helpers\Html;
     ); ?>
 </div>
 <div class="models">
-    <?= Html::beginForm($info->models[0]->cat_code.'/catalog','post',['name'=>'catalog']);?>
+    <?= Html::beginForm($info->models[0]->cat_code.'/'.$info->models[0]->cat_folder,'post',['name'=>'catalog']);?>
     <?= GridView::widget([
         'dataProvider' => $provider,
 //        'showHeader' => false,
@@ -61,16 +61,12 @@ use \yii\helpers\Html;
                 'format' => 'raw',
                 'label' => 'Варианты',
                 'value' => function ($model, $key, $index, $widget) {
-//                    var_dump($model);die;
-
                     $key=explode(';', $model['key']);
                     $value=explode(';', $model['value']);
-//                    var_dump(array_combine($key,$value));die;
+                    $select=(!empty($_GET['option']))?explode('|',$_GET['option'])[$index]:$key[0];
+//                    var_dump($model);die;
                     $val=array_combine($key,$value);
-
-//                    foreach($a_value as $v){$val[$v]=$v;}
-//                    \yii\helpers\ArrayHelper::index($a_value,);
-                    $html = Html::radioList($model['type_code'], [], $val, []);
+                    $html = Html::radioList($model['type_code'], $select, $val, []);
                     return $html;
                 },],
 

@@ -15,14 +15,16 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class tovarAsset extends AssetBundle
+class finddetailsAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/tovar/assets';
     public $css = [
-        'css/style-offer.css',
-        'css/style-uni.css'
+        'css/style.css',
+        'css/parts.css',
     ];
-
+    public $js = [
+        'js/base.js',
+    ];
     public $publishOptions = [
         'forceCopy' => YII_DEBUG
     ];

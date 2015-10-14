@@ -7,8 +7,10 @@
  */
 use yii\helpers\Html;
 use yii\jui\Tabs;
+use app\modules\user\userordersAsset;
 
-Yii::$app->view->registerCssFile('/css/style-offer.css');
+userordersAsset::register($this);
+
 $this->title = Yii::t('user', 'My orders');
 $this->params['breadcrumbs'][] = $this->title;
 

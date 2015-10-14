@@ -6,7 +6,10 @@
  * Time: 10:20
  */
 use yii\widgets\ListView;
-Yii::$app->view->registerCssFile('/css/style-offer.css');
+use app\modules\basket\basketAsset;
+
+basketAsset::register($this);
+
 //var_dump($model);die;
 ?>
 

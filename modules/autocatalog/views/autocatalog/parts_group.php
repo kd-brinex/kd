@@ -20,6 +20,8 @@ $column=[
 //    'x1'=>'x1',
 //    'y1'=>'y1',
     'Название'=>'name',
+    'Описание'=>'description',
+//    'kod'=>'compatibility',
 //    'ipic_code'=>'ipic_code',
 ];
 $head = '<tr><th>Артикул</th>';
@@ -33,7 +35,7 @@ echo $head;
 foreach ($model as $m){
     $article=$m['number'];
 //    if($m['number_type']==4 and count($model)>1){var_dump($model);die;}
-    $row='<tr><td>'.Html::a($article,'http://kolesa-darom.ru/auto-parts/finddetails?article='.$article,['target'=>'_blank']).'</td>';
+    $row='<tr><td>'.Html::a($article,'/autocatalog/autocatalog/details?article='.$article,['target'=>'_blank']).'</td>';
     foreach ($column as $name) {
         $row .= '<td>' . $m[$name] . '</td>';
     }

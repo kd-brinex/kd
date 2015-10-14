@@ -1,10 +1,11 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\modules\basket\basketAsset;
 
+basketAsset::register($this);
 //use yii\helpers\Html5;
-
-Yii::$app->view->registerCssFile('/css/style-offer.css');?>
+?>
 <tr id="<?=$model->tovar_id?>_offer">
     <td class="offer-v3-name">
         <div class="offer-v3-code"><?=$model->tovar_id?></div>

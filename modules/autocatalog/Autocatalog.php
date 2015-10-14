@@ -36,6 +36,10 @@ public function getModel()
        return Yii::createObject($this->catalog['db']);
 
     }
+    public function getClass()
+    {
+        return Yii::createObject($this->catalog['class']);
+    }
 //    public function getCars($prm)
 //    {
 //        $catalog=$this->getCatalog($prm);
@@ -54,7 +58,16 @@ public function getModel()
 //    }
     public function searchVIN($prm)
     {
-
+//        var_dump($this->model);die;
+        foreach($this->model as $catalog)
+        {
+//            $db=Yii::createObject($catalog['db']);
+            $this->catalog=$catalog;
+            $car=Yii::createObject($catalog['class']);
+            $this->db=$this->getDb();
+            $res=$car->vin($prm);
+            if (!empty($res->models)){return $res;}
+        }
     }
 
 

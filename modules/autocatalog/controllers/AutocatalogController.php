@@ -17,10 +17,10 @@ use yii\data\ArrayDataProvider;
 use yii\db\ActiveRecord;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\modules\autocatalog\models\Car;
+use app\modules\autocatalog\models\CCar;
 use app\modules\tovar\models\Tovar;
 
-
+use yii\helpers\ArrayHelper;
 class AutocatalogController extends MainController
 {
     public function behaviors()
@@ -45,7 +45,7 @@ class AutocatalogController extends MainController
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'model', 'vin', 'frame','details','cars','models','catalogs','subcatalog','catalog','parts'],
+                        'actions' => ['index', 'model', 'vin', 'frame','details','cars','models','catalogs','subcatalog','catalog','parts','podbor'],
                         'roles' => ['?', '@']
                     ],
                     [
@@ -74,13 +74,8 @@ class AutocatalogController extends MainController
     public function actionCars()
     {
         $params = \Yii::$app->request->queryParams;
-        $models = new CarsSearch();
-        $provider = new ActiveDataProvider([
-            'query' => $models->find(),
-//            'sort' => ['attributes' => ['name']],
-            'id' => 'cat_code',
-        ]);
-        $provider->pagination=false;
+        $car=$this->module->getClass();
+        $provider=$car::Cars($params);
         return $this->render('cars', [
             'provider' => $provider,
             'params' =>$params
@@ -89,49 +84,99 @@ class AutocatalogController extends MainController
     public function actionModels()
     {
         $params = \Yii::$app->request->queryParams;
-        $models = new ModelsSearch();
-        $provider= $models->search($params);
+        $car=$this->module->getClass();
+        $model=$car::ModelsSearch($params);
+        $provider=$car::Models($params);
 
         return $this->render('models', [
             'provider' => $provider,
-            'filterModel' => $models,
+            'filterModel' => $model,
             'params' =>$params
         ]);
     }
     public function actionCatalogs()
     {
         $params = \Yii::$app->request->queryParams;
-        $models = new CatalogsSearch();
-        $info = new InfoSearch();
+        $car=$this->module->getClass();
+        $provider=$car::Catalogs($params);
+        $info=$car::Info($params);
 
         return $this->render('catalogs', [
-            'provider' => $models->search($params),
-            'info'=>$info->search($params),
+            'provider' => $provider,
+            'info'=>$info,
+            'params' =>$params
+        ]);
+
+    }
+    public function actionPodbor()
+    {
+        $params = \Yii::$app->request->queryParams;
+
+
+
+        $car=$this->module->getClass();
+        $provider=$car::Podbor($params);
+
+
+        if(empty($params['family'])){$params['family']='';}
+        if(empty($params['year'])){$params['year']='';}
+        if(empty($params['engine'])){$params['engine']='';}
+
+        $familys=array_unique(ArrayHelper::map($provider->models,'family','family'));
+        asort($familys);
+        $params['familys']=$familys;
+
+        if(!empty($params['family'])) {
+            $years = explode(';', $provider->models[0]->years);
+            foreach ($years as $y) {
+                $params['years'][$y] = $y;
+            }
+        }
+
+        if(!empty($params['year'])) {
+            $engines=array_unique(ArrayHelper::map($provider->models,'key','value'));
+            $b=[];
+            foreach($engines as $key=>$value)
+            {
+                $a=array_combine (explode(';',$key),explode(';',$value) );
+                foreach($a as $k=>$v){
+                $b[$k]=$v;
+                }
+
+            }
+
+            $params['engines']=$b;
+        }
+
+
+        return $this->render('podbor', [
             'params' =>$params
         ]);
 
     }
     public function actionCatalog()
     {
+//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
+        $car=$this->module->getClass();
         $post = \Yii::$app->request->post();
-//        var_dump($post);
-        $option=implode('|',$post);
-//        var_dump($option);die;
-        $allparams=array_merge($params,$post);
-        $models= new CatalogSearch();
+        $params['option']=implode('|',$post);
+
+        $provider = $car::Catalog($params);
+
         return $this->render('catalog', [
-            'provider' => $models->search($allparams),
-            'params' =>$allparams,
-            'option' => $option,
+            'provider' => $provider,
+            'params' =>$params,
         ]);
     }
     public function actionSubcatalog()
     {
+//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
-        $models = new SubcatalogSearch();
+        $car=$this->module->getClass();
+        $provider = $car::SubCatalog($params);
         return $this->render('subcatalog', [
-            'provider' => $models->search($params),
+            'provider' => $provider,
             'params' =>$params,
         ]);
     }
@@ -139,22 +184,33 @@ class AutocatalogController extends MainController
     {
 
         $params = \Yii::$app->request->queryParams;
-        $models = new PartsSearch();
+        $car=$this->module->getClass();
+        $provider = $car::Parts($params);
+        $model = $provider->models;
+        $arr = [];
+        foreach ($model as $item) {
+            $arr['models'][$item['pnc']][] = $item;
+            $arr['labels'][$item['pnc']][$item['x1'] . 'x' . $item['y1']] = $item;
+        }
+//        var_dump($arr);die;
         return $this->render('parts', [
-            'models' => $models->search($params),
+            'models' => $arr,
             'params' =>$params,
         ]);
     }
+
     public function actionVin()
     {
         $params = \Yii::$app->request->queryParams;
-        $catalog = $this->module->getCatalog();
-        $model = $this->module->searchVIN($params);
-        return $this->render('vin', [
-            'catalog' => $catalog,
-            'params' =>$params,
-            'model' => $model
-        ]);
+        $model=$this->module->searchVin($params)->models[0];
+        $redirect='/autocatalogs/'.$model->marka.'/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
+//        var_dump($provider->models[0]->cat_code);die;
+//        $params['cat_code']=$model->models[0]->cat_code;
+//        $car=$this->module->getClass();
+//        $provider=$car::Catalogs($params);
+//        $info=$car::Info($params);
+
+        return $this->redirect($redirect);
     }
     public function actionDetails()
     {

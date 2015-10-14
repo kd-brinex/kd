@@ -7,8 +7,9 @@ use yii\bootstrap\Tabs;
  * Date: 03.10.15
  * Time: 15:37
  */
+//var_dump($option);die;
+
 ?>
 <div class="models">
-    <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block'])?>
-
+    <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block','params'=>$params])?>
 </div>
