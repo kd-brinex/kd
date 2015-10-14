@@ -4,8 +4,7 @@ $db_connect = require(__DIR__ . '/db.php');
 //$db_connect = $db_config['components'][YII_ENV];
 $config = [
     'id' => 'basic',
-    'basePath' => dirname(__DIR__),
-    'language' => 'ru-RU',
+    'basePath' => dirname(__DIR__), 'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'name' => 'Колеса-даром',
 //    'layout' => 'main.twig',
