@@ -123,15 +123,15 @@ class Hyundai extends CCar
         $query =$models->search($params)
 //        $query =parent::find()
 //            ->distinct()
-            ->where('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
+            ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
             ->andWhere('sect=:sect',[':sect'=>$params['sect']])
-            ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
-        ->groupBy(['number']);
+            ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']]);
+//        ->groupBy(['number']);
 //        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
-        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
+//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
 //        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
 //        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
-        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
+//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
 
 
         ;
@@ -153,6 +153,22 @@ class Hyundai extends CCar
             'pagination' =>false,
         ]);
         $query->andWhere('vin=:vin',[':vin'=>$params['vin']]);
+        return $provider;
+    }
+    public static function Images($params)
+    {
+//        var_dump($params);die;
+        $models = self::ImagesSearch($params);
+        $query =$models->search($params);
+        $query->distinct()
+        ->Where('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
+        ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']]) ;
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' =>false,
+        ]);
+
         return $provider;
     }
 }
