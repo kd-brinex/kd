@@ -148,8 +148,10 @@ class BrxDataConverter extends Component
                             break;
                     }
                 }
-                if($field == 'name')
+                if($field == 'name') {
                     $value = !empty($item['name']) ? $item['name'] : $item['code'];
+                    $value = preg_replace('/(<|>)/',' ',$value);
+                }
                 if($field == 'provider')
                     $value = 'KD'.$ParseData['provider']->provider_data->id.'-'.$ParseData['provider']->store_id;
                 if($field == 'sklad')
