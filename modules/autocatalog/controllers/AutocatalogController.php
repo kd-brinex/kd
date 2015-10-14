@@ -186,16 +186,20 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
         $provider = $car::Parts($params);
+        $images=$car::Images($params);
         $model = $provider->models;
         $arr = [];
         foreach ($model as $item) {
-            $arr['models'][$item['pnc']][] = $item;
-            $arr['labels'][$item['pnc']][$item['x1'] . 'x' . $item['y1']] = $item;
+            $arr['models'][$item['pnc']][$item['pnc']] = $item;
+//            $arr['models'][$item['pnc']][] = $item;
+//            $arr['labels'][][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
+            $arr['labels'][$item['pnc']][] = $item;
         }
 //        var_dump($arr);die;
         return $this->render('parts', [
             'models' => $arr,
             'params' =>$params,
+            'images' =>$images,
         ]);
     }
 

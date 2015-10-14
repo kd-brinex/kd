@@ -11,7 +11,7 @@ use yii\helpers\Html;
 $column=[
 //    'Артикул'=>'number',
     'Номер'=>'pnc',
-//    'Дата производства'=>'prod',
+//    'Дата производства'=>'production',
 //    'end_date'=>'end_date',
 //    'field_type'=>'field_type',
 //    'add_desc'=>'add_desc',
