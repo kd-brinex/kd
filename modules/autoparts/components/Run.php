@@ -78,6 +78,7 @@ class Run extends Component{
                 ->asArray()
                 ->where('store_id = :store_id AND provider_id = :provider_id', [':store_id' => $store, ':provider_id' => $provider_id])
                 ->one();
+//        var_dump($accessData);die;
         return isset($accessData) ? $accessData : false;
     }
 
