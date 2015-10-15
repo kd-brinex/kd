@@ -75,10 +75,16 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $provider=$car::Cars($params);
+        $regions=$car::Regions($params);
+        foreach($regions->models as $region) {
+            $reg=$region->region;
+            $params['region']=$reg;
+            $provider[$reg] = $car::Cars($params);
+        }
         return $this->render('cars', [
             'provider' => $provider,
-            'params' =>$params
+            'params' =>$params,
+            'regions'=>$regions,
         ]);
     }
     public function actionModels()

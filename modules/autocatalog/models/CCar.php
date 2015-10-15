@@ -85,7 +85,11 @@ public static function ImagesSearch($params)
         $models = new ImagesSearch();
         return $models;
     }
-
+    public static function RegionsSearch($params)
+    {
+        $models = new RegionsSearch();
+        return $models;
+    }
 
 
 

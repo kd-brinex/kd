@@ -285,6 +285,19 @@ $config = [
             'layout' => 'autocatalog',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
             'model' => [
+                'toyota' => [
+                    'class' => 'app\modules\autocatalog\models\Toyota',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/toyota/'],
+                    'prop' => [
+                        'marka' => 'Toyota',
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=toyota;port=1111',
+                        'username' => 'root',
+                        'password' => 'RvZZ5G0GT7IbM5lwD1Et57wbqE43',
+                        'charset' => 'utf8'],
+                ],
                 'hyundai' => [
                     'class' => 'app\modules\autocatalog\models\Hyundai',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],

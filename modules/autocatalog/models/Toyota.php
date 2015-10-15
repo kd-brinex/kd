@@ -9,7 +9,7 @@ use yii\data\ActiveDataProvider;
  * Time: 9:50
  */
 
-class Hyundai extends CCar
+class Toyota extends CCar
 {
     public static function Cars($params)
     {
@@ -19,8 +19,7 @@ class Hyundai extends CCar
             'query' => $query,
             'id' => 'cat_code',
         ]);
-        $query->andFilterWhere(['like','region',$params['region']])
-        ->groupBy('family');
+        $query->andWhere('region like :region',[':region'=>'%'.$params['region'].'%']);
         $provider->pagination=false;
         return $provider;
     }
@@ -165,7 +164,8 @@ class Hyundai extends CCar
         $query->distinct()
         ->Where('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
         ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
-        ->andWhere('sect=:sect',[':sect'=>$params['sect']]) ;
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
+
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,
@@ -177,12 +177,12 @@ class Hyundai extends CCar
     {
         $models = self::RegionsSearch($params);
         $query =$models->search($params);
-
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,
         ]);
 
         return $provider;
+
     }
 }
