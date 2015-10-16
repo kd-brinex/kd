@@ -78,8 +78,9 @@ class AutocatalogController extends MainController
         $regions=$car::Regions($params);
         foreach($regions->models as $region) {
             $reg=$region->region;
-            $params['region']=$reg;
-            $provider[$reg] = $car::Cars($params);
+            $p=$params;
+            $p['region']=$reg;
+            $provider[$reg] = $car::Cars($p);
         }
         return $this->render('cars', [
             'provider' => $provider,
@@ -89,7 +90,10 @@ class AutocatalogController extends MainController
     }
     public function actionModels()
     {
+
         $params = \Yii::$app->request->queryParams;
+        //чтобы работал фильтр по региону
+        if(empty($params['ModelsSearch']['region'])){$params['ModelsSearch']['region']=$params['region'];}
         $car=$this->module->getClass();
         $model=$car::ModelsSearch($params);
         $provider=$car::Models($params);
@@ -97,7 +101,7 @@ class AutocatalogController extends MainController
         return $this->render('models', [
             'provider' => $provider,
             'filterModel' => $model,
-            'params' =>$params
+            'params' =>$params,
         ]);
     }
     public function actionCatalogs()
@@ -195,6 +199,7 @@ class AutocatalogController extends MainController
         $images=$car::Images($params);
         $model = $provider->models;
         $arr = [];
+//        var_dump($model);die;
         foreach ($model as $item) {
             $arr['models'][$item['pnc']][$item['pnc']] = $item;
 //            $arr['models'][$item['pnc']][] = $item;
@@ -213,7 +218,7 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $model=$this->module->searchVin($params)->models[0];
-        $redirect='/autocatalogs/'.$model->marka.'/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
+        $redirect='/autocatalogs/'.$model->marka.'/vin/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
 //        var_dump($provider->models[0]->cat_code);die;
 //        $params['cat_code']=$model->models[0]->cat_code;
 //        $car=$this->module->getClass();

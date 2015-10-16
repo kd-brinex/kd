@@ -13,7 +13,7 @@ use yii\i18n\I18N;
 <div class="models">
     <?= GridView::widget([
         'dataProvider'=>$provider,
-        'filterModel'=>$filterModel,
+//        'filterModel'=>$filterModel,
 //        'showHeader' => false,
         'layout' =>"{items}\n{pager}",
         'panelTemplate'=>'<div class="panel {type}">{sort}</div>',
@@ -34,11 +34,12 @@ use yii\i18n\I18N;
                 'format'=>'date',
         'label'=>'Окончание производства',
     ],
-            ['attribute'=>'region',
-                'filterType' => GridView::FILTER_SELECT2,
-                'filter'=>[''=>'Все','AUS'=>'Австралия','EUR'=>'Европа','CIS'=>'СНГ','GEN'=>'Общие','HAC'=>'Канада','HMA'=>'США','HMI'=>'Индия','MES'=>'Средний Восток'],
+//            ['attribute'=>'region',
+//                'filterType' => GridView::FILTER_SELECT2,
+//                'filter'=>[''=>'Все','AUS'=>'Австралия','EUR'=>'Европа','CIS'=>'СНГ','GEN'=>'Общие','HAC'=>'Канада','HMA'=>'США','HMI'=>'Индия','MES'=>'Средний Восток'],
+//
+//                ],
 
-                ],
         ],
 
     ]);?>

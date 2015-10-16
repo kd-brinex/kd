@@ -21,4 +21,9 @@ class RegionsSearch extends ActiveRecord
         $query =parent::find();
         return $query;
     }
+    public function getName()
+    {
+        return $this->region;
+    }
+
 }

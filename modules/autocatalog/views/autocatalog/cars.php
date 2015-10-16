@@ -7,11 +7,13 @@ use \yii\bootstrap\Tabs;
  * Date: 01.10.15
  * Time: 11:22
  */
-foreach($regions->models as $model) {
+
+foreach($regions->models as $region) {
+
     $items []=
-        ['label' => Yii::t('autocatalog', $model->region),
+        ['label' => Yii::t('autocatalog', $region->region),
             'content' =>'<div class="catalog">'. GridView::widget([
-                'dataProvider' => $provider[$model->region],
+                'dataProvider' => $provider[$region->region],
                 'showHeader' => false,
                 'layout' => "{items}\n{pager}",
                 'bootstrap' => false,
@@ -21,12 +23,12 @@ foreach($regions->models as $model) {
                         'attribute' => 'family',
                         'format' => 'raw',
                         'value' => function ($model, $key, $index, $widget) {
-                            return \yii\helpers\Html::a($model['family'], \yii\helpers\Url::to($model['marka'] . '/' . $model['family']));
+                            return \yii\helpers\Html::a($model['family'], \yii\helpers\Url::to($model['region'].'/'.$model['family'] ));
                         },]
                 ],
 
             ]).'</div>',
-//            'active' => true,
+            'active' =>  ($region->region==$params['region']),
             'options'=>['class'=>'acatalog-tabs'],
         ];}
     ?>

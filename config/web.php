@@ -163,12 +163,12 @@ $config = [
 
                 'autocatalogs' => '/autocatalog/autocatalog',
                 '/autocatalogs/<marka:\w+>/podbor'=>'/autocatalog/autocatalog/podbor',
-                '/autocatalogs/<marka:\w+>' => '/autocatalog/autocatalog/cars',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
 //                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
@@ -290,6 +290,7 @@ $config = [
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/toyota/'],
                     'prop' => [
                         'marka' => 'Toyota',
+                        'region'=> 'EU',
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
@@ -303,6 +304,7 @@ $config = [
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',
+                        'region'=> 'EUR',
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',

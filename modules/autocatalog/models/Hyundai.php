@@ -20,7 +20,8 @@ class Hyundai extends CCar
             'id' => 'cat_code',
         ]);
         $query->andFilterWhere(['like','region',$params['region']])
-        ->groupBy('family');
+        ->groupBy('family')
+        ->addSelect(['*', 'region'=>'concat(\''.$params['region'].'\')']);
         $provider->pagination=false;
         return $provider;
     }
@@ -30,6 +31,7 @@ class Hyundai extends CCar
         $models = self::ModelsSearch($params);
         $models->load($params);
         $query = $models->search($params);
+//        var_dump($params);die;
         $query->andFilterWhere(['like', 'region', $models->region])
             ->andFilterWhere(['like', 'family', $models->family])
             ->andFilterWhere(['like', 'from', $models->from])
@@ -49,6 +51,9 @@ class Hyundai extends CCar
             'query' => $query,
             'pagination' =>false,
         ]);
+        $query->distinct()
+        ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
+        ->andWhere("value<>''");
         return $provider;
     }
     public static function Podbor($params)
@@ -79,7 +84,8 @@ class Hyundai extends CCar
     {
         $models = self::CatalogSearch($params);
         $query =$models->search($params);
-        $query->distinct();
+        $query ->where('cat_code=:cat_code',
+            [':cat_code'=>$params['cat_code']])->distinct();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,
@@ -107,7 +113,9 @@ class Hyundai extends CCar
             'sect',
             'url',
             'compatibility',
-        ]);
+        ])            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
+            ->andWhere('sect=:sect',[':sect'=>$params['sect']])
+            ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']]);
         $query->distinct();
         $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
         $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
@@ -155,6 +163,7 @@ class Hyundai extends CCar
             'pagination' =>false,
         ]);
         $query->andWhere('vin=:vin',[':vin'=>$params['vin']]);
+
         return $provider;
     }
     public static function Images($params)
