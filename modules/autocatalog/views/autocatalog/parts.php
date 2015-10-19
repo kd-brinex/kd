@@ -23,11 +23,11 @@ use yii\helpers\Url;
 //    var_dump($models);die;
     $img='';
     foreach ($models['models'] as $number=>$m){
-if (empty($img)){$img=$m[0]['image'];}
+//if (empty($img)){$img=$m[0]['image'];}
         echo Collapse::widget([
             'items' => [
                 [
-                    'label' => $number.' - '.$m[0]['name'],
+                    'label' => $number.' - '.$m[$number]['name'],
 //                'content'=>'',
                     'content'=>$this->render('parts_group',['model'=>$m]),
 
@@ -43,16 +43,24 @@ if (empty($img)){$img=$m[0]['image'];}
 </div>
 <div class="col-md-7 col-xs-12">
     <div class="page_image">
-        <?= Html::img($img);?>
+        <?php
+        foreach($images->models as $img)
+        {
+//            var_dump($img->image);die;
+            echo Html::img($img->image);
+        }
+
+        ?>
     </div>
     <?php
     foreach($models['labels'] as $labels){
-//    var_dump($m[0]);die;
-        foreach($labels as $m) {
-            $label = '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height']<20?'20':$m['height']) . 'px; ">' . $m['pnc'] . '</div>';
-            echo $label;
-        }
+foreach($labels as $m) {
+
+    $label = '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height'] < 20 ? '20' : $m['height']) . 'px; ">' . $m['pnc'] . '</div>';
+    echo $label;
+}
 
     }
+
     ?>
 </div>
