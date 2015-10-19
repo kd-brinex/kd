@@ -87,7 +87,7 @@ return [
                                 4 => 'quantity',
                                 5 => 'days',
                                 6 => 'dayswarranty',
-                                8 => 'orderrefernce',
+                                8 => 'orderreference',
                                 11=> 'lotquantity',
                                 12=> 'date',
                                 13=> 'pricedestination',
@@ -112,7 +112,7 @@ return [
                                 6 =>    'maxDeliveryDays',                      // Доставка
                                 11 =>   'minQuantity',
                                 12 =>   'lastUpdateDate',
-                                13 =>   'PriceDestination',
+//                                13 =>   'pricedestination',
                                 14 =>   'providerId',
                                 15 =>   'providerDescription',
                                 16 =>   'detailGroup',
@@ -128,7 +128,7 @@ return [
                                 10 =>   'statProvider',
                                 11 =>   'minQuantity',
                                 12 =>   'lastUpdateDate',
-                                13 =>   'PriceDestination',
+//                                13 =>   'pricedestination',
                                 14 =>   'providerId',
                                 15 =>   'providerDescription',
                                 16 =>   'detailGroup',
@@ -153,7 +153,7 @@ return [
                                 3  => 'price',
                                 4  => 'stock',
                                 6  => 'delivery',
-                                8  => 'gid',
+//                                8  => 'gid',
                                 11 => 'minq',
                                 12 => 'upd',
                             ]
@@ -169,20 +169,21 @@ return [
                                 'items' => [
                                     [
                                         0  => 'resource_article',
-                                        2 => 'brand_id',
+//                                        2 => 'brand_id',
         //                              2  => 'brand_name',
                                     ]
                                 ]
                             ],
                             'out' => [
-                                0 => 'article',
-                                1 => 'name',
-                                3 => 'price',
-                                4 => 'quantity',
-                                5 => 'average_period',
-                                6 => 'assured_period',
-                                10 => 'reliability',
-                                11 => 'multiplication_factor'
+                                0 =>  'article',
+                                1 =>  'name',
+                                2 =>  'brand:name',
+                                3 =>  ':price',
+                                4 =>  ':quantity',
+                                5 =>  ':average_period',
+                                6 =>  ':assured_period',
+                                10 => ':reliability',
+                                11 => ':multiplication_factor',
                             ]
                         ]
                     ]

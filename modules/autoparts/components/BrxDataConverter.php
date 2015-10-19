@@ -58,51 +58,198 @@ class BrxDataConverter extends Component
         return $result;
     }
 
+    /**
+     * Функция ищет массив с запчастями и возвращает только его, без лишних артефактов
+     * @param array $array массив - ответ от поставщика
+     * @return array результирующий массив
+     */
+    private function find_details_array($array = [])
+    {
+        if(is_array($array) && is_int(key($array))) return $array;
+
+        foreach($array as $innerArray){
+            return is_array($innerArray) && is_int(key($innerArray)) ? $innerArray : $this->find_details_array($innerArray);
+        }
+    }
+
+
+    /**
+     * Функция рекурсивный помощник для функции rooting_array_values_recursive()
+     * @param $arr
+     * @param $result
+     * @param $rootKey
+     * @return mixed
+     */
+    private function recursive($arr, &$result, $rootKey)
+    {
+        static $ak;
+        foreach($arr as $k => $v){
+            if(is_array($v)) {
+                $ak .= $k.':';
+                $this->recursive($v, $result, $rootKey);
+            } else
+                $result[$rootKey][$ak . $k] = $v;
+        }
+        $ak = '';
+        return $arr;
+    }
+
+    /**
+     * Функция делает многоменрный массив линейным. К ключам вложенных массивов присоединяются ключи родительского
+     * массива во избежании перезаписи дублирующихся имен.
+     * @param array $array массив для обработки
+     * @return array обработанный массив
+     */
+    private function rooting_array_values_recursive($array = [])
+    {
+        if(empty($array)) return $array;
+
+        $result = [];
+        foreach($array as $key => $value){
+            if(!empty($value) && is_array($value))
+                $this->recursive($value, $result, $key);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Функция ищет в массиве деталий вложенные повторения в подмассивах и помещает их в корень как уникальные
+     * @param array $array массив запчастей
+     * @param array $template массив шаблон конфигурации
+     */
+    private function multiplyIfNeed(&$array, $template)
+    {
+        if(!empty($array)) {
+            $nextIndex = count($array);
+            $firstIndex = $nextIndex;
+            foreach ($template as $item) {
+                $nextIndex = $firstIndex;
+                if ($item{0} === ':') {
+                    foreach ($array as $partIndex => &$part) {
+                        if (is_array($part)) {
+                            foreach ($part as $attributeIndex => &$attribute) {
+                                if ($needle = stripos($attributeIndex, $item)) {
+                                    if ($attributeIndex{$needle - 1} == 0) {
+                                        unset($part[$attributeIndex]);
+                                        $part[substr($item, 1)] = $attribute;
+                                        $array[$nextIndex]['parentArrayIndex'] = $partIndex;
+                                    } else {
+                                        $array[$nextIndex][substr($item, 1)] = $attribute;
+                                        $array[$nextIndex]['parentArrayIndex'] = $partIndex;
+                                        unset($part[$attributeIndex]);
+                                        $nextIndex++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Функция заполняет все массивы недостающими атрибутами
+     * @param array $array
+     */
+    private function fillUp(&$array)
+    {
+        if(!empty($array)) {
+            foreach ($array as $key => &$value) {
+                if (is_array($value) && array_key_exists('parentArrayIndex', $value)) {
+                    foreach ($array[$value['parentArrayIndex']] as $k => $v) {
+                        if (!isset($value[$k]))
+                            $value[$k] = $v;
+                    }
+                    unset($value['parentArrayIndex']);
+                }
+            }
+        }
+    }
+
+    /**
+     * Функция удаляет созданные для обработки метки, ключи, значения
+     * @param array $array
+     */
+    private function removeArtifacts(&$array)
+    {
+        if(!empty($array)) {
+            foreach ($array as $key => &$value) {
+                if (is_array($value)) {
+                    foreach ($value as $k => $v) {
+                        if (preg_match('/(\d+):/', $k)) {
+                            unset($value[$k]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private function dataToArrayRecursive($data){
+        if(!is_array($data) && !is_object($data)) return $data;
+
+        $data = (array)$data;
+        foreach($data as $k => $v){
+            if(!is_array($v) && !is_object($v))
+                $data[$k] = $v;
+            else
+                $data[$k] = $this->dataToArrayRecursive($v);
+        }
+
+        return $data;
+    }
+
+
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
-//        var_dump($data);
+        if(!empty(current($data)) && !(current($data) instanceof ActiveRecord)){
+            $data = $this->dataToArrayRecursive($data);
+            $root_array = (array)$this->find_details_array($data);
+            $data = $this->rooting_array_values_recursive($root_array);
+        }
         $config = \Yii::$app->getModule('autoparts')->params;
         $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
-        $data = is_object($data) ? (array)$data : $data;
         $items = [];
         // перебираем все атрибуты шаблона под который идет подгонка данных
-//        var_dump($data);
         foreach($config['paramsTemplate'] as $key => $value){
             // ищем параметр шаблона в возвращенных дынных
             if(isset($fromTemplate[$key])){
                 if(isset($data[0]) && $data[0] instanceof ActiveRecord){
-                   foreach($data as $k => $model){
-                       $values[$k] = $model->$fromTemplate[$key];
-                   }
-                } else
-                    $values = BrxArrayHelper::array_search_values_recursive($fromTemplate[$key], $data);
-                // забираем его значение
-                for($i = 0; $i <= count($values)-1; $i++){
-//                создаем массивы и забиваем их параметрами шаблона и соответсвующими данными из пришедших
-                    $items[$i][$value] = $values[$i];
+                    foreach($data as $k => $model){
+                        $values[$k] = $model->$fromTemplate[$key];
+                    }
+                } else {
+                    $this->multiplyIfNeed($data, $fromTemplate);
+                    $this->removeArtifacts($data);
+                    $this->fillUp($data);
+                }
+                $data_count = count($data);
+                for($i = 0; $i <= $data_count - 1; $i++){
+                    $index = $fromTemplate[$key]{0} === ':' ? substr($fromTemplate[$key], 1) : $fromTemplate[$key];
+                    if(isset($data[$i]) && isset($data[$i][$index]))
+                        $items[$i][$value] = $data[$i][$index];
                 }
             }
         }
-//        var_dump($items);die;
         foreach($items as $item){
             foreach($config['paramsTemplate'] as $key => $value){
                 if(!array_key_exists($value, $item))
-                    $item[$value] = '';
+                $item[$value] = '';
             }
         }
-
         for($i = 0; $i <= count($items)-1; $i++){
             foreach($config['paramsTemplate'] as $key => $value){
                 if(!array_key_exists($value, $items[$i]))
-                    $items[$i][$value] = '';
+                $items[$i][$value] = '';
             }
         }
-
         if(!empty($beforeParseData))
-            $items = $this->beforeParse($beforeParseData, $items);
+        $items = $this->beforeParse($beforeParseData, $items);
 
 
         if(!empty($afterParseData))
-            $items = $this->afterParse($afterParseData, $items);
+        $items = $this->afterParse($afterParseData, $items);
+
 
         return $items;
     }
@@ -125,27 +272,38 @@ class BrxDataConverter extends Component
                 unset($item);
                 continue;
             }
+            if(isset($ParseData['provider']->article)) {
+                if (strtoupper($item['code']) == strtoupper($ParseData['provider']->article) &&
+                    $item['groupid'] == '') {
+                    $item['groupid'] = 0;
+                }
+            }
+            if($ParseData['provider']->provider_data->name == 'Over') {
+                    $item['groupid'] = 0;
+            }
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
-                    switch($value){
-                        case 'Original':
-                            $value = 0;
-                            break;
-                        case 'ReplacementOriginal':
-                            $value = 1;
-                            break;
-                        case 'ReplacementNonOriginal':
-                            $value = 2;
-                            break;
-                        case 'ReCross':
-                            $value = 2;
-                            break;
-                        case 'Analog':
-                            $value = 2;
-                            break;
-                        default:
-                            $value = 0;
-                            break;
+                    if(!is_int($value)){
+                        switch($value){
+                            case 'Original':
+                                $value = 0;
+                                break;
+                            case 'ReplacementOriginal':
+                                $value = 1;
+                                break;
+                            case 'ReplacementNonOriginal':
+                                $value = 2;
+                                break;
+                            case 'ReCross':
+                                $value = 2;
+                                break;
+                            case 'Analog':
+                                $value = 2;
+                                break;
+                            default:
+                                $value = 2;
+                                break;
+                        }
                     }
                 }
                 if($field == 'name') {
@@ -174,7 +332,6 @@ class BrxDataConverter extends Component
                     $value = $ParseData['provider']->provider_data->flagpostav;
                 if($field == 'srokmin'){
                     $value += $ParseData['provider']->days;
-//                var_dump($value,$ParseData['provider']->days);die;
                 }
                 if($field == 'srokmax')
                     $value += $ParseData['provider']->days;

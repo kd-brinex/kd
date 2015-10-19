@@ -31,7 +31,7 @@ class BrxArrayHelper{
     }
 
     /**
-     * Функция работает аналогично PHP функции array_replace_recursive, только делает это (NCS - NON CASE SENSITIVE)не обращая внимания на регистр ключей.(ВНИМАНИЕ! Ключи самого первого массива остаются в исходном регистре)
+     * Функция работает аналогично PHP функции array_replace_recursive, только делает это (NCS - NON CASE SENSITIVE) не обращая внимания на регистр ключей.(ВНИМАНИЕ! Ключи самого первого массива остаются в исходном регистре)
      * @param $array array исходный массив. В него все записывается
      * @param $arrays array остальные массивы через запятую  (array_replace_recursive_ncs(array $array, $array, $array, ... , $array))
      * @return mixed возвращается склеенный массив
@@ -84,7 +84,7 @@ class BrxArrayHelper{
                 return $path;
             } else if((!$strict && $val == $needle) || ($strict && $val === $needle)) {
                 $path[] = $key;
-                var_dump($path);
+                return $path;
             }
         }
         return false;
