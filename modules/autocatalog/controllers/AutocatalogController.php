@@ -75,15 +75,25 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $provider=$car::Cars($params);
+        $regions=$car::Regions($params);
+        foreach($regions->models as $region) {
+            $reg=$region->region;
+            $p=$params;
+            $p['region']=$reg;
+            $provider[$reg] = $car::Cars($p);
+        }
         return $this->render('cars', [
             'provider' => $provider,
-            'params' =>$params
+            'params' =>$params,
+            'regions'=>$regions,
         ]);
     }
     public function actionModels()
     {
+
         $params = \Yii::$app->request->queryParams;
+        //чтобы работал фильтр по региону
+        if(empty($params['ModelsSearch']['region'])){$params['ModelsSearch']['region']=$params['region'];}
         $car=$this->module->getClass();
         $model=$car::ModelsSearch($params);
         $provider=$car::Models($params);
@@ -91,7 +101,7 @@ class AutocatalogController extends MainController
         return $this->render('models', [
             'provider' => $provider,
             'filterModel' => $model,
-            'params' =>$params
+            'params' =>$params,
         ]);
     }
     public function actionCatalogs()
@@ -190,7 +200,9 @@ class AutocatalogController extends MainController
         $model = $provider->models;
         $arr = [];
         foreach ($model as $item) {
-            $arr['models'][$item['pnc']][$item['pnc']] = $item;
+            $arr['models'][$item['pnc']][$item['number']] = $item;
+
+//            $arr['models'][$item['pnc']][$item['pnc']] = $item;
 //            $arr['models'][$item['pnc']][] = $item;
 //            $arr['labels'][][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
             $arr['labels'][$item['pnc']][] = $item;
@@ -207,7 +219,7 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $model=$this->module->searchVin($params)->models[0];
-        $redirect='/autocatalogs/'.$model->marka.'/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
+        $redirect='/autocatalogs/'.$model->marka.'/vin/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
 //        var_dump($provider->models[0]->cat_code);die;
 //        $params['cat_code']=$model->models[0]->cat_code;
 //        $car=$this->module->getClass();

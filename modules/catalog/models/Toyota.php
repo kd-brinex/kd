@@ -450,7 +450,8 @@ WHERE catalog = :catalog
         $connect = new Connection(ToyotaQuery::getConnectParam());
         $compl_code = $connect->createCommand($query, [':catalog' => $params['catalog'], ':catalog_code' => $params['catalog_code'], ':model_code' => $params['model_code']])->queryAll();
         $compl_code_array = [];
-        foreach ($compl_code as $cc) {
+        foreach ($compl_code as $cc)
+        {
             $compl_code_array[] = $cc['compl_code'];
         }
 //        var_dump($params,$compl_code);die;

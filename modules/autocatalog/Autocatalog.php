@@ -66,7 +66,8 @@ public function getModel()
             $car=Yii::createObject($catalog['class']);
             $this->db=$this->getDb();
             $res=$car->vin($prm);
-            if (!empty($res->models)){return $res;}
+//            var_dump($res->count);die;
+            if ($res->totalCount>0){return $res;}
         }
     }
 
