@@ -24,7 +24,7 @@ class User extends BaseUser
         return [
             // username rules
             ['username', 'required', 'on' => ['register', 'connect', 'create', 'update']],
-            ['username', 'match', 'pattern' => '/^[a-zA-Z]\w+$/'],
+            ['username', 'match', 'pattern' => '/^[a-zA-Z0-9]\w+$/'],
             ['username', 'string', 'min' => 3, 'max' => 25],
             ['username', 'unique'],
             ['username', 'trim'],

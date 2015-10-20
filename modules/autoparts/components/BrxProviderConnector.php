@@ -83,10 +83,12 @@ class BrxProviderConnector
                 } else
                     $this->authParams[$index] = $value;
             }
-            if(($index = array_search($key, $this->methods[$method]['params']))){
-                unset($this->methods[$method]['params'][$index]);
-                $this->methods[$method]['params'][$value];
-            }
+
+//            if(!empty($index = array_search($key, $this->methods[$method]['params']))){
+////                var_dump($this->methods[$method]['params'][$index]);die;
+//                unset($this->methods[$method]['params'][$index]);
+//                $this->methods[$method]['params'][$value];
+//            }
         }
     }
 }

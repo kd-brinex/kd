@@ -148,7 +148,7 @@ class Tovar extends \yii\db\ActiveRecord
                     ->all();
         foreach($providers as $provider){
                 if($provider->cross){
-                    $options = ['provider_data' => $provider];
+                    $options = ['provider_data' => $provider, 'article' => $params['article']];
                     if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
                     if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
                     $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
