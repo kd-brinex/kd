@@ -115,8 +115,9 @@ class Hyundai extends CCar
             'compatibility',
         ])            ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
             ->andWhere('sect=:sect',[':sect'=>$params['sect']])
-            ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']]);
-        $query->distinct();
+            ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
+            ->groupBy(['sector']);
+//        $query->distinct();
         $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
         $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
         $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
@@ -132,16 +133,18 @@ class Hyundai extends CCar
         $models = self::PartsSearch($params);
         $query =$models->search($params)
 //        $query =parent::find()
-//            ->distinct()
+            ->distinct()
             ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
             ->andWhere('sect=:sect',[':sect'=>$params['sect']])
-            ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']]);
+            ->andWhere('sector=:sector',[':sector'=>substr($params['sub_sect'],0,-2)])
+//            ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']]);
+        ;
 //        ->groupBy(['number']);
 //        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
-//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
+        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
 //        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
 //        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
-//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
+        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
 
 
         ;
@@ -168,13 +171,17 @@ class Hyundai extends CCar
     }
     public static function Images($params)
     {
-//        var_dump($params);die;
+//        var_dump(substr($params['sub_sect'],0,-2),$params['cat_folder']);die;
         $models = self::ImagesSearch($params);
         $query =$models->search($params);
-        $query->distinct()
+        $query
+            ->groupBy(['page'])
         ->Where('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
-        ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
-        ->andWhere('sect=:sect',[':sect'=>$params['sect']]) ;
+//        ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
+        ->andWhere('sect=:sect',[':sect'=>$params['sect']])
+        ->andWhere('sector=:sector',[':sector'=>substr($params['sub_sect'],0,-2)])
+//        ->andWhere('region=:region',[':region'=>$params['region']])
+        ;
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,

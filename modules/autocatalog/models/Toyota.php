@@ -85,6 +85,7 @@ class Toyota extends CCar
     }
     public static function Catalog($params)
     {
+        var_dump($params['option']);die;
         $models = self::CatalogSearch($params);
         $query =$models->search($params);
         $query->groupby('name');
@@ -138,7 +139,7 @@ class Toyota extends CCar
         $models = self::PartsSearch($params);
         $query =$models->search($params)
 //        $query =parent::find()
-//            ->distinct()
+            ->distinct()
             ->andWhere('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
 //            ->andWhere('cat_code=:cat_folder',[':cat_folder'=>$params['cat_folder']])
             ->andWhere('region=:region',[':region'=>$params['region']])
@@ -177,9 +178,13 @@ class Toyota extends CCar
 //        var_dump($params);die;
         $models = self::ImagesSearch($params);
         $query =$models->search($params);
-        $query->distinct()
+        $query
+//            ->distinct()
         ->Where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']]);
+        ->andWhere('sub_sect=:sub_sect',[':sub_sect'=>$params['sub_sect']])
+        ->andWhere('region=:region',[':region'=>$params['region']])
+            ->orderBy('page')
+        ;
 //        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
 
         $provider = new ActiveDataProvider([

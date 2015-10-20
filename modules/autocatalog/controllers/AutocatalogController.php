@@ -199,9 +199,10 @@ class AutocatalogController extends MainController
         $images=$car::Images($params);
         $model = $provider->models;
         $arr = [];
-//        var_dump($model);die;
         foreach ($model as $item) {
-            $arr['models'][$item['pnc']][$item['pnc']] = $item;
+            $arr['models'][$item['pnc']][$item['number']] = $item;
+
+//            $arr['models'][$item['pnc']][$item['pnc']] = $item;
 //            $arr['models'][$item['pnc']][] = $item;
 //            $arr['labels'][][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
             $arr['labels'][$item['pnc']][] = $item;
