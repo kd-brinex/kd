@@ -352,7 +352,7 @@ $config = [
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
                 'security' => 'app\modules\user\controllers\SecurityController',
-//                'register' => 'app\modules\user\controllers\RegistrationController'
+                'registration' => 'app\modules\user\controllers\RegistrationController',
                 'admin' => 'app\modules\user\controllers\AdminController'
             ],
 
