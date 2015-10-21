@@ -57,6 +57,7 @@ class BrxProvider extends BrxProviderConnector
      * @throws Exception выбрасываеюся если возникает ошибка подключения к еровайдеру (например: неверные логин, либо пароль)
      */
     private function runMethod($method, $options){
+
         if((!$options = $this->getOptions($method, $options)))
             return false;
 
@@ -82,6 +83,7 @@ class BrxProvider extends BrxProviderConnector
      * TODO условие isParamsAsArray - костыль который требует уничтожения на самом глубоком уровне!!!)))
      */
     private function getOptions($method, array $options){
+
         if(!($accessOptions = $this->getAccessOptions($method)))
             return false;
 

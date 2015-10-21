@@ -27,7 +27,6 @@ class BrxDataConverter extends Component
             $index = array_search($key, $config['paramsTemplate'][$method]);
             $result = array_replace_recursive($result, $this->setValueIndex($index, $fromTemplate, $value));
         }
-
         return $result;
     }
 
@@ -51,7 +50,7 @@ class BrxDataConverter extends Component
         if(!$dataType)
             return false;
 
-        $result = $this->{'parse'.$dataType}($data);
+        $result = $this->dataToArrayRecursive($this->{'parse'.$dataType}($data));
 
         if($toTemplate)
             $result = $this->dataToTemplate($result, $provider, $beforeParse, $afterParse);
@@ -207,8 +206,7 @@ class BrxDataConverter extends Component
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
         $config = \Yii::$app->getModule('autoparts')->params;
         $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
-        if(!empty(current($data)) && !(current($data) instanceof ActiveRecord)){
-            $data = $this->dataToArrayRecursive($data);
+        if(is_array($data) && !empty(current($data)) && !(current($data) instanceof ActiveRecord)){
             $root_array = (array)$this->find_details_array($data,current($fromTemplate));
             $data = $this->rooting_array_values_recursive($root_array);
         }

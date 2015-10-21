@@ -15,6 +15,7 @@ class BrxModel extends Component{
     public function run($modelName, $method, array $options = null){
         $model = $this->getModel($modelName);
         $modelData = $this->dataForModel($options);
+
         return $model->$method($modelData)->getModels();
     }
 

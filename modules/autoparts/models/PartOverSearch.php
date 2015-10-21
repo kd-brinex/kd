@@ -44,10 +44,11 @@ class PartOverSearch extends PartOver
      */
     public function search($params)
     {
+//        var_dump($this->flagpostav);die;
         $query = self::find();
         if(!empty($params[':code'])){
-            $query ->andWhere('code = :code')
-                    ->addParams([':code'=>$params[':code']]);
+            $query ->andWhere('code = :code ')//AND flagpostav = :flagpostav
+                   ->addParams([':code'=>$params[':code']]);//, ':flagpostav' => $params[':flagpostav']
         }
 
         $dataProvider = new ActiveDataProvider([
