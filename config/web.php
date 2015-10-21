@@ -163,12 +163,12 @@ $config = [
 
                 'autocatalogs' => '/autocatalog/autocatalog',
                 '/autocatalogs/<marka:\w+>/podbor'=>'/autocatalog/autocatalog/podbor',
-                '/autocatalogs/<marka:\w+>' => '/autocatalog/autocatalog/cars',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
-                '/autocatalogs/<marka:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
 //                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
@@ -285,11 +285,26 @@ $config = [
             'layout' => 'autocatalog',
             'controllerNamespace' => 'app\modules\autocatalog\controllers',
             'model' => [
+                'toyota' => [
+                    'class' => 'app\modules\autocatalog\models\Toyota',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/toyota/'],
+                    'prop' => [
+                        'marka' => 'Toyota',
+                        'region'=> 'EU',
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => 'mysql:host=127.0.0.1;dbname=toyota;port=1111',
+                        'username' => 'root',
+                        'password' => 'RvZZ5G0GT7IbM5lwD1Et57wbqE43',
+                        'charset' => 'utf8'],
+                ],
                 'hyundai' => [
                     'class' => 'app\modules\autocatalog\models\Hyundai',
                     'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs/'],
                     'prop' => [
                         'marka' => 'Hyundai',
+                        'region'=> 'EUR',
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
@@ -352,7 +367,7 @@ $config = [
             'controllerMap' => [
                 'settings' => 'app\modules\user\controllers\SettingsController',
                 'security' => 'app\modules\user\controllers\SecurityController',
-//                'register' => 'app\modules\user\controllers\RegistrationController'
+                'registration' => 'app\modules\user\controllers\RegistrationController',
                 'admin' => 'app\modules\user\controllers\AdminController'
             ],
 

@@ -48,6 +48,8 @@ table.submodel{
 
 }
 .page_label {
+    left: 20px;
+    top:50px;
     position: absolute;
     font-size: 12px;
     line-height: 12px;
@@ -61,8 +63,8 @@ table.submodel{
     text-align: center;
 }
 .page_image {
-    left: 0px;
-    top: 0px;
+    left: 20px;
+    top: 50px;
     position: absolute;
     font-size: 10px;
 }
