@@ -157,7 +157,12 @@ class Tovar extends \yii\db\ActiveRecord
                 if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
                 $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
-                $items = $providerObj->findDetails(['code' => $params['article']]);
+                $search_settings = ['code' => $params['article']];
+                if($provider->name == 'Over')
+                    $search_settings = array_merge($search_settings, ['flagpostav' => $provider->flagpostav]);
+
+                $items = $providerObj->findDetails($search_settings);
+
                 if(!empty($items) && is_array($items)){
                     foreach($items as $item){
                         array_push($details, $item);

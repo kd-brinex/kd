@@ -93,7 +93,8 @@ class BrxSoap extends Component{
         try {
             return $this->runSoap()->__soapCall($method, $options);
         } catch(\SoapFault $e){
-            return $e->getMessage();
+//            var_dump($this->runSoap()->__getLastResponse());
+//            var_dump($e->getMessage());
             //throw new Exception('Ошибка подключения к SOAP API провайдера ('.$e->getMessage().')');
         }
     }
