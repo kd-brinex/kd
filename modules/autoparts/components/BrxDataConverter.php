@@ -204,9 +204,12 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
+        if(!is_array($data)) return false;
         $config = \Yii::$app->getModule('autoparts')->params;
+
         $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
-        if(is_array($data) && !empty(current($data)) && !(current($data) instanceof ActiveRecord)){
+
+        if(!empty(current($data)) && !(current($data) instanceof ActiveRecord)){
             $root_array = (array)$this->find_details_array($data,current($fromTemplate));
             $data = $this->rooting_array_values_recursive($root_array);
         }
