@@ -34,7 +34,7 @@ class PartProviderUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['login', 'password', 'store_id', 'provider_id'], 'required'],
+            [['password', 'store_id', 'provider_id'], 'required'],
             [['store_id', 'provider_id'], 'integer'],
             [['marga'], 'number'],
             [['name'], 'string', 'max' => 200],

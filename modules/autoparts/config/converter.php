@@ -9,30 +9,35 @@
 return [
     'params' => [
         'paramsTemplate' => [
-             0 => 'code',
-             1 => 'name',
-             2 => 'manufacture',
-             3 => 'price',
-             4 => 'quantity',
-             5 => 'srokmin',
-             6 => 'srokmax',
-             7 => 'provider',
-             8 => 'reference',
-             9 => 'srok',
-            10 => 'estimation',
-            11 => 'lotquantity',
-            12 => 'pricedate',
-            13 => 'pricedestination',
-            14 => 'skladid',
-            15 => 'sklad',
-            16 => 'groupid',
-            17 => 'flagpostav',
-            18 => 'storeid',
-            19 => 'pid',
-            20 => 'srokdays',
-            21 => 'weight',
-            22 => 'cross',
-            23 => 'ball',
+            'findDetails' => [
+                 0 => 'code',
+                 1 => 'name',
+                 2 => 'manufacture',
+                 3 => 'price',
+                 4 => 'quantity',
+                 5 => 'srokmin',
+                 6 => 'srokmax',
+                 7 => 'provider',
+                 8 => 'reference',
+                 9 => 'srok',
+                10 => 'estimation',
+                11 => 'lotquantity',
+                12 => 'pricedate',
+                13 => 'pricedestination',
+                14 => 'skladid',
+                15 => 'sklad',
+                16 => 'groupid',
+                17 => 'flagpostav',
+                18 => 'storeid',
+                19 => 'pid',
+                20 => 'srokdays',
+                21 => 'weight',
+                22 => 'cross',
+                23 => 'ball',
+            ],
+            'getOrderState' => [
+                0 => 'order_id'
+            ]
         ],
         'providersFieldsParams' => [
             'Emex' => [
@@ -66,6 +71,13 @@ return [
                                14 => 'PriceLogo',
                                15 => 'PriceCountry',
                                16 => 'PriceGroup',
+                            ]
+                        ]
+                    ],
+                    'getOrderState' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'globalIds'
                             ]
                         ]
                     ]

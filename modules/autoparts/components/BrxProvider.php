@@ -31,7 +31,7 @@ class BrxProvider extends BrxProviderConnector
 
         if(!empty($options))
             $params = BrxArrayHelper::array_replace_recursive_ncs($params, $options);
-//var_dump($options);
+
         Yii::configure($this, $params);
     }
 
@@ -59,7 +59,9 @@ class BrxProvider extends BrxProviderConnector
     private function runMethod($method, $options){
         if((!$options = $this->getOptions($method, $options)))
             return false;
+
         $response = $this->getConnection($method, $options);
+
         //ЩАС БУДЕТ КОСТЫЛЬ
         $this->method = $method;
         //ВОТ И КОНЧИЛСЯ КОСТЫЛЬ
