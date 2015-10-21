@@ -22,6 +22,6 @@ class DefaultController extends ProviderController
 //        var_dump($soap->__getFunctions());
 //        var_dump($soap->__getLastRequest());
 //        echo $soap->__getLastResponse();
-//        var_dump(Tovar::getProviderOrderState(['order_id' => 123]));
+        var_dump(Tovar::getProviderOrderState(['order_id' => 84697563]));
     }
 }
