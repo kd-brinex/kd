@@ -30,7 +30,6 @@ class PartProvider extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name','flagpostav'], 'string', 'max' => 15],
-            [['name'], 'unique'],
             [['weight','enable','cross'],'integer']
         ];
     }
