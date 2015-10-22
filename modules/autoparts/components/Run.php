@@ -26,6 +26,7 @@ class Run extends Component{
 
     public function provider($provider, array $options = []){
         $class = 'app\modules\autoparts\components\BrxProvider';
+
         if(!empty(($access = $this->getAccess($provider, $options))))
             $options = BrxArrayHelper::array_replace_recursive_ncs($options, $access);
 
