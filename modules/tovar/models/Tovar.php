@@ -158,8 +158,6 @@ class Tovar extends \yii\db\ActiveRecord
                 $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
                 $search_settings = ['code' => $params['article']];
-                if($provider->name == 'Over')
-                    $search_settings = array_merge($search_settings, ['flagpostav' => $provider->flagpostav]);
 
                 $items = $providerObj->findDetails($search_settings);
 
@@ -179,11 +177,17 @@ class Tovar extends \yii\db\ActiveRecord
                 if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
                 if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
 
+
                 $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
                 if(!empty($params['store_id'])) $providerObj->store_id = (int)$params['store_id'];
 
-                $items = $providerObj->findDetails(['code' => $params['article']]);
+                $search_settings = ['code' => $params['article']];
+
+                if($provider->name == 'Over')
+                    $search_settings = array_merge($search_settings, ['flagpostav' => $provider->flagpostav]);
+
+                $items = $providerObj->findDetails($search_settings);
                 if(!empty($crosses)) {
                     $crossItems = null;
                     foreach ($crosses as $crossCode => $crossGroup) {

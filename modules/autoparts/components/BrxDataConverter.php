@@ -50,7 +50,8 @@ class BrxDataConverter extends Component
         if(!$dataType)
             return false;
 
-        $result = $this->dataToArrayRecursive($this->{'parse'.$dataType}($data));
+
+        $result = (is_array($data) && isset($data[0]) && $data[0] instanceof ActiveRecord) ? $data : $this->dataToArrayRecursive($this->{'parse'.$dataType}($data));
 
         if($toTemplate)
             $result = $this->dataToTemplate($result, $provider, $beforeParse, $afterParse);
@@ -213,6 +214,7 @@ class BrxDataConverter extends Component
             $root_array = (array)$this->find_details_array($data,current($fromTemplate));
             $data = $this->rooting_array_values_recursive($root_array);
         }
+
         $items = [];
         // перебираем все атрибуты шаблона под который идет подгонка данных
         foreach($config['paramsTemplate'][$provider->method] as $key => $value){

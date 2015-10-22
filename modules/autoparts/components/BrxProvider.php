@@ -58,8 +58,14 @@ class BrxProvider extends BrxProviderConnector
      */
     private function runMethod($method, $options){
 
+        $flag = isset($options['flagpostav']) ? $options['flagpostav'] : '';
+
         if((!$options = $this->getOptions($method, $options)))
             return false;
+
+        if($this->provider_name == 'Over')
+            $options['flagpostav'] = $flag;
+
 
         $response = $this->getConnection($method, $options);
 
@@ -94,6 +100,7 @@ class BrxProvider extends BrxProviderConnector
             $accessOptions,
             $options
         );
+
         //видоизменяем параметры по шаблону
         if(isset($this->authParamsTemplate)) {
             foreach ($this->authParamsTemplate as $param => $value) {
