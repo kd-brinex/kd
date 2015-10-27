@@ -36,8 +36,14 @@ return [
                 23 => 'ball',
             ],
             'getOrderState' => [
-                0 => 'order_id'
-            ]
+                0 => 'order_id',
+                1 => 'code',
+                6 => 'name',
+                5 => 'quantity',
+                4 => 'comment',
+                2 => 'status',
+                3 => 'status_name',
+             ]
         ],
         'providersFieldsParams' => [
             'Emex' => [
@@ -78,7 +84,15 @@ return [
                         'params' => [
                             'in' => [
                                 0 => 'globalIds'
-                            ]
+                            ],
+                            'out' => [
+                                0 => 'GlobalId',
+                                1 => 'DetailNum',
+                                6 => 'DetailNameRusUser',
+                                2 => 'State',
+                                4 => 'PotrebitelReference',
+                                5 => 'DetailQuantity'
+                             ]
                         ]
                     ]
                 ]
@@ -88,8 +102,8 @@ return [
                     'findDetails' => [
                         'params' => [
                             'in' => [
-                                0 =>    'Number',                               // Номер
-                                2 =>    'Maker',                                // Производитель
+                                0 => 'Number',                               // Номер
+                                2 => 'Maker',                                // Производитель
                             ],
                             'out' => [
                                 0 => 'number',
@@ -147,6 +161,22 @@ return [
 
                             ]
                         ]
+                    ],
+                    'getOrderState' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'orderNumber'
+                            ],
+                            'out' => [
+                                0 => 'orderNumber',
+                                1 => 'detailNum',
+                                6 => 'description',
+                                2 => 'state',
+                                3 => 'stateTxt',
+                                4 => 'comment',
+                                5 => 'quantity'
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -196,6 +226,22 @@ return [
                                 6 =>  ':assured_period',
                                 10 => ':reliability',
                                 11 => ':multiplication_factor',
+                            ]
+                        ],
+                    ],
+                    'getOrderState' => [
+                        'params' => [
+                            'in' => [
+                                0 => 'orders'
+                            ],
+                            'out' => [
+                                0 => 'id',
+                                1 => ':resource:article',
+                                6 => ':resource:name',
+                                2 => ':state:type',
+                                3 => ':state:name',
+                                4 => ':comment',
+                                5 => ':quantity'
                             ]
                         ]
                     ]

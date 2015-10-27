@@ -12,8 +12,8 @@ return yii\helpers\ArrayHelper::merge([
             'Soap' => [
                 'class' => 'app\modules\autoparts\components\BrxSoap',
                 'uri' => '',
-                'wsdl_cache' => true,
-                'trace' => false
+                'wsdl_cache' => false,
+                'trace' => true
             ],
             'Rest' => [
                 'class' => 'app\modules\autoparts\components\BrxRest',
