@@ -76,6 +76,7 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
         $regions=$car::Regions($params);
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
         foreach($regions->models as $region) {
             $reg=$region->region;
             $p=$params;
@@ -97,7 +98,7 @@ class AutocatalogController extends MainController
         $car=$this->module->getClass();
         $model=$car::ModelsSearch($params);
         $provider=$car::Models($params);
-
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
         return $this->render('models', [
             'provider' => $provider,
             'filterModel' => $model,
@@ -106,13 +107,21 @@ class AutocatalogController extends MainController
     }
     public function actionCatalogs()
     {
+//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
+//        var_dump($params);die;
+        $params['post']=\Yii::$app->request->post();
+        if (!empty($params['post'])){
+        $params['option']=implode('|',$params['post']);}
+//        else{ $params['option']='';}
         $car=$this->module->getClass();
         $provider=$car::Catalogs($params);
+        $podbor = $car::Podbor($params);
         $info=$car::Info($params);
-
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
         return $this->render('catalogs', [
             'provider' => $provider,
+            'podbor' => $podbor,
             'info'=>$info,
             'params' =>$params
         ]);
@@ -170,8 +179,12 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
         $post = \Yii::$app->request->post();
-        $params['option']=implode('|',$post);
-
+        $params['post']=\Yii::$app->request->post();
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
+        if (empty($params['option']) & !empty($params['post'])){
+            $params['option']=implode('|',$params['post']);}
+//        $params['post']=$post;
+//        $params['option']=implode('|',$post);
         $provider = $car::Catalog($params);
 
         return $this->render('catalog', [
@@ -185,6 +198,7 @@ class AutocatalogController extends MainController
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
         $provider = $car::SubCatalog($params);
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
         return $this->render('subcatalog', [
             'provider' => $provider,
             'params' =>$params,
@@ -197,6 +211,7 @@ class AutocatalogController extends MainController
         $car=$this->module->getClass();
         $provider = $car::Parts($params);
         $images=$car::Images($params);
+        $params['breadcrumbs']=$car::Breadcrumbs($params);
         $model = $provider->models;
         $arr = [];
         foreach ($model as $item) {
@@ -218,8 +233,9 @@ class AutocatalogController extends MainController
     public function actionVin()
     {
         $params = \Yii::$app->request->queryParams;
+//        var_dump($params);die;
         $model=$this->module->searchVin($params)->models[0];
-        $redirect='/autocatalogs/'.$model->marka.'/vin/'.$model->family.'/'.$model->cat_code.'?option='.$model->option;
+        $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.$model->option;
 //        var_dump($provider->models[0]->cat_code);die;
 //        $params['cat_code']=$model->models[0]->cat_code;
 //        $car=$this->module->getClass();

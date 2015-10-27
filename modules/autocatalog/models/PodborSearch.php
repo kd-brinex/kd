@@ -26,7 +26,7 @@ class PodborSearch extends ActiveRecord
 
     public static function tableName()
     {
-        return 'v_catalogs';
+        return 'v_podbor';
     }
 
     public function search($params=[])

@@ -12,19 +12,19 @@ use yii\data\ActiveDataProvider;
 
 class ModelsSearch extends ActiveRecord
 {
-    public function rules()
-    {
-        return [
-            [['region','family','from'], 'safe'],
-        ];
-    }
-
-    public function attributeLabels()
-    {
-        return [
-            'region' => 'Регион',
-        ];
-    }
+//    public function rules()
+//    {
+//        return [
+//            [['region','family','from','option'], 'safe'],
+//        ];
+//    }
+//
+//    public function attributeLabels()
+//    {
+//        return [
+//            'region' => 'Регион',
+//        ];
+//    }
 
     public static function tableName()
     {
@@ -35,5 +35,9 @@ class ModelsSearch extends ActiveRecord
     {
         $query =parent::find()->where('family=:family',[':family'=>$params['family']]);
         return $query;
+    }
+    public function getUrl()
+    {
+        return \yii\helpers\Url::to($this->family.'/'.$this->cat_code.'/'.$this->option);
     }
 }

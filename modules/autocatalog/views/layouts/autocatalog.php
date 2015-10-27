@@ -6,7 +6,7 @@
  * Time: 15:06
  */
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+
 
 use yii\helpers\Url;
 use yii\bootstrap\NavBar;
@@ -52,6 +52,7 @@ NavBar::end();
 ?>
 <div style="height:60px"></div>
     <div class="container">
+
         <div class="row row-offcanvas row-offcanvas-left">
             <?=$content ?>
         </div>

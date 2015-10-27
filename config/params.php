@@ -4,6 +4,9 @@ use yii\helpers\Html;
 $catalog = require(__DIR__ . '/catalog.php');
 
 return [
+    'languages'=>[
+        'ru' => 'russian',
+    ],
     'Api' => [
         'tovar_tip' => ['tip_id', "category_id", "name", "store_id", "price", "count", "ball", "description", 'image']
     ],
