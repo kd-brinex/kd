@@ -3,6 +3,7 @@ $params = require(__DIR__ . '/params.php');
 $db_connect = require(__DIR__ . '/db.php');
 //$db_connect = $db_config['components'][YII_ENV];
 $config = [
+
     'id' => 'basic',
     'basePath' => dirname(__DIR__), 'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -18,7 +19,11 @@ $config = [
                     'fileMap' => [
                         'user'    => 'user.php',
                     ],
+
                 ],
+
+
+
                 'autocatalog' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@app/modules/autocatalog/messages',
@@ -163,13 +168,15 @@ $config = [
 
                 'autocatalogs' => '/autocatalog/autocatalog',
                 '/autocatalogs/<marka:\w+>/podbor'=>'/autocatalog/autocatalog/podbor',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>' => '/autocatalog/autocatalog/cars',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
-//                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
+                '/autocatalogs/<marka:\w+>/<region:\w+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>' => '/autocatalog/autocatalog/catalog',
+//                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:[\w-]+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+//                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:[\w-]+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+              '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
 
@@ -253,6 +260,7 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+
         'parser' =>[
           'class'=>'app\modules\parser\Parser'
         ],

@@ -9,14 +9,15 @@ use yii\helpers\Html;
  * Time: 15:39
  **/
 
-
+$curl=Url::current().'/'.$model['url'];
 ?>
 
 <div class="acatalog-block">
         <?= Html::img( $model['img'] ); ?>
         <?= Html::a(Html::encode(Yii::t('autocatalog',$model['name']))
 //            .(!empty($model->compatibility)?$model->compatibility:'')
-            ,Url::to($model['url'].'/'.$params['option']));?>
+            ,Url::to($curl));?>
+<!--            ,Url::to($model['url'].'/'.$params['option']));?>-->
 
 </div>
 

@@ -59,14 +59,23 @@ class Hyundai extends CCar
     public static function Podbor($params)
     {
         $models = self::PodborSearch($params);
-
+        $params['option']=(empty($params['option']))?'||||||':$params['option'];
         $query=$models->search($params);
+        $query->select(['cat_code','cat_folder']);
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' =>false,
         ]);
-        if(!empty($params['family'])){$query->andWhere('family=:family',[':family'=>$params['family']]);}
-        if(!empty($params['year'])){$query->andWhere($params['year'].' between from_year and to_year')->andWhere(['type_code'=>'03']);}
+        $option=explode('|',$params['option']);
+//        var_dump($option);die;
+//        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
+//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
+//        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
+//        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
+//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
+        $query->andWhere("cat_code=:cat_code",[':cat_code'=>$params['cat_code']]);
+//        if(!empty($params['family'])){$query->andWhere('family=:family',[':family'=>$params['family']]);}
+//        if(!empty($params['year'])){$query->andWhere($params['year'].' between from_year and to_year')->andWhere(['type_code'=>'03']);}
         return $provider;
     }
 
@@ -82,6 +91,7 @@ class Hyundai extends CCar
     }
     public static function Catalog($params)
     {
+        $params['option']=implode('|',$params['post']);
         $models = self::CatalogSearch($params);
         $query =$models->search($params);
         $query ->where('cat_code=:cat_code',
@@ -141,10 +151,10 @@ class Hyundai extends CCar
         ;
 //        ->groupBy(['number']);
 //        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
-        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
+//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
 //        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
 //        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
-        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
+//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
 
 
         ;

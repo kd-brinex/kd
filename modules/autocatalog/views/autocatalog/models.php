@@ -1,6 +1,6 @@
 <?php
 use kartik\grid\GridView;
-use yii\i18n\I18N;
+use yii\widgets\Breadcrumbs;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -8,7 +8,8 @@ use yii\i18n\I18N;
  * Time: 11:22
  */
 
-//var_dump($models);die;
+//var_dump($provider->models);die;
+echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="models">
     <?= GridView::widget([
@@ -25,7 +26,8 @@ use yii\i18n\I18N;
                 'format'=>'raw',
                 'label'=>'Название',
                 'value'=>function ($model, $key, $index, $widget) {
-                    return \yii\helpers\Html::a($model['cat_name'],\yii\helpers\Url::to($model['family'].'/'.$model['cat_code']));
+                    return \yii\helpers\Html::a($model['cat_name'],$model['url']);
+//                    return \yii\helpers\Html::a($model['cat_name'],\yii\helpers\Url::to($model['family'].'/'.$model['cat_code'].'/'.$model['option']));
                 },],
     [   'attribute'=>'from',
         'label'=>'Начало производства',

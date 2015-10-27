@@ -7,7 +7,7 @@ class Netcat extends BaseModule
 {
     public static function remote_add_catalog($params){
 //        var_dump($params);die;
-    return self::get_curl('http://www.kolesa-darom.ru/parts/add_catalog.php',$params);
+    return self::get_curl('http://91.218.229.157/parts/add_catalog.php',$params);
 
     }
     public static function get_curl($url,$params)

@@ -35,4 +35,9 @@ class CarsSearch extends ActiveRecord
     {
         return self::find();
     }
+
+    public function getUrl()
+    {
+        return \yii\helpers\Url::to($this->region.'/'.$this->family);
+    }
 }
