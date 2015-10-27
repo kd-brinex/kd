@@ -302,7 +302,7 @@ $config = [
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=toyota;port=1111',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=toyota;port=1111':'mysql:host=localhost;dbname=toyota',
                         'username' => 'root',
                         'password' => 'RvZZ5G0GT7IbM5lwD1Et57wbqE43',
                         'charset' => 'utf8'],
@@ -316,34 +316,12 @@ $config = [
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=hyundai;port=1111':'mysql:host=localhost;dbname=hyundai',
                         'username' => 'brinexdev',
                         'password' => 'QwFGHythju8',
                         'charset' => 'utf8'],
                 ],
-                'kia' => [
-                    'class' => 'app\modules\autocatalog\models\Hyundai',
-                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
-                    'prop' => [
-                        'marka' => 'Kia',
-                        'model' => '',
-                        'year' => 0,
-                        'region' => '',
-                        'body_type' => '',
-                        'grade' => '',
-                        'engine_capacity' => '',
-                        'fuel_type' => '',
-                        'transmission' => '',
-                        'drive_type' => ''
-                    ],
-                    'db' => [
-                        'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
-//: 'mysql:host=localhost;dbname=hyundai',
-                        'username' => 'brinexdev',
-                        'password' => 'QwFGHythju8',
-                        'charset' => 'utf8'],
-                ],
+
             ],
 
         ],
