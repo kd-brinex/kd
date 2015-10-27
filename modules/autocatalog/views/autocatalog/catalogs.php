@@ -9,7 +9,7 @@
 use kartik\grid\GridView;
 use yii\widgets\DetailView;
 use \yii\helpers\Html;
-
+use yii\widgets\Breadcrumbs;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -17,7 +17,7 @@ use \yii\helpers\Html;
  * Time: 11:22
  */
 
-//var_dump($info->models);die;
+echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="auto-info">
     <?= DetailView::widget([
@@ -41,7 +41,7 @@ use \yii\helpers\Html;
     ); ?>
 </div>
 <div class="models">
-    <?= Html::beginForm($info->models[0]->cat_code.'/'.$info->models[0]->cat_folder,'post',['name'=>'catalog']);?>
+    <?= Html::beginForm('','post',['name'=>'catalog']);?>
     <?= GridView::widget([
         'dataProvider' => $provider,
 //        'showHeader' => false,
@@ -51,7 +51,7 @@ use \yii\helpers\Html;
         'columns' => [
             ['attribute' => 'name',
                 'label' => 'Характеристики',
-                'value' => function ($model, $key, $index, $widget) {
+                'value' => function ($model, $key, $index, $widget)  {
                     return Yii::t('autocatalog', $model['name']);
 
                 }
@@ -60,12 +60,21 @@ use \yii\helpers\Html;
                 'attribute' => 'value',
                 'format' => 'raw',
                 'label' => 'Варианты',
-                'value' => function ($model, $key, $index, $widget) {
-                    $key=explode(';', $model['key']);
-                    $value=explode(';', $model['value']);
-                    $select=(!empty($_GET['option']))?explode('|',$_GET['option'])[$index]:$key[0];
+                'value' => function ($model, $key, $index, $widget) use ($params) {
+//                    var_dump($params['option']);die;
+                    $keys=explode(';', $model['key']);
+                    $values=explode(';', $model['value']);
+
+//                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
+
+                        if (!empty($params['option'])){
+                            $options=explode('|',$params['option']);
+                            $select=(isset($options[$index]))?$options[$index]:$keys[0];
+
+}
+                    else{$select=$keys[0];}
 //                    var_dump($model);die;
-                    $val=array_combine($key,$value);
+                    $val=array_combine($keys,$values);
                     $html = Html::radioList($model['type_code'], $select, $val, []);
                     return $html;
                 },],
@@ -75,5 +84,24 @@ use \yii\helpers\Html;
 
     ]); ?>
 </div>
-<?= Html::submitButton('Загрузить');?>
+<?= Html::submitButton('Найти каталог');?>
 <?= Html::endForm();?>
+
+<?= GridView::widget([
+    'dataProvider' => $podbor,
+    'columns'=>[
+//        'region',
+    'cat_code',
+    'cat_folder',
+//    'option',
+    [
+        'label'=>'url',
+        'format'=>'raw',
+        'value'=> function ($model, $key, $index, $widget)use($params) {
+            return Html::a('Каталог',\yii\helpers\Url::to($params['option'].'/'.$model['cat_folder']));
+//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
+},
+    ]
+    ]
+
+    ]);?>

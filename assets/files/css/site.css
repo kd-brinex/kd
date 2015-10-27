@@ -8,14 +8,14 @@ body {
 }
 .modal-dialog
 {
-    width:950px;
+    width:1200px;
     font-size:12px;
 }
-.modal-content button
-{
-    display: block;
-    margin:5px auto  !important;
-}
+/*.modal-content button*/
+/*{*/
+    /*display: block;*/
+    /*margin:5px auto  !important;*/
+/*}*/
 .stories
 {
 

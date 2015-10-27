@@ -135,71 +135,86 @@ class Tovar extends \yii\db\ActiveRecord
         $rub = str_replace(',00', '', Yii::$app->formatter->asCurrency($value, 'RUB'));
         return $rub;
     }
+    public static function getProviderOrderState($params, $store){
+        if(!is_array($params['order_id']) && count($params['order_id']) == 1 &&
+           ($params['provider'] == 'Berg' || $params['provider'] == 'Emex'))
+            $params['order_id'] = [$params['order_id']];
+
+        $providerObj = Yii::$app->getModule('autoparts')->run->provider($params['provider'], ['store_id' => $store]);
+        return $providerObj->getOrderState(['order_id' => $params['order_id']]);
+    }
+
+
     /**
      * findDetails - описание функции
      */
     public static function findDetails($params){                                                                                   //  здесь приходят article и provider_id из URI
-
-
         $details = [];
         $providerObj = null;
         $providers = PartProviderSearch::find()
                     ->where('enable = :enable', [':enable' => 1])
                     ->all();
         foreach($providers as $provider){
-                if($provider->cross){
-                    $options = ['provider_data' => $provider, 'article' => $params['article']];
-                    if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
-                    if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
-                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
+            if($provider->cross){
+                $options = ['provider_data' => $provider, 'article' => $params['article']];
+                if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
+                $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
-                    $items = $providerObj->findDetails(['code' => $params['article']]);
-                    if(!empty($items) && is_array($items)){
-                        foreach($items as $item){
-                            array_push($details, $item);
-                        }
-                    } else continue;
-                }
+                $search_settings = ['code' => $params['article']];
+
+                $items = $providerObj->findDetails($search_settings);
+
+                if(!empty($items) && is_array($items)){
+                    foreach($items as $item){
+                        array_push($details, $item);
+                    }
+                } else continue;
+            }
         }
         foreach($details as $detail){
             $crosses[$detail['code']] = $detail['groupid'];
         }
         foreach($providers as $provider){
-                if(!$provider->cross){
-                    $options = ['provider_data' => $provider];
-                    if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
-                    if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
+            if(!$provider->cross){
+                $options = ['provider_data' => $provider];
+                if(!empty($params['store_id'])) $options = array_merge($options, ['store_id' => (int)$params['store_id']]);
+                if(!empty($params['city_id'])) $options = array_merge($options, ['city_id' => (int)$params['city_id']]);
 
-                    $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
-                    if(!empty($params['store_id'])) $providerObj->store_id = (int)$params['store_id'];
+                $providerObj = Yii::$app->getModule('autoparts')->run->provider($provider->name, $options);
 
-                    $items = $providerObj->findDetails(['code' => $params['article']]);
-                    if(!empty($crosses)) {
-                        $crossItems = null;
-                        foreach ($crosses as $crossCode => $crossGroup) {
-                            if (isset($items)) {
-                                if (!is_array($items))
-                                    continue;
+                if(!empty($params['store_id'])) $providerObj->store_id = (int)$params['store_id'];
 
-                                $crossItems = $providerObj->findDetails(['code' => $crossCode]);
-                                foreach ($crossItems as $item) {
-                                    $item['groupid'] = $crossGroup;
-                                }
+                $search_settings = ['code' => $params['article']];
+
+                if($provider->name == 'Over')
+                    $search_settings = array_merge($search_settings, ['flagpostav' => $provider->flagpostav]);
+
+                $items = $providerObj->findDetails($search_settings);
+                if(!empty($crosses)) {
+                    $crossItems = null;
+                    foreach ($crosses as $crossCode => $crossGroup) {
+                        if (isset($items)) {
+                            if (!is_array($items))
+                                continue;
+
+                            $crossItems = $providerObj->findDetails(['code' => $crossCode]);
+                            foreach ($crossItems as $item) {
+                                $item['groupid'] = $crossGroup;
                             }
                         }
-                        if(!empty($items))
-                            $items = array_merge($items, $crossItems);
                     }
-                    if(!empty($items)) {
-                        foreach ($items as $item) {
-                            array_push($details, $item);
-                        }
+                    if(!empty($items))
+                        $items = array_merge($items, $crossItems);
+                }
+                if(!empty($items)) {
+                    foreach ($items as $item) {
+                        array_push($details, $item);
                     }
                 }
+            }
         }
-//        var_dump($details);die;
-
         usort($details, function ($a, $b){
             $r = self::r_usort($a,$b ,'weight');
             if ($r == 0){
@@ -211,63 +226,10 @@ class Tovar extends \yii\db\ActiveRecord
             return $r;
         });
 
-
         return $details;
-    //        $parts = Yii::$app->params['Parts'];                                                                                        //  массив параметров из конфига params
-//        $avtoproviders = $parts['PartsProvider'];                                                                                   //  праметры провайдеров из того же конфига params
-//        $details = [];
-//        $where = (isset($params['provider_id']) ? ['id' => $params['provider_id']] : ['enable' => 1]);                              //  массив condition для запроса в бд в таблицу part_provider (если есть provider_id то забираем по нему если нет то всех включенных)
-//        //$providers= PartProvider::find()->where($where)->orderBy(['weight' => SORT_ASC])->asArray()->all();
-//        $providers = PartProvider::find()->where($where)->orderBy(['cross' => SORT_DESC, 'weight' => SORT_ASC])->asArray()->all();  //  собственно сам запрос в таблицу и сортировка
-////        $providers = PartProvider::find()->where('enable=1')->orderBy(['weight' => SORT_ASC])->asArray()->all();
-////        var_dump($providers,$params);die;
-////        $providers= PartProvider::find()->asArray()->all();
-//        if (isset($params['article']) && $params['article'] != '') {                                                                //  работаем если есть артикуль
-//            if (!isset($params['store_id'])) {                                                                                      //  устанавливаем идентификатор магазина
-//                $params['store_id'] = 109;
-//            }
-//            foreach ($providers as $p) {
-//                if (isset($avtoproviders[$p['name']])) {
-//                   $provider = Yii::$app->getModule('autoparts')->run->provider($p['name']);
-//                    $details = $provider->findDetails(['code' => $params['article']]);
-////                   $provider = array_merge($avtoproviders[$p['name']], $params,$p);
-////                    $fparts = new $provider['class']($provider);
-////                    //$fparts->flagpostav = $p['flagpostav'];
-////                    //$fparts->setData($p);
-////                    $e = [];
-////                    if ($p['cross'] == 1) {
-////                        $det = $fparts->findDetails($e);
-//////                        var_dump($det);die;
-////                        foreach ($det as $i) {
-////                            $cross[$i['code']] = $i['groupid'];
-////                        }
-////                    } else {
-////                        if (empty($cross)){$cross[$params['article']] = 0;}
-//////                        foreach ($cross as $key => $value) {
-//////                            $fparts->article = $key;
-//////                            $det = $fparts->findDetails($e);
-//////                            if (isset($det[0]['code'])) {
-//////                                $det[0]['groupid'] = $value;
-//////                                $details = array_merge($details, $det);
-//////                                $det=[];
-//////                            }
-//////                        }
-////                        if (isset($params['test'])) {
-////                            print_r($fparts->errors);
-////                        }
-////                    }
-////                    if (isset($det[0]['code'])) {
-////                        $details = array_merge($details, $det);
-////                    }
-////                    $fparts->close();
-//                }
-//            }
-//                /**Сортировка массива поп полю srokmax
-//             *
-//             * */
 
-//            return $details;
-        }
+    }
+
     private function r_usort($a, $b, $key){
         $inta = intval($a[$key]);
         $intb = intval($b[$key]);

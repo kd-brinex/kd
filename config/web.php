@@ -3,6 +3,7 @@ $params = require(__DIR__ . '/params.php');
 $db_connect = require(__DIR__ . '/db.php');
 //$db_connect = $db_config['components'][YII_ENV];
 $config = [
+
     'id' => 'basic',
     'basePath' => dirname(__DIR__), 'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -18,7 +19,11 @@ $config = [
                     'fileMap' => [
                         'user'    => 'user.php',
                     ],
+
                 ],
+
+
+
                 'autocatalog' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@app/modules/autocatalog/messages',
@@ -177,13 +182,15 @@ $config = [
 
                 'autocatalogs' => '/autocatalog/autocatalog',
                 '/autocatalogs/<marka:\w+>/podbor'=>'/autocatalog/autocatalog/podbor',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>' => '/autocatalog/autocatalog/cars',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>' => '/autocatalog/autocatalog/models',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>' => '/autocatalog/autocatalog/catalogs',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>' => '/autocatalog/autocatalog/catalog',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/subcatalog',
-                '/autocatalogs/<marka:\w+>/<region:[\w\s-]+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:\w+>/<sect:\w+>/<sub_sect:\w+>/<option:[\w\|]+>' => '/autocatalog/autocatalog/parts',
-//                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
+                '/autocatalogs/<marka:\w+>/<region:\w+>' => '/autocatalog/autocatalog/cars',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>' => '/autocatalog/autocatalog/models',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>' => '/autocatalog/autocatalog/catalogs',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>' => '/autocatalog/autocatalog/catalog',
+//                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:[\w-]+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+//                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[\w\s-]+>/<cat_code:\w+>/<cat_folder:[\w-]+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+              '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>/<sect:\w+>' => '/autocatalog/autocatalog/subcatalog',
+                '/autocatalogs/<marka:\w+>/<region:\w+>/<family:[^/]+>/<cat_code:\w+>/<option:[^/]+>/<cat_folder:[\w-]+>/<sect:\w+>/<sub_sect:\w+>' => '/autocatalog/autocatalog/parts',
+                'autocatalog/kia' => 'autocatalog/autocatalog/cars?marka=kia',
             ],
         ],
 
@@ -267,6 +274,7 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
+
         'parser' =>[
           'class'=>'app\modules\parser\Parser'
         ],
@@ -312,7 +320,7 @@ $config = [
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=toyota;port=1111',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=toyota;port=1111':'mysql:host=localhost;dbname=toyota',
                         'username' => 'root',
                         'password' => 'RvZZ5G0GT7IbM5lwD1Et57wbqE43',
                         'charset' => 'utf8'],
@@ -326,34 +334,12 @@ $config = [
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=hyundai;port=1111':'mysql:host=localhost;dbname=hyundai',
                         'username' => 'brinexdev',
                         'password' => 'QwFGHythju8',
                         'charset' => 'utf8'],
                 ],
-                'kia' => [
-                    'class' => 'app\modules\autocatalog\models\Hyundai',
-                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/hyundai/Imgs'],
-                    'prop' => [
-                        'marka' => 'Kia',
-                        'model' => '',
-                        'year' => 0,
-                        'region' => '',
-                        'body_type' => '',
-                        'grade' => '',
-                        'engine_capacity' => '',
-                        'fuel_type' => '',
-                        'transmission' => '',
-                        'drive_type' => ''
-                    ],
-                    'db' => [
-                        'class' => 'yii\db\Connection',
-                        'dsn' => 'mysql:host=127.0.0.1;dbname=hyundai;port=1111',
-//: 'mysql:host=localhost;dbname=hyundai',
-                        'username' => 'brinexdev',
-                        'password' => 'QwFGHythju8',
-                        'charset' => 'utf8'],
-                ],
+
             ],
 
         ],

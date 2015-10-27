@@ -36,9 +36,9 @@ class BrxArrayHelper{
      * @param $arrays array остальные массивы через запятую  (array_replace_recursive_ncs(array $array, $array, $array, ... , $array))
      * @return mixed возвращается склеенный массив
      */
-    public static function array_replace_recursive_ncs(array $array, $arrays){
-        $args = self::array_change_key_case_recursive(func_get_args(), CASE_LOWER);
-        for ($i = 1; $i < count($args); $i++){
+    public static function array_replace_recursive_ncs(array $array, ...$arrays){
+        $args = self::array_change_key_case_recursive($arrays, CASE_LOWER);
+        for ($i = 0; $i < count($args); $i++){
             if (is_array($args[$i])){
                 $array = self::recurse($array, $args[$i]);
             }
@@ -53,10 +53,12 @@ class BrxArrayHelper{
      * @return array
      */
     private function recurse($array, $arrays){
+
         foreach($array as $key => $value){
             $cs_key = strtolower($key);
-            if(isset($arrays[$cs_key]) && !is_array($arrays[$cs_key]))
+            if(isset($arrays[$cs_key]))
                 $array[$key] = $arrays[$cs_key];
+
             if(isset($arrays[$cs_key]) && is_array($arrays[$cs_key]))
                 $array[$key] = self::recurse($array[$key], $arrays[$cs_key]);
 

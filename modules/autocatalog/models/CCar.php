@@ -8,8 +8,10 @@ namespace app\modules\autocatalog\models;
  * Date: 10.08.15
  * Time: 8:32
  */
+
 use yii\base\Model as BaseModel;
 use Yii;
+use yii\helpers\Url;
 
 
 class CCar extends BaseModel
@@ -80,17 +82,72 @@ class CCar extends BaseModel
         $models = new VinSearch();
         return $models;
     }
-public static function ImagesSearch($params)
+
+    public static function ImagesSearch($params)
     {
         $models = new ImagesSearch();
         return $models;
     }
+
     public static function RegionsSearch($params)
     {
         $models = new RegionsSearch();
         return $models;
     }
 
-
+    public static function Breadcrumbs($params)
+    {
+        $links=[];
+        if (isset($params['marka'])) {
+            $url=Url::to('/autocatalogs');
+            $links[] = [
+                'label' => 'Автокаталог',
+                'url' => $url,
+            ];
+        }
+        if (isset($params['region'])) {
+            $url.='/'.$params['marka'].'/'.$params['region'];
+            $links[] = [
+                'label' => $params['marka'],
+                'url' => $url,
+            ];
+        }
+        if (isset($params['family'])) {
+            $url.='/'.$params['family'];
+            $links[] = [
+                'label' => $params['family'],
+                'url' => $url,
+            ];
+        }
+        if (isset($params['cat_code'])) {
+            $url.='/'.$params['cat_code'].'/'.$params['option'];
+            $links[] = [
+                'label' => $params['cat_code'],
+                'url' => $url,
+            ];
+        }
+        if (isset($params['cat_folder'])) {
+            $url.='/'.$params['cat_folder'];
+            $links[] = [
+                'label' => $params['cat_folder'],
+                'url' => $url,
+            ];
+        }
+        if (isset($params['sect'])) {
+            $url.='/'.$params['sect'];
+            $links[] = [
+                'label' => $params['sect'],
+                'url' => $url,
+            ];
+        }
+        if (isset($params['sub_sect'])) {
+            $url.='/'.$params['sub_sect'];
+            $links[] = [
+                'label' => $params['sub_sect'],
+                'url' => $url,
+            ];
+        }
+        return $links;
+    }
 
 }

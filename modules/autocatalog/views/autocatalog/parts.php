@@ -2,7 +2,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\bootstrap\Collapse;
-use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Tabs;
 
 /**
@@ -14,7 +14,7 @@ use yii\bootstrap\Tabs;
 //$model=$dataProvider->query->url_params;
 
 //var_dump($model);die;
-
+echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 
 

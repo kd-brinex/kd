@@ -1,13 +1,12 @@
 <?php
-use kartik\grid\GridView;
-use yii\bootstrap\Tabs;
+use yii\widgets\Breadcrumbs;
 /**
  * Created by PhpStorm.
  * User: marat
  * Date: 03.10.15
  * Time: 15:37
  */
-
+echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="models">
     <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block','params'=>$params])?>
