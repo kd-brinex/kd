@@ -8,6 +8,7 @@
 
 namespace app\modules\autoparts\controllers;
 
+use app\modules\autoparts\models\ProviderStateCode;
 use Yii;
 
 use yii\data\ArrayDataProvider;
@@ -25,27 +26,38 @@ class OrdersController extends Controller
 {
     public function actionIndex(){
         $model = new OrderSearch();
-
         $params = Yii::$app->request->queryParams;
-
         $orders = $model->search('', '', '', $params);
-
         return $this->render('orders', ['orders' => $orders, 'model' => $model]);
     }
 
     public function actionManagerOrder($id){
-        if(empty($id)) return false;
-        $model = new OrdersSearch;
-        $model = $model->search('order_id = :order_id', [':order_id' => (int)$id]);
+        if(Yii::$app->request->isAjax) {
+            if (empty($id)) return false;
+            $model = new OrdersSearch;
+            $model = $model->search('order_id = :order_id', [':order_id' => (int)$id]);
 
-        $order = $this->findModel($id);
-        if($order != null && $model !== null)
-            return $this->renderAjax('_managerOrder',['order' => $order,'model' => $model]);
+            $order = $this->findModel($id);
+
+            if ($order != null && $model !== null) {
+                foreach($order->orders as $position){
+                    if($position->order_provider_id !== null) {
+                        $detail = $this->getDetailProviderInfo(['provider' => $position->provider->name, 'order_id' => $position->order_provider_id], $position);
+                        if($detail !== false && $detail['status'] != $position->order_provider_status) {
+                            $position->order_provider_status = $detail['status'];
+                            $position->save();
+                        }
+                    }
+                }
+                return $this->renderAjax('_managerOrder', ['order' => $order, 'model' => $model]);
+            }
+        }
     }
 
     public function actionUpdate(){
         if (!Yii::$app->request->isAjax)
             return false;
+
         if(Yii::$app->request->post('hasEditable')) {
             $post = Yii::$app->request->post();
             $model = $this->findModel($post['editableKey']);
@@ -82,6 +94,56 @@ class OrdersController extends Controller
         $model->is_paid = !$model->is_paid ? 1 : 0 ;
 
         return $model->save();
+    }
+
+    public function actionOrderProviderStatus(){
+        if (!Yii::$app->request->isAjax)
+            return false;
+
+        if(Yii::$app->request->post('hasEditable')) {
+            $post = Yii::$app->request->post();
+            $model = OrdersSearch::findOne($post['editableKey']);
+
+            $data['OrdersSearch'] = current($post['OrdersSearch']);
+            if ($model->load($data) && $model->validate()) {
+                $status = $this->getDetailProviderInfo(['provider' => $model->provider->name, 'order_id' => $model->order_provider_id], $model);
+                if($status !== false) {
+                    if (!empty($status)) {
+                        $model->order_provider_status = $status['status'];
+                        $model->save();
+                    }
+                    $data = ['output' => $model->order_provider_id, 'status' => $status['status_name']];
+                } else $data = ['output' => '', 'message' => 'Статус не определен. Номер заказа введен неверно, либо сервер поставщика временно не доступен. Попробуйте пожалуйста позже.'];
+
+            }
+
+            return Json::encode($data);
+        }
+    }
+
+    private function getDetailProviderInfo($params, $model)
+    {
+        $orderDetails = Tovar::getProviderOrderState($params, $model->order->store_id);
+        if ($orderDetails !== false){
+            foreach ($orderDetails as $detail) {
+                if ($detail['code'] == $model->product_article && $detail['name'] == $model->part_name &&
+                    $detail['quantity'] == $model->quantity
+                ) {
+                    $stateCode = ProviderStateCode::findOne(['provider_id' => $model->provider->id, 'status_code' => $detail['status']]);
+                    if ($stateCode === null) {
+                        $providerStateCode = new ProviderStateCode();
+                        $providerStateCode->provider_id = $model->provider->id;
+                        $providerStateCode->status_code = $detail['status'];
+                        $providerStateCode->status_name = $detail['status_name'];
+                        $providerStateCode->save();
+                    }
+                    return [
+                        'status' => $detail['status'],
+                        'status_name' => !empty($detail['status_name']) ? $detail['status_name'] : $stateCode->status_name
+                    ];
+                }
+            }
+        } else return false;
     }
 
     public function actionOrdersStateUpdate(){
@@ -244,6 +306,8 @@ class OrdersController extends Controller
         }
         return false;
     }
+
+
 
     protected function findModel($id){
         if(($model = OrderSearch::findOne($id)) !== null)

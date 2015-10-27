@@ -94,6 +94,7 @@ class BrxProvider extends BrxProviderConnector
             return false;
 
         $options = Yii::$app->getModule('autoparts')->converter->run($this->provider_name, $method, $options);
+
         $options = BrxArrayHelper::array_replace_recursive_ncs(
             $this->methods[$method]['params'],
             $this->methodsOptions,

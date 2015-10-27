@@ -135,8 +135,12 @@ class Tovar extends \yii\db\ActiveRecord
         $rub = str_replace(',00', '', Yii::$app->formatter->asCurrency($value, 'RUB'));
         return $rub;
     }
-    public static function getProviderOrderState($params){
-        $providerObj = Yii::$app->getModule('autoparts')->run->provider('Emex');
+    public static function getProviderOrderState($params, $store){
+        if(!is_array($params['order_id']) && count($params['order_id']) == 1 &&
+           ($params['provider'] == 'Berg' || $params['provider'] == 'Emex'))
+            $params['order_id'] = [$params['order_id']];
+
+        $providerObj = Yii::$app->getModule('autoparts')->run->provider($params['provider'], ['store_id' => $store]);
         return $providerObj->getOrderState(['order_id' => $params['order_id']]);
     }
 
