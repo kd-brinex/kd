@@ -26,9 +26,17 @@ $navbar =['options' => ['class' => 'navbar-nav navbar-right'],'items' =>$items ]
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php
+    $setCanonical = false;
+    $checkDb = true;
+    Yii::$app->seotools->setMeta([], $setCanonical, $checkDb);
+    ?>
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+
+    <title><?= $this->title ?></title>
+
+    <?= $this->head() ?>
+
 </head>
 <body>
 

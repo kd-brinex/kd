@@ -21,15 +21,18 @@ else
 
 $navbar =['options' => ['class' => 'navbar-nav navbar-right'],'items' =>$items ];
 
-
-
 $this->beginPage() ?>
-
     <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php
+
+        $setCanonical = false;
+        $checkDb = true;
+        Yii::$app->seotools->setMeta([], $setCanonical, $checkDb);
+        ?>
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
@@ -55,6 +58,7 @@ NavBar::end();
         <div class="row row-offcanvas row-offcanvas-left">
             <?=$content ?>
         </div>
+        <?= Yii::$app->seotools->getInfotext(); ?>
     </div>
 
 <?php $this->endBody() ?>

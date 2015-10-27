@@ -26,6 +26,15 @@ $config = [
                     'fileMap' => [
                         'autocatalog' => 'autocatalog.php',
                     ],
+
+                ],
+                'seotools' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/seotools/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'seotools' => 'seotools.php',
+                    ],
                 ],
 
             ],
@@ -91,6 +100,11 @@ $config = [
 //
 //            ],
         ],
+
+        'seotools' => [
+            'class' => 'app\modules\seotools\Component',
+        ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -263,6 +277,10 @@ $config = [
         'api' => [
             'class' => 'app\modules\api\Module',
         ],
+        'seotools' => [
+            'class' => 'app\modules\seotools\Module',
+            'roles' => ['SA'],
+        ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
             'layout'=> '/admin.php',
@@ -386,7 +404,6 @@ $config = [
         ]
     ]
 ];
-
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
