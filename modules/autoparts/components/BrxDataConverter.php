@@ -22,11 +22,11 @@ class BrxDataConverter extends Component
         $config = \Yii::$app->getModule('autoparts')->params;
         $fromTemplate = $config['providersFieldsParams'][$provider]['method'][$method]['params']['in'];
         $result = [];
+
         foreach($params as $key => $value){
-            $index = array_search($key, $config['paramsTemplate']);
+            $index = array_search($key, $config['paramsTemplate'][$method]);
             $result = array_replace_recursive($result, $this->setValueIndex($index, $fromTemplate, $value));
         }
-
         return $result;
     }
 
@@ -50,7 +50,8 @@ class BrxDataConverter extends Component
         if(!$dataType)
             return false;
 
-        $result = $this->{'parse'.$dataType}($data);
+
+        $result = (is_array($data) && isset($data[0]) && $data[0] instanceof ActiveRecord) ? $data : $this->dataToArrayRecursive($this->{'parse'.$dataType}($data));
 
         if($toTemplate)
             $result = $this->dataToTemplate($result, $provider, $beforeParse, $afterParse);
@@ -63,12 +64,23 @@ class BrxDataConverter extends Component
      * @param array $array массив - ответ от поставщика
      * @return array результирующий массив
      */
-    private function find_details_array($array = [])
+    private function find_details_array($array = [], $one_root_param)
     {
-        if(is_array($array) && is_int(key($array))) return $array;
-
-        foreach($array as $innerArray){
-            return is_array($innerArray) && is_int(key($innerArray)) ? $innerArray : $this->find_details_array($innerArray);
+        if(is_array($array) && !empty($array) && is_array(current($array)) && array_key_exists($one_root_param, current($array))) {
+            if(count($array) == 1 && !is_int(key($array))){
+                $array[0] = current($array);
+            }
+            return $array;
+        } elseif(is_array($array) && !empty($array)) {
+            foreach ($array as $innerArray) {
+                if(is_array($innerArray) && array_key_exists($one_root_param, $array)){
+                    if(count($array) == 1 && !is_int(key($array))){
+                        $array[0] = current($array);
+                    }
+                    return $array;
+                } else
+                    return $this->find_details_array($innerArray, $one_root_param);
+            }
         }
     }
 
@@ -200,18 +212,21 @@ class BrxDataConverter extends Component
         return $data;
     }
 
-
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
+//        var_dump($data);die;
+        if(!is_array($data)) return false;
+        $config = \Yii::$app->getModule('autoparts')->params;
+
+        $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
+
         if(!empty(current($data)) && !(current($data) instanceof ActiveRecord)){
-            $data = $this->dataToArrayRecursive($data);
-            $root_array = (array)$this->find_details_array($data);
+            $root_array = (array)$this->find_details_array($data,current($fromTemplate));
             $data = $this->rooting_array_values_recursive($root_array);
         }
-        $config = \Yii::$app->getModule('autoparts')->params;
-        $fromTemplate = $config['providersFieldsParams'][$provider->provider_name]['method'][$provider->method]['params']['out'];
+
         $items = [];
         // перебираем все атрибуты шаблона под который идет подгонка данных
-        foreach($config['paramsTemplate'] as $key => $value){
+        foreach($config['paramsTemplate'][$provider->method] as $key => $value){
             // ищем параметр шаблона в возвращенных дынных
             if(isset($fromTemplate[$key])){
                 if(isset($data[0]) && $data[0] instanceof ActiveRecord){
@@ -224,21 +239,25 @@ class BrxDataConverter extends Component
                     $this->fillUp($data);
                 }
                 $data_count = count($data);
+
                 for($i = 0; $i <= $data_count - 1; $i++){
                     $index = $fromTemplate[$key]{0} === ':' ? substr($fromTemplate[$key], 1) : $fromTemplate[$key];
-                    if(isset($data[$i]) && isset($data[$i][$index]))
+                    if(isset($data[$i]) && isset($data[$i][$index])) {
                         $items[$i][$value] = $data[$i][$index];
+                    } else if(!empty($data[key($data)]) && !empty($data[key($data)])){
+                        $items[$i][$value] = current($data[$index]);
+                    }
                 }
             }
         }
         foreach($items as $item){
-            foreach($config['paramsTemplate'] as $key => $value){
+            foreach($config['paramsTemplate'][$provider->method] as $key => $value){
                 if(!array_key_exists($value, $item))
                 $item[$value] = '';
             }
         }
         for($i = 0; $i <= count($items)-1; $i++){
-            foreach($config['paramsTemplate'] as $key => $value){
+            foreach($config['paramsTemplate'][$provider->method] as $key => $value){
                 if(!array_key_exists($value, $items[$i]))
                 $items[$i][$value] = '';
             }
@@ -264,7 +283,7 @@ class BrxDataConverter extends Component
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
         foreach($data as $key => &$item) {
-            if (!$item['quantity']){
+            if (isset($item['quantity']) && !$item['quantity']){
                 unset($data[$key]);
                 continue;
             }
@@ -278,7 +297,7 @@ class BrxDataConverter extends Component
                     $item['groupid'] = 0;
                 }
             }
-            if($ParseData['provider']->provider_data->name == 'Over') {
+            if(isset($ParseData['provider']->provider_data) && $ParseData['provider']->provider_data->name == 'Over') {
                     $item['groupid'] = 0;
             }
             foreach($item as $field => &$value){

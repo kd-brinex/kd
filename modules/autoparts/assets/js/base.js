@@ -4,11 +4,12 @@ function loadOrderData(obj){
         modalContent = $('#order-modal').find('.modal-body');
     modalContent.html(loader);
     $.ajax({
-        url : '/autoparts/orders/manager-order',
+        url : '/autoparts/orders/manager-order?sort=-order_provider_id',
         type : 'GET',
         data : {'id' : order_id},
         'success' : function(data){
             modalContent.html(data);
+            $('table th a.desc').click();
         }
     });
 }
@@ -132,8 +133,10 @@ function inOrder(obj, url, data){
                 '<input type="checkbox" name="selection[]" value="'+data.id+'" onclick="updatePaidStatus(this)">' +
                 '</td>' +
                 '<td data-col-seq="7">'+data.provider_id+'</td>' +
-                '<td data-col-seq="8">'+data.delivery_days+'</td>' +
-                '<td data-col-seq="9">' +
+                '<td data-col-seq="8"><span class="not-set">(не задано)</span></td>' +
+                '<td data-col-seq="9"><span class="not-set">(не задано)</span></td>' +
+                '<td data-col-seq="10">'+data.delivery_days+'</td>' +
+                '<td data-col-seq="11">' +
                 '<select id="orderssearch-status" class="form-control" name="OrdersSearch[status]" style="min-width:125px" onchange="updateStatus(this)">' +
                 '<option value="0" selected="">В ОБРАБОТКЕ</option>' +
                 '<option value="1">ПРИНЯТ</option>' +
@@ -143,8 +146,9 @@ function inOrder(obj, url, data){
                 '<option value="5">ВЫПОЛНЕН</option>' +
                 '<option value="6">АННУЛИРОВАН</option>' +
                 '</select></select></td>' +
-                '<td data-col-seq="10"><span class="not-set">(не задано)</span></td>' +
-                '<td class="btn-group-sm skip-export kv-align-center kv-align-middle" style="width:80px;" data-col-seq="11"><button type="button" class="btn btn-danger" onclick="deleteDetail(\'/autoparts/orders/delete?id='+data.id+'\')"><span class="glyphicon glyphicon-remove"></span></button></td>'
+                '<td data-col-seq="12"><span class="not-set">(не задано)</span></td>' +
+
+                '<td class="btn-group-sm skip-export kv-align-center kv-align-middle" style="width:80px;" data-col-seq="13"><button type="button" class="btn btn-danger" onclick="deleteDetail(\'/autoparts/orders/delete?id='+data.id+'\')"><span class="glyphicon glyphicon-remove"></span></button></td>'
             '</tr>';
             button.html('<span class="glyphicon glyphicon-ok"></span> ДОБАВЛЕН');
             var table = $('#manager-order-grid-container').find('table');

@@ -20,7 +20,7 @@ class   OrdersSearch extends Orders
         return [
             [['id', 'quantity', 'status', 'is_paid'], 'integer'],
             [['product_id', 'reference', 'datetime'], 'safe'],
-            [['part_name', 'description'],'string']
+            [['part_name', 'description', 'order_provider_id'],'string']
 
         ];
     }

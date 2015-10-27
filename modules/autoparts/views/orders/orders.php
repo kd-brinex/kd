@@ -10,10 +10,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 Modal::begin([
     'options' => [
-        'id' => 'order-modal'
+        'id' => 'order-modal',
     ],
-    'size' => 'modal-lg',
-
     'header' => '<h3>Детализация заказа</h3>'
 ]);
 Modal::end();
@@ -29,6 +27,7 @@ Modal::end();
         'filterModel' => $model,
         'responsive'=>true,
         'hover'=>true,
+        'export' => false,
         'pjax'=>true,
         'pjaxSettings'=>[
             'neverTimeout'=>true,
@@ -90,7 +89,15 @@ Modal::end();
             [
                 'format' => 'raw',
                 'value' => function($model){
-                    return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal">Просмотр</button>';
+//                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','/autoparts/orders/manager-order', [
+//                        'id' => 'activity-view-link',
+//                        'title' => Yii::t('yii', 'View'),
+//                        'data-toggle' => 'modal',
+//                        'data-target' => '#order-modal',
+//                        'data-id' => $model['id'],
+//                        'data-pjax' => '0',
+//                      ]);
+                    return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal" data-pjax="1">Просмотр</button>';
                 }
             ]
 

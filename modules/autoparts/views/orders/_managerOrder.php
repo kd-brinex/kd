@@ -17,9 +17,12 @@ use yii\helpers\Html;
     'dataProvider' => $model,
     'responsive' => true,
     'hover' => true,
+    'pjax'=>true,
+
+    'export' => false,
     'resizableColumns' => false,
     'rowOptions' => function($model){
-        return ['class' => empty($model->related_detail) ? GridView::TYPE_SUCCESS : GridView::TYPE_WARNING];
+        return ['class' => empty($model->related_detail) ? '' : GridView::TYPE_WARNING];
     },
     'columns' => [
         [
@@ -51,16 +54,64 @@ use yii\helpers\Html;
         ],
         [
             'header' => 'Олата',
-            'class' => \kartik\grid\CheckboxColumn::className(),
+            'class' => '\kartik\grid\CheckboxColumn',
             'vAlign' => GridView::ALIGN_TOP,
+            'rowSelectedClass' => GridView::TYPE_SUCCESS,
             'checkboxOptions' => function($model){
-                return ['value' => $model['id'], 'checked' => $model['is_paid'], 'onClick' => 'updatePaidStatus(this)'];
+                return [
+                    'value' => $model['id'],
+                    'checked' => $model['is_paid'],
+                    'onClick' => 'updatePaidStatus(this)'
+                ];
             }
         ],
         [
             'label' => 'Поставщик',
             'value' => 'provider.name'
 
+        ],
+        [
+            'label' => 'ID поставщика',
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'order_provider_id',
+            'format' => 'raw',
+            'editableOptions' => function($model) {
+                $format = ($model['provider']['name'] != 'Kd' && $model['provider']['name'] != 'Over' &&
+                           $model['provider']['name'] != 'Iksora' && $model['provider']['name'] != 'Moskvorechie')
+                           ? 'link' : 'button';
+                return [
+                            'header' => 'ID поставщика',
+                            'type' => \kartik\popover\PopoverX::TYPE_SUCCESS,
+                            'format' => $format,
+                            'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+                            'size' => 'md',
+                            'ajaxSettings' => [
+                                'url' => '/autoparts/orders/order-provider-status'
+                            ],
+                            'editableButtonOptions' => [
+                                'style' => 'display:none',
+                            ],
+                            'pluginEvents' => [
+                                'editableSuccess' => 'function(event, val, form, data){
+                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text");
+                                    if(data.status !== undefined){
+                                        status_td.text(data.status);
+                                    }
+                                }'
+                            ]
+                        ];
+            }
+        ],
+        [
+            'label' => 'Статус поставщика',
+            'attribute' => 'providerOrderStatusName.status_name',
+//            'value' => function($model){
+//                if(isset($model['providerOrderStatusName'][0]))
+//                var_dump($model['providerOrderStatusName'][0]->status_name);
+//            },
+            'contentOptions' => [
+                'class' => 'provider_status_text'
+            ]
         ],
         [
             'label' => 'Срок',
@@ -124,3 +175,4 @@ use yii\helpers\Html;
 
 ]);
 ?>
+
