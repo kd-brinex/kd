@@ -69,7 +69,7 @@ class Toyota extends CCar
         $models = self::SubCatalogSearch($params);
 
         $query = $models->search($params);
-        $params['option'] = (empty($params['option'])) ? '' : $params['option'];
+        $params['option'] = (empty($params['option'])) ? '' : base64_decode($params['option']);
         $option =  str_replace('|','',$params['option']);
         var_dump($option);
         $query->select(['region','cat_code','cat_folder','option','model_code']);
@@ -124,7 +124,8 @@ class Toyota extends CCar
 //    }
     public static function SubCatalog($params)
     {
-        $option =  str_replace('|','',$params['option']);
+        $option = (empty($params['option'])) ? '' : base64_decode($params['option']);
+        $option =  str_replace('|','',$option);
         $models = self::SubCatalogSearch($params);
         $query = $models->search($params);
         $provider = new ActiveDataProvider([
