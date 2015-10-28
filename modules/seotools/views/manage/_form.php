@@ -28,13 +28,14 @@ use mihaildev\ckeditor\CKEditor;
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?php
-    echo $form->field($model, 'info')->widget(CKEditor::className(),[
+    /*echo $form->field($model, 'info')->widget(CKEditor::className(),[
         'editorOptions' => [
             'preset' => 'full',
             'inline' => false
         ],
-    ]);
+    ]);*/
     ?>
+    <?= $form->field($model, 'info')->textarea(['rows' => 15]) ?>
 
     <?= $form->field($model, 'sitemap')->textInput() ?>
 
