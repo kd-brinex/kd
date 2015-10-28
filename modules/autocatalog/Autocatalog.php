@@ -69,6 +69,7 @@ public function getModel()
 //            var_dump($res->count);die;
             if ($res->totalCount>0){return $res;}
         }
+        return false;
     }
 
 
