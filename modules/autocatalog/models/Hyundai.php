@@ -32,10 +32,13 @@ class Hyundai extends CCar
         $models->load($params);
         $query = $models->search($params);
 //        var_dump($params);die;
-        $query->andFilterWhere(['like', 'region', $models->region])
-            ->andFilterWhere(['like', 'family', $models->family])
-            ->andFilterWhere(['like', 'from', $models->from])
-            ->groupBy(['cat_code','from','to'])
+        $query
+//            ->andFilterWhere(['like', 'region', $models->region])
+//            ->andFilterWhere(['like', 'family', $models->family])
+//            ->andFilterWhere(['like', 'from', $models->from])
+            ->groupBy(['cat_name'])
+
+
         ;
         $provider = new ActiveDataProvider([
             'query' => $query ,

@@ -38,4 +38,5 @@ class PodborSearch extends ActiveRecord
 
         return $query;
     }
+
 }

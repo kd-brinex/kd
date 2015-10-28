@@ -16,7 +16,7 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-
+echo $params['option'];
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="auto-info">
@@ -98,7 +98,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
         'label'=>'url',
         'format'=>'raw',
         'value'=> function ($model, $key, $index, $widget)use($params) {
-            return Html::a('Каталог',\yii\helpers\Url::to($params['option'].'/'.$model['cat_folder']));
+            return Html::a('Каталог',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
 //            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
 },
     ]
