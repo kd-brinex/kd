@@ -104,7 +104,7 @@ class Order extends \yii\db\ActiveRecord
 
     public function getOrderSumma()
     {
-        return $this->hasMany(Orders::className(), ['order_id' => 'id'])->sum('part_price * quantity');
+        return $this->hasMany(Orders::className(), ['order_id' => 'id'])->where(['related_detail' => null])->sum('part_price * quantity');
     }
 
     public function getDescriptionPay()
