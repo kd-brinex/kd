@@ -185,3 +185,6 @@ fieldset[disabled] .btn-primary.active {
 {
     text-transform: uppercase;
 }
+.breadcrumb a{
+    text-transform: capitalize;
+}
