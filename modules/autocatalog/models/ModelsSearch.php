@@ -38,6 +38,6 @@ class ModelsSearch extends ActiveRecord
     }
     public function getUrl()
     {
-        return \yii\helpers\Url::to($this->family.'/'.$this->cat_code.'/'.$this->option);
+        return \yii\helpers\Url::to($this->family.'/'.$this->cat_code.'/'.base64_encode($this->option));
     }
 }

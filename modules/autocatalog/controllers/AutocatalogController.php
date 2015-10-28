@@ -115,7 +115,7 @@ class AutocatalogController extends MainController
         $params['post']=\Yii::$app->request->post();
         if (!empty($params['post'])){
         $params['option']=implode('|',$params['post']);}
-//        else{ $params['option']='';}
+        else{ $params['option']=base64_decode($params['option']);}
         $car=$this->module->getClass();
         $provider=$car::Catalogs($params);
         $podbor = $car::Podbor($params);
