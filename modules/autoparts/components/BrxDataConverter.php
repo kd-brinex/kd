@@ -213,7 +213,6 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
-//        var_dump($data);die;
         if(!is_array($data)) return false;
         $config = \Yii::$app->getModule('autoparts')->params;
 

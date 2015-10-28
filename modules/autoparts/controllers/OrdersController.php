@@ -13,6 +13,7 @@ use Yii;
 
 use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\base\Exception;
 
@@ -51,7 +52,7 @@ class OrdersController extends Controller
                 }
                 return $this->renderAjax('_managerOrder', ['order' => $order, 'model' => $model]);
             }
-        }
+        } else $this->redirect(Url::toRoute('/admin/orders'));
     }
 
     public function actionUpdate(){
@@ -124,9 +125,9 @@ class OrdersController extends Controller
     private function getDetailProviderInfo($params, $model)
     {
         $orderDetails = Tovar::getProviderOrderState($params, $model->order->store_id);
-        if ($orderDetails !== false){
+        if (!empty($orderDetails)){
             foreach ($orderDetails as $detail) {
-                if ($detail['code'] == $model->product_article && $detail['name'] == $model->part_name &&
+                if ($detail['code'] == $model->product_article &&   //&& strtoupper($detail['name']) == strtoupper($model->part_name)
                     $detail['quantity'] == $model->quantity
                 ) {
                     $stateCode = ProviderStateCode::findOne(['provider_id' => $model->provider->id, 'status_code' => $detail['status']]);
@@ -188,7 +189,8 @@ class OrdersController extends Controller
 
         foreach($details as $detail){
             $article = !empty($detail->product_article) ? $detail->product_article : (!empty($detail->product_id) ? $detail->product_id : null);
-            $compareDetails = Tovar::findDetails(['article' => $article, 'store_id' => $detail->order->store_id]);
+            $compareDetails = Tovar::findDetails(['article' => $article, 'city_id' => $detail->order->store->city_id]);
+
             $allDetails[$article]['manufacture'] = $detail->manufacture;
             $allDetails[$article]['offers'] = $compareDetails;
         }
