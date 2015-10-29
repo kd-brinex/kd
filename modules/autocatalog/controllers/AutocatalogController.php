@@ -198,6 +198,7 @@ class AutocatalogController extends MainController
     {
 //        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
+        $params['option']=base64_decode($params['option']);
         $car=$this->module->getClass();
         $provider = $car::SubCatalog($params);
         $params['breadcrumbs']=$car::Breadcrumbs($params);
@@ -210,6 +211,7 @@ class AutocatalogController extends MainController
     {
 
         $params = \Yii::$app->request->queryParams;
+        $params['option']=base64_decode($params['option']);
         $car=$this->module->getClass();
         $provider = $car::Parts($params);
         $images=$car::Images($params);

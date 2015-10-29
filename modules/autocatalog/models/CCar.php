@@ -120,7 +120,7 @@ class CCar extends BaseModel
             ];
         }
         if (isset($params['cat_code'])) {
-            $url.='/'.$params['cat_code'].'/'.$params['option'];
+            $url.='/'.$params['cat_code'].'/'.base64_encode($params['option']);
             $links[] = [
                 'label' => $params['cat_code'],
                 'url' => $url,

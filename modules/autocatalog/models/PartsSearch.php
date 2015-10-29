@@ -31,7 +31,9 @@ class PartsSearch extends ActiveRecord
 
     public function search($params=[])
     {
-    $query =parent::find()->andWhere('x1>0 and y1>0');
+    $query =parent::find()
+//        ->andWhere('x1>0 and y1>0')
+;
     return $query;
     }
 }

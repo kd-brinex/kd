@@ -123,7 +123,7 @@ class Toyota extends CCar
 //    }
     public static function SubCatalog($params)
     {
-        $option = (empty($params['option'])) ? '' : base64_decode($params['option']);
+        $option = (empty($params['option'])) ? '' : $params['option'];
         $option =  str_replace('|','',$option);
         $models = self::SubCatalogSearch($params);
         $query = $models->search($params);
@@ -166,7 +166,7 @@ class Toyota extends CCar
             ->distinct()
             ->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
 //            ->andWhere('cat_code=:cat_folder',[':cat_folder'=>$params['cat_folder']])
-            ->andWhere('region=:region', [':region' => $params['region']])
+//            ->andWhere('region=:region', [':region' => $params['region']])
             ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
 //        ->groupBy(['number']);
@@ -211,7 +211,7 @@ class Toyota extends CCar
             ->Where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
             ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
-            ->andWhere('region=:region', [':region' => $params['region']])
+//            ->andWhere('region=:region', [':region' => $params['region']])
             ->orderBy('page');
 //        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
 
