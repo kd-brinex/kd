@@ -52,8 +52,8 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
         foreach ($models['labels'] as $labels) {
             foreach ($labels as $m) {
 //                var_dump($m['page'] , $img['page']);
-                if ($m['page'] == $img['page']) {
-                    $label .= '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height'] < 20 ? '20' : $m['height']) . 'px; ">' . $m['pnc'] . '</div>';
+                if (($m['page'] == $img['page'])and($m['x1']+$m['y1']>0)) {
+                    $label .= '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height'] < 12 ? '12' : $m['height']) . 'px; ">' . $m['pnc'] . '</div>';
 
                 }
             }

@@ -17,6 +17,7 @@ use yii\widgets\Breadcrumbs;
  * Time: 11:22
  */
 //echo $params['option'];
+//var_dump($params);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="auto-info">
@@ -96,7 +97,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
         'label'=>'Автокаталог',
         'format'=>'raw',
         'value'=> function ($model, $key, $index, $widget)use($params) {
-            return Html::a('Автокаталог - ' .$params['marka'].' '.$params['family']. ' ('.$params['option'].')',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+            return Html::a('Автокаталог - ' .$model['cat_folder'].'. '.$params['marka'].' '.$params['family']. ' ('.$params['option'].')',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
 //            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
 },
     ]
