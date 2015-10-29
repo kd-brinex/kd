@@ -22,7 +22,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 <div class="page-scroll col-md-5 col-xs-12">
 
     <?php
-    //    var_dump($models);die;
+//        var_dump($models);die;
     $img = '';
     foreach ($models['models'] as $number => $m) {
 //if (empty($img)){$img=$m[0]['image'];}

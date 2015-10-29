@@ -116,6 +116,7 @@ class Hyundai extends CCar
     public static function SubCatalog($params)
     {
         $option=explode('|',$params['option']);
+
         $models = self::SubCatalogSearch($params);
         $query =$models->search($params);
         $provider = new ActiveDataProvider([
