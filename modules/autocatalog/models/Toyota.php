@@ -45,7 +45,7 @@ class Toyota extends CCar
 
     public static function Catalogs($params)
     {
-//        var_dump($params);die;
+//        var_dump($params['option']);die;
         $models = self::CatalogsSearch($params);
 
         $query = $models->search($params);
@@ -55,7 +55,8 @@ class Toyota extends CCar
             ->andWhere('region=:region', [':region' => $params['region']])
 
 
-            ->andWhere("value<>''");
+//            ->andWhere("value<>''")
+        ;
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -67,10 +68,10 @@ class Toyota extends CCar
     public static function Podbor($params)
     {
         $models = self::SubCatalogSearch($params);
-
+//        var_dump($params['option']);die;
         $query = $models->search($params);
         $params['option'] = (empty($params['option'])) ? '' :$params['option'];
-        $option =  str_replace('|','',$params['option']);
+        $option = str_replace(' ','',str_replace('|','',$params['option']));
         $query->select(['region','cat_code','cat_folder','option','model_code']);
         $query->andWhere('option=:option',[':option'=>$option]);
         $query->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']]);
