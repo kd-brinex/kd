@@ -16,7 +16,7 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-//echo $params['option'];
+echo $params['option'];
 //var_dump($params);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
@@ -62,17 +62,22 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'format' => 'raw',
                 'label' => 'Варианты',
                 'value' => function ($model, $key, $index, $widget) use ($params) {
-                    $keys=explode(';', $model['key']);
-                    $values=explode(';', $model['value']);
+                    $key[0]='';
+                    $values[0]='Unknown';
+                    $keys=array_merge($key,explode(';', $model['key']));
+                    $values=array_merge($values,explode(';', $model['value']));
 
 //                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
-
+//                    var_dump($keys);die;
+                $select=$keys[0];
                         if (!empty($params['option'])){
-                            $options=explode('|',$params['option']);
-                            $select=(isset($options[$index]))?$options[$index]:$keys[0];
+                            $option=str_replace('  ','|',$params['option']);
+                            $option=str_replace('||','|',$option);
+                            $options=explode('|',$option);
+                            $select=(!empty($options[$index]))?$options[$index]:$select;
 
 }
-                    else{$select=$keys[0];}
+
                     $val=array_combine($keys,$values);
                     $html = Html::radioList($model['type_code'], $select, $val, []);
                     return $html;

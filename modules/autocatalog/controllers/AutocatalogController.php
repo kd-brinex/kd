@@ -242,7 +242,7 @@ class AutocatalogController extends MainController
         if ($vin) {$model=$vin->models[0];
 
 
-        $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.$model->option;
+        $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.base64_encode($model->option);
 //        var_dump($provider->models[0]->cat_code);die;
 //        $params['cat_code']=$model->models[0]->cat_code;
 //        $car=$this->module->getClass();
