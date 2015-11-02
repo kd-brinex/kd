@@ -63,7 +63,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                     'content' => Html::tag('div', Html::img($img->image) .$label,['class'=>'page_image'])];
 
         }
-        echo Tabs::widget(['items' => $items]);
+        echo (!empty($items))?Tabs::widget(['items' => $items]):'Узел не найден';
 
         ?>
 

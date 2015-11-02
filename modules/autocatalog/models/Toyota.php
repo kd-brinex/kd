@@ -27,15 +27,17 @@ class Toyota extends CCar
 
     public static function Models($params)
     {
+
         $models = self::ModelsSearch($params);
         $models->load($params);
         $query = $models->search($params);
-        $query->andFilterWhere(['like', 'region', $models->region])
+        $query
+            ->andWhere(['like','region',$params['region']])
 //            ->andFilterWhere(['like', 'family', $models->family])
 //            ->andFilterWhere(['like', 'from', $models->from])
             ->groupBy('cat_name')
             ->addSelect('*,cat_name,min(`from`) as \'from\',max(`to`) \'to\'')
-            ->orderBy('from');;
+            ->orderBy('from');
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -211,9 +213,10 @@ class Toyota extends CCar
             ->distinct()
             ->Where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
-            ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
-//            ->andWhere('region=:region', [':region' => $params['region']])
-            ->orderBy('page');
+//            ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
+            ->andWhere('region=:region', [':region' => $params['region']])
+                ->groupBy('pic_code');
+//            ->orderBy('page');
 //        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
 
         $provider = new ActiveDataProvider([

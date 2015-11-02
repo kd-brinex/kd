@@ -59,7 +59,6 @@ $this->beginPage() ?>
         <div class="row row-offcanvas row-offcanvas-left">
             <?=$content ?>
         </div>
-        <?= Yii::$app->seotools->getInfotext(); ?>
     </div>
 
 <?php $this->endBody() ?>
