@@ -170,11 +170,10 @@ return $xml;
     }
     public static function loader()
     {
-        $model = new ActiveRecord();
-        $model->find()
-        ->select("*")
-        ->from("v_loader")->all();
-        $provider = new ActiveDataProvider(['query'=>$model]);
+        $model = new VLoader();
+       $query= $model->find();
+
+        $provider = new ActiveDataProvider(['query'=>$query]);
         return $provider;
 
     }
