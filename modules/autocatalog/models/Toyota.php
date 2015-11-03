@@ -3,6 +3,7 @@ namespace app\modules\autocatalog\models;
 
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * Created by PhpStorm.
@@ -193,7 +194,7 @@ class Toyota extends CCar
     public static function Vin($params)
     {
 //        var_dump($params);die;
-        $models = self::VinSearch($params);
+        $models= (strpos($params['vin'],'-')==0)? self::VinSearch($params):self::Frame($params);
         $query = $models->search($params);
 
         $provider = new ActiveDataProvider([
@@ -204,7 +205,23 @@ class Toyota extends CCar
         ->andWhere("vin8 = SUBSTRING('" . $params['vin'] . "', 1, LENGTH(vin8))");
         return $provider;
     }
-
+public static function Frame($params)
+{
+    $query=new ActiveRecord();
+    $frame=substr($params['vin'],1,5);
+    $serial=substr($params['vin'],6,7);
+    $query
+        ->find()
+        ->select('*')
+        ->from('v_frame')
+        ->where('frame_code=:frame_code and serial_number=:serial_number',[':frame_code'=>$frame,':serial_number'=>$serial])
+    ->limit(1);
+    $provider = new ActiveDataProvider([
+        'query' => $query,
+        'pagination' => false,
+    ]);
+    return $provider;
+}
     public static function Images($params)
     {
 //        var_dump($params);die;

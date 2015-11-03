@@ -64,4 +64,9 @@ class ApiController extends Controller
 //        var_dump($tip_id);die;
         return $this->render('tovar_view',['params'=>$params,'tovars'=>$tovars,'tip_id'=>$tip_id,'param_list'=>$param_list,'url'=>$url]);
     }
+    public function actionLoader()
+    {
+        $provider=Api::loader();
+        return $this->render('loader',['provider'=>$provider]);
+    }
 }
