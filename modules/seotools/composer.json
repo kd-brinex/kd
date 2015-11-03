@@ -1,0 +1,22 @@
+{
+    "name": "jpunanua/yii2-seotools",
+    "description": "Component and module to manage unique seo title, description, keywords and unique text associated with a page",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","seo","management","optimize","metas","description","title"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Javier Pérez Unanua",
+            "email": "javierperezu@hotmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "mihaildev/yii2-ckeditor": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "jpunanua\\seotools\\": ""
+        }
+    }
+}

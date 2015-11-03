@@ -28,7 +28,8 @@ $navbar = [
             ['label' => 'Учетные записи', 'url' => ['/admin/partsuser']],
             ['label' => 'Сроки', 'url' => ['/admin/partssrok']],
             ['label' => 'Загрузка прайсов', 'url' => ['/admin/partsload']],
-            ['label' => 'Заказы', 'url' => ['/admin/orders']]
+            ['label' => 'Заказы', 'url' => ['/admin/orders']],
+            ['label' => 'Seo', 'url' => ['/seotools/manage']]
 
         ]],
         [    'label' => 'Пользователи', 'items' => [

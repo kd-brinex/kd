@@ -32,9 +32,13 @@ class Hyundai extends CCar
         $models->load($params);
         $query = $models->search($params);
 //        var_dump($params);die;
-        $query->andFilterWhere(['like', 'region', $models->region])
-            ->andFilterWhere(['like', 'family', $models->family])
-            ->andFilterWhere(['like', 'from', $models->from])
+        $query
+//            ->andFilterWhere(['like', 'region', $models->region])
+//            ->andFilterWhere(['like', 'family', $models->family])
+//            ->andFilterWhere(['like', 'from', $models->from])
+            ->groupBy(['cat_name'])
+
+
         ;
         $provider = new ActiveDataProvider([
             'query' => $query ,
@@ -53,13 +57,15 @@ class Hyundai extends CCar
         ]);
         $query->distinct()
         ->where('cat_code=:cat_code',[':cat_code'=>$params['cat_code']])
-        ->andWhere("value<>''");
+//        ->andWhere("value<>''")
+        ;
         return $provider;
     }
     public static function Podbor($params)
     {
         $models = self::PodborSearch($params);
-        $params['option']=(empty($params['option']))?'||||||':$params['option'];
+        $params['option'] = (empty($params['option'])) ? '||||||' : base64_decode($params['option']);
+//        $params['option']=(empty($params['option']))?'||||||':$params['option'];
         $query=$models->search($params);
         $query->select(['cat_code','cat_folder']);
         $provider = new ActiveDataProvider([
@@ -110,6 +116,7 @@ class Hyundai extends CCar
     public static function SubCatalog($params)
     {
         $option=explode('|',$params['option']);
+
         $models = self::SubCatalogSearch($params);
         $query =$models->search($params);
         $provider = new ActiveDataProvider([

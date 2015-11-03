@@ -37,4 +37,5 @@ class SubCatalogSearch extends ActiveRecord
 
         return $query;
     }
+
 }

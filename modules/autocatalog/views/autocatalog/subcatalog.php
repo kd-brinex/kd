@@ -7,6 +7,7 @@ use yii\widgets\Breadcrumbs;
  * Time: 15:37
  */
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
+
 ?>
 <div class="models">
     <?= $this->render('listview',['dataProvider'=>$provider,'view'=>'block','params'=>$params])?>

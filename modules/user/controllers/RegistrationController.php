@@ -34,7 +34,7 @@ class RegistrationController extends BaseController
         ]);
     }
 
-    public function actionConnect($account_id,$data = null)
+    public function actionConnect($account_id)
     {
         //var_dump("connect");die;
         $account = $this->finder->findAccountById($account_id);

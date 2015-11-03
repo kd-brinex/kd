@@ -16,7 +16,8 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-
+echo $params['option'];
+//var_dump($params);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 <div class="auto-info">
@@ -61,19 +62,22 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'format' => 'raw',
                 'label' => 'Варианты',
                 'value' => function ($model, $key, $index, $widget) use ($params) {
-//                    var_dump($params['option']);die;
-                    $keys=explode(';', $model['key']);
-                    $values=explode(';', $model['value']);
+                    $key[0]='';
+                    $values[0]='Unknown';
+                    $keys=array_merge($key,explode(';', $model['key']));
+                    $values=array_merge($values,explode(';', $model['value']));
 
 //                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
-
+//                    var_dump($keys);die;
+                $select=$keys[0];
                         if (!empty($params['option'])){
-                            $options=explode('|',$params['option']);
-                            $select=(isset($options[$index]))?$options[$index]:$keys[0];
+                            $option=str_replace('  ','|',$params['option']);
+                            $option=str_replace('||','|',$option);
+                            $options=explode('|',$option);
+                            $select=(!empty($options[$index]))?$options[$index]:$select;
 
 }
-                    else{$select=$keys[0];}
-//                    var_dump($model);die;
+
                     $val=array_combine($keys,$values);
                     $html = Html::radioList($model['type_code'], $select, $val, []);
                     return $html;
@@ -83,22 +87,22 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
         ],
 
     ]); ?>
-</div>
+
 <?= Html::submitButton('Найти каталог');?>
 <?= Html::endForm();?>
-
+</div>
 <?= GridView::widget([
     'dataProvider' => $podbor,
     'columns'=>[
-//        'region',
-    'cat_code',
-    'cat_folder',
+
+//    'cat_code',
+//    'cat_folder',
 //    'option',
     [
-        'label'=>'url',
+        'label'=>'Автокаталог',
         'format'=>'raw',
         'value'=> function ($model, $key, $index, $widget)use($params) {
-            return Html::a('Каталог',\yii\helpers\Url::to($params['option'].'/'.$model['cat_folder']));
+            return Html::a('Автокаталог - ' .$model['cat_folder'].'. '.$params['marka'].' '.$params['family']. ' ('.$params['option'].')',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
 //            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
 },
     ]

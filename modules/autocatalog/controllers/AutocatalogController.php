@@ -21,6 +21,8 @@ use app\modules\autocatalog\models\CCar;
 use app\modules\tovar\models\Tovar;
 
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+
 class AutocatalogController extends MainController
 {
     public function behaviors()
@@ -113,7 +115,7 @@ class AutocatalogController extends MainController
         $params['post']=\Yii::$app->request->post();
         if (!empty($params['post'])){
         $params['option']=implode('|',$params['post']);}
-//        else{ $params['option']='';}
+        else{ $params['option']=base64_decode($params['option']);}
         $car=$this->module->getClass();
         $provider=$car::Catalogs($params);
         $podbor = $car::Podbor($params);
@@ -196,6 +198,7 @@ class AutocatalogController extends MainController
     {
 //        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
+        $params['option']=base64_decode($params['option']);
         $car=$this->module->getClass();
         $provider = $car::SubCatalog($params);
         $params['breadcrumbs']=$car::Breadcrumbs($params);
@@ -208,6 +211,7 @@ class AutocatalogController extends MainController
     {
 
         $params = \Yii::$app->request->queryParams;
+        $params['option']=base64_decode($params['option']);
         $car=$this->module->getClass();
         $provider = $car::Parts($params);
         $images=$car::Images($params);
@@ -234,15 +238,23 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
 //        var_dump($params);die;
-        $model=$this->module->searchVin($params)->models[0];
-        $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.$model->option;
+        $vin=$this->module->searchVin($params);
+        if ($vin) {$model=$vin->models[0];
+
+
+        $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.base64_encode($model->option);
 //        var_dump($provider->models[0]->cat_code);die;
 //        $params['cat_code']=$model->models[0]->cat_code;
 //        $car=$this->module->getClass();
 //        $provider=$car::Catalogs($params);
 //        $info=$car::Info($params);
 
-        return $this->redirect($redirect);
+        return $this->redirect($redirect);}
+        else
+        {
+            $redirect='/autocatalogs/'.$params['marka'].'/'.$params['region'];
+            return $this->redirect($redirect);
+        }
     }
     public function actionDetails()
     {

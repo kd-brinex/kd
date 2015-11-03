@@ -9,7 +9,9 @@ use yii\widgets\Breadcrumbs;
  * Time: 11:22
  */
 //var_dump($bread);die;
+echo  $this->render('_search_vin',['params'=>$params]);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
+
 foreach($regions->models as $region) {
 
     $items []=
