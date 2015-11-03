@@ -16,7 +16,7 @@ foreach($regions->models as $region) {
 
     $items []=
         ['label' => Yii::t('autocatalog', $region->region),
-            'content' =>'<div class="catalog">'. GridView::widget([
+            'content' =>'<div class="catalog3">'. GridView::widget([
                 'dataProvider' => $provider[$region->region],
                 'showHeader' => false,
                 'layout' => "{items}\n{pager}",

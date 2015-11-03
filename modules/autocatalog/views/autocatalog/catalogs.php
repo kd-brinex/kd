@@ -16,11 +16,30 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-echo $params['option'];
+//echo $params['option'];
 //var_dump($params);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
+
 <div class="auto-info">
+    <?= GridView::widget([
+        'dataProvider' => $podbor,
+        'columns'=>[
+
+//    'cat_code',
+//    'cat_folder',
+//    'option',
+            [
+                'label'=>'Найденные автокаталоги',
+                'format'=>'raw',
+                'value'=> function ($model, $key, $index, $widget)use($params) {
+                    return Html::a(Html::button('Автокаталог - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success"]),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
+                },
+            ]
+        ]
+
+    ]);?>
     <?= DetailView::widget([
             'model' => $info->models[0],
             'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
@@ -91,21 +110,4 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 <?= Html::submitButton('Найти каталог');?>
 <?= Html::endForm();?>
 </div>
-<?= GridView::widget([
-    'dataProvider' => $podbor,
-    'columns'=>[
 
-//    'cat_code',
-//    'cat_folder',
-//    'option',
-    [
-        'label'=>'Автокаталог',
-        'format'=>'raw',
-        'value'=> function ($model, $key, $index, $widget)use($params) {
-            return Html::a('Автокаталог - ' .$model['cat_folder'].'. '.$params['marka'].' '.$params['family']. ' ('.$params['option'].')',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
-//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
-},
-    ]
-    ]
-
-    ]);?>

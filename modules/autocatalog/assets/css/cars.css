@@ -22,7 +22,21 @@
     /*-webkit-column-gap: 2em;*/
     /*-webkit-column-rule: 1px dashed black;*/
 }
-
+.catalog3{
+    height:800px;
+    -webkit-column-width: 100px;
+    -moz-column-width: 100px;
+    column-width: 100px;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+    -webkit-column-gap: 30px;
+    -moz-column-gap: 30px;
+    column-gap: 30px;
+    -webkit-column-rule: 1px solid #ccc;
+    -moz-column-rule: 1px solid #ccc;
+    column-rule: 1px solid #ccc;
+}
 .models {
 
 }
