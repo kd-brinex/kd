@@ -32,14 +32,12 @@ class OrdersController extends Controller
         return $this->render('orders', ['orders' => $orders, 'model' => $model]);
     }
 
-    public function actionManagerOrder($id){
+    public function actionManagerOrder($id = null){
         if(Yii::$app->request->isAjax) {
             if (empty($id)) return false;
             $model = new OrdersSearch;
-            $model = $model->search('order_id = :order_id', [':order_id' => (int)$id]);
-
+            $model = $model->search('order_id = :order_id AND related_detail IS NULL', [':order_id' => (int)$id]);
             $order = $this->findModel($id);
-
             if ($order != null && $model !== null) {
                 foreach($order->orders as $position){
                     if($position->order_provider_id !== null) {
@@ -52,7 +50,7 @@ class OrdersController extends Controller
                 }
                 return $this->renderAjax('_managerOrder', ['order' => $order, 'model' => $model]);
             }
-        } else $this->redirect(Url::toRoute('/admin/orders'));
+        } //else $this->redirect(Url::toRoute('/admin/orders'));
     }
 
     public function actionUpdate(){
@@ -81,10 +79,8 @@ class OrdersController extends Controller
                         'rel_det' => $model->related_detail,
                         'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_IN_WORK]
                 ]);
-                return $relatedDetail->save() ? $result : false;
             }
         }
-        return false;
     }
 
     public function actionOrdersUpdate(){
@@ -174,44 +170,66 @@ class OrdersController extends Controller
         $order->order_id = (int)$id;
         return $order->save() ?: false;
     }
+
     public function actionPricing(){
         $id = (int)Yii::$app->request->post('order');
-        if(empty($id)) return false;
+        $code = Yii::$app->request->post('code');
+        $city = (int)Yii::$app->request->post('city_id');
+
+        if(empty($id) && empty($code)) return false;
 
         $allDetails = [];
-        $details = OrdersSearch::find()
-                    ->where('order_id = :order_id', [':order_id' => $id])
-                    ->andWhere('status <= :status', [':status' => Orders::ORDER_ADOPTED])
-                    ->andWhere('provider_id > 0')
-                    ->andWhere('provider_id <> 5')
-                    ->andWhere('related_detail IS NULL')
-                    ->all();
+        if(!empty($id)) {
+            $details = OrdersSearch::find()
+                ->where('order_id = :order_id', [':order_id' => $id])
+                ->andWhere('status <= :status', [':status' => Orders::ORDER_ADOPTED])
+                ->andWhere('provider_id > 0')
+                ->andWhere('provider_id <> 5')
+                ->andWhere('related_detail IS NULL')
+                ->all();
 
-        foreach($details as $detail){
-            $article = !empty($detail->product_article) ? $detail->product_article : (!empty($detail->product_id) ? $detail->product_id : null);
-            $compareDetails = Tovar::findDetails(['article' => $article, 'city_id' => $detail->order->store->city_id]);
+            foreach ($details as $detail) {
+                $article = !empty($detail->product_article) ? $detail->product_article : (!empty($detail->product_id) ? $detail->product_id : null);
+                $compareDetails = Tovar::findDetails(['article' => $article, 'city_id' => $detail->order->store->city_id]);
 
-            $allDetails[$article]['manufacture'] = $detail->manufacture;
-            $allDetails[$article]['offers'] = $compareDetails;
-        }
+                $allDetails[$article]['manufacture'] = $detail->manufacture;
+                $allDetails[$article]['offers'] = $compareDetails;
+            }
+        } else
+            $allDetails[$code]['offers'] = Tovar::findDetails(['article' => $code, 'city_id' => $city]);
+
         $offers = [];
         foreach ($allDetails as $key => $detail_offers) {
             if(is_array($detail_offers) && !empty($detail_offers)){
                 foreach($detail_offers['offers'] as $offer){
-                    if($offer['code'] == $key) {
+                    if(strtoupper($offer['code']) == strtoupper($key)) {
                         $offers[$key]['offers'][] = $offer;
+
                     }
                 }
             }
         };
-        $firstOffers = $this->firstOffers($details, $offers);
-        $data = $this->buildArray($firstOffers, $offers, $details);
+
+        if(!empty($id)){
+            $firstOffers = $this->firstOffers($details, $offers);
+            $data = $this->buildArray($firstOffers, $offers, $details);
+            $orderdetails = $details;
+        } else {
+            $data = $offers[key($offers)]['offers'];
+            $orderdetails['order_id'] = Yii::$app->request->post('order_id');
+            $orderdetails['detail_id'] = 0;
+        }
+
         $dataProvider = new ArrayDataProvider([
             'allModels' => $data,
             'pagination' => false,
         ]);
+
         $offersData = $this->toDataProvider($offers);
-        return $this->renderAjax('_pricing',['model' => $dataProvider, 'orderedDetails' => $details, 'offersData' => $offersData]);
+
+        $params = ['model' => $dataProvider, 'offersData' => $offersData, 'orderedDetails' => $orderdetails];
+
+        return Json::encode(['output' => '', 'table' => $this->renderAjax('_pricing', $params)]);
     }
 
     private function toDataProvider($offers){
@@ -268,18 +286,18 @@ class OrdersController extends Controller
         foreach($firstOffers as $detail => $offer){
             $index = !empty($offer['cheap']) ? $offer['cheap'] : $offer['expensive'];
             if($index !== false){
-                $details[$detail] = $fromOffers[$detail]['offers'][$index];
+                $details[$orderDeatils[$orderDetailIndex]->id] = $fromOffers[$detail]['offers'][$index];
                 unset($fromOffers[$detail]['offers'][$index]);
             } else {
                 $d = $orderDeatils[$orderDetailIndex];
-                $details[$detail]['code'] = !empty($d->product_id) ? $d->product_id : $d->product_article.'|r';
-                $details[$detail]['manufacture'] = $d->manufacture;
-                $details[$detail]['name'] = $d->part_name;
-                $details[$detail]['quantity'] = $d->quantity;
-                $details[$detail]['price'] = $d->part_price;
-                $details[$detail]['srokmax'] = $d->delivery_days;
-                $details[$detail]['pid'] = $d->provider_id;
-                $details[$detail]['provider'] = 'KD'.$d->provider_id.'-'.$d->order->store_id;
+                $details[$orderDeatils[$orderDetailIndex]->id]['code'] = !empty($d->product_id) ? $d->product_id : $d->product_article.'|r';
+                $details[$orderDeatils[$orderDetailIndex]->id]['manufacture'] = $d->manufacture;
+                $details[$orderDeatils[$orderDetailIndex]->id]['name'] = $d->part_name;
+                $details[$orderDeatils[$orderDetailIndex]->id]['quantity'] = $d->quantity;
+                $details[$orderDeatils[$orderDetailIndex]->id]['price'] = $d->part_price;
+                $details[$orderDeatils[$orderDetailIndex]->id]['srokmax'] = $d->delivery_days;
+                $details[$orderDeatils[$orderDetailIndex]->id]['pid'] = $d->provider_id;
+                $details[$orderDeatils[$orderDetailIndex]->id]['provider'] = 'KD'.$d->provider_id.'-'.$d->order->store_id;
             }
 
             $orderDetailIndex++;
@@ -300,7 +318,7 @@ class OrdersController extends Controller
             $order->order_id = $post['order_id'];
             $order->provider_id = (int)$post['pid'];
             $order->delivery_days = (int)$post['srokmax'];
-            $order->related_detail = $post['detail_id'];
+            $order->related_detail = $post['detail_id'] == 0 ? null : $post['detail_id'];
             if($order->save()) {
                 $order->provider_id = $order->provider->name;
                 return Json::encode($order->getAttributes());

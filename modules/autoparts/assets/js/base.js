@@ -9,7 +9,9 @@ function loadOrderData(obj){
         data : {'id' : order_id},
         'success' : function(data){
             modalContent.html(data);
-            $('table th a.desc').click();
+            //$('table th a.desc').click();
+            history.pushState(null, null, '/autoparts/orders/manager-order?id='+order_id);
+            //$.pjax.reload({container:'#manager-order-grid-pjax-container', push: false, replace: false,  url:'/autoparts/orders/manager-order'});
         }
     });
 }
@@ -70,15 +72,25 @@ function sendTo1C(id, but){
 }
 
 function pricing(id, but){
+
     var content = $('.modal-body'),
         header = $('.modal-header');
 
-    content.attr('id','modal-body-1').css('display','none');
-    header.after('<div class="loader"></div>');
+    if($('#modal-body-2').length > 0) {
+        $('#modal-body-2').remove();
+    }
 
+    if($('#modal-body-1').length == 0){
+        content.attr('id','modal-body-1').css('display','none');
+    } else {
+        $('#modal-body-1').hide();
+    }
+
+    header.after('<div class="loader"></div>');
     $.ajax({
         url : "/autoparts/orders/pricing",
         type : "POST",
+        dataType : "JSON",
         data : {'order' : id},
         error: function(XHR, status, errorThrown){
             var error_text = 'Ошибка сервера('+status+'): <strong style="color:#ff5244">'+errorThrown+'.</strong>';
@@ -91,9 +103,7 @@ function pricing(id, but){
             $('#tableToggler').show();
             $('.loader').remove();
             header.after('<div class="modal-body" id="modal-body-2"></div>');
-            $('#modal-body-2').html(data);
-            $(but).addClass('disabled');
-
+            $('#modal-body-2').html(data.table);
         }
     });
 }
@@ -121,59 +131,37 @@ function inOrder(obj, url, data){
             button.removeClass('btn-primary').addClass('btn-warning');
             button.html('<span class="glyphicon glyphicon-time"></span> ЖДУ ОТВЕТА...');
         },
-        success : function(data){
+        success : function(){
             button.removeClass('btn-warning').addClass('btn-success');
-            var row = '<tr class="warning" data-key="'+data.id+'"><td>'+data.product_article+'</td>' +
-                '<td data-col-seq="1">'+(data.manufacture == '' ? '<span class="not-set">(не задано)</span>' : data.manufacture) +'</td>' +
-                '<td data-col-seq="2">'+data.part_name+'</td>' +
-                '<td data-col-seq="3">'+data.part_price+'</td>' +
-                '<td data-col-seq="4">'+data.quantity+'</td>' +
-                '<td data-col-seq="5">'+(data.quantity*data.part_price)+'</td>' +
-                '<td data-col-seq="6" class="skip-export kv-align-center kv-align-top kv-row-select" style="width:50px;">' +
-                '<input type="checkbox" name="selection[]" value="'+data.id+'" onclick="updatePaidStatus(this)">' +
-                '</td>' +
-                '<td data-col-seq="7">'+data.provider_id+'</td>' +
-                '<td data-col-seq="8"><span class="not-set">(не задано)</span></td>' +
-                '<td data-col-seq="9"><span class="not-set">(не задано)</span></td>' +
-                '<td data-col-seq="10">'+data.delivery_days+'</td>' +
-                '<td data-col-seq="11">' +
-                '<select id="orderssearch-status" class="form-control" name="OrdersSearch[status]" style="min-width:125px" onchange="updateStatus(this)">' +
-                '<option value="0" selected="">В ОБРАБОТКЕ</option>' +
-                '<option value="1">ПРИНЯТ</option>' +
-                '<option value="2">ЗАКАЗАН</option>' +
-                '<option value="3">ДОСТАВЛЕН НА СКЛАД</option>' +
-                '<option value="4">ДОСТАВЛЕН В МАГАЗИН</option>' +
-                '<option value="5">ВЫПОЛНЕН</option>' +
-                '<option value="6">АННУЛИРОВАН</option>' +
-                '</select></select></td>' +
-                '<td data-col-seq="12"><span class="not-set">(не задано)</span></td>' +
-
-                '<td class="btn-group-sm skip-export kv-align-center kv-align-middle" style="width:80px;" data-col-seq="13"><button type="button" class="btn btn-danger" onclick="deleteDetail(\'/autoparts/orders/delete?id='+data.id+'\')"><span class="glyphicon glyphicon-remove"></span></button></td>'
-            '</tr>';
+            $.pjax.reload({container:'#manager-order-grid-pjax-container'});
             button.html('<span class="glyphicon glyphicon-ok"></span> ДОБАВЛЕН');
-            var table = $('#manager-order-grid-container').find('table');
-            table.append(row);
         }
     });
 }
 function deleteDetail(url){
-    $.ajax({
-        url : url,
-        dataType : 'JSON',
-        success : function(data){
-            var table = $('#manager-order-grid-container').find('table');
-            table.find('tr[data-key='+parseInt(data.id)+']').remove();
-            table.find('tr[data-key='+parseInt(data.rel_det)+']').find('td.detailStatus').text(data.status_text);
-
-        }
-    });
+    if(confirm('Вы уверены что хотите удалить деталь из списка заказов?'))
+        $.ajax({
+            url : url,
+            success : function(){
+                $.pjax.reload({container:'#manager-order-grid-pjax-container'});
+            }
+        });
 }
 function goTo(idx){
     $('.modal-body').hide();
     $('#modal-body-'+idx).show();
 }
 
+function addPosition(order, obj){
+    $(obj).empty();
+}
 $(document).ready(function() {
+
+    $('#order-modal').on('hide.bs.modal', function(){
+        $('#modal-body-2').remove();
+        $('#modal-body-1').removeAttr('id').empty().show();
+        history.pushState(null, null, '/autoparts/orders');
+    });
 
     $('#w0').submit(function(){
 

@@ -12,7 +12,11 @@ Modal::begin([
     'options' => [
         'id' => 'order-modal',
     ],
-    'header' => '<h3>Детализация заказа</h3>'
+    'header' => '<h3>Детализация заказа</h3>',
+    'clientOptions' => [
+        'backdrop' => 'static',
+        'keyboard' => false
+    ],
 ]);
 Modal::end();
 
@@ -31,6 +35,7 @@ Modal::end();
         'pjax'=>true,
         'pjaxSettings'=>[
             'neverTimeout'=>true,
+            'id' => 'order-manage-pjax-container'
         ],
 
         'columns' => [
@@ -88,36 +93,12 @@ Modal::end();
             ],
             [
                 'format' => 'raw',
-                'value' => function($model){
-//                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','/autoparts/orders/manager-order', [
-//                        'id' => 'activity-view-link',
-//                        'title' => Yii::t('yii', 'View'),
-//                        'data-toggle' => 'modal',
-//                        'data-target' => '#order-modal',
-//                        'data-id' => $model['id'],
-//                        'data-pjax' => '0',
-//                      ]);
+                'value' => function(){
                     return '<button class="btn btn-primary" onClick="loadOrderData(this)" data-toggle="modal" data-target="#order-modal" data-pjax="1">Просмотр</button>';
                 }
             ]
 
         ],
-//        'toolbar' => [
-//            [
-//                'content'=>
-//                    Html::button('<i class="glyphicon glyphicon-plus"></i>', [
-//                        'type' =>'button',
-//                        'title'=> 'Add Book',
-//                        'class'=>'btn btn-success'
-//                    ]) . ' '.
-//                    Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], [
-//                        'class' => 'btn btn-default',
-//                        'title' => 'Reset Grid'
-//                    ]),
-//            ],
-//            '{export}',
-//            '{toggleData}'
-//        ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i> Заказы</h3>',
             'type'=>'success',
@@ -126,7 +107,6 @@ Modal::end();
 
     ]);
 
-
-?>
+;?>
 </div>
 
