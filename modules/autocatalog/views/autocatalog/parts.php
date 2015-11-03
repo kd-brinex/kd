@@ -22,14 +22,17 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 <div class="page-scroll col-md-5 col-xs-12">
 
     <?php
-//        var_dump($models);die;
+    if(empty($models['models'])){echo 'Нет данных';}
+    else
+    {
+    //        var_dump($models);die;
     $img = '';
     foreach ($models['models'] as $number => $m) {
 //if (empty($img)){$img=$m[0]['image'];}
         echo Collapse::widget([
             'items' => [
                 [
-                    'label' => $number ,
+                    'label' => $number,
 //                'content'=>'',
                     'content' => $this->render('parts_group', ['model' => $m]),
 
@@ -45,26 +48,26 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 </div>
 <div class="col-md-7 col-xs-12">
 
-        <?php
-        foreach ($images->models as $img) {
+    <?php
+    foreach ($images->models as $img) {
 
-        $label='';
+        $label = '';
         foreach ($models['labels'] as $labels) {
             foreach ($labels as $m) {
 //                var_dump($m['page'] , $img['page']);
-                if (($m['page'] == $img['page'])and($m['x1']+$m['y1']>0)) {
+                if (($m['page'] == $img['page']) and ($m['x1'] + $m['y1'] > 0)) {
                     $label .= '<div id="' . $m['pnc'] . '" data-position="1"  title="' . $m['name'] . '" class="page_label" style="left: ' . $m['x1'] . 'px; top: ' . $m['y1'] . 'px; width: ' . $m['width'] . 'px; height: ' . ($m['height'] < 12 ? '12' : $m['height']) . 'px; ">' . $m['pnc'] . '</div>';
 
                 }
             }
         }
-            $items [] =
-                ['label' => $img->page,
-                    'content' => Html::tag('div', Html::img($img->image) .$label,['class'=>'page_image'])];
+        $items [] =
+            ['label' => $img->page,
+                'content' => Html::tag('div', Html::img($img->image) . $label, ['class' => 'page_image'])];
 
-        }
-        echo (!empty($items))?Tabs::widget(['items' => $items]):'Узел не найден';
-
+    }
+    echo (!empty($items)) ? Tabs::widget(['items' => $items]) : 'Узел не найден';
+    }
         ?>
 
 

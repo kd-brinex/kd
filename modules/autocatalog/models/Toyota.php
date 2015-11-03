@@ -2,6 +2,7 @@
 namespace app\modules\autocatalog\models;
 
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * Created by PhpStorm.
@@ -32,12 +33,12 @@ class Toyota extends CCar
         $models->load($params);
         $query = $models->search($params);
         $query
-            ->andWhere(['like','region',$params['region']])
+            ->andWhere('region=:region',[':region'=>$params['region']])
 //            ->andFilterWhere(['like', 'family', $models->family])
 //            ->andFilterWhere(['like', 'from', $models->from])
             ->groupBy('cat_name')
             ->addSelect('*,cat_name,min(`from`) as \'from\',max(`to`) \'to\'')
-            ->orderBy('from');
+            ->orderBy('from desc');
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
@@ -210,19 +211,28 @@ class Toyota extends CCar
         $models = self::ImagesSearch($params);
         $query = $models->search($params);
         $query
-            ->distinct()
+//            ->distinct()
             ->Where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
-//            ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
+            ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
             ->andWhere('region=:region', [':region' => $params['region']])
-                ->groupBy('pic_code');
-//            ->orderBy('page');
-//        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
 
-        $provider = new ActiveDataProvider([
+            ->orderBy('page');
+//        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
+//        $array=$query->all();
+//        $narray=[];
+//        var_dump($array);die;
+//        foreach($array as $a){
+//            if ($a['prod_end']>$a['start_date'] and $a['prod_start']<=$a['end_date']){
+//                $narray[]=$a;
+//            }
+//        }
+
+        $provider=new ActiveDataProvider([
             'query' => $query,
-            'pagination' => false,
-        ]);
+     'pagination' => false,
+    ]);
+
 
         return $provider;
     }
