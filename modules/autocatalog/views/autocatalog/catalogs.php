@@ -91,7 +91,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 $select=$keys[0];
                         if (!empty($params['option'])){
                             $option=str_replace('  ','|',$params['option']);
-                            $option=str_replace('||','|',$option);
+                            while (strpos($option,'||')>0){$option=str_replace('||','|',$option);}
                             $options=explode('|',$option);
                             $select=(!empty($options[$index]))?$options[$index]:$select;
 
