@@ -31,8 +31,13 @@ class FrameSearch extends ActiveRecord
 
     public function search($params=[])
     {
+        $frame=substr($params['vin'],0,5);
+        $serial=substr($params['vin'],6,7);
         $query =parent::find();
+        $query
 
+            ->where('frame_code=:frame_code and serial_number=:serial_number',[':frame_code'=>$frame,':serial_number'=>$serial])
+            ->limit(1);
         return $query;
     }
 }

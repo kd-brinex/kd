@@ -64,8 +64,6 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $catalog = $this->module->getModel();
-//        $provider=$catalog->getCars();
-
         return $this->render('index', [
             'catalog' => $catalog,
             'params' =>$params,
@@ -95,7 +93,6 @@ class AutocatalogController extends MainController
     {
 
         $params = \Yii::$app->request->queryParams;
-        //чтобы работал фильтр по региону
         if(empty($params['ModelsSearch']['region'])){$params['ModelsSearch']['region']=$params['region'];}
         $car=$this->module->getClass();
         $model=$car::ModelsSearch($params);
@@ -109,9 +106,7 @@ class AutocatalogController extends MainController
     }
     public function actionCatalogs()
     {
-//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
-//        var_dump($params);die;
         $params['post']=\Yii::$app->request->post();
         if (!empty($params['post'])){
         $params['option']=implode('|',$params['post']);}
@@ -177,16 +172,13 @@ class AutocatalogController extends MainController
     }
     public function actionCatalog()
     {
-//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
         $car=$this->module->getClass();
-        $post = \Yii::$app->request->post();
         $params['post']=\Yii::$app->request->post();
         $params['breadcrumbs']=$car::Breadcrumbs($params);
         if (empty($params['option']) & !empty($params['post'])){
             $params['option']=implode('|',$params['post']);}
-//        $params['post']=$post;
-//        $params['option']=implode('|',$post);
+
         $provider = $car::Catalog($params);
 
         return $this->render('catalog', [
@@ -196,7 +188,6 @@ class AutocatalogController extends MainController
     }
     public function actionSubcatalog()
     {
-//        var_dump(111);die;
         $params = \Yii::$app->request->queryParams;
         $params['option']=base64_decode($params['option']);
         $car=$this->module->getClass();
@@ -220,13 +211,8 @@ class AutocatalogController extends MainController
         $arr = [];
         foreach ($model as $item) {
             $arr['models'][$item['pnc']][$item['number']] = $item;
-
-//            $arr['models'][$item['pnc']][$item['pnc']] = $item;
-//            $arr['models'][$item['pnc']][] = $item;
-//            $arr['labels'][][$item['number']][$item['x1'] . 'x' . $item['y1']] = $item;
             $arr['labels'][$item['pnc']][] = $item;
         }
-//        var_dump($arr);die;
         return $this->render('parts', [
             'models' => $arr,
             'params' =>$params,
@@ -237,18 +223,11 @@ class AutocatalogController extends MainController
     public function actionVin()
     {
         $params = \Yii::$app->request->queryParams;
-//        var_dump($params);die;
         $vin=$this->module->searchVin($params);
         if ($vin) {$model=$vin->models[0];
 
 
         $redirect='/autocatalogs/'.$model->marka.'/'.$model->region.'/'.$model->family.'/'.$model->cat_code.'/'.base64_encode($model->option);
-//        var_dump($provider->models[0]->cat_code);die;
-//        $params['cat_code']=$model->models[0]->cat_code;
-//        $car=$this->module->getClass();
-//        $provider=$car::Catalogs($params);
-//        $info=$car::Info($params);
-
         return $this->redirect($redirect);}
         else
         {

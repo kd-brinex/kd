@@ -2,8 +2,6 @@
 namespace app\modules\autocatalog\models;
 
 use yii\data\ActiveDataProvider;
-use yii\data\ArrayDataProvider;
-use yii\db\ActiveQuery;
 
 /**
  * Created by PhpStorm.
@@ -34,9 +32,7 @@ class Toyota extends CCar
         $models->load($params);
         $query = $models->search($params);
         $query
-            ->andWhere('region=:region',[':region'=>$params['region']])
-//            ->andFilterWhere(['like', 'family', $models->family])
-//            ->andFilterWhere(['like', 'from', $models->from])
+            ->andWhere('region=:region', [':region' => $params['region']])
             ->groupBy('cat_name')
             ->addSelect('*,cat_name,min(`from`) as \'from\',max(`to`) \'to\'')
             ->orderBy('from desc');
@@ -56,10 +52,7 @@ class Toyota extends CCar
         $query
 //            ->distinct()
             ->where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
-            ->andWhere('region=:region', [':region' => $params['region']])
-
-
-//            ->andWhere("value<>''")
+            ->andWhere('region=:region', [':region' => $params['region']])//            ->andWhere("value<>''")
         ;
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -74,22 +67,19 @@ class Toyota extends CCar
         $models = self::SubCatalogSearch($params);
 //        var_dump($params['option']);die;
         $query = $models->search($params);
-        $params['option'] = (empty($params['option'])) ? '' :$params['option'];
-        $option = str_replace(' ','',str_replace('|','',$params['option']));
-        $query->select(['region','cat_code','cat_folder','option','model_code']);
-        $query->andWhere('option=:option',[':option'=>$option]);
+        $params['option'] = (empty($params['option'])) ? '' : $params['option'];
+        $option = str_replace(' ', '', str_replace('|', '', $params['option']));
+        echo $option;
+        $query->select(['region', 'cat_code', 'cat_folder', 'option', 'model_code']);
+        $query->andWhere('option=:option', [':option' => $option]);
+        $query->andWhere('region=:region', [':region' => $params['region']]);
         $query->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']]);
         $query->distinct();
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
         ]);
-//        if (!empty($params['cat_code'])) {
-//            $query->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']]);
-//        }
-//        if (!empty($params['year'])) {
-//            $query->andWhere($params['year'] . ' between from_year and to_year')->andWhere(['type_code' => '03']);
-//        }
+
         return $provider;
     }
 
@@ -106,12 +96,12 @@ class Toyota extends CCar
 
     public static function Catalog($params)
     {
-        $option = implode('', $params['post']);
+//        $option = implode('', $params['post']);
         $models = self::CatalogSearch($params);
         $query = $models->search($params);
         $query->groupby('name');
         $query->where('cat_code=:cat_code',
-            [':cat_code' => $params['cat_code']]) ;
+            [':cat_code' => $params['cat_code']]);
         $query->andWhere('cat_folder=:cat_folder',
             [':cat_folder' => $params['cat_folder']]);
 //            ->andWhere('option=:option', [':option' => $option]);
@@ -121,15 +111,11 @@ class Toyota extends CCar
         ]);
         return $provider;
     }
-//    public static function compatibility($source,$find)
-//    {
-//        $source=str_replace(';','|',$source);
-//        return strpos($source,$find);
-//    }
+
     public static function SubCatalog($params)
     {
         $option = (empty($params['option'])) ? '' : $params['option'];
-        $option =  str_replace('|','',$option);
+        $option = str_replace(' ', '',str_replace('|', '', $option));
         $models = self::SubCatalogSearch($params);
         $query = $models->search($params);
         $provider = new ActiveDataProvider([
@@ -147,41 +133,22 @@ class Toyota extends CCar
         $query->distinct()
             ->where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
             ->andWhere('sect=:sect', [':sect' => $params['sect']])
-        ->andWhere('option=:option',[':option'=>$option])
-        ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']])
-        ;
-//            ->andWhere('cat_folder=:cat_folder',[':cat_folder'=>$params['cat_folder']]);
-//        $query->andwhere
-//        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
-//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
-//        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
-//        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
-//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
-//        $query->orWhere('f02=:f02',[':f02'=>'']);
+            ->andWhere('option=:option', [':option' => $option])
+            ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
+            ->andWhere('region=:region',[':region'=>$params['region']]);
+
         return $provider;
     }
 
     public static function Parts($params)
     {
-//        $option = explode('|', $params['option']);
-//        var_dump($params);die;
+
         $models = self::PartsSearch($params);
         $query = $models->search($params)
-//        $query =parent::find()
             ->distinct()
             ->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
-//            ->andWhere('cat_code=:cat_folder',[':cat_folder'=>$params['cat_folder']])
-//            ->andWhere('region=:region', [':region' => $params['region']])
             ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
-//        ->groupBy(['number']);
-//        $query->andWhere("f01=:f01 or f01=''",[':f01'=>$option[0]]);
-//        $query->andWhere("f02=:f02 or f02=''",[':f02'=>$option[1]]);
-//        $query->andWhere("f03=:f03 or f03=''",[':f03'=>$option[2]]);
-//        $query->andWhere("f04=:f04 or f04=''",[':f04'=>$option[3]]);
-//        $query->andWhere("f05=:f05 or f05=''",[':f05'=>$option[4]]);
-
-
         ;
 
         $provider = new ActiveDataProvider([
@@ -193,62 +160,65 @@ class Toyota extends CCar
 
     public static function Vin($params)
     {
-//        var_dump($params);die;
-        $models= (strpos($params['vin'],'-')==0)? self::VinSearch($params):self::Frame($params);
-        $query = $models->search($params);
+
+        if (strpos($params['vin'], '-') == 0) {
+            $models = self::VinSearch($params);
+            $query = $models->search($params);
+            $query->andWhere("vin8<>''")
+                ->andWhere("vin8 = SUBSTRING('" . $params['vin'] . "', 1, LENGTH(vin8))");
+        } else {
+            $models = self::FrameSearch($params);
+            $query = $models->search($params);
+        }
+
 
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false,
         ]);
-        $query->andWhere("vin8<>''")
-        ->andWhere("vin8 = SUBSTRING('" . $params['vin'] . "', 1, LENGTH(vin8))");
+
         return $provider;
     }
-public static function Frame($params)
-{
-    $query=new ActiveRecord();
-    $frame=substr($params['vin'],1,5);
-    $serial=substr($params['vin'],6,7);
-    $query
-        ->find()
-        ->select('*')
-        ->from('v_frame')
-        ->where('frame_code=:frame_code and serial_number=:serial_number',[':frame_code'=>$frame,':serial_number'=>$serial])
-    ->limit(1);
-    $provider = new ActiveDataProvider([
-        'query' => $query,
-        'pagination' => false,
-    ]);
-    return $provider;
-}
+
+    public static function FrameSearch($params)
+    {
+        $models = new FrameSearch();
+        return $models;
+    }
+    public static function Frame($params)
+    {
+        $query = new ActiveRecord();
+        $frame = substr($params['vin'], 0, 5);
+        $serial = substr($params['vin'], 6, 7);
+        $query
+            ->find()
+            ->select('*')
+            ->from('v_frame')
+            ->where('frame_code=:frame_code and serial_number=:serial_number', [':frame_code' => $frame, ':serial_number' => $serial])
+            ->limit(1);
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+        return $provider;
+    }
+
     public static function Images($params)
     {
-//        var_dump($params);die;
         $models = self::ImagesSearch($params);
         $query = $models->search($params);
         $query
-//            ->distinct()
             ->Where('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
             ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
             ->andWhere('region=:region', [':region' => $params['region']])
-
+            ->groupBy('pic_code')
             ->orderBy('page');
-//        ->andWhere('sect=:sect',[':sect'=>$params['sect']]);
-//        $array=$query->all();
-//        $narray=[];
-//        var_dump($array);die;
-//        foreach($array as $a){
-//            if ($a['prod_end']>$a['start_date'] and $a['prod_start']<=$a['end_date']){
-//                $narray[]=$a;
-//            }
-//        }
 
-        $provider=new ActiveDataProvider([
+        $provider = new ActiveDataProvider([
             'query' => $query,
-     'pagination' => false,
-    ]);
+            'pagination' => false,
+        ]);
 
 
         return $provider;
