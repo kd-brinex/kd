@@ -161,10 +161,10 @@ use yii\helpers\Html;
             'template' => '{in-order}',
             'contentOptions' => ['class' => 'btn-group-sm'],
             'buttons' => [
-                'in-order' => function($url, $model) use ($orderedDetail){
+                'in-order' => function($url, $model) use ($orderedDetailId, $order_id){
                     $order = [
-                        'order_id' => $orderedDetail->order_id,
-                        'detail_id' => $orderedDetail->id
+                        'order_id' => $order_id,
+                        'detail_id' => $orderedDetailId
                     ];
                     return Html::button('<span class="glyphicon glyphicon-plus"></span> В ЗАКАЗ', [
                                     'class' => 'btn btn-primary',

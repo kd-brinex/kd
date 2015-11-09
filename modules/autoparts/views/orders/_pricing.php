@@ -7,6 +7,7 @@
  */
 use \kartik\grid\GridView;
 use yii\helpers\Html;
+
 ?>
 
 <?=GridView::widget([
@@ -24,12 +25,12 @@ use yii\helpers\Html;
     ],
     'panel' => [
         'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Позиции</h3>',
-        'before' => Html::a('<i class="glyphicon glyphicon-triangle-left"></i> К позициям', ['#'], ['class' => 'btn btn-primary', 'onClick' => 'goTo(1); return false']),
-        'beforeOptions' => ['class' => 'btn-group-sm'],
+        'before' => Html::a('<i class="glyphicon glyphicon-triangle-left"></i> К заказу', ['#'], ['class' => 'btn btn-primary', 'onClick' => 'goTo(1); return false']),
+        'beforeOptions' => ['class' => 'btn-group'],
         'footer' => false,
     ],
     'columns' => [
-
+        !isset($orderedDetails[0]->order_id) ? [] :
         [
             'class' => 'kartik\grid\ExpandRowColumn',
             'expandIcon' => '<i class="glyphicon glyphicon-chevron-down"></i>',
@@ -38,10 +39,10 @@ use yii\helpers\Html;
             'value' => function () {
                 return GridView::ROW_COLLAPSED;
             },
-            'detail' => function ($model) use ($offersData, $orderedDetails){
+            'detail' => function ($model, $key) use ($offersData, $orderedDetails){
                 $model['code'] = strpos($model['code'], '|r') ? explode('|',$model['code'])[0] : $model['code'];
                 $offersData = !empty($offersData[$model['code']]) ? $offersData[$model['code']] : [];
-                return Yii::$app->controller->renderPartial('_pricingCollapse', ['offers' => $offersData, 'orderedDetail' => $orderedDetails[0]]);
+                return Yii::$app->controller->renderPartial('_pricingCollapse', ['offers' => $offersData, 'orderedDetailId' => $key, 'order_id' => isset($orderedDetails[0]->order_id) ? $orderedDetails[0]->order_id : $orderedDetails['order_id']]);
             },
             'detailOptions'=>[
                 'class'=> 'expanded-row',
@@ -55,7 +56,7 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return strpos($model['code'], '|r') ? explode('|',$model['code'])[0] : $model['code'];
-            }
+            },
         ],
         [
             'label' => 'Производитель',
@@ -66,7 +67,7 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return $model['manufacture'] == '|r' || strpos($model['manufacture'], '|r') ? explode('|',$model['manufacture'])[0] : $model['manufacture'];
-            }
+            },
         ],
         [
             'label' => 'Название',
@@ -89,7 +90,7 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['quantity'];
-            }
+            },
         ],
         [
             'label' => 'Кол-во в заказ',
@@ -100,7 +101,8 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return Html::input('number', 'quantity', 1, ['class' => 'form-control', 'min' => 1, 'max' => (int)$model['quantity']]);
-            }
+            },
+
         ],
         [
             'label' => 'Цена',
@@ -114,7 +116,7 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['price'];
-            }
+            },
         ],
         [
             'label' => 'Срок',
@@ -128,7 +130,7 @@ use yii\helpers\Html;
             },
             'value' => function($model){
                 return (int)$model['srokmax'];
-            }
+            },
         ],
         [
             'label' => 'Поставщик',
@@ -163,22 +165,23 @@ use yii\helpers\Html;
                 return Html::a('<span class="glyphicon glyphicon-share-alt"></span>', $href.$model['code'], ['class' => 'btn '.($href == '' ? 'btn-default disabled' : 'btn-warning'), 'title' => 'Перейти на сайт поставщика', 'target' => '_blank']);
             },
             'hAlign' => 'center',
-            'vAlign' => 'middle'
+            'vAlign' => 'middle',
         ],
         [
             'class' => '\kartik\grid\ActionColumn',
             'template' => '{in-order}',
             'contentOptions' => ['class' => 'btn-group-sm'],
             'buttons' => [
-                'in-order' => function($url, $model) use ($orderedDetails){
+                'in-order' => function($url, $model, $key) use ($orderedDetails){
                     $order = [
-                        'order_id' => $orderedDetails[0]->order_id,
-                        'detail_id' => $orderedDetails[0]->id
+                        'order_id' => isset($orderedDetails[0]->order_id) ? $orderedDetails[0]->order_id : $orderedDetails['order_id'],
+                        'detail_id' => isset($orderedDetails['detail_id']) ? $orderedDetails['detail_id'] : $key,
                     ];
+
                     return Html::button('<span class="glyphicon glyphicon-plus"></span> В ЗАКАЗ', [
-                        'class' => 'btn btn-primary',
-                        'onClick' => 'inOrder(this, "'.$url.'", '.\yii\helpers\Json::encode(array_merge($model, $order)).')'
-                    ]);
+                                        'class' => 'btn btn-primary',
+                                        'onClick' => 'inOrder(this, "'.$url.'", '.\yii\helpers\Json::encode(array_merge($model, $order)).')'
+                                    ]);
                 }
             ]
         ]

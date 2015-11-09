@@ -2,12 +2,15 @@
 
 namespace app\modules\api\models;
 
+use app\modules\autocatalog\models\ActiveRecord;
 use app\modules\autoparts\models\TStore;
 use app\modules\tovar\models\TovarSearch;
 use Yii;
 use yii\base\Model;
 use app\modules\tovar\models\Tovar;
 use app\modules\tovar\models\TTovar;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -163,6 +166,15 @@ return $xml;
         $a['options']=$s;
         $url=Url::toRoute($a);
         return $url;
+
+    }
+    public static function loader()
+    {
+        $model = new VLoader();
+       $query= $model->find();
+
+        $provider = new ActiveDataProvider(['query'=>$query]);
+        return $provider;
 
     }
 }

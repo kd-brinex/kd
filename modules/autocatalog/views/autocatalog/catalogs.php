@@ -20,7 +20,26 @@ use yii\widgets\Breadcrumbs;
 //var_dump($params);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
+
 <div class="auto-info">
+    <?= GridView::widget([
+        'dataProvider' => $podbor,
+        'columns'=>[
+
+//    'cat_code',
+//    'cat_folder',
+//    'option',
+            [
+                'label'=>'Найденные автокаталоги',
+                'format'=>'raw',
+                'value'=> function ($model, $key, $index, $widget)use($params) {
+                    return Html::a(Html::button('Автокаталог - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success"]),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
+                },
+            ]
+        ]
+
+    ]);?>
     <?= DetailView::widget([
             'model' => $info->models[0],
             'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
@@ -62,17 +81,22 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'format' => 'raw',
                 'label' => 'Варианты',
                 'value' => function ($model, $key, $index, $widget) use ($params) {
-                    $keys=explode(';', $model['key']);
-                    $values=explode(';', $model['value']);
+                    $key[0]='';
+                    $values[0]='Unknown';
+                    $keys=array_merge($key,explode(';', $model['key']));
+                    $values=array_merge($values,explode(';', $model['value']));
 
 //                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
-
+//                    var_dump($keys);die;
+                $select=$keys[0];
                         if (!empty($params['option'])){
-                            $options=explode('|',$params['option']);
-                            $select=(isset($options[$index]))?$options[$index]:$keys[0];
+                            $option=str_replace('  ','|',$params['option']);
+                            while (strpos($option,'||')>0){$option=str_replace('||','|',$option);}
+                            $options=explode('|',$option);
+                            $select=(!empty($options[$index]))?$options[$index]:$select;
 
 }
-                    else{$select=$keys[0];}
+
                     $val=array_combine($keys,$values);
                     $html = Html::radioList($model['type_code'], $select, $val, []);
                     return $html;
@@ -86,21 +110,4 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 <?= Html::submitButton('Найти каталог');?>
 <?= Html::endForm();?>
 </div>
-<?= GridView::widget([
-    'dataProvider' => $podbor,
-    'columns'=>[
 
-//    'cat_code',
-//    'cat_folder',
-//    'option',
-    [
-        'label'=>'Автокаталог',
-        'format'=>'raw',
-        'value'=> function ($model, $key, $index, $widget)use($params) {
-            return Html::a('Автокаталог - ' .$model['cat_folder'].'. '.$params['marka'].' '.$params['family']. ' ('.$params['option'].')',\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
-//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
-},
-    ]
-    ]
-
-    ]);?>

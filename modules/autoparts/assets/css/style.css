@@ -33,3 +33,49 @@ p{
     margin-left:10px;
 }
 
+.kv-inline-open{
+    display: none;
+}
+.kv-editable-inline .panel{
+    margin-bottom:0px !important;
+}
+button.btn.btn-sm.btn-default.kv-editable-reset{
+    display: none;
+}
+
+.kv-editable{
+    margin-top:0 !important;
+}
+
+.kv-editable-form-inline{
+    background-color: #428BCA;
+    padding: 1px 15px 6px 3px !important;
+    border-radius: 4px;
+}
+.kv-editable-submit{
+    background-color: #428bca;
+    border: none;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 15px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.editable-inline-in-table{
+    position: absolute;
+    z-index: 1;
+}
+.editable-inline-in-table .panel {
+    margin-bottom: 0px !important;
+    padding: 10px;
+    background-color: #428BCA;
+    box-shadow: 1px 2px 9px 0px #404040;
+    border: none;
+}
+@media (min-width: 768px) {
+    .kv-editable-form-inline .form-group {
+        vertical-align: middle !important;
+    }
+}
+
+
