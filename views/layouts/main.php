@@ -69,7 +69,10 @@ NavBar::end();
                 <button type="button" class="btn btn-toolbar btn-group-xs" data-toggle="offcanvas">Товары</button>
             </p>
             <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],]) ?>
+            <?= Yii::$app->seotools->getH1title() ?>
+            <?= Yii::$app->seotools->getInfotextbefore() ?>
             <?= $content ?>
+            <?= Yii::$app->seotools->getInfotextafter() ?>
         </div>
 
 

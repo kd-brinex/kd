@@ -55,9 +55,11 @@ $this->beginPage() ?>
 ?>
 <div style="height:60px"></div>
     <div class="container">
-
         <div class="row row-offcanvas row-offcanvas-left">
+            <?= Yii::$app->seotools->getH1title(); ?>
+            <?= Yii::$app->seotools->getInfotextbefore(); ?>
             <?=$content ?>
+            <?= Yii::$app->seotools->getInfotextafter() ?>
         </div>
     </div>
 
