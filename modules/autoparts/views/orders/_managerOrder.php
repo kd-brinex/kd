@@ -197,18 +197,28 @@ use yii\helpers\Html;
                             'icon' => '<i class="glyphicon glyphicon-search"></i>',
                         ],
                         'formOptions' => [
-                            'id' => 'add-position-to-order-form'
+                            'id' => 'add-position-to-order-form',
                         ],
                         'afterInput' => function() use ($order){
                             echo Html::hiddenInput('city_id', $order->store->city_id);
                             echo Html::hiddenInput('order_id', $order->id);
+                            echo '<div class="form-group" style="float:left">'.Html::a('Из каталога', '/finddetails#w2-tab2',[
+                                'target' => '_blank',
+                                'class' => 'btn btn-primary',
+                                'data-pjax' => '0'
+                            ]).'</div>';
                         },
-                        'options' => ['class'=>'form-control', 'placeholder'=>'Введите артикул...'],
+                        'options' => [
+                            'class' => 'form-control',
+                            'placeholder' => 'Введите артикул...',
+                            'required' => true
+                        ],
                         'editableValueOptions' => [
                             'style' => 'width: 0px;opacity: 0;'
                         ],
                         'pluginEvents' => [
                             'editableSubmit' => 'function() {
+                                    if($("#add-position-button").val() == "") return false;
                                     var content = $(".modal-body"),
                                         header = $(".modal-header");
 
