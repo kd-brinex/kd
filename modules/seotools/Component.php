@@ -599,8 +599,8 @@ class Component extends \yii\base\Component
                     $aMeta[$key] = $this->replaceToLink($m_link->keyword, $m_link->link, $aMeta[$key]);
 
                     //TODO костыль надо будет заменит
-                    if(preg_match("/[а-яА-Я]/",$m_link->keyword))
-                        $aMeta[$key] = $this->replaceToLink(mb_substr(mb_strtoupper($m_link->keyword, 'utf-8'), 0, 1, 'utf-8') . mb_substr($m_link->keyword, 1, mb_strlen($m_link->keyword)-1, 'utf-8'), $m_link->link, $aMeta[$key]);
+//                    if(preg_match("/[А-Я]/",$m_link->keyword))
+//                        $aMeta[$key] = $this->replaceToLink(mb_substr(mb_strtoupper($m_link->keyword, 'utf-8'), 0, 1, 'utf-8') . mb_substr($m_link->keyword, 1, mb_strlen($m_link->keyword)-1, 'utf-8'), $m_link->link, $aMeta[$key]);
 
                 }
 
@@ -613,8 +613,7 @@ class Component extends \yii\base\Component
 
     private function replaceToLink($word, $link, $text)
     {
-        $link = '<a href='.$link.' title='.$word.'>'.$word.'</a>';
-        return preg_replace('/(\b'.$word.'\b)/su', $link, $text);
+        return preg_replace('/(\b'.$word.'\b)/siu', '<a href='.$link.' title="${1}">${1}</a>', $text);
     }
 
 
