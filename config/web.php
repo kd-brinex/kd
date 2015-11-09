@@ -287,7 +287,7 @@ $config = [
         ],
         'seotools' => [
             'class' => 'app\modules\seotools\Module',
-            'roles' => ['SA'],
+            'roles' => ['Seo'],
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
