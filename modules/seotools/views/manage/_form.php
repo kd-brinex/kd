@@ -27,6 +27,12 @@ use mihaildev\ckeditor\CKEditor;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'h1_title')->textInput(['maxlength' => 255]) ?>
+
+    <?= $form->field($model, 'infotext_before')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'infotext_after')->textarea(['rows' => 6]) ?>
+
     <?php
     /*echo $form->field($model, 'info')->widget(CKEditor::className(),[
         'editorOptions' => [
@@ -35,7 +41,7 @@ use mihaildev\ckeditor\CKEditor;
         ],
     ]);*/
     ?>
-    <?= $form->field($model, 'info')->textarea(['rows' => 15]) ?>
+    <?php //= $form->field($model, 'info')->textarea(['rows' => 15]) ?>
 
     <?= $form->field($model, 'sitemap')->textInput() ?>
 
