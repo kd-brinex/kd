@@ -71,7 +71,6 @@ class MetaSearch extends MetaBase
             ->andFilterWhere(['like', 'keywords', $this->keywords])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'h1_title', $this->h1_title])
-//            ->andFilterWhere(['like', 'info', $this->info])
             ->andFilterWhere(['like', 'infotext_before', $this->infotext_before])
             ->andFilterWhere(['like', 'infotext_after', $this->infotext_after])
             ->andFilterWhere(['like', 'sitemap_change_freq', $this->sitemap_change_freq])
