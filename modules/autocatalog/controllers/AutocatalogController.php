@@ -180,7 +180,7 @@ class AutocatalogController extends MainController
             $params['option']=implode('|',$params['post']);}
 
         $provider = $car::Catalog($params);
-
+        \app\modules\netcat\Netcat::kd_add_catalog($params);
         return $this->render('catalog', [
             'provider' => $provider,
             'params' =>$params,
