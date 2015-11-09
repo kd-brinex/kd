@@ -18,7 +18,6 @@ use yii\db\ActiveRecord;
  * @property string $title
  * @property string $keywords
  * @property string $description
- * @property string $info
  * @property string $h1_title
  * @property string $infotext_after
  * @property string $infotext_before
@@ -45,7 +44,7 @@ class MetaBase extends ActiveRecord
     {
         return [
             [['hash', 'route', 'created_at', 'updated_at'], 'required'],
-            [['robots_index', 'robots_follow', 'keywords', 'description', 'info','h1_title', 'infotext_before', 'infotext_after'], 'string'],
+            [['robots_index', 'robots_follow', 'keywords', 'description', 'h1_title', 'infotext_before', 'infotext_after'], 'string'],
             [['sitemap'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['hash', 'route', 'author', 'title'], 'string', 'max' => 255],

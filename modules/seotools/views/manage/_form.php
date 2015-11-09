@@ -41,7 +41,6 @@ use mihaildev\ckeditor\CKEditor;
         ],
     ]);*/
     ?>
-    <?php //= $form->field($model, 'info')->textarea(['rows' => 15]) ?>
 
     <?= $form->field($model, 'sitemap')->textInput() ?>
 
