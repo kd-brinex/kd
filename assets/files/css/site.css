@@ -287,3 +287,8 @@ p.ul_title
     content: "\25B2";
     color: #000;
 }
+
+
+.container .infotext{
+    margin: 20px 0;
+}
