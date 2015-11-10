@@ -46,8 +46,8 @@ class VLoader extends \yii\db\ActiveRecord
             'start' => 'Начало',
             'end' => 'Окончание',
             'time' => 'Время выгрузки',
-            'timeonrec' => 'Записей в секунду',
-            'recinsec' => 'Время вставки',
+            'timeonrec' => 'Время вставки',
+            'recinsec' =>'Записей в секунду',
         ];
     }
 }

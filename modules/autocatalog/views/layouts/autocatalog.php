@@ -11,8 +11,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
-
-$asset = app\modules\autocatalog\AutocatalogAsset::register($this);
+//\app\assets\AppAsset::register($this);
+app\modules\autocatalog\AutocatalogAsset::register($this);
 
 //$items=Yii::$app->params['navbar']['all'];
 //if (Yii::$app->user->isGuest){$items=array_merge($items,Yii::$app->params['navbar']['quest']);}

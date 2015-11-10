@@ -11,9 +11,7 @@ use yii\bootstrap\Tabs;
  * Date: 26.06.15
  * Time: 16:50
  */
-//$model=$dataProvider->query->url_params;
-
-//var_dump($model);die;
+app\modules\autocatalog\PartsAsset::register($this);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 
