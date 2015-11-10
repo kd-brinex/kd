@@ -124,10 +124,6 @@ class Component extends \yii\base\Component
      */
     public $regReplace = "/\{\{[a-zA-Z]*\}\}/";
 
-    public $default_cityid = 2097;
-
-
-    //private $_info = '';
     private $_infotext_before = null;
     private $_infotext_after = null;
 
@@ -199,12 +195,9 @@ class Component extends \yii\base\Component
 
 //        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
 
-        if(isset($aMeta['infotext_before']) || isset($aMeta['infotext_after']))
-        {
-            //находим альтернативный текст для города
-            $aMeta = $this->replaceInfotext($aMeta);
-            $aMeta = $this->setLinks($aMeta,['infotext_before', 'infotext_after']);
-        }
+        //находим альтернативный текст для города
+        $aMeta = $this->replaceInfotext($aMeta);
+        $aMeta = $this->setLinks($aMeta,['infotext_before', 'infotext_after']);
 
         return $aMeta;
     }
@@ -265,7 +258,7 @@ class Component extends \yii\base\Component
     public function setTitle($title)
     {
         if (!empty($title)) {
-            $title = $this->replaceText($title);
+            $title = !empty($title)?$this->replaceText($title):'';
             Yii::$app->view->registerMetaTag(['name' => 'title', 'content' => $title], 'title');
             Yii::$app->view->registerMetaTag(['name' => 'og:title', 'content' => $title], 'og:title');
             Yii::$app->view->title = $title;
@@ -319,27 +312,11 @@ class Component extends \yii\base\Component
         return $this;
     }
 
-    /**
-     * Register text associated to a Url
-     * @param string $info
-     */
-    /*public function setInfotext($info)
-    {
-        //заменяем фразы в тексте
-        $this->_info = $this->replaceText($info);
-        return $this;
-    }*/
-
-
-    /*public function getInfotext()
-    {
-        return $this->_info;
-    }*/
-
     public function setInfotextafter($infotext_after)
     {
         //заменяем фразы в тексте
-        $this->_infotext_after = $this->replaceText($infotext_after);
+        $this->_infotext_after = !empty($infotext_after)?
+                '<div class="infotext">'.$this->replaceText($infotext_after).'</div>': '';
         return $this;
     }
 
@@ -352,7 +329,8 @@ class Component extends \yii\base\Component
     public function setInfotextbefore($infotext_before)
     {
         //заменяем фразы в тексте
-        $this->_infotext_before = $this->replaceText($infotext_before);
+        $this->_infotext_before = !empty($infotext_before)?
+            '<div class="infotext">'.$this->replaceText($infotext_before).'</div>': '';
         return $this;
     }
 
@@ -439,8 +417,7 @@ class Component extends \yii\base\Component
      */
     public function replaceText($text)
     {
-        if(!empty($text))
-        {
+
             //Находим значения по шаблону
             preg_match_all($this->regReplace,$text,$findSubstr);
 
@@ -450,7 +427,6 @@ class Component extends \yii\base\Component
                 //проверяем есть ли найденное значение в массиве для замены
                 if(array_key_exists($value,$this->replaceParams))
                 {
-                    $data = '';
                     $where = null;
 
                     //проверяем было ли ранее найдено данное значение для замены
@@ -461,6 +437,7 @@ class Component extends \yii\base\Component
                         continue;
                     }
 
+                    //переводим первую букву в верхний регистр
                     $data = ucfirst($this->getData($this->replaceParams[$value]));
 
                     //заменяем строку $value в строке $text
@@ -472,17 +449,23 @@ class Component extends \yii\base\Component
                 }
 
             }
-
-        }
         return $text;
     }
 
+    /**
+     * Функция вызова метода получения данных get/post/cookies/model
+     * @param $value array массив содержащий информацию о переменной для замены
+     * @return mixed
+     */
     public function getData($value)
     {
+        //вызываем функцию получения данных post/get/model/cookies
         $data = $this->$value['request']($value);
 
+        //проверяем является ли полученное значение шаблоном для замены
         if(preg_match($this->regReplace,$data))
         {
+            //
             $data = $this->getData($this->replaceParams[$data]);
         }
 
@@ -490,6 +473,7 @@ class Component extends \yii\base\Component
     }
 
     /**
+     * Получение пуе данных
      * @param $name - наименование get переменной
      * @param null $defaultValue - значение возвращаемое если нет get значния
      * @return array|mixed
@@ -500,6 +484,7 @@ class Component extends \yii\base\Component
     }
 
     /**
+     * получние post данных
      * @param $name - наименование post переменной
      * @param null $defaultValue - значение возвращаемое если нет post значния
      * @return array|mixed
@@ -510,6 +495,7 @@ class Component extends \yii\base\Component
     }
 
     /**
+     * получение данных из cookies
      * @param $name - Cookies name
      * @param null $defaultValue - значение присваиваемое если cookie не объявлена
      * @return mixed
@@ -519,14 +505,22 @@ class Component extends \yii\base\Component
         return Yii::$app->request->cookies->getValue($value['name'], $value['default']);
     }
 
+    /**
+     * получение даннных из базы (модель класс Active Record)
+     * @param $value array массив содержащий информацию о переменной для замены
+     * @return mixed
+     */
     public function model($value)
     {
+        //проверка наличия условия отбора
         if(is_array($value['modelParams']['where']))
         {
             $where = array();
+            //перебираем условия отбора
             foreach($value['modelParams']['where'] as $k => $v)
             {
 
+                //если в значение параметра отбора стоит шаблон то вызываем функцию поиска значения для шаблона
                 if(preg_match($this->regReplace,$v))
                 {
                     $where[$k] = $this->getData($this->replaceParams[$v]);
@@ -536,21 +530,24 @@ class Component extends \yii\base\Component
                 }
             }
 
+            //получаем данные из базы
             $model = $value['modelParams']['model'];
             $s = $model::find()
                 -> where($where)
                 ->one();
 
-            //если найдена строка в базе
             if($s)
             {
+                //если найдено значение в базе то возвращаем его
                 return $s->$value['name'];
             }
             else {
+                //если не найдено то возврат значения по умолчанию
                 return $value['default'];
             }
         }
         else {
+            //возврат значения по умолчанию
             return $value['default'];
         }
 
@@ -564,23 +561,34 @@ class Component extends \yii\base\Component
      */
     public function replaceInfotext($aMeta)
     {
-        $city_id = Yii::$app->request->cookies->getValue('city', $this->default_cityid);
+        //TODO в значение по умолчанию добавлено определение city_id по StoreID
+        $city_id = Yii::$app->request->cookies->getValue('city', $this->getCityid(Yii::$app->request->post('StoreID')));
 
-        $infotext= \app\modules\seotools\models\base\Infotext::find()
-            ->select('infotext_before, infotext_after')
-            ->where(['meta_id' => $aMeta['id_meta'], 'city_id' => $city_id])
-            ->asArray()
-            ->one();
-
-        if(!empty($infotext))
+        if(!empty($city_id))
         {
-            $aMeta = array_merge($aMeta,$infotext);
+            $infotext= \app\modules\seotools\models\base\Infotext::find()
+                ->select('infotext_before, infotext_after')
+                ->where(['meta_id' => $aMeta['id_meta'], 'city_id' => $city_id])
+                ->asArray()
+                ->one();
+
+            if(!empty($infotext))
+            {
+                $aMeta = array_merge($aMeta,$infotext);
+            }
         }
 
         return $aMeta;
 
     }
 
+    /**
+     * Функция берет из базы список ссылок с ключевыми словами и перебирает значения в переданном массиве aMeta
+     * по ключам из массива $replaceKey и вызывает функцию замены слов в тексте на ссылки
+     * @param $aMeta array - массив значений мета тэгов и текстов
+     * @param $replaceKey array - массив ключей aMeta значения которых будут изменены
+     * @return mixed array aMeta
+     */
     public function setLinks($aMeta, $replaceKey)
     {
         //получаем список ключей и ссылок
@@ -595,15 +603,8 @@ class Component extends \yii\base\Component
             {
                 foreach($meta_links as $m_link)
                 {
-
                     $aMeta[$key] = $this->replaceToLink($m_link->keyword, $m_link->link, $aMeta[$key]);
-
-                    //TODO костыль надо будет заменит
-//                    if(preg_match("/[А-Я]/",$m_link->keyword))
-//                        $aMeta[$key] = $this->replaceToLink(mb_substr(mb_strtoupper($m_link->keyword, 'utf-8'), 0, 1, 'utf-8') . mb_substr($m_link->keyword, 1, mb_strlen($m_link->keyword)-1, 'utf-8'), $m_link->link, $aMeta[$key]);
-
                 }
-
             }
         }
 
@@ -611,11 +612,31 @@ class Component extends \yii\base\Component
 
     }
 
+
+    /**
+     * Функция поиска и замены слова в тексте на ссылку
+     * @param $word  - слово для поиска
+     * @param $link  - ссылка
+     * @param $text - текст в котором заменяем слова
+     * @return mixed  - возврат текста с заменными слови на ссылки
+     */
     private function replaceToLink($word, $link, $text)
     {
         return preg_replace('/(\b'.$word.'\b)/siu', '<a href='.$link.' title="${1}">${1}</a>', $text);
     }
 
 
+    /**
+     * Функция определения city_id по StoreID - id магазина
+     * @param $store_id
+     * @return int|mixed
+     */
+    private function getCityid($store_id)
+    {
+        $store = \app\modules\autoparts\models\TStore::find()
+                    ->where(['id' => $store_id])
+                    ->one();
+        return !empty($store)?$store->city_id:'';
+    }
 
 }

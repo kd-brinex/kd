@@ -108,6 +108,7 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $params['post']=\Yii::$app->request->post();
+        unset($params['post']['StoreID']);
         if (!empty($params['post'])){
         $params['option']=implode('|',$params['post']);}
         else{ $params['option']=base64_decode($params['option']);}
@@ -176,7 +177,6 @@ class AutocatalogController extends MainController
         $car=$this->module->getClass();
         $params['post']=\Yii::$app->request->post();
         $params['breadcrumbs']=$car::Breadcrumbs($params);
-        unset($params['post']['StoreID']);
         if (empty($params['option']) & !empty($params['post'])){
             $params['option']=implode('|',$params['post']);}
 
