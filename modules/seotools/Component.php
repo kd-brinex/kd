@@ -10,6 +10,7 @@ use app\modules\seotools\models\base\MetaBase;
 use yii;
 use yii\helpers\Json;
 use app\modules\seotools\models\Meta;
+use yii\base\ErrorException;
 
 
 class Component extends \yii\base\Component
@@ -61,11 +62,11 @@ class Component extends \yii\base\Component
     public $route = null;
 
     /*
-     * Если в ссылке встречаются слова из данного параметра+/ то после идет игнорирование(не добавляются в базу)
+     * Если в ссылке встречается начало из данного параметра+/ то после идет игнорирование(не добавляются в базу)
      * @var array
      */
-    public $afterIgnore = [
-        'autocatalogs',
+    public $after_ignore = [
+        'http://kolesa-darom.dev/autocatalogs',
     ];
 
     /*
@@ -134,21 +135,17 @@ class Component extends \yii\base\Component
      * @return string
      */
     public function getRoute() {
-        if (is_null($this->route)) {
 
-            $path = Yii::$app->request->getPathInfo();
-            //проверяем адрес если в адресе игнорируемое слово то устанавливаем адрес до игнорируемого слова
-            $path_array = explode("/",$path);
-            foreach($path_array as $vPath)
+        if (is_null($this->route)) {
+            $this->route = Yii::$app->request->getHostInfo() .'/'. Yii::$app->request->getPathInfo();
+            foreach($this->after_ignore as $value)
             {
-                $newPath[] = $vPath;
-                if(in_array($vPath,$this->afterIgnore))
+                if(strstr($this->route,$value))
                 {
+                    $this->route = $value;
                     break;
                 }
             }
-
-            $this->route = Yii::$app->request->getHostInfo() . '/' . implode("/",$newPath);
 
         }
 
@@ -162,13 +159,13 @@ class Component extends \yii\base\Component
      */
     public function getMeta($route)
     {
-        $cache = Yii::$app->{$this->cache};
-        $cacheId = $this->componentId . '|routes|' . $route;
-        $aMeta = $cache->get($cacheId);
+//        $cache = Yii::$app->{$this->cache};
+//        $cacheId = $this->componentId . '|routes|' . $route;
+//        $aMeta = $cache->get($cacheId);
 
-        if ($aMeta) {
-            return $aMeta;
-        }
+//        if ($aMeta) {
+//            return $aMeta;
+//        }
 
         $oMeta = new Meta();
         $oMeta->setRoute($route);
@@ -361,18 +358,22 @@ class Component extends \yii\base\Component
     {
         // Set to empty not given values
         $metadataReset = ['robots_index' => '', 'robots_follow' => '', 'author' => '',
-            'title' => '', 'description' => '', /*'info' =>'',*/'keywords' => '', 'keywords' => '', 'params_url' => '', 'h1_title' => '', 'infotext_before' => '', 'infotext_after' => ''];
+            'title' => '', 'description' => '', 'keywords' => '', 'keywords' => '', 'params_url' => '', 'h1_title' => '', 'infotext_before' => '', 'infotext_after' => ''];
 
-        $metadata = array_merge($metadataReset, $metadata);
 
-        if ($checkDb) {
-            // Merge passed parameter meta with route meta
-            $metadata = array_merge($metadata, $this->getMeta($this->getRoute()));
-
+        //если передан ошибка 404 то обнуляем значения
+        if(\Yii::$app->errorHandler->exception==null || \Yii::$app->errorHandler->exception!=null && \Yii::$app->errorHandler->exception->statusCode != 404) {
+            $metadata = array_merge($metadataReset, $metadata);
+            if ($checkDb) {
+                // Merge passed parameter meta with route meta
+                $metadata = array_merge($metadata, $this->getMeta($this->getRoute()));
+            }
+            // Override meta with the defaults via merge
+            $metadata = array_merge($metadata, $this->defaults);
         }
-
-        // Override meta with the defaults via merge
-        $metadata = array_merge($metadata, $this->defaults);
+        else {
+            $metadata = $metadataReset;
+        }
 
         $this->setRobots($metadata['robots_index'], $metadata['robots_follow'])
             ->setAuthor($metadata['author'])
