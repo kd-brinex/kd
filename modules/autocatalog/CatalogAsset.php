@@ -25,9 +25,7 @@ class CatalogAsset extends AssetBundle
 
     ];
     public $js = [
-        'js/catalog.js',
-//        'js/iframe.js',
-//        'js/page.js'
+        'js/catalog.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
