@@ -29,6 +29,7 @@ class PartsAsset extends AssetBundle
         'js/page.js'
     ];
     public $depends = [
+        'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
     public $publishOptions = [
