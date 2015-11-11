@@ -23,6 +23,7 @@ $p['cat_code']=$params['cat_code'];
 $p['option']=$params['option'];
 $p['model_name']=$params['cat_folder'];
 $p['model_code']=$params['cat_folder'];
+$p['cat_folder']=$params['cat_folder'];
 $p['version']=1;
 $p['vin']=(!empty($params['vin']))?$params['vin']:'';
 $this->registerJs("var options = ".json_encode($p).";", \yii\web\View::POS_HEAD, 'getOptions');
