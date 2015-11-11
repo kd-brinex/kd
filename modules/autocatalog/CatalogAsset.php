@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
  * @since 2.0
  */
 
-class AutocatalogAsset extends AssetBundle
+class CatalogAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/autocatalog/assets';
     public $css = [
@@ -25,11 +25,10 @@ class AutocatalogAsset extends AssetBundle
 
     ];
     public $js = [
-//        'js/catalog.js',
-//        'js/iframe.js',
-//        'js/page.js'
+        'js/catalog.js'
     ];
     public $depends = [
+        'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
     public $publishOptions = [
