@@ -18,12 +18,12 @@ foreach($catalog as $key=>$marka)
     $to .= Html::tag('div',Html::a($marka['prop']['marka'],Url::toRoute('to/'.$key)),['class'=>'autocatalog_marka']);
 }
 $items=[
-    [
-        'label' => 'Номер детали',
-        'content' => $this->render('_search_details',['params'=>$params]),
-        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
-        'active' => true,
-    ],
+//    [
+//        'label' => 'Номер детали',
+//        'content' => $this->render('_search_details',['params'=>$params]),
+//        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
+//        'active' => true,
+//    ],
     [
         'label' => 'VIN',
 
@@ -37,12 +37,12 @@ $items=[
         'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
 
     ],
-    [
-        'label' => 'Каталог ТО',
-        'content' => $to,
-        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
-
-    ],
+//    [
+//        'label' => 'Каталог ТО',
+//        'content' => $to,
+//        'options'=>['class'=>'acatalog-tabs','tag' => 'div'],
+//
+//    ],
 //    [
 //        'label' => 'Parts',
 ////        'content' =>$this->render('autod/types'),
