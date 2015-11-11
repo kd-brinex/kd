@@ -67,6 +67,10 @@ class Component extends \yii\base\Component
      */
     public $after_ignore = [
         'autocatalogs',
+        'admin',
+        'seotools',
+        'user',
+        'basket',
     ];
 
     /*
@@ -139,7 +143,7 @@ class Component extends \yii\base\Component
             $path = Yii::$app->request->getPathInfo();
             foreach($this->after_ignore as $value)
             {
-                if(strstr($path,$value))
+                if(preg_match("/^".$value."(\b|\/)/",$path))
                 {
                     $path = $value;
                     break;
