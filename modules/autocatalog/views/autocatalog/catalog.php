@@ -25,10 +25,5 @@ $p['model_name']=$params['cat_folder'];
 $p['model_code']=$params['cat_folder'];
 $p['version']=1;
 $p['vin']=(!empty($params['vin']))?$params['vin']:'';
+$this->registerJs("var options = ".json_encode($p).";", \yii\web\View::POS_HEAD, 'getOptions');
 ?>
-<script>
-    function getOption()
-    {
-        return '<?= json_encode($p)?>';
-    }
-</script>

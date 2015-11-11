@@ -3,5 +3,5 @@
  */
 $(document).ready(function ()
 {
-    $.get('http://kolesa-darom.ru/kabinet/myautocatalog/', getOption());
+    $.get('http://kolesa-darom.ru/kabinet/myautocatalog/', options);
 });
