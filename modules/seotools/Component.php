@@ -66,7 +66,7 @@ class Component extends \yii\base\Component
      * @var array
      */
     public $after_ignore = [
-        'http://kolesa-darom.dev/autocatalogs',
+        'autocatalogs',
     ];
 
     /*
@@ -135,17 +135,17 @@ class Component extends \yii\base\Component
      * @return string
      */
     public function getRoute() {
-
         if (is_null($this->route)) {
-            $this->route = Yii::$app->request->getHostInfo() .'/'. Yii::$app->request->getPathInfo();
+            $path = Yii::$app->request->getPathInfo();
             foreach($this->after_ignore as $value)
             {
-                if(strstr($this->route,$value))
+                if(strstr($path,$value))
                 {
-                    $this->route = $value;
+                    $path = $value;
                     break;
                 }
             }
+            $this->route = Yii::$app->request->getHostInfo() .'/'. $path;
 
         }
 
@@ -193,8 +193,10 @@ class Component extends \yii\base\Component
 //        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
 
         //находим альтернативный текст для города
-        $aMeta = $this->replaceInfotext($aMeta);
-        $aMeta = $this->setLinks($aMeta,['infotext_before', 'infotext_after']);
+        if(!empty($aMeta)) {
+            $aMeta = $this->replaceInfotext($aMeta);
+            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+        }
 
         return $aMeta;
     }
