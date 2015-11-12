@@ -56,17 +56,25 @@ class RegistrationForm extends BaseModel
      */
     public function register()
     {
+
         if (!$this->validate()) {
             return false;
         }
 
-        $this->user->setAttributes([
-            'email' => $this->email,
-            'username' => $this->username,
-            'telephone' => $this->telephone,
-            'password' => $this->password
-        ]);
+        /** @var User $user */
+        $user = \Yii::createObject(User::className());
+        $user->setScenario('register');
+        $this->loadAttributes($user);
 
-        return $this->user->register();
+        if (!$user->register()) {
+            return false;
+        }
+
+        \Yii::$app->session->setFlash(
+            'info',
+            \Yii::t('user', 'Your account has been created and a message with further instructions has been sent to your email')
+        );
+
+        return true;
     }
 }

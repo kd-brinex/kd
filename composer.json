@@ -32,7 +32,8 @@
         "kartik-v/yii2-widgets": "@dev",
         "kartik-v/yii2-widget-growl": "*",
         "linslin/yii2-curl": "*",
-        "kartik-v/bootstrap-fileinput": "^4.2"
+        "kartik-v/bootstrap-fileinput": "^4.2",
+        "miloschuman/yii2-highcharts-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
