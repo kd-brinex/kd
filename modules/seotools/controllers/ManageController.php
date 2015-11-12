@@ -172,23 +172,26 @@ class ManageController extends Controller
 
             foreach($keywords as $keyword)
             {
-                $keyword = trim(ucfirst($keyword));
-                $meta = Meta::find()
+//                if(!preg_match("/\{\{[a-zA-Z_\-]{2,15}\}\}/",$keyword))
+                if(!preg_match(\app\modules\seotools\Component::REGREPLACE,$keyword))
+                {
+                    $keyword = trim(mb_strtolower($keyword));
+                    $meta = Meta::find()
                         ->where('keywords LIKE "%'.$keyword.'%"')
                         ->all();
 
-                $link = $this->setLink($meta,$keyword);
+                    $link = $this->setLink($meta,$keyword);
 
-                $meta_link = \app\modules\seotools\models\base\MetaLinks::findOne($keyword);
-                if($meta_link == null)
-                {
-                    $meta_link = new \app\modules\seotools\models\base\MetaLinks();
+                    $meta_link = \app\modules\seotools\models\base\MetaLinks::findOne($keyword);
+                    if($meta_link == null)
+                    {
+                        $meta_link = new \app\modules\seotools\models\base\MetaLinks();
+                    }
+                    $meta_link->keyword = $keyword;
+                    $meta_link->link = $link['route'];
+                    $meta_link->seq_number = $link['seq_number'];
+                    $meta_link->save();
                 }
-                $meta_link->keyword = $keyword;
-                $meta_link->link = $link['route'];
-                $meta_link->seq_number = $link['seq_number'];
-                $meta_link->save();
-
             }
         }
     }

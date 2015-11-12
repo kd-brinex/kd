@@ -46,7 +46,6 @@ class Component extends \yii\base\Component
      * @var int
      */
 //    public $cacheDuration = 3600;
-    public $cacheDuration = 10;
 
     /**
      * chache tag dependency
@@ -67,6 +66,10 @@ class Component extends \yii\base\Component
      */
     public $after_ignore = [
         'autocatalogs',
+        'admin',
+        'seotools',
+        'user',
+        'basket',
     ];
 
     /*
@@ -119,16 +122,39 @@ class Component extends \yii\base\Component
         ],
     ];
 
-
     /*
      * Шаблон поиска фраз для замены в тексте
      */
-    public $regReplace = "/\{\{[a-zA-Z]*\}\}/";
+    const REGREPLACE ="/\{\{[a-zA-Zа-яА-Я_\-]{2,15}\}\}/";
 
-    private $_infotext_before = null;
-    private $_infotext_after = null;
+    /*
+     * @var string Текст перед контентом
+     */
+    public $infotext_before = null;
 
-    private $_h1_title = '';
+    /*
+    * @var string Текст посел контента
+    */
+    public $infotext_after = null;
+
+    /*
+     * @var string H1 тэг
+     */
+    public $h1_title = '';
+
+    /*
+     * @var int id города определяемый по id магазина из post переменной StoreID
+     */
+    public $city = null;
+
+    public function init()
+    {
+        if(!empty($store_id=\Yii::$app->request->post('StoreID')))
+        {
+            $this->city = $this->getCityid($store_id);
+        }
+        parent::init();
+    }
 
     /**
      * Devuelve la url absoluta con el path
@@ -139,14 +165,13 @@ class Component extends \yii\base\Component
             $path = Yii::$app->request->getPathInfo();
             foreach($this->after_ignore as $value)
             {
-                if(strstr($path,$value))
+                if(preg_match("/^".$value."(\b|\/)/",$path))
                 {
                     $path = $value;
                     break;
                 }
             }
             $this->route = Yii::$app->request->getHostInfo() .'/'. $path;
-
         }
 
         return $this->route;
@@ -160,19 +185,16 @@ class Component extends \yii\base\Component
     public function getMeta($route)
     {
 //        $cache = Yii::$app->{$this->cache};
-//        $cacheId = $this->componentId . '|routes|' . $route;
+//        $cacheId = $this->componentId . '|routes|' . $route . '|city|' . $this->city;
 //        $aMeta = $cache->get($cacheId);
 
 //        if ($aMeta) {
 //            return $aMeta;
 //        }
 
-        $oMeta = new Meta();
-        $oMeta->setRoute($route);
-
         $aMeta = [];
         $model = Meta::findOne([
-            'hash' => $oMeta->hash
+            'hash' => md5($route)
         ]);
 
         if (!empty($model)) {
@@ -183,20 +205,19 @@ class Component extends \yii\base\Component
                     $aMeta[$idData] = $data;
                 }
             }
-        } else {
-            // Si no existe la entrada con esa ruta la creamos
-            $oMeta->save();
-        }
-
-//        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG.Yii::$app->request->cookies->getValue('city', 2097) ]);
-
-//        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
-
-        //находим альтернативный текст для города
-        if(!empty($aMeta)) {
+            //находим альтернативный текст для города
             $aMeta = $this->replaceInfotext($aMeta);
             $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+
+        }elseif(Yii::$app->request->get('seo') === 'add') {
+          $oMeta = new Meta();
+          $oMeta->setRoute($route);
+           $oMeta->save();
         }
+
+//        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG;
+
+//        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
 
         return $aMeta;
     }
@@ -314,7 +335,7 @@ class Component extends \yii\base\Component
     public function setInfotextafter($infotext_after)
     {
         //заменяем фразы в тексте
-        $this->_infotext_after = !empty($infotext_after)?
+        $this->infotext_after = !empty($infotext_after)?
                 '<div class="infotext">'.$this->replaceText($infotext_after).'</div>': '';
         return $this;
     }
@@ -322,13 +343,13 @@ class Component extends \yii\base\Component
 
     public function getInfotextafter()
     {
-        return $this->_infotext_after;
+        return $this->infotext_after;
     }
 
     public function setInfotextbefore($infotext_before)
     {
         //заменяем фразы в тексте
-        $this->_infotext_before = !empty($infotext_before)?
+        $this->infotext_before = !empty($infotext_before)?
             '<div class="infotext">'.$this->replaceText($infotext_before).'</div>': '';
         return $this;
     }
@@ -336,19 +357,19 @@ class Component extends \yii\base\Component
 
     public function getInfotextbefore()
     {
-        return $this->_infotext_before;
+        return $this->infotext_before;
     }
 
     public function setH1title($h1_title)
     {
         //заменяем фразы в тексте
-        $this->_h1_title = $this->replaceText($h1_title);
+        $this->h1_title = $this->replaceText($h1_title);
         return $this;
     }
 
     public function getH1title()
     {
-        return !empty($this->_h1_title)? "<h1>".$this->_h1_title."</h1>" : '';
+        return !empty($this->h1_title)? "<h1>".$this->h1_title."</h1>" : '';
     }
 
     /**
@@ -422,7 +443,7 @@ class Component extends \yii\base\Component
     {
 
             //Находим значения по шаблону
-            preg_match_all($this->regReplace,$text,$findSubstr);
+            preg_match_all(self::REGREPLACE,$text,$findSubstr);
 
             //перебираем найденные значения и зменяем
             foreach($findSubstr[0] as $value)
@@ -440,8 +461,8 @@ class Component extends \yii\base\Component
                         continue;
                     }
 
-                    //переводим первую букву в верхний регистр
-                    $data = ucfirst($this->getData($this->replaceParams[$value]));
+                    //получаем значение
+                    $data = $this->getData($this->replaceParams[$value]);
 
                     //заменяем строку $value в строке $text
                     $text = str_replace($value, $data, $text);
@@ -466,7 +487,7 @@ class Component extends \yii\base\Component
         $data = $this->$value['request']($value);
 
         //проверяем является ли полученное значение шаблоном для замены
-        if(preg_match($this->regReplace,$data))
+        if(preg_match(self::REGREPLACE,$data))
         {
             //
             $data = $this->getData($this->replaceParams[$data]);
@@ -524,7 +545,7 @@ class Component extends \yii\base\Component
             {
 
                 //если в значение параметра отбора стоит шаблон то вызываем функцию поиска значения для шаблона
-                if(preg_match($this->regReplace,$v))
+                if(preg_match(self::REGREPLACE,$v))
                 {
                     $where[$k] = $this->getData($this->replaceParams[$v]);
                 }
@@ -565,7 +586,7 @@ class Component extends \yii\base\Component
     public function replaceInfotext($aMeta)
     {
         //TODO в значение по умолчанию добавлено определение city_id по StoreID
-        $city_id = Yii::$app->request->cookies->getValue('city', $this->getCityid(Yii::$app->request->post('StoreID')));
+        $city_id = Yii::$app->request->cookies->getValue('city', $this->city);
 
         if(!empty($city_id))
         {
@@ -623,18 +644,17 @@ class Component extends \yii\base\Component
      * @param $text - текст в котором заменяем слова
      * @return mixed  - возврат текста с заменными слови на ссылки
      */
-    private function replaceToLink($word, $link, $text)
+    public function replaceToLink($word, $link, $text)
     {
         return preg_replace('/(\b'.$word.'\b)/siu', '<a href='.$link.' title="${1}">${1}</a>', $text);
     }
-
 
     /**
      * Функция определения city_id по StoreID - id магазина
      * @param $store_id
      * @return int|mixed
      */
-    private function getCityid($store_id)
+    public function getCityid($store_id)
     {
         $store = \app\modules\autoparts\models\TStore::find()
                     ->where(['id' => $store_id])
