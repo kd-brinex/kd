@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 use app\modules\api\models\UploadForm;
+use app\modules\loader\models\VLoader;
 use yii\web\Controller;
 use app\modules\api\models\Api;
 use yii\web\UploadedFile;
@@ -68,7 +69,7 @@ class ApiController extends Controller
     }
     public function actionLoader()
     {
-        $provider=Api::loader();
+        $provider= VLoader::loader();
         $model = new UploadForm();
         $text ='';
         if (\Yii::$app->request->isPost) {
