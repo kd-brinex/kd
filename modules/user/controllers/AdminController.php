@@ -44,7 +44,7 @@ class AdminController extends BaseController
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['Parts', 'Admin'],
+                        'roles' => ['SA'],
                     ]
                 ]
             ],

@@ -293,7 +293,8 @@ $config = [
         ],
         'seotools' => [
             'class' => 'app\modules\seotools\Module',
-            'roles' => ['Seo'],
+            'roles' => ['Seo','SA'],
+            'layout'=> '/admin.php',
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',
