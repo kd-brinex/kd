@@ -5,6 +5,7 @@ namespace app\modules\loader\controllers;
 use Yii;
 use app\modules\loader\models\Loader;
 use app\modules\loader\models\LoaderSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -117,5 +118,16 @@ class LoaderController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    public function actionInfo()
+    {
+        $searchModel = new LoaderSearch();
+        $data= $searchModel->searchInfo();
+
+        return $this->render('info', [
+//            'searchModel' => $searchModel,
+            'data' => $data,
+//            'data' => ArrayHelper::map($dataProvider->models,'record_count','record_count')
+        ]);
     }
 }

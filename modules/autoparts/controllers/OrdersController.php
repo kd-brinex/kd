@@ -13,7 +13,6 @@ use Yii;
 
 use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\base\Exception;
 
@@ -23,8 +22,32 @@ use app\modules\user\models\OrderSearch;
 use app\modules\user\models\OrdersSearch;
 use app\modules\autoparts\models\OrderUpdate1c;
 
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 class OrdersController extends Controller
 {
+    public function behaviors()
+    {
+        $this->layout = "/admin.php";
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' =>true,
+                        'roles' =>['Parts','Admin'],
+                    ]
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex(){
         $model = new OrderSearch();
         $params = Yii::$app->request->queryParams;
