@@ -178,8 +178,8 @@ return [
                 'authParams' => ['login', 'password'],
                 'oldParamsNames' => false,
                 'uri' => [
-                    'http://www.part-kom.ru/webservice/search.php?wsdl',
-                    'http://www.part-kom.ru/webservice/motion.php?wsdl',
+                    'https://www.part-kom.ru/webservice/search.php?wsdl',
+                    'https://www.part-kom.ru/webservice/motion.php?wsdl',
                 ],
                 'isParamsAsArray' => false,
                 'methods' => [
