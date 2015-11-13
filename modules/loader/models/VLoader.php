@@ -1,8 +1,9 @@
 <?php
 
-namespace app\modules\api\models;
+namespace app\modules\loader\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "v_loader".
@@ -49,5 +50,14 @@ class VLoader extends \yii\db\ActiveRecord
             'timeonrec' => 'Время вставки',
             'recinsec' =>'Записей в секунду',
         ];
+    }
+    public static function loader()
+    {
+        $model = new VLoader();
+        $query= $model->find();
+
+        $provider = new ActiveDataProvider(['query'=>$query]);
+        return $provider;
+
     }
 }

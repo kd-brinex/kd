@@ -181,6 +181,10 @@ $config = [
                 'admin/user' => '/user/admin/index',
                 'admin/roles' => '/rbac/role/index',
                 'admin/permissions' => '/rbac/permissions/index',
+
+                //Выгрузка 1С
+                'admin/loader'=>'/loader/loader',
+
                 // Автокаталоги
                 'toyota' => 'toyota/catalog',
                 'toyota/model/<name:\w+>' => 'toyota/catalog/model',
@@ -282,7 +286,9 @@ $config = [
     ],
     'params' => $params,
     'modules' => [
-
+        'loader' =>[
+            'class'=>'app\modules\loader\Loader'
+        ],
         'parser' =>[
           'class'=>'app\modules\parser\Parser'
         ],
@@ -295,7 +301,8 @@ $config = [
         ],
         'seotools' => [
             'class' => 'app\modules\seotools\Module',
-            'roles' => ['Seo'],
+            'roles' => ['Seo','SA'],
+            'layout'=> '/admin.php',
         ],
         'autoparts' => [
             'class' => 'app\modules\autoparts\Provideruser',

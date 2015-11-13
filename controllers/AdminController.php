@@ -30,7 +30,7 @@ public function behaviors()
                     [
 //                        'actions' => ['view', 'search', ''],
                         'allow' => true,
-                        'roles' => ['Parts','Admin'],
+                        'roles' => ['manager'],
                     ],
                 ],
             ],
