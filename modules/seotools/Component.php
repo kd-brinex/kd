@@ -66,10 +66,6 @@ class Component extends \yii\base\Component
      */
     public $after_ignore = [
         'autocatalogs',
-        'admin',
-        'seotools',
-        'user',
-        'basket',
     ];
 
     /*
@@ -88,6 +84,7 @@ class Component extends \yii\base\Component
                 ],
             ],
             'default' => '',
+            'messages' => 'city',
         ],
         '{{cityid}}' => [
             'name' => 'city',
@@ -142,6 +139,8 @@ class Component extends \yii\base\Component
      */
     public $h1_title = '';
 
+    public $title = '';
+
     /*
      * @var int id города определяемый по id магазина из post переменной StoreID
      */
@@ -163,14 +162,14 @@ class Component extends \yii\base\Component
     public function getRoute() {
         if (is_null($this->route)) {
             $path = Yii::$app->request->getPathInfo();
-            foreach($this->after_ignore as $value)
+            /*foreach($this->after_ignore as $value)
             {
                 if(preg_match("/^".$value."(\b|\/)/",$path))
                 {
                     $path = $value;
                     break;
                 }
-            }
+            }*/
             $this->route = Yii::$app->request->getHostInfo() .'/'. $path;
         }
 
@@ -207,12 +206,15 @@ class Component extends \yii\base\Component
             }
             //находим альтернативный текст для города
             $aMeta = $this->replaceInfotext($aMeta);
-            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+            //TODO отключаем формирование ссылок в тексте по ключам
+//            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+
 
         }elseif(Yii::$app->request->get('seo') === 'add') {
-          $oMeta = new Meta();
-          $oMeta->setRoute($route);
-           $oMeta->save();
+            //при передаче гетом перепенной seo = add страница добавиться в базу, только если ее там нет
+            $oMeta = new Meta();
+            $oMeta->setRoute($route);
+            $oMeta->save();
         }
 
 //        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG;
@@ -278,7 +280,7 @@ class Component extends \yii\base\Component
     public function setTitle($title)
     {
         if (!empty($title)) {
-            $title = !empty($title)?$this->replaceText($title):'';
+            $title = $this->replaceText($title);
             Yii::$app->view->registerMetaTag(['name' => 'title', 'content' => $title], 'title');
             Yii::$app->view->registerMetaTag(['name' => 'og:title', 'content' => $title], 'og:title');
             Yii::$app->view->title = $title;
@@ -390,6 +392,17 @@ class Component extends \yii\base\Component
             if ($checkDb) {
                 // Merge passed parameter meta with route meta
                 $metadata = array_merge($metadata, $this->getMeta($this->getRoute()));
+
+                //определяем title и h1 родителей если свои пустые
+                if(empty($metadata['title'])) $key[]='title';
+                if(empty($metadata['h1_title'])) $key[]='h1_title';
+                if(isset($key))
+                {
+                    $searchTitle = $this->serachText($key);
+                    if(!empty($searchTitle)) {
+                        $metadata = array_merge($metadata, $searchTitle);
+                    }
+                }
             }
             // Override meta with the defaults via merge
             $metadata = array_merge($metadata, $this->defaults);
@@ -461,8 +474,8 @@ class Component extends \yii\base\Component
                         continue;
                     }
 
-                    //получаем значение
-                    $data = $this->getData($this->replaceParams[$value]);
+                    //получаем значение и делаем первую букву заглавной
+                    $data = ucfirst($this->getData($this->replaceParams[$value]));
 
                     //заменяем строку $value в строке $text
                     $text = str_replace($value, $data, $text);
@@ -493,7 +506,8 @@ class Component extends \yii\base\Component
             $data = $this->getData($this->replaceParams[$data]);
         }
 
-        return $data;
+        //проверяем надо заменять из словаря или нет перед возвратом
+        return isset($value['messages'])?Yii::t($value['messages'], $data):$data;
     }
 
     /**
@@ -615,20 +629,31 @@ class Component extends \yii\base\Component
      */
     public function setLinks($aMeta, $replaceKey)
     {
-        //получаем список ключей и ссылок
-        $meta_links = \app\modules\seotools\models\base\MetaLinks::find()
-                        ->where("link <> '".$this->route."'")
-                        ->all();
-
         //заменяем
         foreach($replaceKey as $key)
         {
             if(!empty($aMeta[$key]))
             {
-                foreach($meta_links as $m_link)
-                {
-                    $aMeta[$key] = $this->replaceToLink($m_link->keyword, $m_link->link, $aMeta[$key]);
+                $infotext = mb_strtolower($aMeta[$key]);
+                preg_match_all("/\b[a-zA-Zа-яА-Я0-9\-]*\b/u", $infotext, $words);
+                $words[0] = array_unique($words[0]);
+                foreach($words[0] as $word) {
+                    if(!empty($word))
+                    {
+                        $word = strtolower($word);
+                        $meta_link = Meta::find()
+                            ->where("keywords LIKE '" . $word . ",%'")
+                            ->orWhere("keywords = '" . $word . "'")
+                            ->andWhere('id_meta <> ' . $aMeta['id_meta'])
+                            ->one();
+
+                        if($meta_link != null)
+                        {
+                            $aMeta[$key] = $this->replaceToLink($word, $meta_link->route, $aMeta[$key]);
+                        }
+                    }
                 }
+
             }
         }
 
@@ -660,6 +685,32 @@ class Component extends \yii\base\Component
                     ->where(['id' => $store_id])
                     ->one();
         return !empty($store)?$store->city_id:'';
+    }
+
+    public function serachText($key)
+    {
+        $path = Yii::$app->request->getPathInfo();
+        $path =  explode("/",$path);
+        $text = '';
+
+        for($i = count($path)-1; $i > 0; $i--)
+        {
+            unset($path[$i]);
+            $text = $this->searchText1(Yii::$app->request->getHostInfo() ."/".implode("/",$path),$key);
+        }
+
+        return $text;
+    }
+
+    public function searchText1($route,$key)
+    {
+        $data = Meta::find()
+            ->select($key)
+            ->where(['route' => $route])
+            ->asArray()
+            ->one();
+
+        return $data;
     }
 
 }

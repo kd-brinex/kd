@@ -41,6 +41,14 @@ $config = [
                         'seotools' => 'seotools.php',
                     ],
                 ],
+                'city' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/seotools/messages',
+//                    'sourceLanguage' => 'ru',
+                    'fileMap' => [
+                        'city' => 'city.php',
+                    ],
+                ],
 
             ],
         ],

@@ -9,7 +9,8 @@ use Yii;
  *
  * @property string $keyword
  * @property string $link
- * * @property integer $seq_number
+ * @property integer $seq_number
+ * @property integer $meta_id
  */
 class MetaLinks extends \yii\db\ActiveRecord
 {
@@ -29,7 +30,7 @@ class MetaLinks extends \yii\db\ActiveRecord
         return [
             [['keyword', 'link'], 'required'],
             [['keyword', 'link'], 'string', 'max' => 255],
-            [['seq_number'], 'integer']
+            [['seq_number','meta_id'], 'integer'],
         ];
     }
 
@@ -42,6 +43,12 @@ class MetaLinks extends \yii\db\ActiveRecord
             'keyword' => Yii::t('seotools', 'Keyword'),
             'link' => Yii::t('seotools', 'Link'),
             'seq_number' => Yii::t('seotools', 'Sequence number'),
+            'meta_id' => Yii::t('seotools', 'ID meta'),
         ];
+    }
+
+    public function getMetaBase()
+    {
+        return $this->hasOne(\app\modules\seotools\models\base\MetaBase::className(), array('id_meta' => 'meta_id'));
     }
 }
