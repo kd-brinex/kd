@@ -17,6 +17,7 @@ class RegistrationController extends BaseController
             throw new NotFoundHttpException;
         }
 
+//        $model = \Yii::createObject(User::className());
         $model = \Yii::createObject(RegistrationForm::className());
 
         $this->performAjaxValidation($model);

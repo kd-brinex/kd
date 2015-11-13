@@ -25,8 +25,9 @@ class AutocatalogAsset extends AssetBundle
 
     ];
     public $js = [
-        'js/iframe.js',
-        'js/page.js'
+//        'js/catalog.js',
+//        'js/iframe.js',
+//        'js/page.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',

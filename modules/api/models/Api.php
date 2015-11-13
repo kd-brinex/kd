@@ -168,13 +168,5 @@ return $xml;
         return $url;
 
     }
-    public static function loader()
-    {
-        $model = new VLoader();
-       $query= $model->find();
 
-        $provider = new ActiveDataProvider(['query'=>$query]);
-        return $provider;
-
-    }
 }

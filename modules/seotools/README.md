@@ -48,7 +48,7 @@ A simple exmple of turning on seotool component.
 ```php
 'components' => [
         'seotools' => [
-            'class' => 'jpunanua\seotools\Component',
+            'class' => 'app\modules\seotools\Component',
         ],
     ],
 ```
@@ -62,7 +62,7 @@ Simple example:
 ```php
     'modules' => [
         'seotools' => [
-            'class' => 'jpunanua\seotools\Module',
+            'class' => 'app\modules\seotools\Module',
             'roles' => ['@'], // For setting access levels to the seotools interface.
         ]
     ],
@@ -98,3 +98,6 @@ URLs for the seotools manage module:
 /seotools/manage/create
 ```
 
+ADD url in base
+
+http://url?seo=add

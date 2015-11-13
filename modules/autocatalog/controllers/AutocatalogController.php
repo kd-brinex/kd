@@ -108,6 +108,7 @@ class AutocatalogController extends MainController
     {
         $params = \Yii::$app->request->queryParams;
         $params['post']=\Yii::$app->request->post();
+        unset($params['post']['StoreID']);
         if (!empty($params['post'])){
         $params['option']=implode('|',$params['post']);}
         else{ $params['option']=base64_decode($params['option']);}
@@ -180,7 +181,8 @@ class AutocatalogController extends MainController
             $params['option']=implode('|',$params['post']);}
 
         $provider = $car::Catalog($params);
-
+//        $r=\app\modules\netcat\Netcat::kd_add_catalog($params);
+//        var_dump($r);die;
         return $this->render('catalog', [
             'provider' => $provider,
             'params' =>$params,

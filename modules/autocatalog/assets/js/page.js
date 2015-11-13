@@ -7,6 +7,7 @@ $(document).ready(function () {
     //$('.page-scroll').height(h)
 
 
+
     $('.panel-label').mouseenter(function () {
         $('.panel-label').removeClass('part-active')
         $(this).addClass('part-active')
@@ -40,6 +41,8 @@ $(document).ready(function () {
 
         find_model(ftext);
     })
+
+
 });
 
 function find_model(ftext) {

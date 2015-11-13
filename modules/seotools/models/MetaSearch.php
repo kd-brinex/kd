@@ -19,7 +19,7 @@ class MetaSearch extends MetaBase
     {
         return [
             [['id_meta', 'sitemap'], 'integer'],
-            [['hash', 'route', 'robots_index', 'robots_follow', 'author', 'title', 'keywords', 'description', 'info', 'sitemap_change_freq', 'sitemap_priority', 'created_at', 'updated_at'], 'safe'],
+            [['hash', 'route', 'robots_index', 'robots_follow', 'author', 'title', 'keywords', 'description', 'h1_title', 'infotext_before', 'infotext_after', 'sitemap_change_freq', 'sitemap_priority', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -70,7 +70,9 @@ class MetaSearch extends MetaBase
             ->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'keywords', $this->keywords])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'info', $this->info])
+            ->andFilterWhere(['like', 'h1_title', $this->h1_title])
+            ->andFilterWhere(['like', 'infotext_before', $this->infotext_before])
+            ->andFilterWhere(['like', 'infotext_after', $this->infotext_after])
             ->andFilterWhere(['like', 'sitemap_change_freq', $this->sitemap_change_freq])
             ->andFilterWhere(['like', 'sitemap_priority', $this->sitemap_priority]);
 

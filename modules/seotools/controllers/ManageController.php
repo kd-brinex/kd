@@ -4,6 +4,8 @@ namespace app\modules\seotools\controllers;
 
 use Yii;
 use app\modules\seotools\models\base\MetaBase;
+use app\modules\seotools\models\base\Infotext;
+use app\modules\seotools\models\InfotextSearch;
 use app\modules\seotools\models\MetaSearch;
 use app\modules\seotools\models\Meta;
 use yii\web\Controller;
@@ -53,7 +55,6 @@ class ManageController extends Controller
     {
         $searchModel = new MetaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -67,8 +68,10 @@ class ManageController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'infotext' => $this->findInfotext($model->id_meta),
         ]);
     }
 
@@ -82,6 +85,7 @@ class ManageController extends Controller
         $model = new Meta();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //$this->setMetalinks($model);
             return $this->redirect(['view', 'id' => $model->id_meta]);
         } else {
             return $this->render('create', [
@@ -101,6 +105,10 @@ class ManageController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            /*if($model->keywords != Yii::$app->request->post("keywords"))
+            {
+                $this->setMetalinks($model);
+            }*/
             return $this->redirect(['view', 'id' => $model->id_meta]);
         } else {
             return $this->render('update', [
@@ -118,7 +126,8 @@ class ManageController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        //удаляем ключи из таблицы ключей
+        \app\modules\seotools\models\base\MetaLinks::deleteAll(['meta_id' => $id]);
         return $this->redirect(['index']);
     }
 
@@ -137,4 +146,34 @@ class ManageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function findInfotext($meta_id,$city_id = '')
+    {
+        $infotext = new InfotextSearch();
+        $dataProvider = $infotext->search(['InfotextSearch' => ['meta_id' => $meta_id, 'city_id' => $city_id]]);
+        return $dataProvider;
+    }
+
+    /*public function setMetalinks($model)
+    {
+        //предварительно удаляем старые ключи
+        \app\modules\seotools\models\base\MetaLinks::deleteAll(['meta_id' => $model->id_meta]);
+        $keywords = explode(",",$model->keywords);
+        foreach($keywords as $keyword)
+        {
+            if(!preg_match(\app\modules\seotools\Component::REGREPLACE,$keyword))
+            {
+                $keyword = trim(mb_strtolower($keyword));
+                $meta_link = \app\modules\seotools\models\base\MetaLinks::findOne($keyword);
+                if($meta_link == null)
+                {
+                    $meta_link = new \app\modules\seotools\models\base\MetaLinks();
+                }
+                $meta_link->keyword = $keyword;
+                $meta_link->link = $model->route;
+                $meta_link->meta_id = $model->id_meta;
+                $meta_link->save();
+            }
+        }
+    }*/
 }

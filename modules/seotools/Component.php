@@ -6,9 +6,11 @@
 
 namespace app\modules\seotools;
 
+use app\modules\seotools\models\base\MetaBase;
 use yii;
 use yii\helpers\Json;
 use app\modules\seotools\models\Meta;
+use yii\base\ErrorException;
 
 
 class Component extends \yii\base\Component
@@ -44,62 +46,6 @@ class Component extends \yii\base\Component
      * @var int
      */
 //    public $cacheDuration = 3600;
-    public $cacheDuration = 30;
-
-    /**
-     * host + path: used to identify pages
-     * @var null
-     */
-    public $route = null;
-
-    /*
-     * Если в ссылке встречаются слова из данного параметра+/ то после идет игнорирование(не добавляются в базу)
-     * @var array
-     */
-    public $afterIgnore = [
-        'autocatalogs',
-    ];
-
-    /*
-     * Массив определяющий что менять и откуда брать данные для замены
-     * @var array
-     */
-    public $replaceParams = [
-        '{{city}}' => [
-            'names' => [
-                'city' => [
-                    'request' => 'cookies',
-                    'default' => 2097,
-                    'whereName' => 'id'
-                ]
-            ],
-            'modelParams' => [
-                'model' => '\app\modules\city\models\City',
-                'colName'=> 'name'
-            ]
-        ],
-        '{{marka}}' => [
-            'names' => [
-                'marka' => [
-                    'request' => 'get',
-                    'default' => ''
-                ]
-            ]
-        ],
-        '{{family}}' => [
-            'names' => [
-                'family' => [
-                    'request' => 'get',
-                    'default' => ''
-                ]
-            ]
-        ],
-    ];
-
-    /*
-     * Шаблон поиска фраз для замены в тексте
-     */
-    public $regReplace = "/\{\{[a-z]*\}\}/";
 
     /**
      * chache tag dependency
@@ -108,8 +54,106 @@ class Component extends \yii\base\Component
      */
     const CACHE_TAG = 'seotools';
 
+    /**
+     * host + path: used to identify pages
+     * @var null
+     */
+    public $route = null;
 
-    private $_info = '';
+    /*
+     * Если в ссылке встречается начало из данного параметра+/ то после идет игнорирование(не добавляются в базу)
+     * @var array
+     */
+    public $after_ignore = [
+        'autocatalogs',
+    ];
+
+    /*
+     * Массив определяющий что менять и откуда брать данные для замены
+     * @var array
+     */
+
+    public $replaceParams = [
+        '{{city}}' => [
+            'name' => 'name',
+            'request' => 'model',
+            'modelParams' => [
+                'model' => '\app\modules\city\models\City',
+                'where'=>[
+                    'id' => '{{cityid}}',
+                ],
+            ],
+            'default' => '',
+            'messages' => 'city',
+        ],
+        '{{cityid}}' => [
+            'name' => 'city',
+            'request' => 'cookies',
+            'default' => '{{cityidTstore}}',
+        ],
+        '{{cityidTstore}}' => [
+            'name' => 'city_id',
+            'request' => 'model',
+            'modelParams' => [
+                'model' => '\app\modules\autoparts\models\TStore',
+                'where'=>[
+                    'id' => '{{StoreID}}',
+                ],
+            ],
+            'default' => '',
+        ],
+        '{{StoreID}}' =>[
+            'name' => 'StoreID',
+            'request' => 'post',
+            'default' => '',
+        ],
+        '{{marka}}' => [
+            'name' => 'marka',
+            'request' => 'get',
+            'default' => ''
+        ],
+        '{{family}}' => [
+            'name' => 'family',
+            'request' => 'get',
+            'default' => ''
+        ],
+    ];
+
+    /*
+     * Шаблон поиска фраз для замены в тексте
+     */
+    const REGREPLACE ="/\{\{[a-zA-Zа-яА-Я_\-]{2,15}\}\}/";
+
+    /*
+     * @var string Текст перед контентом
+     */
+    public $infotext_before = null;
+
+    /*
+    * @var string Текст посел контента
+    */
+    public $infotext_after = null;
+
+    /*
+     * @var string H1 тэг
+     */
+    public $h1_title = '';
+
+    public $title = '';
+
+    /*
+     * @var int id города определяемый по id магазина из post переменной StoreID
+     */
+    public $city = null;
+
+    public function init()
+    {
+        if(!empty($store_id=\Yii::$app->request->post('StoreID')))
+        {
+            $this->city = $this->getCityid($store_id);
+        }
+        parent::init();
+    }
 
     /**
      * Devuelve la url absoluta con el path
@@ -117,21 +161,16 @@ class Component extends \yii\base\Component
      */
     public function getRoute() {
         if (is_null($this->route)) {
-
             $path = Yii::$app->request->getPathInfo();
-            //проверяем адрес если в адресе игнорируемое слово то устанавливаем адрес до игнорируемого слова
-            $path_array = explode("/",$path);
-            foreach($path_array as $vPath)
+            /*foreach($this->after_ignore as $value)
             {
-                $newPath[] = $vPath;
-                if(in_array($vPath,$this->afterIgnore))
+                if(preg_match("/^".$value."(\b|\/)/",$path))
                 {
+                    $path = $value;
                     break;
                 }
-            }
-
-            $this->route = Yii::$app->request->getHostInfo() . '/' . implode("/",$newPath);
-
+            }*/
+            $this->route = Yii::$app->request->getHostInfo() .'/'. $path;
         }
 
         return $this->route;
@@ -144,20 +183,17 @@ class Component extends \yii\base\Component
      */
     public function getMeta($route)
     {
-        $cache = Yii::$app->{$this->cache};
-        $cacheId = $this->componentId . '|routes|' . $route;
-        $aMeta = $cache->get($cacheId);
+//        $cache = Yii::$app->{$this->cache};
+//        $cacheId = $this->componentId . '|routes|' . $route . '|city|' . $this->city;
+//        $aMeta = $cache->get($cacheId);
 
-        if ($aMeta) {
-            return $aMeta;
-        }
-
-        $oMeta = new Meta();
-        $oMeta->setRoute($route);
+//        if ($aMeta) {
+//            return $aMeta;
+//        }
 
         $aMeta = [];
         $model = Meta::findOne([
-            'hash' => $oMeta->hash
+            'hash' => md5($route)
         ]);
 
         if (!empty($model)) {
@@ -168,14 +204,22 @@ class Component extends \yii\base\Component
                     $aMeta[$idData] = $data;
                 }
             }
-        } else {
-            // Si no existe la entrada con esa ruta la creamos
+            //находим альтернативный текст для города
+            $aMeta = $this->replaceInfotext($aMeta);
+            //TODO отключаем формирование ссылок в тексте по ключам
+//            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+
+
+        }elseif(Yii::$app->request->get('seo') === 'add') {
+            //при передаче гетом перепенной seo = add страница добавиться в базу, только если ее там нет
+            $oMeta = new Meta();
+            $oMeta->setRoute($route);
             $oMeta->save();
         }
 
-        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG ]);
+//        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG;
 
-        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
+//        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
 
         return $aMeta;
     }
@@ -290,21 +334,44 @@ class Component extends \yii\base\Component
         return $this;
     }
 
-    /**
-     * Register text associated to a Url
-     * @param string $info
-     */
-    public function setInfotext($info)
+    public function setInfotextafter($infotext_after)
     {
         //заменяем фразы в тексте
-        $this->_info = $this->replaceText($info);
+        $this->infotext_after = !empty($infotext_after)?
+                '<div class="infotext">'.$this->replaceText($infotext_after).'</div>': '';
         return $this;
     }
 
 
-    public function getInfotext()
+    public function getInfotextafter()
     {
-        return $this->_info;
+        return $this->infotext_after;
+    }
+
+    public function setInfotextbefore($infotext_before)
+    {
+        //заменяем фразы в тексте
+        $this->infotext_before = !empty($infotext_before)?
+            '<div class="infotext">'.$this->replaceText($infotext_before).'</div>': '';
+        return $this;
+    }
+
+
+    public function getInfotextbefore()
+    {
+        return $this->infotext_before;
+    }
+
+    public function setH1title($h1_title)
+    {
+        //заменяем фразы в тексте
+        $this->h1_title = $this->replaceText($h1_title);
+        return $this;
+    }
+
+    public function getH1title()
+    {
+        return !empty($this->h1_title)? "<h1>".$this->h1_title."</h1>" : '';
     }
 
     /**
@@ -316,18 +383,33 @@ class Component extends \yii\base\Component
     {
         // Set to empty not given values
         $metadataReset = ['robots_index' => '', 'robots_follow' => '', 'author' => '',
-            'title' => '', 'description' => '', 'info' =>'','keywords' => '', 'keywords' => '', 'params_url' => ''];
+            'title' => '', 'description' => '', 'keywords' => '', 'keywords' => '', 'params_url' => '', 'h1_title' => '', 'infotext_before' => '', 'infotext_after' => ''];
 
-        $metadata = array_merge($metadataReset, $metadata);
 
-        if ($checkDb) {
-            // Merge passed parameter meta with route meta
-            $metadata = array_merge($metadata, $this->getMeta($this->getRoute()));
+        //если передан ошибка 404 то обнуляем значения
+        if(\Yii::$app->errorHandler->exception==null || \Yii::$app->errorHandler->exception!=null && \Yii::$app->errorHandler->exception->statusCode != 404) {
+            $metadata = array_merge($metadataReset, $metadata);
+            if ($checkDb) {
+                // Merge passed parameter meta with route meta
+                $metadata = array_merge($metadata, $this->getMeta($this->getRoute()));
 
+                //определяем title и h1 родителей если свои пустые
+                if(empty($metadata['title'])) $key[]='title';
+                if(empty($metadata['h1_title'])) $key[]='h1_title';
+                if(isset($key))
+                {
+                    $searchTitle = $this->serachText($key);
+                    if(!empty($searchTitle)) {
+                        $metadata = array_merge($metadata, $searchTitle);
+                    }
+                }
+            }
+            // Override meta with the defaults via merge
+            $metadata = array_merge($metadata, $this->defaults);
         }
-
-        // Override meta with the defaults via merge
-        $metadata = array_merge($metadata, $this->defaults);
+        else {
+            $metadata = $metadataReset;
+        }
 
         $this->setRobots($metadata['robots_index'], $metadata['robots_follow'])
             ->setAuthor($metadata['author'])
@@ -335,7 +417,10 @@ class Component extends \yii\base\Component
             ->setDescription($metadata['description'])
             ->setKeywords($metadata['keywords'])
             ->setOpenGraphType($metadata['og:type'])
-            ->setInfotext($metadata['info']);
+            ->setH1title($metadata['h1_title'])
+            ->setInfotextbefore($metadata['infotext_before'])
+            ->setInfotextafter($metadata['infotext_after']);
+
 
         if ($setCanonical == true) {
 
@@ -369,10 +454,9 @@ class Component extends \yii\base\Component
      */
     public function replaceText($text)
     {
-        if(!empty($text))
-        {
+
             //Находим значения по шаблону
-            preg_match_all($this->regReplace,$text,$findSubstr);
+            preg_match_all(self::REGREPLACE,$text,$findSubstr);
 
             //перебираем найденные значения и зменяем
             foreach($findSubstr[0] as $value)
@@ -380,7 +464,6 @@ class Component extends \yii\base\Component
                 //проверяем есть ли найденное значение в массиве для замены
                 if(array_key_exists($value,$this->replaceParams))
                 {
-                    $data = '';
                     $where = null;
 
                     //проверяем было ли ранее найдено данное значение для замены
@@ -391,37 +474,8 @@ class Component extends \yii\base\Component
                         continue;
                     }
 
-                    //перебираем значения из get и cookies
-                    foreach($this->replaceParams[$value]['names'] as $k => $v)
-                    {
-                        //получаем значение
-                        $d = $this->$v['request']($k,$v['default']);
-
-                        //есди не заданы параметры модели то завершаем цикл
-                        if(!isset($this->replaceParams[$value]['modelParams']))
-                        {
-                            $data = ucfirst($d);
-                            break;
-                        }
-                        //если заданы параметры модели то формируем масив для условия отобора из базы
-                        $where[$v['whereName']] = $d;
-                    }
-
-                    if(isset($this->replaceParams[$value]['modelParams']) && is_array($where))
-                    {
-                        $model = $this->replaceParams[$value]['modelParams']['model'];
-                        $s = $model::find()
-                            -> where($where)
-                            ->one();
-
-                        //если найдена строка в базе
-                        if($s)
-                        {
-                            $colName = $this->replaceParams[$value]['modelParams']['colName'];
-                            $data = ucfirst($s->$colName);
-                        }
-
-                    }
+                    //получаем значение и делаем первую букву заглавной
+                    $data = ucfirst($this->getData($this->replaceParams[$value]));
 
                     //заменяем строку $value в строке $text
                     $text = str_replace($value, $data, $text);
@@ -432,38 +486,231 @@ class Component extends \yii\base\Component
                 }
 
             }
-
-        }
         return $text;
     }
 
     /**
+     * Функция вызова метода получения данных get/post/cookies/model
+     * @param $value array массив содержащий информацию о переменной для замены
+     * @return mixed
+     */
+    public function getData($value)
+    {
+        //вызываем функцию получения данных post/get/model/cookies
+        $data = $this->$value['request']($value);
+
+        //проверяем является ли полученное значение шаблоном для замены
+        if(preg_match(self::REGREPLACE,$data))
+        {
+            //
+            $data = $this->getData($this->replaceParams[$data]);
+        }
+
+        //проверяем надо заменять из словаря или нет перед возвратом
+        return isset($value['messages'])?Yii::t($value['messages'], $data):$data;
+    }
+
+    /**
+     * Получение пуе данных
      * @param $name - наименование get переменной
      * @param null $defaultValue - значение возвращаемое если нет get значния
      * @return array|mixed
      */
-    public function get($name, $defaultValue = null)
+    public function get($value)
     {
-        return \Yii::$app->request->get($name, $defaultValue);
+        return \Yii::$app->request->get($value['name'], $value['default']);
     }
 
     /**
+     * получние post данных
      * @param $name - наименование post переменной
      * @param null $defaultValue - значение возвращаемое если нет post значния
      * @return array|mixed
      */
-    public function post($name, $defaultValue = null)
+    public function post($value)
     {
-        return \Yii::$app->request->post($name, $defaultValue);
+        return \Yii::$app->request->post($value['name'], $value['default']);
     }
 
     /**
+     * получение данных из cookies
      * @param $name - Cookies name
      * @param null $defaultValue - значение присваиваемое если cookie не объявлена
      * @return mixed
      */
-    public function cookies($name, $defaultValue = null)
+    public function cookies($value)
     {
-        return Yii::$app->request->cookies->getValue($name,$defaultValue);
+        return Yii::$app->request->cookies->getValue($value['name'], $value['default']);
     }
+
+    /**
+     * получение даннных из базы (модель класс Active Record)
+     * @param $value array массив содержащий информацию о переменной для замены
+     * @return mixed
+     */
+    public function model($value)
+    {
+        //проверка наличия условия отбора
+        if(is_array($value['modelParams']['where']))
+        {
+            $where = array();
+            //перебираем условия отбора
+            foreach($value['modelParams']['where'] as $k => $v)
+            {
+
+                //если в значение параметра отбора стоит шаблон то вызываем функцию поиска значения для шаблона
+                if(preg_match(self::REGREPLACE,$v))
+                {
+                    $where[$k] = $this->getData($this->replaceParams[$v]);
+                }
+                else {
+                    $where[$k] = $v;
+                }
+            }
+
+            //получаем данные из базы
+            $model = $value['modelParams']['model'];
+            $s = $model::find()
+                -> where($where)
+                ->one();
+
+            if($s)
+            {
+                //если найдено значение в базе то возвращаем его
+                return $s->$value['name'];
+            }
+            else {
+                //если не найдено то возврат значения по умолчанию
+                return $value['default'];
+            }
+        }
+        else {
+            //возврат значения по умолчанию
+            return $value['default'];
+        }
+
+    }
+
+
+    /**
+     *  Находит и заменяет текст before и after для города, если есть
+     * @param $aMeta
+     * @return array
+     */
+    public function replaceInfotext($aMeta)
+    {
+        //TODO в значение по умолчанию добавлено определение city_id по StoreID
+        $city_id = Yii::$app->request->cookies->getValue('city', $this->city);
+
+        if(!empty($city_id))
+        {
+            $infotext= \app\modules\seotools\models\base\Infotext::find()
+                ->select('infotext_before, infotext_after')
+                ->where(['meta_id' => $aMeta['id_meta'], 'city_id' => $city_id])
+                ->asArray()
+                ->one();
+
+            if(!empty($infotext))
+            {
+                $aMeta = array_merge($aMeta,$infotext);
+            }
+        }
+
+        return $aMeta;
+
+    }
+
+    /**
+     * Функция берет из базы список ссылок с ключевыми словами и перебирает значения в переданном массиве aMeta
+     * по ключам из массива $replaceKey и вызывает функцию замены слов в тексте на ссылки
+     * @param $aMeta array - массив значений мета тэгов и текстов
+     * @param $replaceKey array - массив ключей aMeta значения которых будут изменены
+     * @return mixed array aMeta
+     */
+    public function setLinks($aMeta, $replaceKey)
+    {
+        //заменяем
+        foreach($replaceKey as $key)
+        {
+            if(!empty($aMeta[$key]))
+            {
+                $infotext = mb_strtolower($aMeta[$key]);
+                preg_match_all("/\b[a-zA-Zа-яА-Я0-9\-]*\b/u", $infotext, $words);
+                $words[0] = array_unique($words[0]);
+                foreach($words[0] as $word) {
+                    if(!empty($word))
+                    {
+                        $word = strtolower($word);
+                        $meta_link = Meta::find()
+                            ->where("keywords LIKE '" . $word . ",%'")
+                            ->orWhere("keywords = '" . $word . "'")
+                            ->andWhere('id_meta <> ' . $aMeta['id_meta'])
+                            ->one();
+
+                        if($meta_link != null)
+                        {
+                            $aMeta[$key] = $this->replaceToLink($word, $meta_link->route, $aMeta[$key]);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return $aMeta;
+
+    }
+
+
+    /**
+     * Функция поиска и замены слова в тексте на ссылку
+     * @param $word  - слово для поиска
+     * @param $link  - ссылка
+     * @param $text - текст в котором заменяем слова
+     * @return mixed  - возврат текста с заменными слови на ссылки
+     */
+    public function replaceToLink($word, $link, $text)
+    {
+        return preg_replace('/(\b'.$word.'\b)/siu', '<a href='.$link.' title="${1}">${1}</a>', $text);
+    }
+
+    /**
+     * Функция определения city_id по StoreID - id магазина
+     * @param $store_id
+     * @return int|mixed
+     */
+    public function getCityid($store_id)
+    {
+        $store = \app\modules\autoparts\models\TStore::find()
+                    ->where(['id' => $store_id])
+                    ->one();
+        return !empty($store)?$store->city_id:'';
+    }
+
+    public function serachText($key)
+    {
+        $path = Yii::$app->request->getPathInfo();
+        $path =  explode("/",$path);
+        $text = '';
+
+        for($i = count($path)-1; $i > 0; $i--)
+        {
+            unset($path[$i]);
+            $text = $this->searchText1(Yii::$app->request->getHostInfo() ."/".implode("/",$path),$key);
+        }
+
+        return $text;
+    }
+
+    public function searchText1($route,$key)
+    {
+        $data = Meta::find()
+            ->select($key)
+            ->where(['route' => $route])
+            ->asArray()
+            ->one();
+
+        return $data;
+    }
+
 }
