@@ -6,11 +6,17 @@
  * Time: 16:42
  */
 use dosamigos\chartjs\ChartJs;
-echo ChartJs::widget([
-    'type' => 'Bar',
+?>
+<button onclick="function(){}">+</button>
+<?= ChartJs::widget([
+    'type' => 'Line',
+    'clientOptions'=>[
+        'pointDotRadius' => 2,
+
+    ],
     'options' => [
-        'height' => 400,
-        'width' => 1200,
+        'height' => 800,
+        'width' => 800,
     ],
     'data' => [
         'labels' => $data['labels'],
@@ -31,4 +37,4 @@ echo ChartJs::widget([
 //            ]
         ]
     ]
-]);
+]);?>

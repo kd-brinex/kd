@@ -52,7 +52,25 @@ NavBar::begin([
         'class' => 'navbar navbar-fixed-top navbar-inverse',
     ],
 ]);
+Modal::begin([
+    'header' => '<div class="header_img"><img src="/img/kolesa-darom_logo.png"/></div><div class="cities pull-right"><input id="city_select" type="text" placeholder="Выберите город">
 
+            <ul class="cities_select pull-right invisible">
+            </ul>
+
+            </div>
+            <div class="clearfix"></div>
+            ',
+    'toggleButton' => [
+        'tag' => 'button',
+        'class' => 'btn btn-info btn-city',
+        'label' => $city_name,
+        'id' => 'button_city_list',
+        'onclick'=>'load_city_list()',
+    ],
+]);
+echo '<div id="city_list"></div>';
+Modal::end();
 echo Nav::widget($navbar);
 NavBar::end();
 ?>
@@ -75,39 +93,14 @@ NavBar::end();
             <?= Yii::$app->seotools->getInfotextafter() ?>
         </div>
 
-
-        <?php
-
-        Modal::begin([
-            'header' => '<div class="header_img"><img src="/img/kolesa-darom_logo.png"/></div><div class="cities pull-right"><input id="city_select" type="text" placeholder="Выберите город">
-
-            <ul class="cities_select pull-right invisible">
-            </ul>
-
-            </div>
-            <div class="clearfix"></div>
-            ',
-            'toggleButton' => [
-                'tag' => 'button',
-                'class' => 'btn btn-lg btn-block btn-info',
-                'label' => $city_name,
-                'id' => 'button_city_list',
-                'onclick'=>'load_city_list()',
-            ],
-        ]);
-
-
-        echo '<div id="city_list"></div>';
-        Modal::end(); ?>
-
-        <footer class="footer">
-            <div class="container">
-                <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-                <p class="pull-right"><?= Yii::powered() ?></p>
-            </div>
-        </footer>
     </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+
+            <p class="pull-right"><?= Yii::powered() ?></p>
+        </div>
+    </footer>
 </div>
 <?php $this->endBody() ?>
 </body>

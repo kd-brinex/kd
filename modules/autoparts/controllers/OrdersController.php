@@ -106,6 +106,38 @@ class OrdersController extends Controller
         }
     }
 
+    public function actionDeleteMain($id){
+        if(($model = OrdersSearch::findOne($id)) !== null) {
+            if($model->delete()) {
+                $relatedDetails = OrdersSearch::find()->where('related_detail = :related_detail ORDER BY id ASC', [':related_detail' => $model->id])->all();
+                if(!empty($relatedDetails)){
+                    $counter = 0;
+                    $newRalatedDetail = null;
+                    foreach($relatedDetails as $detail){
+                        if(!$counter){
+                            $detail->related_detail = null;
+                            $detail->save();
+                            $newRalatedDetail = $detail->id;
+                        } else {
+                            $detail->related_detail = $newRalatedDetail;
+                            $detail->save();
+                        }
+
+                        $counter++;
+                    }
+                }
+
+//                $relatedDetail = OrdersSearch::findOne($model->related_detail);
+//                $relatedDetail->status = (int)$model->minState;
+//                $result = Json::encode([
+//                    'id' => $model->id,
+//                    'rel_det' => $model->related_detail,
+//                    'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_IN_WORK]
+//                ]);
+            }
+        }
+    }
+
     public function actionOrdersUpdate(){
         if (!Yii::$app->request->isAjax || empty($id = (int)Yii::$app->request->post('id')))
             return false;

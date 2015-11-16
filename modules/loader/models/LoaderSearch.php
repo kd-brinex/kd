@@ -74,13 +74,14 @@ public $end;
     public function searchInfo()
     {
         $record_count = new Expression('count(id)');
-        $start = new Expression("column_get(blob_data,'load_date' as datetime)");
-        $end = new Expression("column_get(blob_data,'load_date' as datetime)");
+        $start = new Expression("left(column_get(blob_data,'load_date' as datetime),16)");
+//        $end = new Expression("column_get(blob_data,'load_date' as datetime)");
         $query = parent::find()
             ->addSelect(
                 ['record_count'=>$record_count,
                     'start'=>$start,
-                    'end'=>$end])
+//                    'end'=>$end
+                ])
             ->groupBy('start')
         ;
         $ret=$query->all();
@@ -91,7 +92,8 @@ public $end;
 //        ]);
         $return['labels']=ArrayHelper::getColumn($ret,'start');
         $return['data']=ArrayHelper::getColumn($ret,'record_count');
-//        var_dump($return);die;
+        $return['cpu']=shell_exec('rrdtool fetch /var/lib/munin/localhost/localhost-mysql_bytes-recv-d.rrd AVERAGE -r 1m -s -1h');
+        var_dump($return['cpu']);die;
         return $return;
     }
 

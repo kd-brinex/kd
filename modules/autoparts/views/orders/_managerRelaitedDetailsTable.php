@@ -185,10 +185,10 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                 'contentOptions' => ['class' => 'btn-group-sm'],
                 'buttons' => [
                     'delete' => function($url, $model){
-                        return isset($model['related_detail']) ? \yii\bootstrap\Html::button('<span class="glyphicon glyphicon-remove"></span>', [
+                        return \yii\bootstrap\Html::button('<span class="glyphicon glyphicon-remove"></span>', [
                             'class' => 'btn btn-danger',
                             'onClick' => 'deleteDetail("'.$url.'");'
-                        ]) : '';
+                        ]);
                     }
                 ]
             ]
