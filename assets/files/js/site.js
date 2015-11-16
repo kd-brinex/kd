@@ -31,7 +31,7 @@ function load_city_list(){
         data:"",
         success: function(text){
             $('#city_list').html(text);
-            $('#city_list1').html(text);
+            //$('#city_list1').html(text);
             $('.cities').show();
             $('.cities_select').html('<div class="div_stories_s">'+$('.stories_s').html()+'</div>'+'<div class="div_stories_all">'+$('.stories_all').html()+'</div>');
         }

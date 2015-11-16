@@ -7,6 +7,7 @@ use yii\helpers\Json;
 use app\modules\tovar\finddetailsAsset;
 
 finddetailsAsset::register($this);
+echo $this->render('_search');
 //Yii::$app->view->registerCssFile('/css/parts.css');
 if (!empty($provider->allModels)) {
     foreach ($provider->allModels as $key => $value) {
