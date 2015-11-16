@@ -1,12 +1,16 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use mihaildev\ckeditor\CKEditor;
+use dosamigos\ckeditor\CKEditor;
+
 
 /* @var $this yii\web\View */
 /* @var $model jpunanua\seotools\models\base\MetaBase */
 /* @var $form yii\widgets\ActiveForm */
+
+
 ?>
 
 <div class="meta-base-form">
@@ -29,17 +33,15 @@ use mihaildev\ckeditor\CKEditor;
 
     <?= $form->field($model, 'h1_title')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'infotext_before')->textarea(['rows' => 6]) ?>
+    <?=  $form->field($model, 'infotext_before')->widget(CKEditor::className(), [ 'preset' => 'premium' ,
+            'clientOptions' => [],
+        ]);
+    ?>
 
-    <?= $form->field($model, 'infotext_after')->textarea(['rows' => 6]) ?>
-
-    <?php
-    /*echo $form->field($model, 'info')->widget(CKEditor::className(),[
-        'editorOptions' => [
-            'preset' => 'full',
-            'inline' => false
-        ],
-    ]);*/
+    <?=  $form->field($model, 'infotext_after')->widget(CKEditor::className(), [
+        'preset' => 'premium' ,
+        'clientOptions' => [],
+    ]);
     ?>
 
     <?= $form->field($model, 'sitemap')->textInput() ?>
