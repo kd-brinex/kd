@@ -146,6 +146,20 @@ use yii\helpers\Html;
             'label' => 'Комментарий',
             'value' => 'description'
         ],
+        [
+            'class' => '\kartik\grid\ActionColumn',
+            'header' => '',
+            'template' => '{delete-main}',
+            'contentOptions' => ['class' => 'btn-group-sm'],
+            'buttons' => [
+                'delete-main' => function($url, $model){
+                    return \yii\bootstrap\Html::button('<span class="glyphicon glyphicon-remove"></span>', [
+                        'class' => 'btn btn-danger',
+                        'onClick' => 'deleteMainDetail("'.$url.'");'
+                    ]);
+                }
+            ]
+        ]
     ],
     'toolbar' => [
         [

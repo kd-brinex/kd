@@ -142,11 +142,23 @@ function deleteDetail(url){
     if(confirm('Вы уверены что хотите удалить деталь из списка заказов?'))
         $.ajax({
             url : url,
+            type: 'POST',
             success : function(){
                 $.pjax.reload({container:'#manager-order-grid-pjax-container'});
             }
         });
 }
+
+function deleteMainDetail(url){
+    if(confirm('Вы уверены что хотите удалить деталь из списка заказов?'))
+        $.ajax({
+            url : url,
+            success : function(){
+                $.pjax.reload({container:'#manager-order-grid-pjax-container'});
+            }
+        });
+}
+
 function goTo(idx){
     $('.modal-body').hide();
     $('#modal-body-'+idx).show();
