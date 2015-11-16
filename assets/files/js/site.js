@@ -45,9 +45,9 @@ function load_city_list_region(){
         url: "/city/city/list_region",
         data:"",
         success: function(text){
-            $('#city_list').html(text);
-            $('#city_list1').html(text);
-            $('.cities').hide();
+            //$('#city_list').html(text);
+            //$('#city_list1').html(text);
+            //$('.cities').hide();
         }
     });
 

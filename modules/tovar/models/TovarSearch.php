@@ -84,7 +84,13 @@ class TovarSearch extends Tovar
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         return $dataProvider;
     }
-
+    public function find_tovar($params)
+    {
+        $p['id'] = $params['id'];
+        $query = Tovar::find()->andwhere('id=:id', $p);
+        $dataProvider = new ActiveDataProvider(['query' => $query]);
+        return $dataProvider;
+    }
     public static function category_menu()
     {
         $rows = (new \yii\db\Query())
