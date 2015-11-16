@@ -188,7 +188,9 @@ a.desc:after {
 {
     float: left;
 }
-
+.btn-cyti{
+    width: 100px;
+}
 .cities{
     float: left;
     height:32px;
@@ -199,7 +201,7 @@ a.desc:after {
 .cities_select
 {
     padding:5px;
-    z-index:999999;
+    z-index:9999;
     background-color: white;
     display:block;
     position: absolute;

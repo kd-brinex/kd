@@ -6,24 +6,18 @@
  * Time: 16:33
  */
 use yii\helpers\Html;
-?>
-<div class="center-td">
-    <div class="sel-parts borders">
-        <div class="sel-parts-1">
-            <h2>Найти запчасть<br>по номеру детали</h2>
-            <br>
-
-            <form name="search" method="GET" action="">
-                <input type="text" class="bootstrap-input" name="article" id="article">
-                <input type="submit" class="btn" value="Найти">
-            </form>
+use yii\widgets\ActiveForm;
+$form = ActiveForm::begin([
+    'action' => ['finddetails'],
+    'method' => 'get',
+    'options' => ['name' => 'search-vin',],
+]); ?>
+    <div class="row">
+        <div class="col-md-10">
+            <?= Html::input('text', 'article', (isset($params['article'])) ? $params['article'] : '', ['class' => 'form-control', 'placeholder' => 'Введите артикул детали по каталогу']) ?>
         </div>
-        <div class="sel-parts-2">
-            <h2>Номер детали<br>можно узнать в каталогах</h2>
-            <br>
-            <?= Html::a('Открыть каталог автомобилей', '/auto', ['class' => 'btn']); ?>
-<!--<a class="btn" href="http://kd.auto2d.com//">Открыть каталог автомобилей </a>-->
-</div>
-<div class="clearfix"></div>
-</div>
-</div>
+        <div class="col-md-1">
+            <?= Html::submitButton('Искать запчасть', ['class' => ' btn btn-primary']) ?>
+        </div>
+    </div>
+<?php ActiveForm::end(); ?>
