@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\widgets\Select2;
+use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\seotools\models\base\Infotext */
@@ -28,9 +29,15 @@ use kartik\widgets\Select2;
             ],
         ]); ?>
 
-    <?= $form->field($model, 'infotext_before')->textarea(['rows' => 6]) ?>
+    <?=  $form->field($model, 'infotext_before')->widget(CKEditor::className(), [ 'preset' => 'premium' ,
+        'clientOptions' => [],
+    ]);
+    ?>
 
-    <?= $form->field($model, 'infotext_after')->textarea(['rows' => 6]) ?>
+    <?=  $form->field($model, 'infotext_after')->widget(CKEditor::className(), [ 'preset' => 'premium' ,
+        'clientOptions' => [],
+    ]);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('seotools', 'Create') : Yii::t('seotools', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ,'data-pjax'=>1]) ?>
