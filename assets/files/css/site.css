@@ -188,8 +188,12 @@ a.desc:after {
 {
     float: left;
 }
-.btn-cyti{
-    width: 100px;
+.btn-city{
+    color:#f8da4e !important;
+    /*position: fixed;*/
+    /*left:300px;*/
+    /*top:15px;*/
+    /*z-index:1030;*/
 }
 .cities{
     float: left;
@@ -198,10 +202,11 @@ a.desc:after {
 #city_select{
     cursor:pointer;
 }
+
 .cities_select
 {
     padding:5px;
-    z-index:9999;
+    z-index:1060;
     background-color: white;
     display:block;
     position: absolute;

@@ -26,24 +26,25 @@
     echo $form->field($profile, 'name')->textInput(['placeholder' => 'Ваше имя']);
     echo $form->field($user, 'email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $user->email]);
     echo '<div class="form-group field-profile-location required"><label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
-    Modal::begin([
-        'header' => '<img src="/img/kolesa-darom_logo.png"/>',
-        'toggleButton' => ['tag' => 'input',
-            'type'=>'text',
-            'readonly'=>'readonly',
-            'id'=> 'profile-location',
-            'class' => 'btn btn-info btn-block',
-            'name'=>'Profile[location]',
-            'value' => $city->name ? $city->name : 'Выбрать город',
+//    Modal::begin([
+//        'header' => '<img src="/img/kolesa-darom_logo.png"/>',
+//        'toggleButton' => ['tag' => 'input',
+//            'type'=>'text',
+//            'readonly'=>'readonly',
+//            'id'=> 'profile-location',
+//            'class' => 'btn btn-info btn-block',
+//            'name'=>'Profile[location]',
+//            'value' => $city->name ? $city->name : 'Выбрать город',
+//
+//            'onclick'=>'load_city_list()',
+//        ]]);
+//
+//
+//
+//
+//    echo '<div id="city_list1"></div>';
+//    Modal::end();
 
-            'onclick'=>'load_city_list()',
-        ]]);
-
-
-
-
-    echo '<div id="city_list1"></div>';
-    Modal::end();
     echo '</div><div class="col-sm-offset-3 col-lg-9"><div class="help-block"></div></div></div>';
     echo $form->field($user, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
 
