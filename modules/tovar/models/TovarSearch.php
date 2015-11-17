@@ -80,7 +80,7 @@ class TovarSearch extends Tovar
     public function find_tovar_param($params)
     {
         $p['id'] = $params['id'];
-        $query = TovarParam::find()->andwhere('(id=:id) and (title<>\'\') and not (value_char is null)', $p);
+        $query = TovarParam::find()->andwhere('(id=:id) and (title<>\'\') and (value_char <>\'\')', $p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         return $dataProvider;
     }
