@@ -69,13 +69,12 @@ class TovarController extends MainController
      * @param string $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
         $searchModel = new TovarSearch();
         $params = Yii::$app->request->queryParams;
         $dataProvider = $searchModel->find_tovar_param($params);
-        $tovarProvider = clone $dataProvider;
-        $tovarProvider->setModels([$dataProvider->models[0]]);
+        $tovarProvider = $searchModel->find_tovar($params);
         return $this->render('view', [
             'dataProvider' => $dataProvider,
             'tovarProvider' => $tovarProvider,
