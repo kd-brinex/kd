@@ -44,7 +44,7 @@
 //
 //    echo '<div id="city_list1"></div>';
 //    Modal::end();
-
+    echo  $city->name ? $city->name : 'Выбрать город';
     echo '</div><div class="col-sm-offset-3 col-lg-9"><div class="help-block"></div></div></div>';
     echo $form->field($user, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
 

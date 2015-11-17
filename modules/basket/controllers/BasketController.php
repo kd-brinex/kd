@@ -48,7 +48,8 @@ class BasketController extends MainController
         return $this->render('index', [
             'basketContent' => $basketContent,
             'user_data' => $user_tab_data,
-            'delivery_data' => $delivery_tab_data
+            'delivery_data' => $delivery_tab_data,
+            'tab'=>0
         ]);
     }
 
