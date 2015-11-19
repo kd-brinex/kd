@@ -14,6 +14,7 @@ $city_name = Yii::$app->ipgeobase->getCityName(Yii::$app->request->userIP);
 $menu = app\modules\tovar\models\TovarSearch::category_menu();
 //var_dump(Yii::$app->params);die;
 $items=Yii::$app->params['navbar']['all'];
+
 if (Yii::$app->user->isGuest){$items=array_merge($items,Yii::$app->params['navbar']['quest']);}
     else
     {$items=array_merge($items,Yii::$app->params['navbar']['user']);}
@@ -42,28 +43,31 @@ $navbar =['options' => ['class' => 'navbar-nav navbar-right'],'items' =>$items ]
 
 <?php $this->beginBody() ?>
 
-
-
 <?php
+
 NavBar::begin([
     'brandLabel' => 'Колеса даром',
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar navbar-fixed-top navbar-inverse',
+        'class' => 'navbar navbar-fixed-top navbar-inverse','style'=>'z-index:1050',
     ],
 ]);
+
+
+echo Nav::widget($navbar);
+
 Modal::begin([
     'header' => '<div class="header_img"><img src="/img/kolesa-darom_logo.png"/></div><div class="cities pull-right"><input id="city_select" type="text" placeholder="Выберите город">
 
-            <ul class="cities_select pull-right invisible">
-            </ul>
+        <ul class="cities_select pull-right invisible">
+        </ul>
 
-            </div>
-            <div class="clearfix"></div>
-            ',
+    </div>
+    <div class="clearfix"></div>
+    ',
     'toggleButton' => [
-        'tag' => 'button',
-        'class' => 'btn btn-info btn-city',
+        'tag' => 'span',
+        'class' => 'btn-city navbar-brand',
         'label' => $city_name,
         'id' => 'button_city_list',
         'onclick'=>'load_city_list()',
@@ -71,9 +75,7 @@ Modal::begin([
 ]);
 echo '<div id="city_list"></div>';
 Modal::end();
-echo Nav::widget($navbar);
-NavBar::end();
-?>
+NavBar::end();?>
 
 
 <div class="container">

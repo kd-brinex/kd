@@ -20,6 +20,8 @@ class BasketController extends MainController
 
     public function actionIndex()
     {
+        $params = Yii::$app->request->queryParams;
+        $tab=isset($params['tab'])?$params['tab']:0;
         $bmodel = new BasketSearch();
         $bdataProvider = $bmodel->search([]);
 
@@ -48,7 +50,8 @@ class BasketController extends MainController
         return $this->render('index', [
             'basketContent' => $basketContent,
             'user_data' => $user_tab_data,
-            'delivery_data' => $delivery_tab_data
+            'delivery_data' => $delivery_tab_data,
+            'tab'=>$tab
         ]);
     }
 
