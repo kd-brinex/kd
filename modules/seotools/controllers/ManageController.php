@@ -83,9 +83,7 @@ class ManageController extends Controller
     public function actionCreate()
     {
         $model = new Meta();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //$this->setMetalinks($model);
             return $this->redirect(['view', 'id' => $model->id_meta]);
         } else {
             return $this->render('create', [
@@ -103,12 +101,7 @@ class ManageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            /*if($model->keywords != Yii::$app->request->post("keywords"))
-            {
-                $this->setMetalinks($model);
-            }*/
             return $this->redirect(['view', 'id' => $model->id_meta]);
         } else {
             return $this->render('update', [
@@ -126,8 +119,6 @@ class ManageController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        //удаляем ключи из таблицы ключей
-        \app\modules\seotools\models\base\MetaLinks::deleteAll(['meta_id' => $id]);
         return $this->redirect(['index']);
     }
 
@@ -153,27 +144,4 @@ class ManageController extends Controller
         $dataProvider = $infotext->search(['InfotextSearch' => ['meta_id' => $meta_id, 'city_id' => $city_id]]);
         return $dataProvider;
     }
-
-    /*public function setMetalinks($model)
-    {
-        //предварительно удаляем старые ключи
-        \app\modules\seotools\models\base\MetaLinks::deleteAll(['meta_id' => $model->id_meta]);
-        $keywords = explode(",",$model->keywords);
-        foreach($keywords as $keyword)
-        {
-            if(!preg_match(\app\modules\seotools\Component::REGREPLACE,$keyword))
-            {
-                $keyword = trim(mb_strtolower($keyword));
-                $meta_link = \app\modules\seotools\models\base\MetaLinks::findOne($keyword);
-                if($meta_link == null)
-                {
-                    $meta_link = new \app\modules\seotools\models\base\MetaLinks();
-                }
-                $meta_link->keyword = $keyword;
-                $meta_link->link = $model->route;
-                $meta_link->meta_id = $model->id_meta;
-                $meta_link->save();
-            }
-        }
-    }*/
 }
