@@ -54,11 +54,23 @@ class Meta extends MetaBase
     public function beforeSave($insert)
     {
         $this->hash = md5($this->route);
+        $this->first_keyword = mb_strtolower($this->getFirstKeyword());
         return parent::beforeSave($insert);
     }
 
     public function setRoute($route) {
         $this->route = $route;
         $this->hash = md5($this->route);
+    }
+
+    public function getFirstKeyword()
+    {
+        if(!empty($this->keywords))
+        {
+            $key_array = explode(",",$this->keywords);
+            $first_keyword = $key_array[0];
+        }
+        else $first_keyword = null;
+        return $first_keyword;
     }
 }

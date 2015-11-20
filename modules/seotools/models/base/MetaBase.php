@@ -26,6 +26,7 @@ use yii\db\ActiveRecord;
  * @property string $sitemap_priority
  * @property string $created_at
  * @property string $updated_at
+ * @property string $first_keyword
  */
 class MetaBase extends ActiveRecord
 {
@@ -50,7 +51,8 @@ class MetaBase extends ActiveRecord
             [['hash', 'route', 'author', 'title'], 'string', 'max' => 255],
             [['sitemap_change_freq'], 'string', 'max' => 20],
             [['sitemap_priority'], 'string', 'max' => 4],
-            [['hash'], 'unique']
+            [['hash'], 'unique'],
+            [['first_keyword'], 'string', 'max' => 100],
         ];
     }
 

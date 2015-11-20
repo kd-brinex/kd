@@ -201,7 +201,7 @@ class Component extends \yii\base\Component
             //находим альтернативный текст для города
             $aMeta = $this->replaceInfotext($aMeta);
             //TODO отключаем формирование ссылок в тексте по ключам
-            //$aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
 
 
         }elseif(Yii::$app->request->get('seo') === 'add') {
@@ -621,27 +621,15 @@ class Component extends \yii\base\Component
         {
             if(!empty($aMeta[$key]))
             {
+                //переводим в нижний регистр
                 $infotext = mb_strtolower($aMeta[$key]);
-                preg_match_all("/\b[a-zA-Zа-яА-Я0-9\-]{3,}\b/u", $infotext, $words);
-                $words[0] = array_unique($words[0]);
-                foreach($words[0] as $word) {
-                    if(!empty($word))
-                    {
-                        $word = strtolower($word);
-                        $meta_link = Meta::find()
-                            ->select("route")
-                            ->where("keywords LIKE '" . $word . ",%'")
-                            ->orWhere("keywords = '" . $word . "'")
-                            ->andWhere('id_meta <> ' . $aMeta['id_meta'])
-                            ->one();
-
-                        if($meta_link != null)
-                        {
-                            $aMeta[$key] = $this->replaceToLink($word, $meta_link->route, $aMeta[$key]);
-                        }
-                    }
+                //получаем список первых ключей
+                $first_keys = Meta::find()->where("first_keyword <> '' ")->all();
+                //заменяем в тексте слова на ссылки
+                foreach($first_keys as $fk)
+                {
+                    $aMeta[$key] = $this->replaceToLink($fk->first_keyword, $fk->route, $aMeta[$key]);
                 }
-
             }
         }
 
