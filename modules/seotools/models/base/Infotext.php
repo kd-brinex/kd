@@ -21,20 +21,32 @@ class Infotext extends ActiveRecord
     {
         return [
             [['meta_id', 'city_id'], 'required'],
-            [['infotext_before', 'infotext_after'], 'string'],
             [['meta_id', 'city_id'], 'integer'],
+            [['infotext_before', 'infotext_after'], 'string'],
+            [['meta_id', 'city_id'], 'unique', 'targetAttribute' => ['meta_id', 'city_id'], 'message' => 'The combination of Meta ID and City ID has already been taken.']
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-            'id' => 'id',
-            'meta_id' => 'Meta id',
-            'city_id' => 'City id',
+            'id' => Yii::t('seotools', 'ID'),
+            'meta_id' => Yii::t('seotools', 'Meta ID'),
+            'city_id' => Yii::t('seotools', 'City ID'),
             'infotext_before' => Yii::t('seotools', 'Text before content'),
             'infotext_after' => Yii::t('seotools', 'Text after content'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMeta()
+    {
+        return $this->hasOne(Meta::className(), ['id_meta' => 'meta_id']);
     }
 
     public function getCity()

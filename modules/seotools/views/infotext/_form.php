@@ -11,6 +11,7 @@ use dosamigos\ckeditor\CKEditor;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+
 <div class="infotext-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -40,7 +41,7 @@ use dosamigos\ckeditor\CKEditor;
     ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('seotools', 'Create') : Yii::t('seotools', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary' ,'data-pjax'=>1]) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('seotools', 'Create') : Yii::t('seotools', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

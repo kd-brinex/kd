@@ -42,98 +42,88 @@ class InfotextController extends Controller
     }
 
     /**
-     * Displays a single Infotext model.
-     * @param integer $meta_id
-     * @param integer $city_id
+     * Displays a single Infotext1 model.
+     * @param integer $id
      * @return mixed
      */
-    public function actionView($meta_id, $city_id)
+    public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($meta_id, $city_id),
+            'model' => $this->findModel($id),
         ]);
     }
 
+
     /**
-     * Creates a new Infotext model.
+     * Creates a new Infotext1 model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         $model = new Infotext();
-        $model->meta_id = Yii::$app->request->get('meta_id');
-
         $city_list = $this->getCitylist();
+        $meta_id = Yii::$app->request->get('_j');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //TODO костыль тчобы возаращаться на страницу информации мета тэгов
-            if(Yii::$app->request->get('_j')==2)
+            if(!empty($meta_id))
             {
-                return $this->redirect(['manage/view', 'id' => $model->meta_id]);
+                return $this->redirect(['manage/view', 'id' => $meta_id]);
             }
             else {
-                return $this->redirect(['view', 'meta_id' => $model->meta_id, 'city_id' => $model->city_id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
-
-            if(Yii::$app->request->isAjax) {
-                $render = 'renderAjax';
-            }
-            else {
-                $render = 'render';
-            }
-            return $this->$render('create', [
+            $model->meta_id = $meta_id;
+            return $this->render('create', [
                 'model' => $model,
                 'city_list' => $city_list,
             ]);
-
         }
+
     }
 
     /**
-     * Updates an existing Infotext model.
+     * Updates an existing Infotext1 model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $meta_id
-     * @param integer $city_id
+     * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($meta_id, $city_id)
+    public function actionUpdate($id)
     {
-        $model = $this->findModel($meta_id, $city_id);
+        $model = $this->findModel($id);
         $city_list = $this->getCitylist();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //TODO костыль тчобы возаращаться на страницу информации мета тэгов
-            if(Yii::$app->request->get('_j')==2)
+            if(!empty($meta_id = Yii::$app->request->get('_j')))
             {
-                return $this->redirect(['manage/view', 'id' => $model->meta_id]);
+                return $this->redirect(['manage/view', 'id' => $meta_id]);
             }
             else {
-                return $this->redirect(['view', 'meta_id' => $model->meta_id, 'city_id' => $model->city_id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-
         } else {
             return $this->render('update', [
                 'model' => $model,
                 'city_list' => $city_list,
             ]);
         }
+
     }
 
     /**
-     * Deletes an existing Infotext model.
+     * Deletes an existing Infotext1 model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $meta_id
-     * @param integer $city_id
+     * @param integer $id
      * @return mixed
      */
-    public function actionDelete($meta_id, $city_id)
+    public function actionDelete($id)
     {
-        $this->findModel($meta_id, $city_id)->delete();
-
+        $this->findModel($id)->delete();
         //TODO костыль тчобы возаращаться на страницу информации мета тэгов
-        if(Yii::$app->request->get('_j')==2)
+        if(!empty($meta_id = Yii::$app->request->get('_j')))
         {
             return $this->redirect(['manage/view', 'id' => $meta_id]);
         }
@@ -143,22 +133,22 @@ class InfotextController extends Controller
     }
 
     /**
-     * Finds the Infotext model based on its primary key value.
+     * Finds the Infotext1 model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $meta_id
-     * @param integer $city_id
-     * @return Infotext the loaded model
+     * @param integer $id
+     * @return Infotext1 the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($meta_id, $city_id)
+    protected function findModel($id)
     {
-        if (($model = Infotext::findOne(['meta_id' => $meta_id, 'city_id' => $city_id])) !== null) {
+        if (($model = Infotext::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
+    // получаем список городов
     protected function getCitylist()
     {
         $city_list =  \app\modules\city\models\City::find()
