@@ -54,6 +54,7 @@ class Meta extends MetaBase
     public function beforeSave($insert)
     {
         $this->hash = md5($this->route);
+        $this->first_keyword = mb_strtolower($this->getFirstKeyword());
         return parent::beforeSave($insert);
     }
 
@@ -62,40 +63,14 @@ class Meta extends MetaBase
         $this->hash = md5($this->route);
     }
 
-    public function setLinks($keywords,$route)
+    public function getFirstKeyword()
     {
-
-        if(!empty($keywords))
+        if(!empty($this->keywords))
         {
-            $keywords = explode(",",$keywords);
-            for($i = 0; $i< count($keywords); $i++)
-            {
-                //проверка чтобы ключ небыл фразой для замены
-                if(!preg_match("/\{\{[a-zA-Z]*\}\}/",$keywords[$i]))
-                {
-                    $keywords[$i] = strtolower(trim($keywords[$i]));
-
-                    if(($metaLinks = \app\modules\seotools\models\base\MetaLinks::findOne($keywords[$i])) != null)
-                    {
-                        if($metaLinks->seq_number > $i)
-                        {
-                            $metaLinks->seq_number = $i;
-                            $metaLinks->link = $route;
-                            $metaLinks->save();
-                        }
-                    }
-                    else {
-
-                        $metaLinks = new \app\modules\seotools\models\base\MetaLinks();
-                        $metaLinks->keyword = $keywords[$i];
-                        $metaLinks->seq_number = $i;
-                        $metaLinks->link = $route;
-                        $metaLinks->save();
-                    }
-
-                }
-            }
+            $key_array = explode(",",$this->keywords);
+            $first_keyword = $key_array[0];
         }
+        else $first_keyword = null;
+        return $first_keyword;
     }
-
 }
