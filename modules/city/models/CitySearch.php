@@ -85,7 +85,7 @@ class CitySearch extends City
 
         return $dataProvider;
     }
-    public function find_list($params){
+    public static function find_list(){
     $query['stories'] = City::find()->select('geobase_city.name,geobase_city.id')
         ->leftJoin('t_store','t_store.city_id=geobase_city.id')
             ->where('t_store.id IS NOT NULL')->orderBy('geobase_city.name')->asArray()->all();
