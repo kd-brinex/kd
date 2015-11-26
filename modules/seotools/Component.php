@@ -45,7 +45,7 @@ class Component extends \yii\base\Component
      * After how long (seconds) will the routes caching expire.
      * @var int
      */
-//    public $cacheDuration = 3600;
+    public $cacheDuration = 3600;
 
     /**
      * chache tag dependency
@@ -152,6 +152,9 @@ class Component extends \yii\base\Component
         {
             $this->city = $this->getCityid($store_id);
         }
+        else {
+            $this->city = Yii::$app->request->cookies->getValue('city');
+        }
         parent::init();
     }
 
@@ -161,16 +164,7 @@ class Component extends \yii\base\Component
      */
     public function getRoute() {
         if (is_null($this->route)) {
-            $path = Yii::$app->request->getPathInfo();
-            /*foreach($this->after_ignore as $value)
-            {
-                if(preg_match("/^".$value."(\b|\/)/",$path))
-                {
-                    $path = $value;
-                    break;
-                }
-            }*/
-            $this->route = Yii::$app->request->getHostInfo() .'/'. $path;
+            $this->route = Yii::$app->request->getHostInfo() .'/'. Yii::$app->request->getPathInfo();
         }
 
         return $this->route;
@@ -207,18 +201,18 @@ class Component extends \yii\base\Component
             //находим альтернативный текст для города
             $aMeta = $this->replaceInfotext($aMeta);
             //TODO отключаем формирование ссылок в тексте по ключам
-//            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
+            $aMeta = $this->setLinks($aMeta, ['infotext_before', 'infotext_after']);
 
 
         }elseif(Yii::$app->request->get('seo') === 'add') {
-            //при передаче гетом перепенной seo = add страница добавиться в базу, только если ее там нет
+            //при передаче гетом переменной seo = add страница добавиться в базу, только если ее там нет
             $oMeta = new Meta();
             $oMeta->setRoute($route);
             $oMeta->save();
         }
 
-//        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG;
-
+//        $oTagDependency = new \yii\caching\TagDependency(['tags' => self::CACHE_TAG]);
+//
 //        $cache->set($cacheId, $aMeta, $this->cacheDuration, $oTagDependency);
 
         return $aMeta;
@@ -398,8 +392,7 @@ class Component extends \yii\base\Component
                 if(empty($metadata['h1_title'])) $key[]='h1_title';
                 if(isset($key))
                 {
-                    $searchTitle = $this->serachText($key);
-                    if(!empty($searchTitle)) {
+                    if(!empty($searchTitle = $this->searchTitle($key))) {
                         $metadata = array_merge($metadata, $searchTitle);
                     }
                 }
@@ -599,21 +592,15 @@ class Component extends \yii\base\Component
      */
     public function replaceInfotext($aMeta)
     {
-        //TODO в значение по умолчанию добавлено определение city_id по StoreID
-        $city_id = Yii::$app->request->cookies->getValue('city', $this->city);
-
-        if(!empty($city_id))
-        {
-            $infotext= \app\modules\seotools\models\base\Infotext::find()
+        $infotext= \app\modules\seotools\models\base\Infotext::find()
                 ->select('infotext_before, infotext_after')
-                ->where(['meta_id' => $aMeta['id_meta'], 'city_id' => $city_id])
+                ->where(['meta_id' => $aMeta['id_meta'], 'city_id' => $this->city])
                 ->asArray()
                 ->one();
 
-            if(!empty($infotext))
-            {
-                $aMeta = array_merge($aMeta,$infotext);
-            }
+        if(!empty($infotext))
+        {
+            $aMeta = array_merge($aMeta,$infotext);
         }
 
         return $aMeta;
@@ -634,33 +621,21 @@ class Component extends \yii\base\Component
         {
             if(!empty($aMeta[$key]))
             {
+                //переводим в нижний регистр
                 $infotext = mb_strtolower($aMeta[$key]);
-                preg_match_all("/\b[a-zA-Zа-яА-Я0-9\-]*\b/u", $infotext, $words);
-                $words[0] = array_unique($words[0]);
-                foreach($words[0] as $word) {
-                    if(!empty($word))
-                    {
-                        $word = strtolower($word);
-                        $meta_link = Meta::find()
-                            ->where("keywords LIKE '" . $word . ",%'")
-                            ->orWhere("keywords = '" . $word . "'")
-                            ->andWhere('id_meta <> ' . $aMeta['id_meta'])
-                            ->one();
-
-                        if($meta_link != null)
-                        {
-                            $aMeta[$key] = $this->replaceToLink($word, $meta_link->route, $aMeta[$key]);
-                        }
-                    }
+                //получаем список первых ключей
+                $first_keys = Meta::find()->where("first_keyword <> '' ")->all();
+                //заменяем в тексте слова на ссылки
+                foreach($first_keys as $fk)
+                {
+                    $aMeta[$key] = $this->replaceToLink($fk->first_keyword, $fk->route, $aMeta[$key]);
                 }
-
             }
         }
 
         return $aMeta;
 
     }
-
 
     /**
      * Функция поиска и замены слова в тексте на ссылку
@@ -687,26 +662,22 @@ class Component extends \yii\base\Component
         return !empty($store)?$store->city_id:'';
     }
 
-    public function serachText($key)
+    public function searchTitle($key)
     {
         $path = Yii::$app->request->getPathInfo();
         $path =  explode("/",$path);
-        $text = '';
 
+        $routes=[];
         for($i = count($path)-1; $i > 0; $i--)
         {
             unset($path[$i]);
-            $text = $this->searchText1(Yii::$app->request->getHostInfo() ."/".implode("/",$path),$key);
+            $routes[] = Yii::$app->request->getHostInfo() ."/".implode("/",$path);
         }
 
-        return $text;
-    }
-
-    public function searchText1($route,$key)
-    {
+        $key[] = "MAX(CHAR_LENGTH(route))";
         $data = Meta::find()
             ->select($key)
-            ->where(['route' => $route])
+            ->where("route in ('".implode("','",$routes)."')")
             ->asArray()
             ->one();
 

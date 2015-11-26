@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = !empty($model->title)?$model->title:$model->id_
             'updated_at',
         ],
     ]) ?>
-    <?= Html::a(Yii::t('seotools', 'Create Infotext'), ['infotext/create','meta_id' => $model->id_meta, '_j' => 2], ['class' => 'btn btn-success']) ?>
+    <?= Html::a(Yii::t('seotools', 'Create Infotext'), ['infotext/create', '_j' => $model->id_meta], ['class' => 'btn btn-success']) ?>
 
 <!--    --><?php // \yii\bootstrap\Modal::begin([
 //        'id' => 'infotext-modal',
@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = !empty($model->title)?$model->title:$model->id_
          'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'meta_id',
+            //'meta_id',
             'city.name',
             'infotext_before:ntext',
             'infotext_after:ntext',
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = !empty($model->title)?$model->title:$model->id_
             ['class' => 'yii\grid\ActionColumn',
 
                                 'urlCreator'=>function($action, $model, $key, $index){
-                                return  yii\helpers\Url::toRoute(['infotext/'.$action, 'meta_id' => $model->meta_id, 'city_id' => $model->city_id, '_j' => 2] );
+                                return  yii\helpers\Url::toRoute(['infotext/'.$action, 'id' => $model->id, '_j' => $model->meta_id] );
                             },
                 'template'=>'{update}  {delete}',
             ],

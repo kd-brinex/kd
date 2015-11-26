@@ -56,14 +56,13 @@ class InfotextSearch extends Infotext
         }
 
         $query->andFilterWhere([
+            'id' => $this->id,
             'meta_id' => $this->meta_id,
             'city_id' => $this->city_id,
         ]);
 
         $query->andFilterWhere(['like', 'infotext_before', $this->infotext_before])
             ->andFilterWhere(['like', 'infotext_after', $this->infotext_after]);
-
-        $query->orderBy('city_id');
 
         return $dataProvider;
     }
