@@ -117,7 +117,7 @@ class Order extends \yii\db\ActiveRecord
     }
 
     public function getIsIn1C(){
-        return $this->hasOne(\app\modules\autoparts\models\OrderUpdate1c::className(), ['order_id' => 'id']);
+        return $this->hasOne(\app\modules\autoparts\models\OrderUpdate1c::className(), ['OrderId' => 'id']);
     }
 
 

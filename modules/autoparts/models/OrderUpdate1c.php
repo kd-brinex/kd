@@ -18,7 +18,7 @@ class OrderUpdate1c extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'order_update_1c';
+        return 'OrderUpdate1c';
     }
 
     /**
@@ -37,7 +37,7 @@ class OrderUpdate1c extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'order_id' => 'Order ID',
+            'OrderId' => 'Order ID',
         ];
     }
 
@@ -46,6 +46,6 @@ class OrderUpdate1c extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(Order::className(), ['id' => 'OrderId']);
     }
 }
