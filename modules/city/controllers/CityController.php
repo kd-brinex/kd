@@ -34,7 +34,7 @@ class CityController extends MainController
                     [
                         'actions' => ['index', 'create', 'update',  'view'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['Admin'],
                         'matchCallback' => function ($rule, $action) {
                             return \Yii::$app->user->identity->getIsAdmin();
                         }
