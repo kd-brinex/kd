@@ -366,7 +366,8 @@ $config = [
             'class' => 'app\modules\basket\Basket'
         ],
         'city' => [
-            'class' => 'app\modules\city\City'
+            'class' => 'app\modules\city\City',
+            'layout' => '/admin',
         ],
         'tovar' => [
             'class' => 'app\modules\tovar\Tovar',

@@ -19,7 +19,7 @@ foreach ($model->regions as $key)
 
     <?php $form = ActiveForm::begin(); ?>
 
-
+    <?= $form->field($model, 'id')->textInput() ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 50]) ?>
 

@@ -69,7 +69,7 @@ class CitySearch extends City
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->andFilterWhere(['like', 'name', $this->name]);
         $query->andFilterWhere([
             'id' => $this->id,
             'region_id' => $this->region_id,
