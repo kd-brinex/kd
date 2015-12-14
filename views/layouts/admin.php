@@ -33,7 +33,9 @@ $navbar = [
 
         ]],
         ['label' => 'Управление', 'items' => [
-            ['label' => 'Seo', 'url' => ['/seotools/manage']]
+            ['label' => 'Seo', 'url' => ['/seotools/manage']],
+            ['label' => 'Города', 'url' => ['/city/city']],
+            ['label' => 'Регион', 'url' => ['/city/region']],
         ]],
         [    'label' => 'Пользователи', 'items' => [
             ['label' => 'Список', 'url' => ['/user/admin/index']],

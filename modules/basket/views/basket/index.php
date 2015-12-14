@@ -29,7 +29,7 @@ echo Tabs::widget([
         [
             'label' => 'Корзина',
             'content' => $basketContent,
-            'active' => true,
+            'active' => $tab==0,
             'headerOptions' => [
                 'id' => '1-basket-tab'
             ],],
@@ -37,6 +37,7 @@ echo Tabs::widget([
         [
             'label' => 'Клиент',
             'content' => $this->render('profile_tab',$user_data),
+            'active' => $tab==1,
             'headerOptions' => [
                 'id' => '2-basket-tab'
             ],
@@ -54,7 +55,7 @@ echo Tabs::widget([
         [
             'label' => 'Доставка',
             'content' => $this->render('delivery_tab', $delivery_data),
-
+            'active' => $tab==2,
             'headerOptions' => [
                 'id' => '3-basket-tab'
             ],

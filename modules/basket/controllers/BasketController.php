@@ -20,6 +20,8 @@ class BasketController extends MainController
 
     public function actionIndex()
     {
+        $params = Yii::$app->request->queryParams;
+        $tab=isset($params['tab'])?$params['tab']:0;
         $bmodel = new BasketSearch();
         $bdataProvider = $bmodel->search([]);
 
@@ -48,7 +50,8 @@ class BasketController extends MainController
         return $this->render('index', [
             'basketContent' => $basketContent,
             'user_data' => $user_tab_data,
-            'delivery_data' => $delivery_tab_data
+            'delivery_data' => $delivery_tab_data,
+            'tab'=>$tab
         ]);
     }
 
@@ -122,8 +125,8 @@ class BasketController extends MainController
             case 'order':
                 // создаем новый заказ
                 $user_id = Yii::$app->user->id;
-                $number = (($user_id) ? $user_id :'N') . '-' . date("ymd_his");
-
+                $number = (($user_id) ? $user_id :'N') . '-' . date("ymdhis");
+//                $number=uniqid($user_id);
                 $orders = explode(';', Yii::$app->request->post('orderData'));
                 $formData = Yii::$app->request->post('formData');
                 if (isset($formData) && $formData != '') {
@@ -131,7 +134,8 @@ class BasketController extends MainController
                     $profileData = array_values($fdata['Profile']);
                 }
                 $fdata['deliveryStore'] = isset($fdata['deliveryStore']) ? $fdata['deliveryStore'] : 0;
-
+                $cityCode = Yii::$app->request->cookies['city'];
+                $city = \app\modules\city\models\CitySearch::find()->where(['id' => ($cityCode ? $cityCode : 2097)])->one();
                 $order_data = [
                     'number' => $number,
                     'date' => date("Y-m-d H:i:s"),
@@ -139,7 +143,7 @@ class BasketController extends MainController
                     'user_name'=>$fdata['Profile']['name'],
                     'user_email' =>$fdata['User']['email'],
                     'user_telephone' => $fdata['User']['telephone'],
-                    'user_location' => $fdata['Profile']['location'],
+                    'user_location' => $city->name,
                     'store_id'=> (int) $fdata['deliveryStore'],
                 ];
                 $order = new Order();

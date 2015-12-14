@@ -92,8 +92,8 @@ public $end;
 //        ]);
         $return['labels']=ArrayHelper::getColumn($ret,'start');
         $return['data']=ArrayHelper::getColumn($ret,'record_count');
-        $return['cpu']=shell_exec('rrdtool fetch /var/lib/munin/localhost/localhost-mysql_bytes-recv-d.rrd AVERAGE -r 1m -s -1h');
-        var_dump($return['cpu']);die;
+//        $return['cpu']=shell_exec('rrdtool fetch /var/lib/munin/localhost/localhost-mysql_bytes-recv-d.rrd AVERAGE -r 1m -s -1h');
+//        var_dump($return['cpu']);die;
         return $return;
     }
 

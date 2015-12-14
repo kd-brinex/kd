@@ -36,7 +36,8 @@ function load_city_list(){
             $('.cities_select').html('<div class="div_stories_s">'+$('.stories_s').html()+'</div>'+'<div class="div_stories_all">'+$('.stories_all').html()+'</div>');
         }
     });
-    $('.modal-dialog').animate({width: "950px"} , 190);
+    //$('.modal-dialog').animate({width: "950px"} , 190);
+    //$('#modal-backdrop').css('z-index',1);
 
 }
 function load_city_list_region(){

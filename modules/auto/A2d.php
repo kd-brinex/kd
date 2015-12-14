@@ -9,7 +9,8 @@ define("DEBUG",TRUE);
 define('WWW_ROOT', realpath(dirname(__FILE__)).DS);
 //define('WWW_ROOT','../modules/auto/catalogs/auto2d/');
 define("LOGIN","kd");
-define("PASSWD","JVBDhGpejncE");
+//define("PASSWD","JVBDhGpejncE");
+define("PASSWD","8u4ddAY9Ysbt");
 //require_once 'catalogs/auto2d/_lng.php'; /// Подключаем файл мультиязычности. Нужен
 // для цепочки наследования
 

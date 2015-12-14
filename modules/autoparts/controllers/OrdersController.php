@@ -222,7 +222,7 @@ class OrdersController extends Controller
     }
     public function actionSendTo1c($id){
         $order = new OrderUpdate1c;
-        $order->order_id = (int)$id;
+        $order->OrderId = (int)$id;
         return $order->save() ?: false;
     }
 

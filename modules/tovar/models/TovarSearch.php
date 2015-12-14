@@ -80,11 +80,17 @@ class TovarSearch extends Tovar
     public function find_tovar_param($params)
     {
         $p['id'] = $params['id'];
-        $query = TovarParam::find()->andwhere('(id=:id) and (title<>\'\')', $p);
+        $query = TovarParam::find()->andwhere('(id=:id) and (title<>\'\') and (value_char <>\'\')', $p);
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         return $dataProvider;
     }
-
+    public function find_tovar($params)
+    {
+        $p['id'] = $params['id'];
+        $query = Tovar::find()->andwhere('id=:id', $p);
+        $dataProvider = new ActiveDataProvider(['query' => $query]);
+        return $dataProvider;
+    }
     public static function category_menu()
     {
         $rows = (new \yii\db\Query())
