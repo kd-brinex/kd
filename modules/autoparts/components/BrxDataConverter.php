@@ -213,6 +213,7 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
+
         if(!is_array($data)) return false;
         $config = \Yii::$app->getModule('autoparts')->params;
 
@@ -262,12 +263,11 @@ class BrxDataConverter extends Component
             }
         }
         if(!empty($beforeParseData))
-        $items = $this->beforeParse($beforeParseData, $items);
+            $items = $this->beforeParse($beforeParseData, $items);
 
 
         if(!empty($afterParseData))
-        $items = $this->afterParse($afterParseData, $items);
-
+            $items = $this->afterParse($afterParseData, $items);
 
         return $items;
     }
@@ -276,16 +276,18 @@ class BrxDataConverter extends Component
 //        foreach($data as &$item){
 //
 //        }
+
+
         return $data;
     }
 
     private function afterParse($ParseData, &$data){
         //TODO убрать костыли и поставить нормальную обработку
         foreach($data as $key => &$item) {
-            if (isset($item['quantity']) && !$item['quantity']){
-                unset($data[$key]);
-                continue;
-            }
+//            if (isset($item['quantity']) && !$item['quantity']){
+//                unset($data[$key]);
+//                continue;
+//            }
             if(!isset($ParseData['provider']->days)){
                 unset($item);
                 continue;
@@ -324,6 +326,7 @@ class BrxDataConverter extends Component
                         }
                     }
                 }
+
                 if($field == 'name') {
                     $value = !empty($item['name']) ? $item['name'] : $item['code'];
                     $value = preg_replace('/(<|>)/',' ',$value);
@@ -390,7 +393,10 @@ class BrxDataConverter extends Component
                     $value = $item['srokmin'] . (($item['srokmin'] < $item['srokmax']) ? '-' . $item['srokmax'] : '');
 
                 if($field == 'quantity'){
-                    $value = (int)preg_replace('~[^0-9]+~','',$item['quantity']);
+                    if($value == 0)
+                        $value = 'Под заказ';
+                    else
+                        $value = (int)preg_replace('~[^0-9]+~','',$item['quantity']);
                 }
 
             }
