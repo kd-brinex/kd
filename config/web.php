@@ -363,7 +363,7 @@ $config = [
                     ],
                     'db' => [
                         'class' => 'yii\db\Connection',
-                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=kia;port=1111':'mysql:host=localhost',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=kia;port=1111':'mysql:host=localhost;dbname=kia',
                         'username' => 'brinexdev',
                         'password' => 'QwFGHythju8',
 //                        'username' => 'root',
