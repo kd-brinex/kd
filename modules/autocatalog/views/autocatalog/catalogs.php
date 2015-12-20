@@ -32,7 +32,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'label'=>'Найденные автокаталоги',
                 'format'=>'raw',
                 'value'=> function ($model, $key, $index, $widget)use($params) {
-                    return Html::a(Html::button('Автокаталог - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success"]),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+                    return Html::a(Html::button('Автокаталог - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success",'id'=>'catalog_button']),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
 //            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
                 },
             ]
@@ -106,7 +106,19 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 
     ]); ?>
 
-<?= Html::submitButton('Найти каталог');?>
+<?= Html::submitButton('Изменить конфигурацию',['id'=>'submit']);?>
 <?= Html::endForm();?>
 </div>
+
+<?php
+Yii::$app->view->registerJs(
+'
+      $("#submit").click(function(){
+      $(".btn-success").attr("disabled","disabled");
+      $(".btn-success").animate({
+        opacity: 0
+      }, 1500)});
+'
+);
+
 

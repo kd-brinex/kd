@@ -354,7 +354,22 @@ $config = [
                         'password' => 'QwFGHythju8',
                         'charset' => 'utf8'],
                 ],
-
+                'kia' => [
+                    'class' => 'app\modules\autocatalog\models\Kia',
+                    'image' => ['models' => 'http://3.kolesa-darom.ru:8080/image/kia/Imgs/'],
+                    'prop' => [
+                        'marka' => 'Kia',
+                        'region'=> 'EUR',
+                    ],
+                    'db' => [
+                        'class' => 'yii\db\Connection',
+                        'dsn' => (YII_ENV == 'dev') ? 'mysql:host=127.0.0.1;dbname=kia;port=1111':'mysql:host=localhost',
+                        'username' => 'brinexdev',
+                        'password' => 'QwFGHythju8',
+//                        'username' => 'root',
+//                        'password' => 'RvZZ5G0GT7IbM5lwD1Et57wbqE43',
+                        'charset' => 'utf8'],
+                ],
             ],
 
         ],
