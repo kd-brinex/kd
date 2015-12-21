@@ -180,7 +180,7 @@ class TovarController extends MainController
         $params = \Yii::$app->request->queryParams;
         $parts = Yii::$app->params['Parts'];
 
-        $details= (isset($params['article']))?Tovar::findDetails($params):[];
+        $details = (isset($params['article'])) ? Tovar::findDetails($params) : [];
         $provider = new ArrayDataProvider([
             'allModels' => $details,
             'sort' => $parts['sort'],
@@ -189,8 +189,7 @@ class TovarController extends MainController
 
         return $this->render('finddetails', [
             'provider' => $provider,
-            'columns' =>$parts['columns'],
-
+            'columns' => $parts['columns'],
         ]);
 
     }

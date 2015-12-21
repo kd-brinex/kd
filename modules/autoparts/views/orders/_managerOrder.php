@@ -163,7 +163,7 @@ use yii\helpers\Html;
     ],
     'toolbar' => [
         [
-            'content' =>  '<div style="margin:0px 2px;display: inline-block">'.Html::a('<i class="glyphicon glyphicon-share-alt"></i> Отправить в <strong>1С</strong>', ['#'], [
+            'content' =>  '<div style="margin:0px 2px;display: inline-block">'.Html::a('<i class="glyphicon glyphicon-refresh"></i> Синхронизировать с <strong>1С</strong>', ['#'], [
                                   'title'=>'Отправить в 1C',
                                   'class'=>'btn '.($order->isIn1C === null ? '' : 'btn-default disabled'),
                                   'onClick' => 'sendTo1C('.$order->id.', this); return false',

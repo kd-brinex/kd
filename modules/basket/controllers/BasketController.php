@@ -2,6 +2,7 @@
 
 namespace app\modules\basket\controllers;
 
+use app\modules\autoparts\models\OrderUpdate1c;
 use app\modules\user\models\Order;
 use app\modules\user\models\Orders;
 use app\modules\user\models\Profile;
@@ -113,7 +114,6 @@ class BasketController extends MainController
                 break;
             case 'update':
                 $data = Yii::$app->request->post();
-                //var_dump($data);die;
                 if (isset($data) && $data != '') {
                     $basket = BasketSearch::findOne(['id' => intval($data['row_id'])]);
                     if ($basket)
@@ -126,7 +126,6 @@ class BasketController extends MainController
                 // создаем новый заказ
                 $user_id = Yii::$app->user->id;
                 $number = (($user_id) ? $user_id :'N') . '-' . date("ymdhis");
-//                $number=uniqid($user_id);
                 $orders = explode(';', Yii::$app->request->post('orderData'));
                 $formData = Yii::$app->request->post('formData');
                 if (isset($formData) && $formData != '') {
@@ -151,6 +150,10 @@ class BasketController extends MainController
                 $order->save();
                 // передаем id заказа
                 $order_id = $order->id;
+
+                $order = new OrderUpdate1c();
+                $order->OrderId = $order_id;
+                $order->save();
 
                 foreach ($orders as $order) {
                     $order = explode(':', $order);

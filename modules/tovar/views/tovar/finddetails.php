@@ -9,36 +9,58 @@ use app\modules\tovar\finddetailsAsset;
 finddetailsAsset::register($this);
 echo $this->render('_search');
 //Yii::$app->view->registerCssFile('/css/parts.css');
+$originalLimiter = 5;
+$analogLimiter = 3;
+$originalDetailsTotalLimiter = 10;
+$analogDetailsTotalLimiter = 6;
 if (!empty($provider->allModels)) {
     foreach ($provider->allModels as $key => $value) {
         $mas[$value['groupid']][] = $value;
-
     }
 
     for ($ii = 0; $ii < 3; $ii++) {
-        if (!isset($mas[$ii]))continue;
+        $limiter = !$ii ? $originalLimiter : $analogLimiter;
+        $totalLimiter = !$ii ? $originalDetailsTotalLimiter : $analogDetailsTotalLimiter;
+        if (!isset($mas[$ii])) continue;
         $tablee[$ii] = "
-        <table class='table table-bordered' id = 'table$ii'  >
-        <thead>
-        <tr>
-        <th class='thd'>Производитель</th>
-        <th class='thd'>Номер детали</th>
-        <th class='thd'>Наименование</th>
-        <th class='thd'>Наличие (шт.)</th>
-        <th class='thd'>Заказ от(шт.)</th>
-        <th class='thd dual'>Срок ожид.-гарант.</th>
-        <th class='thd'>Цена</th>
-        <th class='thd'>Баллы</th>
-        <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        ";
+        <table class='table table-bordered' id = 'table$ii'>
+            <thead>
+                <tr>
+                    <th class='thd'>Производитель</th>
+                    <th class='thd'>Номер детали</th>
+                    <th class='thd'>Наименование</th>
+                    <th class='thd'>Наличие (шт.)</th>
+                    <th class='thd'>Заказ от(шт.)</th>
+                    <th class='thd dual'>Срок ожид.-гарант.</th>
+                    <th class='thd'>Цена</th>
+                    <th class='thd'>Баллы</th>
+                    <th></th>
+                </tr>
+            </thead>
+        <tbody>";
 
-        for ($i = 0; $i < count($mas[$ii]); $i++) {
+        $manufacturer = '';                 //переменная для ограничения вывода количества запчастей
+        $items = 0;                         //переменная для ограничения вывода количества запчастей
+        $mas_count = count($mas[$ii]);
+        for ($i = 0; $i < $mas_count; $i++) {
             if (!empty($mas[$ii][$i]['name'])) {
-                $tablee[$ii] .= '<tr>';
-                $tablee[$ii] .= '<td>' . $mas[$ii][$i]['manufacture'] . '</td>';
+
+                // скрипт установки ограничения вывода (НАЧАЛО)
+                $nowManufacturer = mb_strtoupper($mas[$ii][$i]['manufacture']);
+                $items++;
+                if($manufacturer != $nowManufacturer){
+                    $manufacturer = $nowManufacturer;
+                    $items = 0;
+                    $tablee[$ii] .= '<tr><td colspan="9" style="padding:15px"></td></tr>';
+                }
+                if($items == $totalLimiter)
+                    $tablee[$ii] .= '<tr class="itemsToggler"><td colspan="9"><a href="#" data-manufacturer="'.preg_replace('/[^a-zA-ZА-Яа-я0-9]/', '-',$nowManufacturer).'">Посмотреть другие предложения '.$nowManufacturer.'</a></td></tr>';
+
+                if($items >= $totalLimiter) continue;
+                // скрипт установки ограничения вывода (КОНЕЦ)
+
+                $tablee[$ii] .= '<tr '.($items < $limiter ? '' : 'class = "hidden-element" data-item-manufacturer="'.preg_replace('/[^a-zA-ZА-Яа-я0-9]/', '-',$nowManufacturer).'"').'>';// для ограничения вывода подставляются свойства класса и data-item-manufacturer
+                $tablee[$ii] .= '<td>' . $nowManufacturer . '</td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['code'] . '</td>';
                 $tablee[$ii] .= '<td>' . $mas[$ii][$i]['name'] . '</td>';
 
@@ -54,11 +76,12 @@ if (!empty($provider->allModels)) {
                 $key = $ii . '-' . $i;
                 $tablee[$ii] .= '<td>' . Html::a('<i class="icon-shopping-cart icon-white "></i>Заказать', '#', [
                         'title' => 'Заказать',
-
                         'class' => 'btn btn-primary btn-xs orderBud' . $key . '',
                         'onClick' => '$.ajax({ type :"POST", "data" : ' . Json::encode($mas[$ii][$i]) . ', url : "' . \yii\helpers\Url::to(['/tovar/tovar/basket']) . '", success : function(d) { $(".orderBud' . $key . '").parent().html(d) } });return false;'
                     ]) . '</td>';
                 $tablee[$ii] .= '</tr>';
+
+
             }
         }
 
@@ -107,6 +130,20 @@ if (!empty($provider->allModels)) {
     ]);
 }
 
+$this->registerJS('
+
+    //скрипт показывает/скрывает запчасти после работы ограничителя
+
+    $(".itemsToggler").on("click", "a", function(){
+        var $this = $(this),
+            manufacturer = $this.data("manufacturer"),
+            items = $("tr[data-item-manufacturer="+manufacturer+"]");
+
+        items.toggleClass("hidden-element shown-element");
+
+        return false;
+    });
+');
 
 
 ?>
