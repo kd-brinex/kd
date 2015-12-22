@@ -122,40 +122,10 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                         ]
                     ]);
                 }
-//                'class' => 'kartik\grid\EditableColumn',
-//                'format' => 'raw',
-//                'readonly' => function($model){
-//                    return !($model['provider']['name'] != 'Kd' && $model['provider']['name'] != 'Over' &&
-//                        $model['provider']['name'] != 'Iksora' && $model['provider']['name'] != 'Moskvorechie');
-//                },
-//                'editableOptions' => function($model) {
-//                    return [
-//                        'header' => 'ID поставщика',
-//
-//                        'type' => \kartik\popover\PopoverX::TYPE_SUCCESS,
-//                        'inputType' => \kartik\editable\Editable::INPUT_TEXT,
-//                        'size' => 'md',
-//                        'ajaxSettings' => [
-//                            'url' => '/autoparts/orders/order-provider-status'
-//                        ],
-//                        'pluginEvents' => [
-//                            'editableSuccess' => 'function(event, val, form, data){
-//                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text");
-//                                    if(data.status !== undefined){
-//                                        status_td.text(data.status);
-//                                    }
-//                                }'
-//                        ]
-//                    ];
-//                }
             ],
             [
                 'label' => 'Статус поставщика',
                 'attribute' => 'providerOrderStatusName.status_name',
-//            'value' => function($model){
-//                if(isset($model['providerOrderStatusName'][0]))
-//                var_dump($model['providerOrderStatusName'][0]->status_name);
-//            },
                 'contentOptions' => [
                     'class' => 'provider_status_text'
                 ]
@@ -184,7 +154,7 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                 'template' => '{delete}',
                 'contentOptions' => ['class' => 'btn-group-sm'],
                 'buttons' => [
-                    'delete' => function($url, $model){
+                    'delete' => function($url){
                         return \yii\bootstrap\Html::button('<span class="glyphicon glyphicon-remove"></span>', [
                             'class' => 'btn btn-danger',
                             'onClick' => 'deleteDetail("'.$url.'");'

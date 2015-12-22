@@ -636,3 +636,7 @@
 .gridRowStateBgColor3{
 	background-color: #D2ECFF !important;
 }
+
+.disabled-tab > a{
+	color: #ddd !important;
+}

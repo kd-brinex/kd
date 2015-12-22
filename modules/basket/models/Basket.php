@@ -74,8 +74,6 @@ class Basket extends \yii\db\ActiveRecord
 
     public function getTovarname()
     {
-//        var_dump($this->tovars);die;
-
         return  (isset($this->tovar->name))?$this->tovar->name:'tovar';
     }
     public function getTovar_summa()
@@ -91,17 +89,12 @@ class Basket extends \yii\db\ActiveRecord
     }
     public function put($params)
     {
-//        var_dump($params);die;
         $model=Tovar::findOne(['id'=>$params['id']]);
-//        var_dump($model);die;
         $t=$model->attributes;
-//        var_dump($t);die;
         $basket = Yii::$app->getDb();
 
         $default= ['session_id' => $this->getPhpsessid(),'tovar_count'=>1,'tovar_min'=>1,'tovar_id'=>$t['id'],'tovar_price'=>$t['price']];
-//        var_dump($params);die;
         $params=array_merge($default,$params);
-//            var_dump($params);die;
 
         if ($params['tovar_count']>0) {
         return $basket->createCommand('insert into `basket` (`tovar_id`,`tovar_count`,`tovar_min`,`tovar_price`,`session_id`)'
@@ -110,18 +103,8 @@ class Basket extends \yii\db\ActiveRecord
         }
             else
         {
-//            var_dump($params);die;
            $p = ['session_id' => $params['session_id'], 'tovar_id' => $params['tovar_id']];
            return $basket->createCommand('delete from `basket` where `session_id`=:session_id and `tovar_id`=:tovar_id')->bindValues($p)->execute();
         }
     }
-//    public static function find(){
-//        $c=Yii::$app->session;
-//        $params['session_id']=$c->id;
-//        $query = parent::find();
-//        $query->andWhere('session_id=:session_id');
-//        $query->addParams($params);
-//        return $query;
-//    }
-
 }

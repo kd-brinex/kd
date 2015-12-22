@@ -37,7 +37,6 @@ Modal::end();
             'neverTimeout'=>true,
             'id' => 'order-manage-pjax-container'
         ],
-
         'columns' => [
             [
                 'label' => 'Дата',
@@ -72,7 +71,7 @@ Modal::end();
             ],
             [
                 'label' => 'Комментарий',
-                'class' => 'kartik\grid\EditableColumn',
+                'class' => '\kartik\grid\EditableColumn',
                 'attribute' => 'comment',
                 'editableOptions' => [
                     'header' => 'комментарий',

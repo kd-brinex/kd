@@ -24,7 +24,8 @@ class BasketSearch extends Basket{
             [['tovar_price', 'session_id'], 'required'],
             [['tovar_price'], 'number'],
             [['tovar_id'], 'string', 'max' => 9],
-            [['session_id'], 'string', 'max' => 45]
+            [['session_id'], 'string', 'max' => 45],
+            [['description'], 'string']
         ];
     }
     public function scenarios()
