@@ -168,7 +168,6 @@ class OrdersController extends Controller
                 } else $data = ['output' => '', 'message' => 'Статус не определен. Номер заказа введен неверно, либо сервер поставщика временно не доступен. Попробуйте пожалуйста позже.'];
 
             }
-
             return Json::encode($data);
         }
     }

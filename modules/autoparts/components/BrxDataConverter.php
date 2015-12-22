@@ -276,7 +276,6 @@ class BrxDataConverter extends Component
 //
 //        }
 
-
         return $data;
     }
 
