@@ -78,6 +78,12 @@ tr.itemsToggler > td > a{
 tr.itemsToggler > td > a:hover{
     background: #20537d;
 }
-
+a.shown-button {
+    background-color: #DDD !important;
+    color: #337AB7 !important;
+}
+.details-table tr td{
+    background-color: #f1f1f1;
+}
 
 

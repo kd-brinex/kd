@@ -178,9 +178,7 @@ class OrdersController extends Controller
         $orderDetails = Tovar::getProviderOrderState($params, $model->order->store_id);
         if (!empty($orderDetails)){
             foreach ($orderDetails as $detail) {
-                if ($detail['code'] == $model->product_article &&   //&& strtoupper($detail['name']) == strtoupper($model->part_name)
-                    $detail['quantity'] == $model->quantity
-                ) {
+                if ($detail['code'] == $model->product_article && $detail['quantity'] == $model->quantity) {
                     $stateCode = ProviderStateCode::findOne(['provider_id' => $model->provider->id, 'status_code' => $detail['status']]);
                     if ($stateCode === null) {
                         $providerStateCode = new ProviderStateCode();

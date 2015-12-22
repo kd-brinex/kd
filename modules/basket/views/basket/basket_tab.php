@@ -6,8 +6,8 @@
  * Time: 10:20
  */
 use yii\grid\GridView;
-use yii\helpers\Html;
 use app\modules\basket\basketAsset;
+use yii\helpers\Html;
 
 basketAsset::register($this);
 
@@ -49,16 +49,14 @@ basketAsset::register($this);
                    ]
                ],
                [
-
                    'label' => 'Кол-во ед.',
                    'format' => 'raw',
                    'value' => function($model){
-                       return '<input type="number" class="form-control" onChange="countBasketSum(); detailCounter(this, '.$model['id'].')" value="'.$model['tovar_count'].'">';
+                       return '<input type="number" class="form-control" onChange="countBasketSum(); detailCounter(this, '.$model['id'].')" value="'.$model['tovar_count'].'" min="'.$model['tovar_min'].'">';
                    },
                    'contentOptions' => [
                        'class' => 'itemCount'
                    ]
-
                ],
                [
                    'attribute' => 'allsum',
@@ -122,3 +120,12 @@ basketAsset::register($this);
 
 
 </div>
+
+<?php
+    $this->registerJs('
+        var $tabs = $("ul.nav-tabs li[class!=active]");
+
+        $tabs.addClass("disabled-tab");
+        $tabs.find("a").removeAttr("data-toggle");
+    ');
+?>

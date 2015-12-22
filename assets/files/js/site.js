@@ -131,9 +131,14 @@ function removeBasketItems(){
                             $('tr[data-key="' + d.id[item] + '"]').animate({opacity:0},500, function(){
                                     $(this).remove();
                                     countBasketSum();
+
                                     if($('tr[data-key]').length == 0){
+
                                         $("#basket").replaceWith('<p>Ваша корзина пуста.</p>');
-                                }
+                                        var $tabs = $("ul.nav-tabs li[class!=active]");
+                                        $tabs.addClass("disabled-tab");
+                                        $tabs.find("a").removeAttr("data-toggle");
+                                    }
                             });
                         }
                     }
@@ -213,7 +218,10 @@ function toggleTab(tabNum){
         var stepBlock = $('#step'+tabNum);
         if(stepBlock.hasClass('pulse'))
             stepBlock.removeClass('pulse').find('i').removeClass('icon-warn').addClass('icon-circle-success');
-        $('#'+tabNum+'-basket-tab  a[data-toggle="tab"]').click();
+
+        var nextTab = $('#'+tabNum+'-basket-tab');
+        nextTab.removeClass('disabled-tab');
+        nextTab.find('a').attr('data-toggle', 'tab').click();
         //$('.basketSteps').fadeOut(0).promise().done(function(){
         //    $('#step'+tabNum).fadeIn(300);
         //});
@@ -246,9 +254,10 @@ function checkTab(){
             toggleTab(tab++);
             var deliverySlots = $('#basketDeliveryList input[type=radio]');
             if(deliverySlots.length > 0){
-                if($('#basketDeliveryList input[type=radio]:checked').length > 0)
+                if($('#basketDeliveryList input[name=deliveryStore]:checked').length > 0)
                     return true;
                 else {
+                    toggleTab(3)
                     basketError(3);
                     return false;
                 }

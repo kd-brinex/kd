@@ -22,50 +22,50 @@ class BasketController extends MainController
     public function actionIndex()
     {
         $params = Yii::$app->request->queryParams;
-        $tab=isset($params['tab'])?$params['tab']:0;
+        $tab = isset($params['tab']) ? $params['tab'] : 0;
         $bmodel = new BasketSearch();
         $bdataProvider = $bmodel->search([]);
 
-//        $user = User::findOne(['id' => (\Yii::$app->user->isGuest) ? \Yii::$app->params['nouser_id'] : \Yii::$app->user->identity->getId()]);
-        $user = (\Yii::$app->user->isGuest) ?new User : User::findOne(['id' =>  Yii::$app->user->id]);
+        $user = \Yii::$app->user->isGuest ? new User : User::findOne(['id' =>  Yii::$app->user->id]);
 
         if ($bdataProvider->totalCount) {
             $itogo = $this->summa($bdataProvider, ['tovar_summa']);
             $basketContent = $this->renderPartial('basket_tab', ['model' => $bdataProvider, 'itogo' => $itogo]);
-        } else {
+        } else
             $basketContent = $this->renderPartial('not_tovar');
-        }
+
         $profile = Yii::$app->user->isGuest ? new Profile() : Profile::findOne(['user_id' => Yii::$app->user->id]);
+
         $cityCode = Yii::$app->request->cookies['city'];
+
         $city = \app\modules\city\models\CitySearch::find()->where(['id' => ($cityCode ? $cityCode : 2097)])->one();
+
         $stores = new \app\modules\autoparts\models\TStoreSearch();
+
         $stores = $stores->search([':city_id' => $cityCode]);
+
         $user_tab_data = [
             'city' => $city,
             'profile' => $profile,
             'user' => $user,
         ];
+
         $delivery_tab_data = [
             'stores' => $stores
         ];
+
         return $this->render('index', [
             'basketContent' => $basketContent,
             'user_data' => $user_tab_data,
             'delivery_data' => $delivery_tab_data,
-            'tab'=>$tab
+            'tab' => $tab
         ]);
     }
 
-    public function summa($dp, $column)
-    {
-
+    public function summa($dp, $column){
         foreach ($dp->models as $data) {
             foreach ($column as $c) {
-                if (isset($result[$c])) {
-                    $result[$c] += $data->$c;
-                } else {
-                    $result[$c] = $data->$c;
-                }
+                isset($result[$c]) ? $result[$c] += $data->$c : $result[$c] = $data->$c;
             }
         }
         return $result;
@@ -87,7 +87,6 @@ class BasketController extends MainController
                 }
                 break;
             case 'put':
-//                $t=$model->findOne(['tovar_id'=>$post['id']]);
                 $session = new \yii\web\Session;
                 $id = Yii::$app->request->post('id');
                 if ($id) {
@@ -113,13 +112,23 @@ class BasketController extends MainController
                 return '<a class="btn" href="' . url::toRoute(['/basket/basket'], true) . '"><i class="icon-shopping-cart icon-black"></i>Уже в корзине</a>';
                 break;
             case 'update':
-                $data = Yii::$app->request->post();
-                if (isset($data) && $data != '') {
-                    $basket = BasketSearch::findOne(['id' => intval($data['row_id'])]);
-                    if ($basket)
-                        $basket->description = Html::encode($data['text']);
-                    if ($basket->save())
-                        return true;
+//                $data = Yii::$app->request->post();
+//                if (isset($data) && $data != '') {
+//                    $basket = BasketSearch::findOne(['id' => intval($data['row_id'])]);
+//                    if ($basket)
+//                        $basket->description = Html::encode($data['text']);
+//                    if ($basket->save())
+//                        return true;
+//                }
+                if(Yii::$app->request->post('hasEditable')) {
+                    $post = Yii::$app->request->post();
+                    $model =  $basket = BasketSearch::findOne(['id' => $post['editableKey']]);
+
+                    $data['OrderSearch'] = current($post['OrderSearch']);
+                    if ($model->load($data) && $model->save())
+                        $data = ['output' => $model->comment];
+
+                    return Json::encode($data);
                 }
                 break;
             case 'order':

@@ -187,9 +187,14 @@ class TovarController extends MainController
             'pagination' => $parts['pagination'],
         ]);
 
-        return $this->render('finddetails', [
+
+        $catalog = Yii::$app->getModule('autocatalog')->getModel();
+
+        return $this->render('finddetails_tabs', [
             'provider' => $provider,
             'columns' => $parts['columns'],
+            'params' => $params,
+            'catalog' => $catalog
         ]);
 
     }
