@@ -23,7 +23,7 @@ echo \yii\bootstrap\Tabs::widget([
             'content' => $this->render('finddetails', ['provider' => $provider, 'columns' => $columns])
         ],
         [
-            'label' => 'Поиск запчастей по VIN',
+            'label' => 'Поиск по VIN',
             'content' => $this->render('@app/modules/autocatalog/views/autocatalog/_search_vin',['params' => $params]),
             'options'=>['class'=>'acatalog-tabs', 'tag' => 'div'],
         ],

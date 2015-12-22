@@ -308,7 +308,9 @@ function createOrder(){
                             });
                         }
                     }
-
+                    var $tabs = $("ul.nav-tabs li[class!=active]");
+                    $tabs.addClass("disabled-tab");
+                    $tabs.find("a").removeAttr("data-toggle");
                 }
             });
         }

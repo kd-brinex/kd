@@ -10,7 +10,6 @@ use dektrium\user\models\User;
 use Yii;
 use app\controllers\MainController;
 use app\modules\basket\models\BasketSearch;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\Json;
 
@@ -134,7 +133,7 @@ class BasketController extends MainController
             case 'order':
                 // создаем новый заказ
                 $user_id = Yii::$app->user->id;
-                $number = (($user_id) ? $user_id :'N') . '-' . date("ymdhis");
+                $number = ($user_id ? $user_id :'N') . '-' . date("ymdhis");
                 $orders = explode(';', Yii::$app->request->post('orderData'));
                 $formData = Yii::$app->request->post('formData');
                 if (isset($formData) && $formData != '') {
@@ -163,6 +162,16 @@ class BasketController extends MainController
                 $order = new OrderUpdate1c();
                 $order->OrderId = $order_id;
                 $order->save();
+
+                $user = \app\modules\user\models\User::findOne($user_id);
+                $user->scenario = 'update';
+                $user->telephone = $order_data['user_telephone'];
+                $user->save();
+
+                $profile = Profile::findOne($user_id);
+                $profile->scenario = 'order';
+                $profile->name = $order_data['user_name'];
+                $profile->save();
 
                 foreach ($orders as $order) {
                     $order = explode(':', $order);
