@@ -37,6 +37,8 @@ Modal::end();
             'neverTimeout'=>true,
             'id' => 'order-manage-pjax-container'
         ],
+
+
         'columns' => [
             [
                 'label' => 'Дата',

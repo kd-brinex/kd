@@ -268,6 +268,7 @@ class BrxDataConverter extends Component
         if(!empty($afterParseData))
             $items = $this->afterParse($afterParseData, $items);
 
+
         return $items;
     }
 

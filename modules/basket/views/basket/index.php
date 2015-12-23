@@ -1,7 +1,9 @@
 <?php
 
 use yii\bootstrap\Tabs;
-use yii\helpers\Html;
+use app\modules\basket\basketAsset;
+
+basketAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\basket\models\Zakaz */
@@ -60,3 +62,8 @@ use yii\helpers\Html;
 
 <?php \yii\widgets\ActiveForm::end(); ?>
 
+<?=$this->registerJs('
+                    var $tabs = $("ul.nav-tabs li[class!=active]");
+                    $tabs.addClass("disabled-tab");
+                    $tabs.find("a").removeAttr("data-toggle");
+');?>

@@ -9,8 +9,11 @@
 use \kartik\grid\GridView;
 use yii\helpers\Html;
 ?>
+<?php
 
-<?=GridView::widget([
+$items = 0;
+$manufacturer = 0;
+echo GridView::widget([
     'id' => 'collapse-order-detail-grid-'.rand(5,10),
     'dataProvider' => $offers,
     'responsive' => true,
@@ -22,6 +25,15 @@ use yii\helpers\Html;
             'options' => ['class' => 'btn-group-sm']
         ],
     ],
+    'rowOptions' => function($model, $key, $index) use ($items, $manufacturer){
+        $nowManufacturer = $model['manufacture'];
+        $items++;
+        if($manufacturer != $nowManufacturer){
+            $manufacturer = $nowManufacturer;
+            $items = 0;
+        }
+
+    },
     'panel' => [
         'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Другие предложения</h3>',
         'beforeOptions' => ['class' => 'btn-group-sm'],

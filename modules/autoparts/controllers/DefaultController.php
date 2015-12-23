@@ -12,8 +12,8 @@ class DefaultController extends ProviderController
 {
     public function actionIndex()
     {
-        $providerObj = \Yii::$app->getModule('autoparts')->run->provider('Partkom', ['store_id' => 109]);
-        var_dump($providerObj->getOrderState(['order_id' => 'НДИ1947218']));
+        $providerObj = \Yii::$app->getModule('autoparts')->run->provider('Berg', ['store_id' => 6]);
+        var_dump($providerObj->getOrderState(['order_id' => '8445043']));
     }
 
 }
