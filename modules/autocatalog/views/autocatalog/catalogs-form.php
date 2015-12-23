@@ -16,12 +16,29 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-//var_dump($info->models);die;
+
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 
 <div class="auto-info">
+    <?= GridView::widget([
+        'dataProvider' => $podbor,
+        'columns'=>[
 
+//    'cat_code',
+//    'cat_folder',
+//    'option',
+            [
+                'label'=>'Найденные автокаталоги',
+                'format'=>'raw',
+                'value'=> function ($model, $key, $index, $widget)use($params) {
+                    return Html::a(Html::button('Перейти к подбору автозапчастей - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success",'id'=>'catalog_button']),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
+                },
+            ]
+        ]
+
+    ]);?>
     <?= DetailView::widget([
             'model' => $info->models[0],
             'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
@@ -30,8 +47,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'marka',
                 'family',
                 'cat_name',
-                'from',
-                'to',
+
                 [
                     'attribute' => 'vehicle_type',
                     'format'=>'raw',
@@ -90,37 +106,18 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 
     ]); ?>
 
+<?= Html::submitButton('Изменить конфигурацию',['id'=>'submit']);?>
 <?= Html::endForm();?>
-
-    <?= GridView::widget([
-        'dataProvider' => $podbor,
-        'layout' => "{items}\n{pager}",
-        'columns'=>[
-
-//    'cat_code',
-//    'cat_folder',
-//    'option',
-            [
-                'label'=>'Найденные автокаталоги',
-                'format'=>'raw',
-                'value'=> function ($model, $key, $index, $widget)use($params) {
-                    return Html::a(Html::button('Перейти к подбору автозапчастей - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success",'id'=>'catalog_button']),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
-//            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
-                },
-            ]
-        ]
-
-    ]);?>
-
 </div>
 
 <?php
 Yii::$app->view->registerJs(
 '
-      $("input").change(function(){
-      $("#w3-container").html(\'<img src="/img/ajax-loader.gif"/>\');
-      $("form").submit();
-      });
+      $("#submit").click(function(){
+      $(".btn-success").attr("disabled","disabled");
+      $(".btn-success").animate({
+        opacity: 0
+      }, 1500)});
 '
 );
 
