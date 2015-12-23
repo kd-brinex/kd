@@ -16,7 +16,7 @@ use yii\widgets\Breadcrumbs;
  * Date: 01.10.15
  * Time: 11:22
  */
-
+//var_dump($info->models);die;
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
 ?>
 
@@ -32,13 +32,14 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'label'=>'Найденные автокаталоги',
                 'format'=>'raw',
                 'value'=> function ($model, $key, $index, $widget)use($params) {
-                    return Html::a(Html::button('Автокаталог - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success",'id'=>'catalog_button']),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
+                    return Html::a(Html::button('Перейти к подбору автозапчастей - '.strtoupper($params['marka']).' '.$params['family'].'. ' .$model['cat_folder']. ' ('.$params['option'].')',['class'=>"btn btn-success",'id'=>'catalog_button']),\yii\helpers\Url::to(base64_encode($params['option']).'/'.$model['cat_folder']));
 //            return Html::a('Каталог',\yii\helpers\Url::to($model['cat_code'].'/'.$model['cat_folder'].'/'.$params['option']));
                 },
             ]
         ]
 
     ]);?>
+
     <?= DetailView::widget([
             'model' => $info->models[0],
             'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
@@ -47,7 +48,6 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
                 'marka',
                 'family',
                 'cat_name',
-
                 [
                     'attribute' => 'vehicle_type',
                     'format'=>'raw',
@@ -59,56 +59,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
         ]
     ); ?>
 </div>
-<div class="models">
-    <?= Html::beginForm('','post',['name'=>'catalog']);?>
-    <?= GridView::widget([
-        'dataProvider' => $provider,
-//        'showHeader' => false,
-        'layout' => "{items}\n{pager}",
-        'panelTemplate' => '<div class="panel {type}">{sort}</div>',
-//        'bootstrap' =>false,
-        'columns' => [
-            ['attribute' => 'name',
-                'label' => 'Характеристики',
-                'value' => function ($model, $key, $index, $widget)  {
-                    return Yii::t('autocatalog', $model['name']);
 
-                }
-            ],
-            [
-                'attribute' => 'value',
-                'format' => 'raw',
-                'label' => 'Варианты',
-                'value' => function ($model, $key, $index, $widget) use ($params) {
-                    $key[0]='';
-                    $values[0]='Unknown';
-                    $keys=array_merge($key,explode(';', $model['key']));
-                    $values=array_merge($values,explode(';', $model['value']));
-
-//                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
-//                    var_dump($keys);die;
-                $select=$keys[0];
-                        if (!empty($params['option'])){
-                            $option=str_replace('  ','|',$params['option']);
-                            while (strpos($option,'||')>0){$option=str_replace('||','|',$option);}
-                            $options=explode('|',$option);
-                            $select=(!empty($options[$index]))?$options[$index]:$select;
-
-}
-
-                    $val=array_combine($keys,$values);
-                    $html = Html::radioList($model['type_code'], $select, $val, []);
-                    return $html;
-                },],
-
-
-        ],
-
-    ]); ?>
-
-<?= Html::submitButton('Изменить конфигурацию',['id'=>'submit']);?>
-<?= Html::endForm();?>
-</div>
 
 <?php
 Yii::$app->view->registerJs(
