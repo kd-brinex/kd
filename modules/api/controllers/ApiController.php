@@ -41,8 +41,8 @@ class ApiController extends Controller
         $this->layout=false;
         $params = \Yii::$app->request->queryParams;
 //        var_dump($params);die;
-        $params=array_merge($params,$_POST);
-        $tovars=Api::ttovar_tip($params);
+        $params = array_merge($params,$_POST);
+        $tovars = Api::ttovar_tip($params);
 //        var_dump($tovars);die;
         return $tovars;
     }

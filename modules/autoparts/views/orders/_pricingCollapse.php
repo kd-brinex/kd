@@ -102,6 +102,7 @@ echo GridView::widget([
         [
             'label' => 'Цена',
             'attribute' => 'price',
+            'format' => 'raw',
             'contentOptions' => function($model){
                 $color = '';
                 if(($string = explode('|',$model['price'])) && !empty($string[1])){
@@ -110,7 +111,7 @@ echo GridView::widget([
                 return ['style' => 'background-color:'.$color];
             },
             'value' => function($model){
-                return (int)$model['price'];
+                    return (int)$model['price'].'<div class="provider-price">'.ceil($model['provider_price']).'</div>';
             },
             'group' => true,
             'subGroupOf' => 0
@@ -144,7 +145,7 @@ echo GridView::widget([
             'subGroupOf' => 0
         ],
         [
-            'label' => 'Поставщик',
+            'label' => 'Сайт поставщика',
             'format' => 'raw',
             'value' => function($model){
                 $href = '';

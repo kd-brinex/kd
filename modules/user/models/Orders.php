@@ -164,6 +164,10 @@ class Orders extends \yii\db\ActiveRecord
         return $this->hasOne(\app\modules\autoparts\models\ProviderStateCode::className(), ['provider_id' => 'provider_id', 'status_code' => 'order_provider_status']);
     }
 
+    public function getAllProviderOrderStatusName(){
+      return $this->hasMany(\app\modules\autoparts\models\ProviderStateCode::className(), ['provider_id' => 'provider_id']);
+    }
+
     public function beforeSave($insert){
 //        if($this->isNewRecord){
 //            $this->status = self::ORDER_IN_WORK;

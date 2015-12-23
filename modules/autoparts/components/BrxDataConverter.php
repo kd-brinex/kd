@@ -291,15 +291,18 @@ class BrxDataConverter extends Component
                 unset($item);
                 continue;
             }
+            $item['provider_price'] = isset($item['price']) ? $item['price'] : '';
             if(isset($ParseData['provider']->article)) {
                 if (strtoupper($item['code']) == strtoupper($ParseData['provider']->article) &&
                     $item['groupid'] == '') {
                     $item['groupid'] = 0;
                 }
             }
+
             if(isset($ParseData['provider']->provider_data) && $ParseData['provider']->provider_data->name == 'Over') {
                     $item['groupid'] = 0;
             }
+
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
                     if(!is_int($value)){
