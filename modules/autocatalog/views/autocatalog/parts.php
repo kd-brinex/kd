@@ -17,7 +17,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 
 
 
-<div class="page-scroll col-md-5 col-xs-12">
+<div class="page-scroll col-md-6 col-xs-12">
 
     <?php
     if(empty($models['models'])){echo 'Нет данных';}
@@ -44,7 +44,7 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
     }
     ?>
 </div>
-<div class="col-md-7 col-xs-12">
+<div class="col-md-6 col-xs-12">
 
     <?php
     foreach ($images->models as $img) {

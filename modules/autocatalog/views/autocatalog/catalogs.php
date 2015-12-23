@@ -21,8 +21,80 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 ?>
 
 <div class="auto-info">
+
+    <?= DetailView::widget([
+            'model' => $info->models[0],
+            'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
+            'attributes' => [
+                'cat_code',
+                'marka',
+                'family',
+                'cat_name',
+                'from',
+                'to',
+                [
+                    'attribute' => 'vehicle_type',
+                    'format'=>'raw',
+                    'value' => Html::tag('span',Yii::t('autocatalog', $info->models[0]->vehicle_type),['class'=>'upper']),
+
+                ],
+
+            ],
+        ]
+    ); ?>
+</div>
+<div class="models">
+    <?= Html::beginForm('','post',['name'=>'catalog']);?>
+    <?= GridView::widget([
+        'dataProvider' => $provider,
+//        'showHeader' => false,
+        'layout' => "{items}\n{pager}",
+        'panelTemplate' => '<div class="panel {type}">{sort}</div>',
+//        'bootstrap' =>false,
+        'columns' => [
+            ['attribute' => 'name',
+                'label' => 'Характеристики',
+                'value' => function ($model, $key, $index, $widget)  {
+                    return Yii::t('autocatalog', $model['name']);
+
+                }
+            ],
+            [
+                'attribute' => 'value',
+                'format' => 'raw',
+                'label' => 'Варианты',
+                'value' => function ($model, $key, $index, $widget) use ($params) {
+                    $key[0]='';
+                    $values[0]='Unknown';
+                    $keys=array_merge($key,explode(';', $model['key']));
+                    $values=array_merge($values,explode(';', $model['value']));
+
+//                    $select=(!empty($params['option']))?explode('|',$params['option'])[$index]:$key[0];
+//                    var_dump($keys);die;
+                $select=$keys[0];
+                        if (!empty($params['option'])){
+                            $option=str_replace('  ','|',$params['option']);
+                            while (strpos($option,'||')>0){$option=str_replace('||','|',$option);}
+                            $options=explode('|',$option);
+                            $select=(!empty($options[$index]))?$options[$index]:$select;
+
+}
+
+                    $val=array_combine($keys,$values);
+                    $html = Html::radioList($model['type_code'], $select, $val, []);
+                    return $html;
+                },],
+
+
+        ],
+
+    ]); ?>
+
+<?= Html::endForm();?>
+
     <?= GridView::widget([
         'dataProvider' => $podbor,
+        'layout' => "{items}\n{pager}",
         'columns'=>[
 
 //    'cat_code',
@@ -40,35 +112,15 @@ echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['bre
 
     ]);?>
 
-    <?= DetailView::widget([
-            'model' => $info->models[0],
-            'template' => '<tr><th>{label}</th><td class="upper">{value}</td></tr>',
-            'attributes' => [
-                'cat_code',
-                'marka',
-                'family',
-                'cat_name',
-                [
-                    'attribute' => 'vehicle_type',
-                    'format'=>'raw',
-                    'value' => Html::tag('span',Yii::t('autocatalog', $info->models[0]->vehicle_type),['class'=>'upper']),
-
-                ],
-
-            ],
-        ]
-    ); ?>
 </div>
-
 
 <?php
 Yii::$app->view->registerJs(
 '
-      $("#submit").click(function(){
-      $(".btn-success").attr("disabled","disabled");
-      $(".btn-success").animate({
-        opacity: 0
-      }, 1500)});
+      $("input").change(function(){
+      $("#w3-container").html(\'<img src="/img/ajax-loader.gif"/>\');
+      $("form").submit();
+      });
 '
 );
 

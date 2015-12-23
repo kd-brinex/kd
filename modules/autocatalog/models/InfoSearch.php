@@ -13,6 +13,7 @@ class InfoSearch extends ActiveRecord
     {
         return [
             [['cat_code','cat_name','family','vehicle_type'], 'safe'],
+            [['from','to'],'date']
         ];
     }
 
@@ -23,7 +24,9 @@ class InfoSearch extends ActiveRecord
             'cat_name'=>'Автокаталог',
             'family'=>'Модельный ряд',
             'vehicle_type'=>'Тип автомобиля',
-            'marka' => 'Марка автомобиля'
+            'marka' => 'Марка автомобиля',
+            'from' => 'Начало производства',
+            'to' => 'Окончание производства',
         ];
     }
 
