@@ -10,6 +10,7 @@ use kartik\grid\GridView;
 use yii\widgets\DetailView;
 use \yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
+use kartik\widgets\Alert;
 
 /**
  * Created by PhpStorm.
@@ -19,6 +20,12 @@ use yii\widgets\Breadcrumbs;
  */
 //var_dump($info->models);die;
 echo (!empty($params['breadcrumbs'])) ? Breadcrumbs::widget(['links' => $params['breadcrumbs']]) : '';
+echo Alert::widget([
+    'options' => [
+        'class' => 'alert-info'
+    ],
+    'body' => 'Укажите комплектацию автомобиля.'
+]);
 ?>
 
     <div class="auto-info">

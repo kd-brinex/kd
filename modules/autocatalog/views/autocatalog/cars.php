@@ -2,6 +2,7 @@
 use kartik\grid\GridView;
 use \yii\bootstrap\Tabs;
 use yii\widgets\Breadcrumbs;
+use kartik\widgets\Alert;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -11,7 +12,12 @@ use yii\widgets\Breadcrumbs;
 //var_dump($bread);die;
 echo  $this->render('_search_vin',['params'=>$params]);
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
-
+echo Alert::widget([
+    'options' => [
+        'class' => 'alert-info'
+    ],
+    'body' => 'Выберите регион производства и модель.'
+]);
 foreach($regions->models as $region) {
 
     $items []=
