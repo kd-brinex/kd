@@ -173,7 +173,7 @@ Yii::$app->view->registerCss('
 Yii::$app->view->registerJs(
     '
       $("input").change(function(){
-      $("#w3-container").html(\'<div class="container-load"><div class="content-load"><div class="circle"></div><div class="circle1"></div></div></div>\');
+      $("#w3-container").html(\'<div class="container-load"><div class="content-load"><div class="circle1"></div></div></div>\');
       $("form").submit();
       });
 '
