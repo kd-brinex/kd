@@ -12,9 +12,9 @@ class Profile extends BaseUser
 {
     public function rules()
     {
-        $ret=parent::rules();
-        $ret=[
-                [['name', 'public_email', 'location'], 'required', 'message' => 'Необходимо заполнить поле «{attribute}».'],
+        $ret = parent::rules();
+        $ret = [
+                [['name', 'public_email', 'location'], 'required', 'message' => 'Необходимо заполнить поле «{attribute}».', 'except' => ['order']],
                 [['public_email'], 'email'],
                 [['name', 'location'], 'match', 'pattern' => '/^[а-яА-ЯёЁ\s-]+$/u', 'message' => 'Поле «{attribute}» может содержать только русские буквы.'],
                 [['name'], 'string', 'max' => 15, 'tooLong' => 'Поле «{attribute}» не может превышать 15-ти символов'],

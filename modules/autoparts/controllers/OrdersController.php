@@ -185,6 +185,9 @@ class OrdersController extends Controller
                         $providerStateCode->status_code = $detail['status'];
                         $providerStateCode->status_name = $detail['status_name'];
                         $providerStateCode->save();
+                    } else if($detail['status_name'] != '' && $stateCode->status_name != $detail['status_name']){
+                        $stateCode->status_name = $detail['status_name'];
+                        $stateCode->save();
                     }
                     return [
                         'status' => $detail['status'],
