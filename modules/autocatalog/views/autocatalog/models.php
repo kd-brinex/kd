@@ -1,6 +1,7 @@
 <?php
 use kartik\grid\GridView;
 use yii\widgets\Breadcrumbs;
+use kartik\widgets\Alert;
 /**
  * Created by PhpStorm.
  * User: marat
@@ -10,6 +11,12 @@ use yii\widgets\Breadcrumbs;
 
 //var_dump($provider->models);die;
 echo (!empty($params['breadcrumbs']))?Breadcrumbs::widget(['links'=>$params['breadcrumbs']]):'';
+echo Alert::widget([
+    'options' => [
+        'class' => 'alert-info'
+    ],
+    'body' => 'Выберите модификацию по году производства.'
+]);
 ?>
 <div class="models">
     <?= GridView::widget([
