@@ -23,7 +23,7 @@
     Pjax::end();
 ?>
 </div>
-<div class="col-xs-offset-9 col-xs-12">
-    <button type="button" class="btn btn-error" onclick="toggleTab(2)">Назад</button>
-    <button type="button" class="btn btn-success"  onclick="createOrder()">Завершить</button>
+<div class="col-xs-offset-10 col-xs-12">
+    <button type="button" class="btn btn-error"  onclick="toggleTab(2)">Назад</button>
+    <button type="button" class="btn btn-success" onclick="checkTab()">Далее</button>
 </div>

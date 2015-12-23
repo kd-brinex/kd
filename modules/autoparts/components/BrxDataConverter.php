@@ -213,7 +213,6 @@ class BrxDataConverter extends Component
     }
 
     private function dataToTemplate(&$data, $provider = null, $beforeParseData = [], $afterParseData = []){
-
         if(!is_array($data)) return false;
         $config = \Yii::$app->getModule('autoparts')->params;
 
@@ -269,6 +268,7 @@ class BrxDataConverter extends Component
         if(!empty($afterParseData))
             $items = $this->afterParse($afterParseData, $items);
 
+
         return $items;
     }
 
@@ -276,7 +276,6 @@ class BrxDataConverter extends Component
 //        foreach($data as &$item){
 //
 //        }
-
 
         return $data;
     }
@@ -292,15 +291,18 @@ class BrxDataConverter extends Component
                 unset($item);
                 continue;
             }
+            $item['provider_price'] = isset($item['price']) ? $item['price'] : '';
             if(isset($ParseData['provider']->article)) {
                 if (strtoupper($item['code']) == strtoupper($ParseData['provider']->article) &&
                     $item['groupid'] == '') {
                     $item['groupid'] = 0;
                 }
             }
+
             if(isset($ParseData['provider']->provider_data) && $ParseData['provider']->provider_data->name == 'Over') {
                     $item['groupid'] = 0;
             }
+
             foreach($item as $field => &$value){
                 if($field == 'groupid'){
                     if(!is_int($value)){

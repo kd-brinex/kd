@@ -215,29 +215,22 @@ class Tovar extends \yii\db\ActiveRecord
                 }
             }
         }
-        usort($details, function ($a, $b){
-            $r = self::r_usort($a,$b ,'weight');
-            if ($r == 0){
-                $r = self::r_usort($a, $b, 'price');
-                if ($r == 0) {
-                    $r = self::r_usort($a, $b, 'srokmax');
-                }
-            }
-            return $r;
-        });
-
-        return $details;
-
-    }
-
-    private function r_usort($a, $b, $key){
-        $inta = intval($a[$key]);
-        $intb = intval($b[$key]);
-
-        if ($inta != $intb) {
-            return ($inta > $intb) ? 1 : -1;
+        $data_manufacturers = [];
+        foreach($details as $key => $arr){
+            $data_manufacturers[$key] = $arr['manufacture'];
         }
-        return 0;
-    }
 
+        $data_shipping_periods = [];
+        foreach($details as $key => $arr){
+            $data_shipping_periods[$key] = ($arr['srokmin'] + $arr['srokmax']) / 2;
+        }
+
+        $data_prices = [];
+        foreach($details as $key => $arr){
+            $data_prices[$key] = $arr['price'];
+        }
+
+        array_multisort($data_manufacturers, SORT_NATURAL|SORT_FLAG_CASE, $data_shipping_periods, $data_prices, $details);
+        return $details;
+    }
 }

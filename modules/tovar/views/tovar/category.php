@@ -21,16 +21,7 @@ echo ListView::widget([
 
     'itemOptions' => $params['itemOptions'],
 
-    'itemView' => ($params['viewType'] == 1)?
-                        function ($model){
-                                return $this->render('tovars_block_view_1', ['model' => $model]);
-                        } :
-                        (
-                         ($params['viewType'] == 2) ? function ($model){
-                                                        return $this->render('tovars_block_view_2', ['model' => $model]);
-                                                      }:
-                                                      function ($model){
-                                                        return $this->render('tovars_block_view_3', ['model' => $model]);
-                                                      }
-                        ),
+    'itemView' => function ($model) use ($params){
+        return $this->render('tovars_block_view_'.$params['viewType'], ['model' => $model]);
+    }
 ]);?>

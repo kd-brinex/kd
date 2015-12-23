@@ -1,11 +1,5 @@
-<?php
-    use \app\modules\user\models\Profile;
-    use \yii\helpers\Html;
-    use \yii\bootstrap\Modal;
-    use \yii\bootstrap\Button;
-?>
 <div class="basketStepsBlock col-xs-12">
-    <div id="step2" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Заполните форму для связи с Вам</div>
+    <div id="step2" class="basketSteps"><i style="float: left;" class="icon-white icon-circle-success"></i>Заполните форму для связи с Вами</div>
 </div>
 <h2>Укажите контактные данные.</h2>
 <div id="user">
@@ -24,34 +18,9 @@
     ]);
 
     echo $form->field($profile, 'name')->textInput(['placeholder' => 'Ваше имя']);
-//    $list=\app\modules\city\models\CitySearch::find_list();
-//    $list=\yii\helpers\ArrayHelper::map($list['stories'],'id','name');
-//    echo $form->field($profile, 'location')->dropDownList($list,['value'=>$city->id,'placeholder' => 'Адрес']);
+
     echo $form->field($user, 'email')->input('email',['placeholder' => 'Ваш e-mail адрес','value' => $user->email]);
-//    echo '<div class="form-group field-profile-location required">
-//<label class="col-lg-3 control-label" for="profile-location">Адрес</label><div class="col-lg-9">';
-//    Modal::begin([
-//        'header' => '<img src="/img/kolesa-darom_logo.png"/>',
-//        'toggleButton' => ['tag' => 'input',
-//            'type'=>'text',
-//            'readonly'=>'readonly',
-//            'id'=> 'profile-location',
-//            'class' => 'btn btn-info btn-block',
-//            'name'=>'Profile[location]',
-//            'value' => $city->name ? $city->name : 'Выбрать город',
-//
-//            'onclick'=>'load_city_list()',
-//        ]]);
-//
-//
-//
-//
-//    echo '<div id="city_list1"></div>';
-//    Modal::end();
-//    echo  $city->name ? $city->name : 'Выбрать город';
-//    echo Html::input('text','location_name',$city->name ? $city->name : 'Выбрать город');
-//    echo Html::input('hidden','location',$city->name ? $city->name : 'Выбрать город');
-//    echo '</div><div class="col-sm-offset-3 col-lg-9"><div class="help-block"></div></div></div>';
+
     echo $form->field($user, 'telephone')->input('phone',['placeholder' => 'Ваш номер телефона']);
 
     \yii\widgets\ActiveForm::end();

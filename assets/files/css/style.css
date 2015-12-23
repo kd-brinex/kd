@@ -307,3 +307,10 @@ td.itemDescription textarea{
     background-color: #fff !important;
 }
 /*---------------------- Прелоадер-------------------------------*/
+
+.provider-price {
+    font-size: 10px;
+    text-align: right;
+    font-weight: bold;
+    color: #696969;
+}

@@ -85,7 +85,7 @@ use yii\helpers\Html;
 
         ],
         [
-            'label' => 'ID поставщика',
+            'label' => 'ID заказа поставщика',
             'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'order_provider_id',
             'format' => 'raw',
@@ -112,9 +112,12 @@ use yii\helpers\Html;
                             ],
                             'pluginEvents' => [
                                 'editableSuccess' => 'function(event, val, form, data){
-                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text");
+                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text > select");
                                     if(data.status !== undefined){
-                                        status_td.text(data.status);
+                                        if(!status_td.find("option[value="+data.status+"]").length)
+                                            status_td.append("<option value=\""+data.status+"\">"+data.status_text+"</option>");
+
+                                        status_td.val(data.status);
                                     }
                                 }'
                             ]
@@ -126,7 +129,19 @@ use yii\helpers\Html;
             'attribute' => 'providerOrderStatusName.status_name',
             'contentOptions' => [
                 'class' => 'provider_status_text'
-            ]
+            ],
+            'format' => 'raw',
+            'value' => function($model, $key, $index){
+                $states = \yii\helpers\ArrayHelper::map($model['allProviderOrderStatusName'], 'status_code', 'status_name');
+                $params = [
+                    'class' => 'form-control',
+                    'onChange' => 'setOrderProviderState('.$key.', this)',
+                    'style' => 'font-size:12px',
+                    'prompt' => 'Выбрать статус'
+                ];
+
+                return Html::dropDownList('provider_status', $model['order_provider_status'], $states, $params);
+            },
         ],
         [
             'label' => 'Срок',
@@ -163,7 +178,7 @@ use yii\helpers\Html;
     ],
     'toolbar' => [
         [
-            'content' =>  '<div style="margin:0px 2px;display: inline-block">'.Html::a('<i class="glyphicon glyphicon-share-alt"></i> Отправить в <strong>1С</strong>', ['#'], [
+            'content' =>  '<div style="margin:0px 2px;display: inline-block">'.Html::a('<i class="glyphicon glyphicon-refresh"></i> Синхронизировать с <strong>1С</strong>', ['#'], [
                                   'title'=>'Отправить в 1C',
                                   'class'=>'btn '.($order->isIn1C === null ? '' : 'btn-default disabled'),
                                   'onClick' => 'sendTo1C('.$order->id.', this); return false',

@@ -85,7 +85,7 @@ class Order extends \yii\db\ActiveRecord
         $executed = 0;
         $counter = 0;
         $orders_quantity = count($this->orders);
-        $execution_step = floor(100 / $orders_quantity);
+        $execution_step = $orders_quantity !== 0 ? floor(100 / $orders_quantity) : 0;
         foreach($this->orders as $order){
             if($order->status > \app\modules\user\models\Orders::ORDER_ADOPTED) {
                 $executed += $execution_step;

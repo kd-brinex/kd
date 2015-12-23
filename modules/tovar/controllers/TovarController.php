@@ -180,17 +180,21 @@ class TovarController extends MainController
         $params = \Yii::$app->request->queryParams;
         $parts = Yii::$app->params['Parts'];
 
-        $details= (isset($params['article']))?Tovar::findDetails($params):[];
+        $details = (isset($params['article'])) ? Tovar::findDetails($params) : [];
         $provider = new ArrayDataProvider([
             'allModels' => $details,
             'sort' => $parts['sort'],
             'pagination' => $parts['pagination'],
         ]);
 
-        return $this->render('finddetails', [
-            'provider' => $provider,
-            'columns' =>$parts['columns'],
 
+        $catalog = Yii::$app->getModule('autocatalog')->getModel();
+
+        return $this->render('finddetails_tabs', [
+            'provider' => $provider,
+            'columns' => $parts['columns'],
+            'params' => $params,
+            'catalog' => $catalog
         ]);
 
     }

@@ -8,10 +8,13 @@
 
 namespace app\modules\autoparts\controllers;
 
+use app\modules\autoparts\models\PartProviderUser;
 use app\modules\autoparts\models\ProviderStateCode;
+use app\modules\user\models\Order;
 use Yii;
 
 use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\base\Exception;
@@ -40,8 +43,8 @@ class OrdersController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'allow' =>true,
-                        'roles' =>['Parts','Admin'],
+                        'allow' => true,
+                        'roles' => ['Parts', 'Admin'],
                     ]
                 ],
             ],
@@ -122,18 +125,9 @@ class OrdersController extends Controller
                             $detail->related_detail = $newRalatedDetail;
                             $detail->save();
                         }
-
                         $counter++;
                     }
                 }
-
-//                $relatedDetail = OrdersSearch::findOne($model->related_detail);
-//                $relatedDetail->status = (int)$model->minState;
-//                $result = Json::encode([
-//                    'id' => $model->id,
-//                    'rel_det' => $model->related_detail,
-//                    'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_IN_WORK]
-//                ]);
             }
         }
     }
@@ -164,11 +158,10 @@ class OrdersController extends Controller
                         $model->order_provider_status = $status['status'];
                         $model->save();
                     }
-                    $data = ['output' => $model->order_provider_id, 'status' => $status['status_name']];
+                    $data = ['output' => $model->order_provider_id, 'status' => $status['status'], 'status_text' => $status['status_name']];
                 } else $data = ['output' => '', 'message' => 'Статус не определен. Номер заказа введен неверно, либо сервер поставщика временно не доступен. Попробуйте пожалуйста позже.'];
 
             }
-
             return Json::encode($data);
         }
     }
@@ -178,9 +171,7 @@ class OrdersController extends Controller
         $orderDetails = Tovar::getProviderOrderState($params, $model->order->store_id);
         if (!empty($orderDetails)){
             foreach ($orderDetails as $detail) {
-                if ($detail['code'] == $model->product_article &&   //&& strtoupper($detail['name']) == strtoupper($model->part_name)
-                    $detail['quantity'] == $model->quantity
-                ) {
+                if ($detail['code'] == $model->product_article && $detail['quantity'] == $model->quantity) {
                     $stateCode = ProviderStateCode::findOne(['provider_id' => $model->provider->id, 'status_code' => $detail['status']]);
                     if ($stateCode === null) {
                         $providerStateCode = new ProviderStateCode();
@@ -188,6 +179,9 @@ class OrdersController extends Controller
                         $providerStateCode->status_code = $detail['status'];
                         $providerStateCode->status_name = $detail['status_name'];
                         $providerStateCode->save();
+                    } else if($detail['status_name'] != '' && $stateCode->status_name != $detail['status_name']){
+                        $stateCode->status_name = $detail['status_name'];
+                        $stateCode->save();
                     }
                     return [
                         'status' => $detail['status'],
@@ -220,6 +214,15 @@ class OrdersController extends Controller
             return Json::encode($data);
         }
     }
+
+    public function actionProviderOrderStateUpdate(){
+        $post = Yii::$app->request->post();
+        if(($orderPosition = Orders::findOne((int)$post['id'])) !== null){
+            $orderPosition->order_provider_status = $post['Orders']['order_provider_status'];
+            return $orderPosition->save();
+        }
+    }
+
     public function actionSendTo1c($id){
         $order = new OrderUpdate1c;
         $order->OrderId = (int)$id;

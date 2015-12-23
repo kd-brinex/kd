@@ -185,3 +185,12 @@ $(document).ready(function() {
 
     });
 });
+
+
+function setOrderProviderState(id, obj){
+    $.ajax({
+        url : '/autoparts/orders/provider-order-state-update',
+        type : 'POST',
+        data : {'id' : id, 'Orders' : { 'order_provider_status' : obj.value }},
+    });
+}

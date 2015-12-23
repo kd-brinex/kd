@@ -19,7 +19,7 @@ $( document ).ready(function() {
             //вызываем функцию сортировки для первого столбца
             if(index == 0)
             {
-                sorttable(this);
+                //sorttable(this);
             }
         });
 

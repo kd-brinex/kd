@@ -9,8 +9,11 @@
 use \kartik\grid\GridView;
 use yii\helpers\Html;
 ?>
+<?php
 
-<?=GridView::widget([
+$items = 0;
+$manufacturer = 0;
+echo GridView::widget([
     'id' => 'collapse-order-detail-grid-'.rand(5,10),
     'dataProvider' => $offers,
     'responsive' => true,
@@ -22,6 +25,15 @@ use yii\helpers\Html;
             'options' => ['class' => 'btn-group-sm']
         ],
     ],
+    'rowOptions' => function($model, $key, $index) use ($items, $manufacturer){
+        $nowManufacturer = $model['manufacture'];
+        $items++;
+        if($manufacturer != $nowManufacturer){
+            $manufacturer = $nowManufacturer;
+            $items = 0;
+        }
+
+    },
     'panel' => [
         'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-tasks"></i> Другие предложения</h3>',
         'beforeOptions' => ['class' => 'btn-group-sm'],
@@ -90,6 +102,7 @@ use yii\helpers\Html;
         [
             'label' => 'Цена',
             'attribute' => 'price',
+            'format' => 'raw',
             'contentOptions' => function($model){
                 $color = '';
                 if(($string = explode('|',$model['price'])) && !empty($string[1])){
@@ -98,7 +111,7 @@ use yii\helpers\Html;
                 return ['style' => 'background-color:'.$color];
             },
             'value' => function($model){
-                return (int)$model['price'];
+                    return (int)$model['price'].'<div class="provider-price">'.ceil($model['provider_price']).'</div>';
             },
             'group' => true,
             'subGroupOf' => 0
@@ -132,7 +145,7 @@ use yii\helpers\Html;
             'subGroupOf' => 0
         ],
         [
-            'label' => 'Поставщик',
+            'label' => 'Сайт поставщика',
             'format' => 'raw',
             'value' => function($model){
                 $href = '';

@@ -9,15 +9,15 @@ use yii\widgets\ActiveForm;
 ?>
 
 <?php $form = ActiveForm::begin([
-    'action' => ['vin'],
+    'action' => ['/autocatalog/autocatalog/vin'],
     'method' => 'get',
     'options' => ['name' => 'search-vin',],
 ]); ?>
 <div class="row">
     <div class="col-md-10">
         <?= Html::input('text', 'vin', (isset($params['vin'])) ? $params['vin'] : '', ['class' => 'form-control', 'placeholder' => 'Введите VIN. Например:JTJBT20X740046047']) ?>
-        <?= (!empty($params['marka']))?Html::input('hidden', 'marka', $params['marka']):'' ?>
-        <?= (!empty($params['region']))?Html::input('hidden', 'region', $params['region']):'' ?>
+        <?= (!empty($params['marka'])) ? Html::input('hidden', 'marka', $params['marka']) : '' ?>
+        <?= (!empty($params['region'])) ? Html::input('hidden', 'region', $params['region']) : '' ?>
     </div>
     <?= Html::input('hidden', 'user_id', (isset($params['user_id'])) ? $params['user_id'] : '', []) ?>
     <div class="col-md-1">

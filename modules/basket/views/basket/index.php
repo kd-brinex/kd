@@ -1,7 +1,9 @@
 <?php
 
 use yii\bootstrap\Tabs;
-use yii\helpers\Html;
+use app\modules\basket\basketAsset;
+
+basketAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\basket\models\Zakaz */
@@ -20,49 +22,48 @@ use yii\helpers\Html;
     'validateOnBlur'         => true,
 ]);
 ?>
-
-
 <?php
-
-echo Tabs::widget([
-    'items' => [
-        [
-            'label' => 'Корзина',
-            'content' => $basketContent,
-            'active' => $tab==0,
-            'headerOptions' => [
-                'id' => '1-basket-tab'
-            ],],
-
-        [
-            'label' => 'Клиент',
-            'content' => $this->render('profile_tab',$user_data),
-            'active' => $tab==1,
-            'headerOptions' => [
-                'id' => '2-basket-tab'
+    echo Tabs::widget([
+        'items' => [
+            [
+                'label' => 'Корзина',
+                'content' => $basketContent,
+                'active' => $tab == 0,
+                'headerOptions' => [
+                    'id' => '1-basket-tab'
+                ],
             ],
-
-        ],
-//        [
-//            'label' => 'Оплата',
-//            'content' => '<h2>Выберите способ оплаты</h2>',
-//
-//            'headerOptions' => [
-//                'id' => 'pay'
-//            ],
-//
-//        ],
-        [
-            'label' => 'Доставка',
-            'content' => $this->render('delivery_tab', $delivery_data),
-            'active' => $tab==2,
-            'headerOptions' => [
-                'id' => '3-basket-tab'
+            [
+                'label' => 'Клиент',
+                'content' => $this->render('profile_tab',$user_data),
+                'active' => $tab == 1,
+                'headerOptions' => [
+                    'id' => '2-basket-tab'
+                ],
             ],
-
-        ],]]);?>
-
-
+            [
+                'label' => 'Доставка',
+                'content' => $this->render('delivery_tab', $delivery_data),
+                'active' => $tab == 2,
+                'headerOptions' => [
+                    'id' => '3-basket-tab'
+                ],
+            ],
+            [
+                'label' => 'Оплата',
+                'content' => $this->render('pay_tab'),
+                'active' => $tab == 3,
+                'headerOptions' => [
+                    'id' => '4-basket-tab'
+                ],
+            ],
+        ]
+]);?>
 
 <?php \yii\widgets\ActiveForm::end(); ?>
 
+<?=$this->registerJs('
+                    var $tabs = $("ul.nav-tabs li[class!=active]");
+                    $tabs.addClass("disabled-tab");
+                    $tabs.find("a").removeAttr("data-toggle");
+');?>
