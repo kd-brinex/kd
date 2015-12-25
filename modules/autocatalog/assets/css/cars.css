@@ -1,8 +1,8 @@
 .catalog {
     /*background:#C5DFF0;*/
     color:#000;
-    margin:20px auto;
-    padding:20px;
+    margin:10px auto;
+    padding:10px;
     position:relative;
     width:800px;
     height:600px;
@@ -23,13 +23,13 @@
     /*-webkit-column-rule: 1px dashed black;*/
 }
 .catalog3{
-    height:800px;
+    height:600px;
     -webkit-column-width: 100px;
     -moz-column-width: 100px;
     column-width: 100px;
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
     -webkit-column-gap: 30px;
     -moz-column-gap: 30px;
     column-gap: 30px;

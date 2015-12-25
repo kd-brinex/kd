@@ -21,6 +21,7 @@ $column=[
 //    'y1'=>'y1',
     'Название'=>'name',
     'Описание'=>'description',
+    'кол.'=>'quantity',
 //    'kod'=>'compatibility',
 //    'ipic_code'=>'ipic_code',
 ];
