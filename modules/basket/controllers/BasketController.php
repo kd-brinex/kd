@@ -186,7 +186,7 @@ class BasketController extends MainController
                             'product_article' => ($product) ? null : $basket->part_number,
                             'quantity' => $order[1],
                             'reference' => '',
-                            'status' => \app\modules\user\models\Orders::ORDER_IN_WORK,
+                            'status' => \app\modules\user\models\Orders::ORDER_ADOPTED,
                             'datetime' => date('Y-m-d H:i:s'),
                             'description' => $basket->description,
                             'order_id'=> (int)$order_id,

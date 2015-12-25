@@ -25,16 +25,19 @@ use yii\helpers\Html;
             'id' => 'manager-order-grid-pjax-container'
         ]
     ],
+    'tableOptions' => [
+        'class' => 'manager-order-table'
+    ],
     'export' => false,
     'resizableColumns' => false,
     'rowOptions' => function($model){
-        return ['class' => (empty($model->related_detail) ? '' : GridView::TYPE_WARNING).' ui-droppable ui-draggable-handle'];
+        return ['class' => empty($model->related_detail) ? '' : GridView::TYPE_WARNING];
     },
-    'afterRow' => function($model, $key, $index) {
+    'afterRow' => function($model) {
         return Html::tag('tr',
                     Html::tag('td',
                         $this->render('_managerRelaitedDetailsTable', ['model' => $model])
-                    , ['colspan' => 14, 'style' => 'background-color: #d9edf7;padding:0px']
+                    , ['colspan' => 15, 'style' => 'background-color: #d9edf7;padding:0px']
                     )
                );
     },
@@ -67,17 +70,20 @@ use yii\helpers\Html;
             'value' => 'cost'
         ],
         [
-            'header' => 'Олата',
-            'class' => '\kartik\grid\CheckboxColumn',
-            'vAlign' => GridView::ALIGN_TOP,
-            'rowSelectedClass' => GridView::TYPE_SUCCESS,
-            'checkboxOptions' => function($model){
-                return [
-                    'value' => $model['id'],
-                    'checked' => $model['is_paid'],
-                    'onClick' => 'updatePaidStatus(this)'
-                ];
+            'header' => 'Оплата',
+            'value' => function(){
+                return '----------';
             }
+//            'class' => '\kartik\grid\CheckboxColumn',
+//            'vAlign' => GridView::ALIGN_TOP,
+//            'rowSelectedClass' => GridView::TYPE_SUCCESS,
+//            'checkboxOptions' => function($model){
+//                return [
+//                    'value' => $model['id'],
+//                    'checked' => $model['is_paid'],
+//                    'onClick' => 'updatePaidStatus(this)'
+//                ];
+//            }
         ],
         [
             'label' => 'Поставщик',
@@ -86,62 +92,68 @@ use yii\helpers\Html;
         ],
         [
             'label' => 'ID заказа поставщика',
-            'class' => 'kartik\grid\EditableColumn',
-            'attribute' => 'order_provider_id',
-            'format' => 'raw',
-            'readonly' => function($model){
-                return !($model['provider']['name'] != 'Kd' && $model['provider']['name'] != 'Over' &&
-                $model['provider']['name'] != 'Iksora' && $model['provider']['name'] != 'Moskvorechie');
-            },
-            'editableOptions' => function($model) {
-                return [
-                            'header' => 'ID поставщика',
-                            'contentOptions' => [
-                                'class' => 'editable-inline-in-table'
-                            ],
-                            'type' => \kartik\popover\PopoverX::TYPE_SUCCESS,
-                            'inputType' => \kartik\editable\Editable::INPUT_TEXT,
-                            'size' => 'md',
-                            'options' => ['class'=>'form-control', 'placeholder'=>'Введите ID заказа у поставщика...'],
-                            'asPopover' => false,
-                            'ajaxSettings' => [
-                                'url' => '/autoparts/orders/order-provider-status'
-                            ],
-                            'submitButton' => [
-                                'icon' => '<i class="glyphicon glyphicon-ok"></i>',
-                            ],
-                            'pluginEvents' => [
-                                'editableSuccess' => 'function(event, val, form, data){
-                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text > select");
-                                    if(data.status !== undefined){
-                                        if(!status_td.find("option[value="+data.status+"]").length)
-                                            status_td.append("<option value=\""+data.status+"\">"+data.status_text+"</option>");
-
-                                        status_td.val(data.status);
-                                    }
-                                }'
-                            ]
-                        ];
+            'value' => function(){
+                return '----------';
             }
+//            'class' => 'kartik\grid\EditableColumn',
+//            'attribute' => 'order_provider_id',
+//            'format' => 'raw',
+//            'readonly' => function($model){
+//                return !($model['provider']['name'] != 'Kd' && $model['provider']['name'] != 'Over' &&
+//                $model['provider']['name'] != 'Iksora' && $model['provider']['name'] != 'Moskvorechie');
+//            },
+//            'editableOptions' => function($model) {
+//                return [
+//                            'header' => 'ID поставщика',
+//                            'contentOptions' => [
+//                                'class' => 'editable-inline-in-table'
+//                            ],
+//                            'type' => \kartik\popover\PopoverX::TYPE_SUCCESS,
+//                            'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+//                            'size' => 'md',
+//                            'options' => ['class'=>'form-control', 'placeholder'=>'Введите ID заказа у поставщика...'],
+//                            'asPopover' => false,
+//                            'ajaxSettings' => [
+//                                'url' => '/autoparts/orders/order-provider-status'
+//                            ],
+//                            'submitButton' => [
+//                                'icon' => '<i class="glyphicon glyphicon-ok"></i>',
+//                            ],
+//                            'pluginEvents' => [
+//                                'editableSuccess' => 'function(event, val, form, data){
+//                                    var status_td = $(event.target).parents("tr").find("td.provider_status_text > select");
+//                                    if(data.status !== undefined){
+//                                        if(!status_td.find("option[value="+data.status+"]").length)
+//                                            status_td.append("<option value=\""+data.status+"\">"+data.status_text+"</option>");
+//
+//                                        status_td.val(data.status);
+//                                    }
+//                                }'
+//                            ]
+//                        ];
+//            }
         ],
         [
             'label' => 'Статус поставщика',
-            'attribute' => 'providerOrderStatusName.status_name',
-            'contentOptions' => [
-                'class' => 'provider_status_text'
-            ],
-            'format' => 'raw',
-            'value' => function($model, $key, $index){
-                $states = \yii\helpers\ArrayHelper::map($model['allProviderOrderStatusName'], 'status_code', 'status_name');
-                $params = [
-                    'class' => 'form-control',
-                    'onChange' => 'setOrderProviderState('.$key.', this)',
-                    'style' => 'font-size:12px',
-                    'prompt' => 'Выбрать статус'
-                ];
-
-                return Html::dropDownList('provider_status', $model['order_provider_status'], $states, $params);
-            },
+            'value' => function(){
+            return '----------';
+        }
+//            'attribute' => 'providerOrderStatusName.status_name',
+//            'contentOptions' => [
+//                'class' => 'provider_status_text'
+//            ],
+//            'format' => 'raw',
+//            'value' => function($model, $key){
+//                $states = \yii\helpers\ArrayHelper::map($model['allProviderOrderStatusName'], 'status_code', 'status_name');
+//                $params = [
+//                    'class' => 'form-control',
+//                    'onChange' => 'setOrderProviderState('.$key.', this)',
+//                    'style' => 'font-size:12px',
+//                    'prompt' => 'Выбрать статус'
+//                ];
+//
+//                return Html::dropDownList('provider_status', $model['order_provider_status'], $states, $params);
+//            },
         ],
         [
             'label' => 'Срок',
@@ -153,7 +165,13 @@ use yii\helpers\Html;
             'contentOptions' => ['class' => 'detailStatus'],
             'format' => 'raw',
             'value' => function($model){
-                return !isset($model['related_detail']) ? $model['state']['status_name'] : Html::activeDropDownList($model, 'status', \yii\helpers\ArrayHelper::map(\app\modules\user\models\OrdersState::find()->all(), 'id', 'status_name'), ['class' => 'form-control', 'style'=> 'min-width:125px', 'onChange' => 'updateStatus(this)']);
+                $states = $model['stateAll'];
+                $params = [
+                    'class' => 'form-control',
+                    'style' => 'font-size:12px; min-width:200px',
+                    'onChange' => 'updateStatus(this)'
+                ];
+                return Html::dropDownList('order_status', $model['status'], $states, $params);
             },
             'vAlign' => 'middle'
         ],
@@ -161,6 +179,30 @@ use yii\helpers\Html;
             'label' => 'Комментарий',
             'value' => 'description'
         ],
+//        [
+//            'label' => 'Поставщик',
+//            'format' => 'raw',
+//            'value' => function($model){
+//                $href = '';
+//                switch((int)$model['provider_id']){
+//                    case 1:
+//                        $href = 'http://ixora-auto.ru/Shop/Search.html?DetailNumber=';
+//                        break;
+//                    case 2:
+//                        $href = 'http://www.part-kom.ru/new/#/search/0/0/0/';
+//                        break;
+//                    case 4:
+//                        $href = 'https://www.emex.ru/f?detailNum=';
+//                        break;
+//                    case 8:
+//                        $href = 'http://moskvorechie.ru/search.php?artikul=';
+//                        break;
+//                }
+//                return Html::a('<span class="glyphicon glyphicon-share-alt"></span>', $href.$model['product_article'], ['class' => 'btn '.($href == '' ? 'btn-default disabled' : 'btn-warning'), 'title' => 'Перейти на сайт поставщика', 'target' => '_blank']);
+//            },
+//            'hAlign' => 'center',
+//            'vAlign' => 'middle',
+//        ],
         [
             'class' => '\kartik\grid\ActionColumn',
             'header' => '',

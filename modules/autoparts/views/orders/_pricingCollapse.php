@@ -46,7 +46,6 @@ echo GridView::widget([
             'value' => function($model){
                 return strpos($model['code'], '|r') ? explode('|', $model['code'])[0] : $model['code'];
             },
-            'group' => true,
         ],
         [
             'label' => 'Производитель',
@@ -58,8 +57,6 @@ echo GridView::widget([
             'value' => function($model){
                 return $model['manufacture'] == '|r' || strpos($model['manufacture'], '|r') ? explode('|',$model['manufacture'])[0] : $model['manufacture'];
             },
-            'group' => true,
-            'subGroupOf' => 0
         ],
         [
             'label' => 'Название',
@@ -70,8 +67,6 @@ echo GridView::widget([
             'value' => function($model){
                 return strpos($model['name'], '|r') ? explode('|',$model['name'])[0] : $model['name'];
             },
-            'group' => true,
-            'subGroupOf' => 0
         ],
         [
             'label' => 'Кол-во',
@@ -85,8 +80,6 @@ echo GridView::widget([
             'value' => function($model){
                 return (int)$model['quantity'];
             },
-            'group' => true,
-            'subGroupOf' => 0,
         ],
         [
             'label' => 'Кол-во в заказ',
@@ -113,8 +106,6 @@ echo GridView::widget([
             'value' => function($model){
                     return (int)$model['price'].'<div class="provider-price">'.ceil($model['provider_price']).'</div>';
             },
-            'group' => true,
-            'subGroupOf' => 0
         ],
         [
             'label' => 'Срок',
@@ -129,8 +120,6 @@ echo GridView::widget([
             'value' => function($model){
                 return (int)$model['srokmax'];
             },
-            'group' => true,
-            'subGroupOf' => 0
         ],
         [
             'label' => 'Поставщик',
@@ -141,11 +130,9 @@ echo GridView::widget([
             'value' => function($model){
                 return strpos($model['provider'], '|r') ? explode('|',$model['provider'])[0] : $model['provider'];
             },
-            'group' => true,
-            'subGroupOf' => 0
         ],
         [
-            'label' => 'Сайт поставщика',
+            'label' => 'Поставщик',
             'format' => 'raw',
             'value' => function($model){
                 $href = '';
