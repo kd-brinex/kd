@@ -37,10 +37,11 @@ function updateStatus(obj){
         dataType : 'JSON',
         success : function(data){
             if('status' in data && 'id' in data){
-                $('#manager-order-grid-container').find('table').find('tr[data-key='+data.rel_det+']').find('td.detailStatus').text(data.state_text);
+                $('#manager-order-grid-container').find('table').find('tr[data-key='+data.rel_det+']').find('td.detailStatus > select').val(data.min_state);
 
                 if((data.status <= 1  && data.old_status <= 1) || (data.status > 1  && data.old_status > 1))
                     return;
+
                 var progress_bar = $('#orders-manage-grid').find('tr[data-key=' + data.id + ']').find('.progress-bar'),
                     orders = $('#manager-order-grid').find('tr').length - 1,
                     step = Math.floor(100 / orders),
@@ -192,5 +193,10 @@ function setOrderProviderState(id, obj){
         url : '/autoparts/orders/provider-order-state-update',
         type : 'POST',
         data : {'id' : id, 'Orders' : { 'order_provider_status' : obj.value }},
+        success : function(data){
+            if(data != ''){
+                $('#order-status-'+id+'-field').val(data).change();
+            }
+        }
     });
 }

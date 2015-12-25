@@ -8,13 +8,11 @@
 
 namespace app\modules\autoparts\controllers;
 
-use app\modules\autoparts\models\PartProviderUser;
 use app\modules\autoparts\models\ProviderStateCode;
-use app\modules\user\models\Order;
+use app\modules\user\models\OrderStateRelation;
 use Yii;
 
 use yii\data\ArrayDataProvider;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\base\Exception;
@@ -76,7 +74,7 @@ class OrdersController extends Controller
                 }
                 return $this->renderAjax('_managerOrder', ['order' => $order, 'model' => $model]);
             }
-        } //else $this->redirect(Url::toRoute('/admin/orders'));
+        }
     }
 
     public function actionUpdate(){
@@ -103,7 +101,7 @@ class OrdersController extends Controller
                 $result = Json::encode([
                         'id' => $model->id,
                         'rel_det' => $model->related_detail,
-                        'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_IN_WORK]
+                        'status_text' => $model->minState ? $model->stateAll[$model->minState] : $model->stateAll[Orders::ORDER_ADOPTED]
                 ]);
             }
         }
@@ -150,7 +148,9 @@ class OrdersController extends Controller
             $post = Yii::$app->request->post();
             $model = OrdersSearch::findOne($post['editableKey']);
 
-            $data['OrdersSearch'] = current($post['OrdersSearch']);
+//            var_dump(current($post['OrdersSearch']));die;
+            $orderModel = isset($post['OrdersSearch']) ? $post['OrdersSearch'] : $post['Orders'];
+            $data['OrdersSearch'] = current($orderModel);
             if ($model->load($data) && $model->validate()) {
                 $status = $this->getDetailProviderInfo(['provider' => $model->provider->name, 'order_id' => $model->order_provider_id], $model);
                 if($status !== false) {
@@ -204,14 +204,15 @@ class OrdersController extends Controller
         $model->status = $status;
 
         if($model->save()){
-            $relatedDetail = OrdersSearch::findOne($model->related_detail);
-            $relatedDetail->status = $model->minState;
-            $relatedDetail->save();
-            $data = ['status' => $model->status, 'id' => $model->order_id, 'old_status' => $old_status];
-            if($model->related_detail)
-                $data = array_merge($data, ['rel_det' => $model->related_detail, 'state_text' => $model->stateAll[$model->minState]]);
+            if(($relatedDetail = OrdersSearch::findOne($model->related_detail)) !== null) {
+                $relatedDetail->status = $model->minState;
+                $relatedDetail->save();
+                $data = ['status' => $model->status, 'id' => $model->order_id, 'old_status' => $old_status];
+                if ($model->related_detail)
+                    $data = array_merge($data, ['rel_det' => $model->related_detail, 'min_state' => (int)$model->minState]);
 
-            return Json::encode($data);
+                return Json::encode($data);
+            }
         }
     }
 
@@ -219,7 +220,11 @@ class OrdersController extends Controller
         $post = Yii::$app->request->post();
         if(($orderPosition = Orders::findOne((int)$post['id'])) !== null){
             $orderPosition->order_provider_status = $post['Orders']['order_provider_status'];
-            return $orderPosition->save();
+            if($orderPosition->save()){
+                $status = OrderStateRelation::findOne(['provider_id' => $orderPosition->provider_id, 'provider_state_id' => $orderPosition->order_provider_status]);
+                if(isset($status->innerState))
+                    return $status->inner_state_id;
+            }
         }
     }
 
@@ -256,6 +261,7 @@ class OrdersController extends Controller
         } else
             $allDetails[$code]['offers'] = Tovar::findDetails(['article' => $code, 'city_id' => $city]);
 
+//        var_dump($allDetails);die;
         $offers = [];
         foreach ($allDetails as $key => $detail_offers) {
             if(is_array($detail_offers) && !empty($detail_offers)){
@@ -267,6 +273,8 @@ class OrdersController extends Controller
                 }
             }
         };
+//        var_dump($offers);die;
+
 
         if(!empty($id)){
             $firstOffers = $this->firstOffers($details, $offers);
@@ -285,6 +293,8 @@ class OrdersController extends Controller
 
         $offersData = $this->toDataProvider($offers);
 
+
+//        var_dump($offersData);die;
         $params = ['model' => $dataProvider, 'offersData' => $offersData, 'orderedDetails' => $orderdetails];
 
         return Json::encode(['output' => '', 'table' => $this->renderAjax('_pricing', $params)]);
@@ -302,6 +312,7 @@ class OrdersController extends Controller
     }
 
     private function firstOffers($orderDetails, &$offers){
+//        var_dump($offers);die;
         $orderDetailIndex = 0;
         $offersTo = [];
         foreach ($offers as $detail => &$detail_offer) {
@@ -370,7 +381,7 @@ class OrdersController extends Controller
             $order->part_name = strpos($post['name'], '|r') ? explode('|',$post['name'])[0] : $post['name'];
             $order->part_price = (int)$post['price'];
             $order->quantity = (int)$post['quantity'];
-            $order->status = \app\modules\user\models\Orders::ORDER_IN_WORK;
+            $order->status = \app\modules\user\models\Orders::ORDER_ADOPTED;
             $order->datetime = date('Y-m-d H:m:s');
             $order->product_article = strpos($post['code'], '|r') ? explode('|',$post['code'])[0] : $post['code'];
             $order->order_id = $post['order_id'];
@@ -378,6 +389,13 @@ class OrdersController extends Controller
             $order->delivery_days = (int)$post['srokmax'];
             $order->related_detail = $post['detail_id'] == 0 ? null : $post['detail_id'];
             if($order->save()) {
+                if(!$post['detail_id']){
+                    $order->isNewRecord = true;
+                    $order->related_detail = $order->id;
+                    $order->id = null;
+                    $order->save();
+                }
+
                 $order->provider_id = $order->provider->name;
                 return Json::encode($order->getAttributes());
             }
