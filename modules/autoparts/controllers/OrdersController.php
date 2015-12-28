@@ -148,10 +148,7 @@ class OrdersController extends Controller
             $post = Yii::$app->request->post();
             $model = OrdersSearch::findOne($post['editableKey']);
 
-//            var_dump($post['OrdersSearch']);die;
-            $orderModel = isset($post['OrdersSearch']) ? $post['OrdersSearch'] : $post['Orders'];
-            $data['OrdersSearch'] = current($orderModel);
-            if ($model->load($data) && $model->validate()) {
+            if ($model->load($post) && $model->validate()) {
                 $status = $this->getDetailProviderInfo(['provider' => $model->provider->name, 'order_id' => $model->order_provider_id], $model);
                 if($status !== false) {
                     if (!empty($status)) {
@@ -161,8 +158,8 @@ class OrdersController extends Controller
                     $data = ['output' => $model->order_provider_id, 'status' => $status['status'], 'status_text' => $status['status_name']];
                 } else $data = ['output' => '', 'message' => 'Статус не определен. Номер заказа введен неверно, либо сервер поставщика временно не доступен. Попробуйте пожалуйста позже.'];
 
-            }
             return Json::encode($data);
+            }
         }
     }
 
