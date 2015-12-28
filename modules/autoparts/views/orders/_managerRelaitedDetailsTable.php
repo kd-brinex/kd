@@ -91,7 +91,7 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                 'editableOptions' => function($model) {
                     return [
                         'header' => 'ID поставщика',
-                        'name' => 'order_provider_id',
+                        'name' => 'OrdersSearch[order_provider_id]',
                         'contentOptions' => [
                             'class' => 'editable-inline-in-table'
                         ],

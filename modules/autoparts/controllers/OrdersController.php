@@ -148,7 +148,7 @@ class OrdersController extends Controller
             $post = Yii::$app->request->post();
             $model = OrdersSearch::findOne($post['editableKey']);
 
-//            var_dump(current($post['OrdersSearch']));die;
+//            var_dump($post['OrdersSearch']);die;
             $orderModel = isset($post['OrdersSearch']) ? $post['OrdersSearch'] : $post['Orders'];
             $data['OrdersSearch'] = current($orderModel);
             if ($model->load($data) && $model->validate()) {
