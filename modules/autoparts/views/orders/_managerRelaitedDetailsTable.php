@@ -92,6 +92,7 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                     return [
                         'header' => 'ID поставщика',
                         'name' => 'OrdersSearch[order_provider_id]',
+                        'value' => $model['order_provider_id'],
                         'contentOptions' => [
                             'class' => 'editable-inline-in-table'
                         ],
@@ -120,7 +121,8 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
                                 }'
                         ],
                     ];
-                }
+                },
+
             ],
             [
                 'label' => 'Статус поставщика',
