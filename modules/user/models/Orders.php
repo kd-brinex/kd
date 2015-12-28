@@ -27,16 +27,16 @@ class Orders extends \yii\db\ActiveRecord
 {
     public $normalizeDate;
 
-    const ORDER_ADOPTED = 0;
-    const ORDER_SHIPPED = 1;
-    const ORDER_BOUGHT = 2;
-    const ORDER_GOING_TO_STOCK = 3;
-    const ORDER_IN_STOCK = 4;
-    const ORDER_GOING_TO_SHOP = 5;
-    const ORDER_IN_SHOP = 6;
-    const ORDER_ISSUED = 7;
-    const ORDER_CANCELED = 8;
-    const ORDER_CANCELED_BY_PROVIDER = 9;
+    const ORDER_IN_STOCK = 1;
+    const ORDER_GOING_TO_SHOP = 2;
+    const ORDER_IN_SHOP = 3;
+    const ORDER_ISSUED = 5;
+    const ORDER_CANCELED = 6;
+    const ORDER_ADOPTED = 10;
+    const ORDER_SHIPPED = 11;
+    const ORDER_BOUGHT = 12;
+    const ORDER_GOING_TO_STOCK = 13;
+    const ORDER_CANCELED_BY_PROVIDER = 14;
 
     const DEFAULT_DELIVERY_DAYS = 5;
     /**

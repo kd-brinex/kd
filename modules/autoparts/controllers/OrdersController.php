@@ -245,7 +245,12 @@ class OrdersController extends Controller
         if(!empty($id)) {
             $details = OrdersSearch::find()
                 ->where('order_id = :order_id', [':order_id' => $id])
-                ->andWhere('status <= :status', [':status' => Orders::ORDER_ADOPTED])
+                ->andWhere('status <= :status', [':status' => [
+                        Orders::ORDER_ADOPTED,
+                        Orders::ORDER_CANCELED,
+                        Orders::ORDER_CANCELED_BY_PROVIDER
+                    ]
+                ])
                 ->andWhere('provider_id > 0')
                 ->andWhere('provider_id <> 5')
                 ->andWhere('related_detail IS NULL')
@@ -261,7 +266,6 @@ class OrdersController extends Controller
         } else
             $allDetails[$code]['offers'] = Tovar::findDetails(['article' => $code, 'city_id' => $city]);
 
-//        var_dump($allDetails);die;
         $offers = [];
         foreach ($allDetails as $key => $detail_offers) {
             if(is_array($detail_offers) && !empty($detail_offers)){
@@ -273,8 +277,6 @@ class OrdersController extends Controller
                 }
             }
         };
-//        var_dump($offers);die;
-
 
         if(!empty($id)){
             $firstOffers = $this->firstOffers($details, $offers);
@@ -293,8 +295,6 @@ class OrdersController extends Controller
 
         $offersData = $this->toDataProvider($offers);
 
-
-//        var_dump($offersData);die;
         $params = ['model' => $dataProvider, 'offersData' => $offersData, 'orderedDetails' => $orderdetails];
 
         return Json::encode(['output' => '', 'table' => $this->renderAjax('_pricing', $params)]);
@@ -312,7 +312,6 @@ class OrdersController extends Controller
     }
 
     private function firstOffers($orderDetails, &$offers){
-//        var_dump($offers);die;
         $orderDetailIndex = 0;
         $offersTo = [];
         foreach ($offers as $detail => &$detail_offer) {
@@ -403,13 +402,10 @@ class OrdersController extends Controller
         return false;
     }
 
-
-
     protected function findModel($id){
         if(($model = OrderSearch::findOne($id)) !== null)
             return $model;
         else
            throw new Exception('This not found');
     }
-
 }

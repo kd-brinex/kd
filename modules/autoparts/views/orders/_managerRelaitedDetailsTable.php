@@ -86,21 +86,20 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
             [
                 'label' => 'ID заказа поставщика',
                 'class' => 'kartik\grid\EditableColumn',
-                'attribute' => 'order_provider_id',
+//                'attribute' => 'order_provider_id',
                 'format' => 'raw',
-//                'readonly' => function($model){
-//                    return !($model['provider']['name'] != 'Kd' && $model['provider']['name'] != 'Over' &&
-//                        $model['provider']['name'] != 'Iksora' && $model['provider']['name'] != 'Moskvorechie');
-//                },
                 'editableOptions' => function($model) {
                     return [
                         'header' => 'ID поставщика',
+                        'name' => 'order_provider_id',
                         'contentOptions' => [
                             'class' => 'editable-inline-in-table'
                         ],
                         'type' => \kartik\popover\PopoverX::TYPE_SUCCESS,
                         'inputType' => \kartik\editable\Editable::INPUT_TEXT,
                         'size' => 'md',
+                        'containerOptions' => ['id'=>'text-danger'],
+
                         'options' => ['class'=>'form-control', 'placeholder'=>'Введите ID заказа у поставщика...'],
                         'asPopover' => false,
                         'ajaxSettings' => [
