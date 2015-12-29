@@ -65,7 +65,11 @@ class SettingsController extends BaseSettingsController
         foreach($model->getModels() as $key => $order){
             $counter = 0;
             foreach($order->orders as $k => $position){
-                $position->status >= Orders::ORDER_ISSUED ?: $counter++;
+                in_array($position->status, [
+                    Orders::ORDER_CANCELED,
+                    Orders::ORDER_ISSUED,
+                    Orders::ORDER_CANCELED_BY_PROVIDER,
+                ]) ?: $counter++;
             }
             $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }
