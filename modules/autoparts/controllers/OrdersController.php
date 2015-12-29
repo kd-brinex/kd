@@ -158,7 +158,7 @@ class OrdersController extends Controller
                     $data = ['output' => $model->order_provider_id, 'status' => $status['status'], 'status_text' => $status['status_name']];
                 } else $data = ['output' => '', 'message' => 'Статус не определен. Номер заказа введен неверно, либо сервер поставщика временно не доступен. Попробуйте пожалуйста позже.'];
 
-            return Json::encode($data);
+                return Json::encode($data);
             }
         }
     }
@@ -242,8 +242,8 @@ class OrdersController extends Controller
         if(!empty($id)) {
             $details = OrdersSearch::find()
                 ->where('order_id = :order_id', [':order_id' => $id])
-                ->andWhere('status <= :status', [':status' => [
-                        Orders::ORDER_ADOPTED,
+                ->andWhere('status <> :status', [':status' => [
+                        Orders::ORDER_ISSUED,
                         Orders::ORDER_CANCELED,
                         Orders::ORDER_CANCELED_BY_PROVIDER
                     ]
