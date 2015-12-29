@@ -242,14 +242,15 @@ class OrdersController extends Controller
         if(!empty($id)) {
             $details = OrdersSearch::find()
                 ->where('order_id = :order_id', [':order_id' => $id])
-                ->andWhere('status <> :status', [':status' => [
-                        Orders::ORDER_ISSUED,
+                ->andWhere('status = :status', [':status' => [
+                        Orders::ORDER_ADOPTED,
                         Orders::ORDER_CANCELED,
                         Orders::ORDER_CANCELED_BY_PROVIDER
                     ]
                 ])
                 ->andWhere('provider_id > 0')
                 ->andWhere('provider_id <> 5')
+                ->orWhere('provider_id IS NULL')
                 ->andWhere('related_detail IS NULL')
                 ->all();
 
