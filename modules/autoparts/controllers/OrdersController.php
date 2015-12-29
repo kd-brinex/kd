@@ -243,7 +243,7 @@ class OrdersController extends Controller
             $details = OrdersSearch::find()
                 ->where('order_id = :order_id', [':order_id' => $id])
                 ->andWhere('status <> :status', [':status' => [
-                        Orders::ORDER_ADOPTED,
+                        Orders::ORDER_ISSUED,
                         Orders::ORDER_CANCELED,
                         Orders::ORDER_CANCELED_BY_PROVIDER
                     ]
