@@ -116,7 +116,7 @@ use yii\helpers\Html;
                 return ['style' => 'background-color:'.$color];
             },
             'value' => function($model){
-                return (int)$model['price'].'<div class="provider-price"></div>';//'.ceil($model['provider_price']).'
+                return (int)$model['price'].'<div class="provider-price">'.ceil($model['provider_price']).'</div>';
             },
         ],
         [
