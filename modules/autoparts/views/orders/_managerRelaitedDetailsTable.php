@@ -41,7 +41,7 @@ $query = \app\modules\user\models\Orders::find()->where(['related_detail' => $mo
             [
                 'label' => 'Артикул',
                 'value' => function($model){
-                    return !empty($model['product_id']) ? $model['product_id'] : $model['product_article'];
+                    return !empty($model['product_article']) ? $model['product_article'] : $model['product_id'];
                 },
                 'contentOptions' => ['class' => 'part_article']
             ],
