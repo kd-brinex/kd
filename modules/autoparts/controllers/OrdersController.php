@@ -248,12 +248,13 @@ class OrdersController extends Controller
                         Orders::ORDER_CANCELED_BY_PROVIDER
                     ]
                 ])
-                ->andWhere('provider_id > 0')
-                ->andWhere('provider_id <> 5')
-                ->orWhere('provider_id IS NULL')
+                ->andWhere('provider_id <> 5 OR provider_id IS NULL')
+//                ->andWhere('')
                 ->andWhere('related_detail IS NULL')
                 ->all();
 
+
+//            var_dump($details);die;
             foreach ($details as $detail) {
                 $article = !empty($detail->product_article) ? $detail->product_article : (!empty($detail->product_id) ? $detail->product_id : null);
                 $compareDetails = Tovar::findDetails(['article' => $article, 'city_id' => $detail->order->store->city_id]);
