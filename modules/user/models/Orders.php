@@ -27,13 +27,16 @@ class Orders extends \yii\db\ActiveRecord
 {
     public $normalizeDate;
 
-    const ORDER_IN_WORK = 0;
-    const ORDER_ADOPTED = 1;
-    const ORDER_SHIPPED = 2;
-    const ORDER_SHIPPED_IN_SHOP = 3;
-    const ORDER_IN_SHOP = 4;
-    const ORDER_EXECUTED = 5;
+    const ORDER_IN_STOCK = 1;
+    const ORDER_GOING_TO_SHOP = 2;
+    const ORDER_IN_SHOP = 3;
+    const ORDER_ISSUED = 5;
     const ORDER_CANCELED = 6;
+    const ORDER_ADOPTED = 10;
+    const ORDER_SHIPPED = 11;
+    const ORDER_BOUGHT = 12;
+    const ORDER_GOING_TO_STOCK = 13;
+    const ORDER_CANCELED_BY_PROVIDER = 14;
 
     const DEFAULT_DELIVERY_DAYS = 5;
     /**
@@ -100,13 +103,16 @@ class Orders extends \yii\db\ActiveRecord
     public function getOrderClass()
     {
         return [
-            self::ORDER_IN_WORK => 'ORDER_IN_W  ORK',
             self::ORDER_ADOPTED => 'ORDER_ADOPTED',
             self::ORDER_SHIPPED => 'ORDER_SHIPPED',
-            self::ORDER_SHIPPED_IN_SHOP => 'ORDER_SHIPPED_IN_SHOP',
-            self::ORDER_IN_SHOP =>'ORDER_IN_SHOP',
-            self::ORDER_EXECUTED => 'ORDER_EXECUTED',
-            self::ORDER_CANCELED => 'ORDER_CANCELED'
+            self::ORDER_BOUGHT => 'ORDER_BOUGHT',
+            self::ORDER_IN_STOCK => 'ORDER_IN_STOCK',
+            self::ORDER_GOING_TO_STOCK => 'ORDER_GOING_TO_STOCK',
+            self::ORDER_GOING_TO_SHOP => 'ORDER_GOING_TO_SHOP',
+            self::ORDER_IN_SHOP => 'ORDER_IN_SHOP',
+            self::ORDER_ISSUED => 'ORDER_ISSUED',
+            self::ORDER_CANCELED => 'ORDER_CANCELED',
+            self::ORDER_CANCELED_BY_PROVIDER => 'ORDER_CANCELED_BY_PROVIDER'
         ];
     }
     public function getProduct()
@@ -142,14 +148,12 @@ class Orders extends \yii\db\ActiveRecord
 
     public function getMinState(){
         $states = [];
-        $positions = $this->find()->asArray()->select('status')->where('order_id = :order_id AND related_detail > 0', [':order_id' => $this->order->id])->all();
+        $positions = $this->find()->asArray()->select('status')->where('order_id = :order_id AND related_detail IS NOT NULL AND product_article = :product_article', [':order_id' => $this->order->id, ':product_article' => $this->product_article])->all();
         foreach($positions as $position){
             $states[] = $position['status'];
         }
         if(!empty($states))
-            $minStatus = min($states);
-
-        return !empty($minStatus) ? $minStatus : false;
+            return min($states);
     }
 
     public function getStore(){
@@ -167,6 +171,8 @@ class Orders extends \yii\db\ActiveRecord
     public function getAllProviderOrderStatusName(){
       return $this->hasMany(\app\modules\autoparts\models\ProviderStateCode::className(), ['provider_id' => 'provider_id']);
     }
+
+
 
     public function beforeSave($insert){
 //        if($this->isNewRecord){

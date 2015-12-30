@@ -26,3 +26,20 @@
     background-color: #ff8888 !important;
     color :#000000 !important;
 }
+
+#order-modal .modal-dialog{
+    min-width:1500px;
+}
+
+table.related-table thead tr th {
+    padding: 2px 8px;
+    font-size: 10px;
+    background: #F0AD4E;
+    color: #fff;
+    border-color: #F0AD4E;
+}
+
+table.manager-order-table > thead tr th {
+    background: #ddd;
+}
+

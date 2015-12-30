@@ -107,6 +107,7 @@ use yii\helpers\Html;
         [
             'label' => 'Цена',
             'attribute' => 'price',
+            'format' => 'raw',
             'contentOptions' => function($model){
                 $color = '';
                 if(($string = explode('|',$model['price'])) && !empty($string[1])){
@@ -115,7 +116,7 @@ use yii\helpers\Html;
                 return ['style' => 'background-color:'.$color];
             },
             'value' => function($model){
-                return (int)$model['price'];
+                return (int)$model['price'].'<div class="provider-price">'.ceil($model['provider_price']).'</div>';
             },
         ],
         [

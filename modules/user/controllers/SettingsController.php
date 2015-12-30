@@ -9,14 +9,13 @@ namespace app\modules\user\controllers;
 
 use app\modules\user\models\Order;
 use app\modules\user\models\Orders;
-use Yii;
-use dektrium\user\controllers\SettingsController as BaseSettingsController;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use app\modules\user\models\SettingsForm;
-
 use app\modules\user\models\OrderSearch;
 use app\modules\user\models\OrdersSearch;
+use app\modules\user\models\SettingsForm;
+use dektrium\user\controllers\SettingsController as BaseSettingsController;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 class SettingsController extends BaseSettingsController
 {
@@ -42,7 +41,7 @@ class SettingsController extends BaseSettingsController
         ];
     }
     public function actionCars(){
-       return $this->render('cars',[]);
+        return $this->render('cars',[]);
     }
 
     /**
@@ -58,14 +57,17 @@ class SettingsController extends BaseSettingsController
         if(!empty($params = Yii::$app->request->queryParams)) {
             $morders->load($params);
         }
-
         $orders = $morders->searchOrdersUser(Yii::$app->user->id);
         $new_orders = [];
         $old_orders = [];
         foreach($model->getModels() as $key => $order){
             $counter = 0;
             foreach($order->orders as $k => $position){
-                ($position->status >= Orders::ORDER_EXECUTED) ?: $counter++;
+                in_array($position->status, [
+                    Orders::ORDER_CANCELED,
+                    Orders::ORDER_ISSUED,
+                    Orders::ORDER_CANCELED_BY_PROVIDER,
+                ]) ?: $counter++;
             }
             $counter ? $new_orders[$order->id] = $order : $old_orders[$order->id] = $order;
         }
@@ -101,7 +103,7 @@ class SettingsController extends BaseSettingsController
     }
     public function actionPay()
     {
-    $order=Order::findOne(['id'=>$_GET['id']]);
+        $order = Order::findOne(['id'=>$_GET['id']]);
         return $this->render('pay',['order'=>$order]);
     }
 }
