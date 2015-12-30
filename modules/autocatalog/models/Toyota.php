@@ -139,13 +139,27 @@ class Toyota extends CCar
 
     public static function Parts($params)
     {
-
+//var_dump($params);die;
+        $info = self::InfoSearch($params);
+        $query = $info->search($params)
+            ->andWhere(['cat_folder'=>$params['cat_folder']]);
+        $value=$query->all();
+//        var_dump($value);die;
         $models = self::PartsSearch($params);
         $query = $models->search($params)
             ->distinct()
             ->andWhere('cat_code=:cat_code', [':cat_code' => $params['cat_code']])
+            ->andWhere('region=:region', [':region' => $params['region']])
             ->andWhere('cat_folder=:cat_folder', [':cat_folder' => $params['cat_folder']])
             ->andWhere('sub_sect=:sub_sect', [':sub_sect' => $params['sub_sect']])
+            ->andWhere(['between','from',$value[0]->attributes['from'],$value[0]->attributes['to']])
+            ->andWhere(['sysopt'=>$value[0]->attributes['sysopt']])
+            ->andWhere(['compl_code'=>$value[0]->attributes['compl_code']])
+
+
+
+
+
         ;
 
         $provider = new ActiveDataProvider([
