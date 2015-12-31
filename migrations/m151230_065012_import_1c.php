@@ -9,7 +9,7 @@ class m151230_065012_import_1c extends Migration
     {
         $this->addColumn('orders','1c_orders_id',Schema::TYPE_INTEGER);
         $this->createIndex('unique_1c_order_id', 'order', '1c_order_id', true);
-        $this->createIndex('unique_1c_orders_id', 'orders', ['1c_orders_id'], true);
+        $this->createIndex('unique_1c_orders_id', 'orders', ['order_id','1c_orders_id'], true);
     }
 
     public function down()
