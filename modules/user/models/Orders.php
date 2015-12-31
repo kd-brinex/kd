@@ -62,6 +62,7 @@ class Orders extends \yii\db\ActiveRecord
             [['part_name'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 255],
             [['manufacture'],'string','max'=>45],
+            [['1c_orders_id'],'integer'],
         ];
     }
 
